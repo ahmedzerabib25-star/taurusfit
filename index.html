@@ -1,0 +1,3326 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ByBens – Premium Sports Nutrition Algeria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" href="./images/favicon.ico" />
+
+    <style>
+      /* ─── VARIABLES ──────────────────────────────────────────── */
+
+      :root {
+        --red: #ad0000;
+        --red-hover: #8a0000;
+        --red-light: rgba(173, 0, 0, 0.08);
+        --white: #ffffff;
+        --off-white: #f7f7f5;
+        --gray-50: #f5f5f5;
+        --gray-100: #ebebeb;
+        --gray-200: #d9d9d9;
+        --gray-400: #9c9c9c;
+        --gray-600: #5a5a5a;
+        --gray-800: #1c1c1c;
+        --black: #0a0a0a;
+        --font-display: "Bebas Neue", sans-serif;
+        --font-body: "DM Sans", sans-serif;
+        --nav-h: 64px;
+        --cat-h: 44px;
+        --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+        --shadow-sm:
+          0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+        --shadow-md:
+          0 4px 16px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.06);
+        --shadow-lg:
+          0 12px 40px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(0, 0, 0, 0.08);
+        --shadow-red: 0 4px 20px rgba(173, 0, 0, 0.3);
+      }
+
+      /* ─── RESET ─────────────────────────────────────────────── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: var(--font-body);
+        color: var(--black);
+        background: var(--white);
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      button {
+        cursor: pointer;
+        border: none;
+        background: none;
+        font-family: inherit;
+      }
+      ul {
+        list-style: none;
+      }
+      input,
+      textarea {
+        font-family: inherit;
+      }
+
+      /* ─── UTILITY ────────────────────────────────────────────── */
+      .container {
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+      }
+
+      /* ─── ANIMATIONS ─────────────────────────────────────────── */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(28px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.15);
+        }
+      }
+      @keyframes marqueeTick {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      .animate-up {
+        animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      .delay-1 {
+        animation-delay: 0.1s;
+      }
+      .delay-2 {
+        animation-delay: 0.2s;
+      }
+      .delay-3 {
+        animation-delay: 0.32s;
+      }
+      .delay-4 {
+        animation-delay: 0.44s;
+      }
+
+      /* ─── HEADER / TOP NAVBAR ────────────────────────────────── */
+      #site-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: var(--white);
+        border-bottom: 1px solid var(--gray-100);
+        transition: box-shadow var(--transition);
+      }
+      #site-header.scrolled {
+        box-shadow: var(--shadow-md);
+      }
+
+      .top-nav {
+        height: var(--nav-h);
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      /* Logo */
+      .logo {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .logo-mark {
+        width: 38px;
+        height: 38px;
+        background: var(--red);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo-mark span {
+        font-family: var(--font-display);
+        color: var(--white);
+        font-size: 18px;
+        letter-spacing: 1px;
+      }
+      .logo-text {
+        font-family: var(--font-display);
+        font-size: 26px;
+        letter-spacing: 2px;
+        color: var(--black);
+        line-height: 1;
+      }
+      .logo-text em {
+        color: var(--red);
+        font-style: normal;
+      }
+
+      /* Search Bar */
+      .search-wrap {
+        flex: 1;
+        max-width: 480px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .search-wrap input {
+        width: 100%;
+        height: 40px;
+        padding: 0 44px 0 16px;
+        border: 1.5px solid var(--gray-200);
+        border-radius: 8px;
+        font-size: 14px;
+        color: var(--black);
+        background: var(--gray-50);
+        transition:
+          border-color var(--transition),
+          box-shadow var(--transition),
+          background var(--transition);
+        outline: none;
+      }
+      .search-wrap input::placeholder {
+        color: var(--gray-400);
+      }
+      .search-wrap input:focus {
+        border-color: var(--red);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(173, 0, 0, 0.1);
+      }
+      .search-btn {
+        position: absolute;
+        right: 2px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        color: var(--gray-400);
+        transition:
+          color var(--transition),
+          background var(--transition);
+      }
+      .search-btn:hover {
+        color: var(--red);
+        background: var(--red-light);
+      }
+
+      /* Right Nav */
+      .nav-right {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--gray-600);
+        border-radius: 6px;
+        transition:
+          color var(--transition),
+          background var(--transition);
+      }
+      .nav-link:hover {
+        color: var(--black);
+        background: var(--gray-50);
+      }
+      .nav-link.active {
+        color: var(--red);
+      }
+
+      /* Language Switcher */
+      .lang-switch {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        margin-left: 4px;
+      }
+      .lang-btn {
+        padding: 4px 8px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--gray-400);
+        border-radius: 4px;
+        transition:
+          color var(--transition),
+          background var(--transition);
+        letter-spacing: 0.5px;
+      }
+      .lang-btn:hover {
+        color: var(--black);
+        background: var(--gray-50);
+      }
+      .lang-btn.active {
+        color: var(--white);
+        background: var(--red);
+      }
+
+      /* Cart */
+      .cart-btn {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 8px;
+        border-radius: 8px;
+        color: var(--black);
+        transition:
+          background var(--transition),
+          color var(--transition);
+      }
+      .cart-btn:hover {
+        background: var(--gray-50);
+        color: var(--red);
+      }
+      .cart-badge {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        min-width: 18px;
+        height: 18px;
+        background: var(--red);
+        color: var(--white);
+        font-size: 10px;
+        font-weight: 700;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      /* Hamburger */
+      .hamburger {
+        display: none;
+        width: 40px;
+        height: 40px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        border-radius: 8px;
+        transition: background var(--transition);
+      }
+      .hamburger:hover {
+        background: var(--gray-50);
+      }
+      .hamburger span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: var(--black);
+        border-radius: 2px;
+        transition:
+          transform var(--transition),
+          opacity var(--transition);
+      }
+      .hamburger.open span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+      .hamburger.open span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      .hamburger.open span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+
+      /* ─── CATEGORY NAV ───────────────────────────────────────── */
+      .cat-nav {
+        background: var(--white);
+        border-bottom: 1px solid var(--gray-100);
+        position: relative;
+        z-index: 999;
+      }
+      .cat-nav-inner {
+        display: flex;
+        align-items: center;
+        height: var(--cat-h);
+        gap: 2px;
+        overflow-x: visible;
+        scrollbar-width: none;
+      }
+      .cat-nav-inner::-webkit-scrollbar {
+        display: none;
+      }
+
+      .cat-item {
+        position: relative;
+      }
+      .cat-link {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 0 14px;
+        height: var(--cat-h);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--gray-600);
+        white-space: nowrap;
+        border-radius: 0;
+        transition: color var(--transition);
+        position: relative;
+      }
+      .cat-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        right: 50%;
+        height: 2px;
+        background: var(--red);
+        transition:
+          left var(--transition),
+          right var(--transition);
+      }
+      .cat-item:hover .cat-link,
+      .cat-link:hover {
+        color: var(--red);
+      }
+      .cat-item:hover .cat-link::after {
+        left: 14px;
+        right: 14px;
+      }
+
+      .cat-link svg {
+        width: 12px;
+        height: 12px;
+        transition: transform var(--transition);
+      }
+      .cat-item:hover .cat-link svg {
+        transform: rotate(180deg);
+      }
+
+      /* Dropdown */
+      .dropdown {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        background: var(--white);
+        border: 1px solid var(--gray-100);
+        border-radius: 10px;
+        box-shadow: var(--shadow-lg);
+        min-width: 200px;
+        padding: 8px;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(-6px);
+        transition:
+          opacity var(--transition),
+          transform var(--transition),
+          visibility var(--transition);
+        z-index: 1001;
+      }
+      .cat-item:hover .dropdown {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+        transform: translateY(0);
+      }
+      .dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--gray-600);
+        border-radius: 7px;
+        transition:
+          background var(--transition),
+          color var(--transition),
+          padding-left var(--transition);
+      }
+      .dropdown a:hover {
+        background: var(--red-light);
+        color: var(--red);
+        padding-left: 18px;
+      }
+      .dropdown a::before {
+        content: "→";
+        font-size: 11px;
+        opacity: 0;
+        transition: opacity var(--transition);
+      }
+      .dropdown a:hover::before {
+        opacity: 1;
+      }
+
+      /* ─── MOBILE MENU ────────────────────────────────────────── */
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        inset: 0;
+        top: var(--nav-h);
+        background: var(--white);
+        z-index: 997;
+        flex-direction: column;
+        padding: 20px 24px 40px;
+        overflow-y: auto;
+        animation: slideDown 0.25s ease both;
+      }
+      .mobile-menu.open {
+        display: flex;
+      }
+      .mobile-menu .m-link {
+        display: flex;
+        align-items: center;
+        padding: 14px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--black);
+        border-bottom: 1px solid var(--gray-100);
+      }
+      .mobile-menu .m-link:hover {
+        color: var(--red);
+      }
+      .mobile-lang {
+        display: flex;
+        gap: 8px;
+        margin-top: 24px;
+      }
+
+      /* ─── MARQUEE BANNER ─────────────────────────────────────── */
+      .marquee-bar {
+        background: var(--red);
+        color: var(--white);
+        overflow: hidden;
+        height: 36px;
+        display: flex;
+        align-items: center;
+      }
+      .marquee-track {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        animation: marqueeTick 28s linear infinite;
+      }
+      .marquee-track:hover {
+        animation-play-state: paused;
+      }
+      .marquee-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        padding: 0 32px;
+        text-transform: uppercase;
+      }
+      .marquee-sep {
+        opacity: 0.5;
+      }
+
+      /* ─── HERO SECTION ───────────────────────────────────────── */
+      .hero {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 580px;
+        overflow: hidden;
+      }
+      .hero-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 64px 40px 64px 0;
+        padding-left: calc((100vw - 1280px) / 2 + 24px);
+      }
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: var(--red);
+        margin-bottom: 20px;
+      }
+      .hero-eyebrow::before {
+        content: "";
+        display: block;
+        width: 28px;
+        height: 2px;
+        background: var(--red);
+      }
+
+      .hero-title {
+        font-family: var(--font-display);
+        font-size: clamp(56px, 7vw, 96px);
+        line-height: 0.92;
+        color: var(--black);
+        letter-spacing: 1px;
+        margin-bottom: 24px;
+      }
+      .hero-title em {
+        color: var(--red);
+        font-style: normal;
+        display: block;
+      }
+
+      .hero-desc {
+        font-size: 16px;
+        line-height: 1.65;
+        color: var(--gray-600);
+        max-width: 420px;
+        margin-bottom: 36px;
+      }
+
+      .hero-ctas {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 28px;
+        background: var(--red);
+        color: var(--white);
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        border-radius: 8px;
+        transition:
+          background var(--transition),
+          box-shadow var(--transition),
+          transform var(--transition);
+      }
+      .btn-primary:hover {
+        background: var(--red-hover);
+        box-shadow: var(--shadow-red);
+        transform: translateY(-1px);
+      }
+      .btn-primary:active {
+        transform: translateY(0);
+      }
+      .btn-outline {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 13px 28px;
+        background: transparent;
+        color: var(--black);
+        font-size: 14px;
+        font-weight: 700;
+        border: 2px solid var(--gray-200);
+        border-radius: 8px;
+        transition:
+          border-color var(--transition),
+          color var(--transition);
+      }
+      .btn-outline:hover {
+        border-color: var(--black);
+      }
+
+      .hero-stats {
+        display: flex;
+        gap: 32px;
+        margin-top: 40px;
+        padding-top: 40px;
+        border-top: 1px solid var(--gray-100);
+      }
+      .stat-item {
+        display: flex;
+        flex-direction: column;
+      }
+      .stat-num {
+        font-family: var(--font-display);
+        font-size: 36px;
+        color: var(--black);
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+      .stat-num em {
+        color: var(--red);
+        font-style: normal;
+      }
+      .stat-label {
+        font-size: 12px;
+        color: var(--gray-400);
+        font-weight: 500;
+      }
+
+      /* Hero Right */
+      .hero-right {
+        position: relative;
+        background: var(--gray-50);
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .hero-bg-circle {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(173, 0, 0, 0.06) 0%,
+          transparent 70%
+        );
+      }
+      .hero-img-placeholder {
+        position: relative;
+        z-index: 2;
+        width: 340px;
+        height: 420px;
+        background: linear-gradient(145deg, #e8e8e8, #f5f5f5);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 12px;
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+      }
+      .hero-img-placeholder::after {
+        content: "";
+        position: absolute;
+        top: -40px;
+        right: -40px;
+        width: 180px;
+        height: 180px;
+        background: var(--red);
+        border-radius: 50%;
+        opacity: 0.06;
+      }
+      .hero-img-placeholder svg {
+        color: var(--gray-200);
+      }
+      .hero-img-placeholder span {
+        font-size: 13px;
+        color: var(--gray-400);
+        font-weight: 500;
+      }
+
+      .hero-badge {
+        position: absolute;
+        bottom: 32px;
+        left: 32px;
+        z-index: 3;
+        background: var(--white);
+        border-radius: 12px;
+        padding: 14px 18px;
+        box-shadow: var(--shadow-md);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        animation: fadeUp 0.6s 0.5s both;
+      }
+      .badge-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--red-light);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--red);
+      }
+      .badge-text strong {
+        display: block;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--black);
+      }
+      .badge-text span {
+        font-size: 12px;
+        color: var(--gray-400);
+      }
+
+      .hero-tag {
+        position: absolute;
+        top: 32px;
+        right: 32px;
+        z-index: 3;
+        background: var(--red);
+        color: var(--white);
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        animation: fadeIn 0.6s 0.7s both;
+      }
+
+      /* ─── SECTION COMMONS ────────────────────────────────────── */
+      .section-pad {
+        padding: 80px 0;
+      }
+      .section-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 48px;
+      }
+      .section-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: var(--red);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .section-label::before {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: var(--red);
+      }
+      .section-title {
+        font-family: var(--font-display);
+        font-size: clamp(32px, 4vw, 52px);
+        color: var(--black);
+        line-height: 1;
+        letter-spacing: 0.5px;
+      }
+      .view-all-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--red);
+        padding: 8px 16px;
+        border: 2px solid var(--red);
+        border-radius: 7px;
+        transition:
+          background var(--transition),
+          color var(--transition);
+        flex-shrink: 0;
+      }
+      .view-all-link:hover {
+        background: var(--red);
+        color: var(--white);
+      }
+
+      /* ─── PRODUCT GRID ───────────────────────────────────────── */
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+
+      .product-card {
+        background: var(--white);
+        border: 1px solid var(--gray-100);
+        border-radius: 14px;
+        overflow: hidden;
+        transition:
+          box-shadow var(--transition),
+          transform var(--transition),
+          border-color var(--transition);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
+      .product-card:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-4px);
+        border-color: var(--gray-200);
+      }
+
+      .product-img {
+        position: relative;
+        aspect-ratio: 4/3;
+        background: linear-gradient(145deg, #f0f0f0, #fafafa);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .product-img svg {
+        color: var(--gray-200);
+        transition: transform var(--transition);
+      }
+      .product-card:hover .product-img svg {
+        transform: scale(0.95);
+      }
+
+      .product-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+      }
+      .badge-sale {
+        background: var(--red);
+        color: var(--white);
+      }
+      .badge-new {
+        background: var(--black);
+        color: var(--white);
+      }
+      .badge-hot {
+        background: #ff6b00;
+        color: var(--white);
+      }
+
+      .wishlist-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 34px;
+        height: 34px;
+        background: var(--white);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-sm);
+        color: var(--gray-400);
+        transition:
+          color var(--transition),
+          transform var(--transition);
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      .product-card:hover .wishlist-btn {
+        opacity: 1;
+        transform: scale(1);
+      }
+      .wishlist-btn:hover {
+        color: var(--red);
+      }
+      .wishlist-btn.active {
+        color: var(--red);
+      }
+
+      .product-info {
+        padding: 16px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .product-brand {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--gray-400);
+      }
+      .product-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--black);
+        line-height: 1.35;
+      }
+      .product-flavor {
+        font-size: 12px;
+        color: var(--gray-400);
+      }
+      .product-rating {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .stars {
+        color: #ffab00;
+        font-size: 11px;
+        letter-spacing: 1px;
+      }
+      .rating-count {
+        font-size: 11px;
+        color: var(--gray-400);
+      }
+
+      .product-pricing {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 2px;
+        /* Always LTR so price numbers never get mangled in RTL mode */
+        direction: ltr;
+        justify-content: flex-start;
+      }
+      .price {
+        font-family: var(--font-display);
+        font-size: 22px;
+        color: var(--black);
+        letter-spacing: 0.5px;
+      }
+      .price-old {
+        font-size: 13px;
+        color: var(--gray-400);
+        text-decoration: line-through;
+      }
+      .price-save {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--red);
+        background: var(--red-light);
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+
+      .product-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 4px;
+      }
+      .btn-cart {
+        flex: 1;
+        height: 38px;
+        border: 2px solid var(--gray-200);
+        border-radius: 7px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--black);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition:
+          border-color var(--transition),
+          background var(--transition),
+          color var(--transition);
+      }
+      .btn-cart:hover {
+        border-color: var(--black);
+        background: var(--black);
+        color: var(--white);
+      }
+      .btn-buy {
+        flex: 1;
+        height: 38px;
+        background: var(--red);
+        border-radius: 7px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition:
+          background var(--transition),
+          box-shadow var(--transition);
+      }
+      .btn-buy:hover {
+        background: var(--red-hover);
+        box-shadow: 0 4px 12px rgba(173, 0, 0, 0.25);
+      }
+
+      /* ─── VIEW ALL BLOCK ─────────────────────────────────────── */
+      .view-all-block {
+        text-align: center;
+        padding: 48px 0 20px;
+      }
+      .btn-view-all {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 40px;
+        background: var(--white);
+        border: 2px solid var(--gray-200);
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--black);
+        transition:
+          border-color var(--transition),
+          background var(--transition),
+          color var(--transition),
+          box-shadow var(--transition);
+      }
+      .btn-view-all:hover {
+        border-color: var(--red);
+        color: var(--red);
+        box-shadow: 0 4px 20px rgba(173, 0, 0, 0.12);
+      }
+      .btn-view-all svg {
+        transition: transform var(--transition);
+      }
+      .btn-view-all:hover svg {
+        transform: translateX(4px);
+      }
+
+      /* ─── BRANDS / TRUST BAR ─────────────────────────────────── */
+      .trust-bar {
+        background: var(--gray-50);
+        border-top: 1px solid var(--gray-100);
+        border-bottom: 1px solid var(--gray-100);
+        padding: 32px 0;
+      }
+      .trust-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+        flex-wrap: wrap;
+      }
+      .trust-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--gray-600);
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .trust-icon {
+        width: 44px;
+        height: 44px;
+        background: var(--white);
+        border-radius: 10px;
+        border: 1px solid var(--gray-100);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--red);
+        box-shadow: var(--shadow-sm);
+      }
+
+      /* ─── FEATURED BANNER ────────────────────────────────────── */
+      .featured-banner {
+        background: var(--black);
+        border-radius: 20px;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 320px;
+        margin: 0 0 80px;
+      }
+      .banner-left {
+        padding: 56px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .banner-eyebrow {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: var(--red);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .banner-eyebrow::before {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: var(--red);
+      }
+      .banner-title {
+        font-family: var(--font-display);
+        font-size: 52px;
+        line-height: 0.92;
+        color: var(--white);
+        margin-bottom: 20px;
+      }
+      .banner-title em {
+        color: var(--red);
+        font-style: normal;
+      }
+      .banner-desc {
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.55);
+        line-height: 1.6;
+        margin-bottom: 32px;
+        max-width: 360px;
+      }
+      .banner-right {
+        background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .banner-right::before {
+        content: "";
+        position: absolute;
+        width: 350px;
+        height: 350px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(173, 0, 0, 0.15) 0%,
+          transparent 70%
+        );
+      }
+      .banner-img-ph {
+        position: relative;
+        z-index: 2;
+        width: 200px;
+        height: 260px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .banner-img-ph svg {
+        color: rgba(255, 255, 255, 0.15);
+      }
+      .banner-img-ph span {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.25);
+      }
+
+      /* ─── FOOTER ─────────────────────────────────────────────── */
+      footer {
+        background: var(--black);
+        color: rgba(255, 255, 255, 0.65);
+        padding: 64px 0 0;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1.5fr;
+        gap: 48px;
+        padding-bottom: 48px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .footer-brand .logo-text {
+        color: var(--white);
+      }
+      .footer-brand p {
+        font-size: 14px;
+        line-height: 1.65;
+        margin: 16px 0 24px;
+        max-width: 280px;
+      }
+      .social-links {
+        display: flex;
+        gap: 10px;
+      }
+      .social-link {
+        width: 38px;
+        height: 38px;
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.6);
+        transition:
+          background var(--transition),
+          color var(--transition);
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .social-link:hover {
+        background: var(--red);
+        color: var(--white);
+      }
+
+      .footer-col h4 {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--white);
+        margin-bottom: 20px;
+      }
+      .footer-col ul {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .footer-col a {
+        font-size: 14px;
+        transition: color var(--transition);
+      }
+      .footer-col a:hover {
+        color: var(--white);
+      }
+
+      /* Contact Form */
+      .contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .form-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.5);
+        letter-spacing: 0.5px;
+      }
+      .form-input {
+        height: 40px;
+        padding: 0 14px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 7px;
+        color: var(--white);
+        font-size: 13px;
+        transition:
+          border-color var(--transition),
+          background var(--transition);
+        outline: none;
+      }
+      .form-input::placeholder {
+        color: rgba(255, 255, 255, 0.25);
+      }
+      .form-input:focus {
+        border-color: var(--red);
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .form-textarea {
+        padding: 12px 14px;
+        height: 88px;
+        resize: none;
+      }
+      .btn-send {
+        height: 40px;
+        background: var(--red);
+        color: var(--white);
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: background var(--transition);
+        margin-top: 4px;
+      }
+      .btn-send:hover {
+        background: var(--red-hover);
+      }
+
+      /* Footer Bottom */
+      .footer-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 0;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .footer-bottom p {
+        font-size: 13px;
+      }
+      .footer-bottom-links {
+        display: flex;
+        gap: 20px;
+      }
+      .footer-bottom-links a {
+        font-size: 13px;
+        transition: color var(--transition);
+      }
+      .footer-bottom-links a:hover {
+        color: var(--white);
+      }
+
+      /* ─── TOAST ──────────────────────────────────────────────── */
+      #toast {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: var(--black);
+        color: var(--white);
+        padding: 14px 20px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        box-shadow: var(--shadow-lg);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 9999;
+        transform: translateY(80px);
+        opacity: 0;
+        transition:
+          transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 0.3s;
+        pointer-events: none;
+      }
+      #toast.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      .toast-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22c55e;
+        flex-shrink: 0;
+      }
+
+      /* ─── SCROLL TO TOP ──────────────────────────────────────── */
+      #scrollTop {
+        position: fixed;
+        bottom: 24px;
+        left: 24px;
+        width: 44px;
+        height: 44px;
+        background: var(--red);
+        color: var(--white);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-red);
+        transition:
+          opacity var(--transition),
+          transform var(--transition);
+        opacity: 0;
+        transform: translateY(12px);
+        pointer-events: none;
+        z-index: 998;
+      }
+      #scrollTop.visible {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: all;
+      }
+      #scrollTop:hover {
+        background: var(--red-hover);
+      }
+
+      /* Mobile accordion categories */
+      .m-cat-item {
+        border-bottom: 1px solid var(--gray-100);
+      }
+
+      .m-cat-toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--black);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: var(--font-body);
+        transition: color var(--transition);
+      }
+      .m-cat-toggle:hover {
+        color: var(--red);
+      }
+
+      .m-arrow {
+        font-size: 18px;
+        transition: transform 0.25s ease;
+        display: inline-block;
+        color: var(--gray-400);
+      }
+      .m-cat-item.open .m-arrow {
+        transform: rotate(90deg);
+        color: var(--red);
+      }
+      .m-cat-item.open .m-cat-toggle {
+        color: var(--red);
+      }
+
+      .m-sub {
+        display: none;
+        flex-direction: column;
+        padding: 0 0 12px 16px;
+        gap: 2px;
+      }
+      .m-cat-item.open .m-sub {
+        display: flex;
+      }
+
+      .m-sub-link {
+        padding: 9px 12px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--gray-600);
+        border-radius: 7px;
+        transition:
+          background var(--transition),
+          color var(--transition);
+      }
+      .m-sub-link:hover {
+        background: var(--red-light);
+        color: var(--red);
+      }
+
+      /* ─── RESPONSIVE ─────────────────────────────────────────── */
+      @media (max-width: 1024px) {
+        .product-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .hero-left {
+          padding: 48px 32px 48px 24px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .nav-link {
+          display: none;
+        }
+        .lang-switch {
+          display: none;
+        }
+        .hamburger {
+          display: flex;
+        }
+        .cat-nav {
+          display: none;
+        }
+
+        .hero {
+          grid-template-columns: 1fr;
+        }
+        .hero-left {
+          padding: 48px 24px;
+          text-align: center;
+          align-items: center;
+        }
+        .hero-eyebrow {
+          justify-content: center;
+        }
+        .hero-desc {
+          text-align: center;
+        }
+        .hero-ctas {
+          justify-content: center;
+        }
+        .hero-stats {
+          justify-content: center;
+        }
+        .hero-right {
+          min-height: 300px;
+        }
+        .hero-badge {
+          display: none;
+        }
+
+        .product-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 14px;
+        }
+
+        /* FIX: Featured banner - single column on mobile, show full content */
+        .featured-banner {
+          grid-template-columns: 1fr;
+          min-height: unset;
+          margin: 0 0 40px;
+          border-radius: 14px;
+        }
+        .banner-left {
+          padding: 36px 28px;
+        }
+        .banner-title {
+          font-size: 38px;
+        }
+        .banner-right {
+          min-height: 200px;
+          display: flex;
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+
+        .section-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+        }
+        .trust-inner {
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .product-grid {
+          grid-template-columns: 1fr;
+        }
+        .hero-title {
+          font-size: 52px;
+        }
+        .banner-left {
+          padding: 28px 20px;
+        }
+        .banner-title {
+          font-size: 32px;
+        }
+        .banner-desc {
+          font-size: 14px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .logo img {
+          height: auto;
+          max-width: 100px;
+        }
+
+        .search-wrap {
+          min-width: 0;
+          flex: 1;
+        }
+
+        .top-nav {
+          gap: 10px;
+        }
+      }
+
+      .wa-btn {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 58px;
+        height: 58px;
+        background: #25d366;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+        text-decoration: none;
+        z-index: 9999;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      @keyframes wa-float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      @keyframes wa-pulse {
+        0% {
+          box-shadow:
+            0 4px 16px rgba(37, 211, 102, 0.4),
+            0 0 0 0 rgba(37, 211, 102, 0.5);
+        }
+        70% {
+          box-shadow:
+            0 4px 16px rgba(37, 211, 102, 0.4),
+            0 0 0 14px rgba(37, 211, 102, 0);
+        }
+        100% {
+          box-shadow:
+            0 4px 16px rgba(37, 211, 102, 0.4),
+            0 0 0 0 rgba(37, 211, 102, 0);
+        }
+      }
+
+      .wa-btn {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 58px;
+        height: 58px;
+        background: #25d366;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        z-index: 9999;
+        animation:
+          wa-float 2.4s ease-in-out infinite,
+          wa-pulse 2.4s ease-in-out infinite;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .wa-btn:hover {
+        animation: none;
+        transform: scale(1.12);
+        box-shadow: 0 8px 28px rgba(37, 211, 102, 0.6);
+      }
+
+      @media (max-width: 480px) {
+        .wa-btn {
+          width: 50px;
+          height: 50px;
+          bottom: 16px;
+          right: 16px;
+        }
+        .wa-btn svg {
+          width: 26px;
+          height: 26px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        #desktopSearch {
+          display: none !important;
+        }
+        #mobileSearchBtn {
+          display: flex !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Full-screen mobile search overlay -->
+    <div
+      id="mobileSearchOverlay"
+      style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: var(--white);
+        z-index: 9998;
+        flex-direction: column;
+        padding: 20px 24px;
+      "
+    >
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 24px;
+        "
+      >
+        <div style="position: relative; flex: 1">
+          <input
+            type="search"
+            id="mobileSearchInput"
+            placeholder="Search supplements, proteins…"
+            style="
+              width: 100%;
+              height: 48px;
+              padding: 0 48px 0 16px;
+              border: 1.5px solid var(--gray-200);
+              border-radius: 10px;
+              font-size: 16px;
+              background: var(--gray-50);
+              outline: none;
+              font-family: var(--font-body);
+            "
+            oninput="handleMobileSearch(this.value)"
+          />
+          <svg
+            style="
+              position: absolute;
+              right: 14px;
+              top: 50%;
+              transform: translateY(-50%);
+              color: var(--gray-400);
+            "
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+        </div>
+        <button
+          onclick="closeMobileSearch()"
+          style="
+            flex-shrink: 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--red);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+            padding: 8px 4px;
+          "
+        >
+          Cancel
+        </button>
+      </div>
+      <div id="mobileSearchResults" style="flex: 1; overflow-y: auto">
+        <p
+          style="
+            font-size: 13px;
+            color: var(--gray-400);
+            text-align: center;
+            margin-top: 40px;
+          "
+        >
+          Start typing to search products…
+        </p>
+      </div>
+    </div>
+
+    <!-- ═══ MARQUEE BANNER ════════════════════════════════════════ -->
+    <div class="marquee-bar" role="marquee" aria-label="Promotions">
+      <div class="marquee-track">
+        <span class="marquee-item"
+          >🚚 Livraison Gratuite dès 15000 DA
+          <span class="marquee-sep">|</span></span
+        >
+        <span class="marquee-item"
+          >💪 Qualité Certifiée &amp; Authentique
+          <span class="marquee-sep">|</span></span
+        >
+        <span class="marquee-item"
+          >⚡ Paiement à la Livraison Disponible
+          <span class="marquee-sep">|</span></span
+        >
+        <span class="marquee-item"
+          >🇩🇿 Livraison partout en Algérie
+          <span class="marquee-sep">|</span></span
+        >
+        <span class="marquee-item"
+          >🎁 Promo Ramadan – Jusqu'à -30%
+          <span class="marquee-sep">|</span></span
+        >
+        <!-- Duplicate for seamless loop -->
+        <span class="marquee-item"
+          >🚚 Livraison Gratuite dès 15000 DA
+          <span class="marquee-sep">|</span></span
+        >
+        <span class="marquee-item"
+          >💪 Qualité Certifiée &amp; Authentique
+          <span class="marquee-sep">|</span></span
+        >
+        <span class="marquee-item"
+          >⚡ Paiement à la Livraison Disponible
+          <span class="marquee-sep">|</span></span
+        >
+        <span class="marquee-item"
+          >🇩🇿 Livraison partout en Algérie
+          <span class="marquee-sep">|</span></span
+        >
+        <span class="marquee-item"
+          >🎁 Promo Ramadan – Jusqu'à -30%
+          <span class="marquee-sep">|</span></span
+        >
+      </div>
+    </div>
+
+    <!-- ═══ HEADER ════════════════════════════════════════════════ -->
+    <header id="site-header">
+      <!-- Top Navbar -->
+      <div class="container">
+        <nav class="top-nav" aria-label="Main navigation">
+          <!-- Logo -->
+          <a href="#" class="logo" aria-label="ByBens Home">
+            <img
+              src="images/logo.png"
+              alt="ByBens Logo"
+              style="
+                height: autopx;
+                width: auto;
+                max-width: 140px;
+                object-fit: contain;
+              "
+            />
+          </a>
+
+          <!-- Search (desktop only) -->
+          <div class="search-wrap" role="search" id="desktopSearch">
+            <input
+              type="search"
+              id="searchInput"
+              placeholder="Search supplements, proteins, vitamins…"
+              aria-label="Search products"
+              autocomplete="off"
+            />
+            <button
+              class="search-btn"
+              aria-label="Submit search"
+              onclick="handleSearch()"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Search icon (mobile only) -->
+          <button
+            id="mobileSearchBtn"
+            onclick="openMobileSearch()"
+            aria-label="Search"
+            style="
+              display: none;
+              width: 40px;
+              height: 40px;
+              align-items: center;
+              justify-content: center;
+              border-radius: 8px;
+              color: var(--black);
+              background: none;
+              border: none;
+              cursor: pointer;
+              transition: background var(--transition);
+            "
+          >
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+          </button>
+
+          <!-- Right -->
+          <div class="nav-right">
+            <a href="#" class="nav-link active" data-i18n="nav.home">Home</a>
+            <a href="products.html" class="nav-link" data-i18n="nav.products"
+              >Products</a
+            >
+            <a href="#contact" class="nav-link" data-i18n="nav.contact"
+              >Contact</a
+            >
+
+            <div
+              class="lang-switch"
+              role="group"
+              aria-label="Language switcher"
+            >
+              <button
+                class="lang-btn active"
+                data-lang="en"
+                onclick="switchLang('en')"
+              >
+                EN
+              </button>
+              <button
+                class="lang-btn"
+                data-lang="fr"
+                onclick="switchLang('fr')"
+              >
+                FR
+              </button>
+              <button
+                class="lang-btn"
+                data-lang="ar"
+                onclick="switchLang('ar')"
+              >
+                AR
+              </button>
+            </div>
+
+            <button
+              class="cart-btn"
+              aria-label="Shopping cart"
+              onclick="toggleCart()"
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <path d="M16 10a4 4 0 0 1-8 0" />
+              </svg>
+              <span class="cart-badge" id="cartBadge">3</span>
+            </button>
+
+            <button
+              class="hamburger"
+              id="hamburgerBtn"
+              aria-label="Toggle menu"
+              aria-expanded="false"
+              onclick="toggleMobileMenu()"
+            >
+              <span></span><span></span><span></span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Category Nav -->
+      <div class="cat-nav" aria-label="Product categories">
+        <div class="container">
+          <div class="cat-nav-inner">
+            <div class="cat-item">
+              <a href="#" class="cat-link">
+                Protein
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </a>
+              <div class="dropdown" role="menu">
+                <a href="#" role="menuitem">Protein Powder</a>
+                <a href="#" role="menuitem">Protein Drinks</a>
+                <a href="#" role="menuitem">Whey Protein</a>
+                <a href="#" role="menuitem">Casein Protein</a>
+                <a href="#" role="menuitem">Plant-Based Protein</a>
+              </div>
+            </div>
+            <div class="cat-item">
+              <a href="#" class="cat-link">
+                Mass Gainers
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </a>
+              <div class="dropdown" role="menu">
+                <a href="#" role="menuitem">Weight Gainers</a>
+                <a href="#" role="menuitem">Serious Mass</a>
+                <a href="#" role="menuitem">Hard Gainers</a>
+              </div>
+            </div>
+            <div class="cat-item">
+              <a href="#" class="cat-link">
+                Pre-Workout
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </a>
+              <div class="dropdown" role="menu">
+                <a href="#" role="menuitem">Pre-Workout Powders</a>
+                <a href="#" role="menuitem">Caffeine Boosters</a>
+                <a href="#" role="menuitem">Nitric Oxide</a>
+                <a href="#" role="menuitem">BCAA Pre-Workout</a>
+              </div>
+            </div>
+            <div class="cat-item">
+              <a href="#" class="cat-link">
+                Vitamins
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </a>
+              <div class="dropdown" role="menu">
+                <a href="#" role="menuitem">Multivitamins</a>
+                <a href="#" role="menuitem">Vitamin D3</a>
+                <a href="#" role="menuitem">Omega-3 Fish Oil</a>
+                <a href="#" role="menuitem">Zinc &amp; Magnesium</a>
+              </div>
+            </div>
+            <div class="cat-item">
+              <a href="#" class="cat-link">
+                Creatine
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </a>
+              <div class="dropdown" role="menu">
+                <a href="#" role="menuitem">Creatine Monohydrate</a>
+                <a href="#" role="menuitem">Creatine HCL</a>
+                <a href="#" role="menuitem">Micronized Creatine</a>
+              </div>
+            </div>
+            <div class="cat-item">
+              <a href="#" class="cat-link">
+                Accessories
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </a>
+              <div class="dropdown" role="menu">
+                <a href="#" role="menuitem">Shaker Bottles</a>
+                <a href="#" role="menuitem">Gym Gloves</a>
+                <a href="#" role="menuitem">Resistance Bands</a>
+                <a href="#" role="menuitem">Weight Belts</a>
+              </div>
+            </div>
+            <a href="#" class="cat-link">🔥 Hot Deals</a>
+            <a href="#" class="cat-link">New Arrivals</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <!-- FIX: Removed the mobile search bar from inside the sidebar -->
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+      <a
+        href="#"
+        class="m-link"
+        data-i18n="nav.home"
+        onclick="toggleMobileMenu()"
+        >Home</a
+      >
+      <a
+        href="#products"
+        class="m-link"
+        data-i18n="nav.products"
+        onclick="toggleMobileMenu()"
+        >Products</a
+      >
+      <!-- Categories and subcategories are always in English, never translated -->
+      <div class="m-cat-item">
+        <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
+          Protein <span class="m-arrow">›</span>
+        </button>
+        <div class="m-sub">
+          <a href="#" class="m-sub-link">Protein Powder</a>
+          <a href="#" class="m-sub-link">Protein Drinks</a>
+          <a href="#" class="m-sub-link">Whey Protein</a>
+          <a href="#" class="m-sub-link">Casein Protein</a>
+          <a href="#" class="m-sub-link">Plant-Based Protein</a>
+        </div>
+      </div>
+
+      <div class="m-cat-item">
+        <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
+          Mass Gainers <span class="m-arrow">›</span>
+        </button>
+        <div class="m-sub">
+          <a href="#" class="m-sub-link">Weight Gainers</a>
+          <a href="#" class="m-sub-link">Serious Mass</a>
+          <a href="#" class="m-sub-link">Hard Gainers</a>
+        </div>
+      </div>
+
+      <div class="m-cat-item">
+        <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
+          Pre-Workout <span class="m-arrow">›</span>
+        </button>
+        <div class="m-sub">
+          <a href="#" class="m-sub-link">Pre-Workout Powders</a>
+          <a href="#" class="m-sub-link">Caffeine Boosters</a>
+          <a href="#" class="m-sub-link">Nitric Oxide</a>
+          <a href="#" class="m-sub-link">BCAA Pre-Workout</a>
+        </div>
+      </div>
+
+      <div class="m-cat-item">
+        <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
+          Vitamins <span class="m-arrow">›</span>
+        </button>
+        <div class="m-sub">
+          <a href="#" class="m-sub-link">Multivitamins</a>
+          <a href="#" class="m-sub-link">Vitamin D3</a>
+          <a href="#" class="m-sub-link">Omega-3 Fish Oil</a>
+          <a href="#" class="m-sub-link">Zinc &amp; Magnesium</a>
+        </div>
+      </div>
+
+      <div class="m-cat-item">
+        <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
+          Creatine <span class="m-arrow">›</span>
+        </button>
+        <div class="m-sub">
+          <a href="#" class="m-sub-link">Creatine Monohydrate</a>
+          <a href="#" class="m-sub-link">Creatine HCL</a>
+          <a href="#" class="m-sub-link">Micronized Creatine</a>
+        </div>
+      </div>
+      <a
+        href="#contact"
+        class="m-link"
+        data-i18n="nav.contact"
+        onclick="toggleMobileMenu()"
+        >Contact</a
+      >
+      <div class="mobile-lang">
+        <button
+          class="lang-btn active"
+          data-lang="en"
+          onclick="switchLang('en')"
+        >
+          EN
+        </button>
+        <button class="lang-btn" data-lang="fr" onclick="switchLang('fr')">
+          FR
+        </button>
+        <button class="lang-btn" data-lang="ar" onclick="switchLang('ar')">
+          AR
+        </button>
+      </div>
+    </nav>
+
+    <!-- ═══ MAIN ══════════════════════════════════════════════════ -->
+    <main>
+      <!-- HERO -->
+      <section class="hero" aria-label="Hero section">
+        <div class="hero-left">
+          <p class="hero-eyebrow animate-up" data-i18n="hero.eyebrow">
+            Algeria's #1 Supplements Store
+          </p>
+          <h1 class="hero-title animate-up delay-1" data-i18n-html="hero.title">
+            FUEL YOUR<em>AMBITION</em>PERFORM
+          </h1>
+          <p class="hero-desc animate-up delay-2" data-i18n="hero.desc">
+            Premium sports nutrition delivered across Algeria. Authentic
+            products, unbeatable prices, and certified quality for serious
+            athletes.
+          </p>
+          <div class="hero-ctas animate-up delay-3">
+            <a href="#products" class="btn-primary" data-i18n="hero.cta1">
+              Shop Now
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </a>
+            <a href="#" class="btn-outline" data-i18n="hero.cta2">Learn More</a>
+          </div>
+          <div class="hero-stats animate-up delay-4">
+            <div class="stat-item">
+              <span class="stat-num">5K<em>+</em></span>
+              <span class="stat-label" data-i18n="hero.stat1"
+                >Happy Customers</span
+              >
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">200<em>+</em></span>
+              <span class="stat-label" data-i18n="hero.stat2">Products</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">69<em>W</em></span>
+              <span class="stat-label" data-i18n="hero.stat3">Delivery</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <img src="./images/hero.png" alt="" />
+        </div>
+      </section>
+
+      <!-- TRUST BAR -->
+      <section class="trust-bar" aria-label="Why choose us">
+        <div class="container">
+          <div class="trust-inner">
+            <div class="trust-item">
+              <div class="trust-icon">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="1" y="3" width="15" height="13" />
+                  <path d="M16 8h4l3 5v3h-7V8z" />
+                  <circle cx="5.5" cy="18.5" r="2.5" />
+                  <circle cx="18.5" cy="18.5" r="2.5" />
+                </svg>
+              </div>
+              <div>
+                <strong
+                  style="display: block; font-size: 14px; color: var(--black)"
+                  data-i18n="trust.delivery"
+                  >Free Delivery</strong
+                >
+                <span style="font-size: 12px" data-i18n="trust.delivery.sub"
+                  >Orders over 15000 DA</span
+                >
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              </div>
+              <div>
+                <strong
+                  style="display: block; font-size: 14px; color: var(--black)"
+                  data-i18n="trust.authentic"
+                  >100% Authentic</strong
+                >
+                <span style="font-size: 12px" data-i18n="trust.authentic.sub"
+                  >Quality Guaranteed</span
+                >
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path
+                    d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <strong
+                  style="display: block; font-size: 14px; color: var(--black)"
+                  data-i18n="trust.nationwide"
+                  >Nationwide</strong
+                >
+                <span style="font-size: 12px" data-i18n="trust.nationwide.sub"
+                  >All 69 Wilayas</span
+                >
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                  />
+                </svg>
+              </div>
+              <div>
+                <strong
+                  style="display: block; font-size: 14px; color: var(--black)"
+                  data-i18n="trust.payment"
+                  >Cash on Delivery</strong
+                >
+                <span style="font-size: 12px" data-i18n="trust.payment.sub"
+                  >Pay on Arrival</span
+                >
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <strong
+                  style="display: block; font-size: 14px; color: var(--black)"
+                  data-i18n="trust.support"
+                  >24/7 Support</strong
+                >
+                <span style="font-size: 12px" data-i18n="trust.support.sub"
+                  >Always Here to Help</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRODUCT GRID -->
+      <section class="section-pad" id="products">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <p class="section-label" data-i18n="products.label">
+                Featured Products
+              </p>
+              <h2 class="section-title" data-i18n="products.title">
+                BEST SELLERS
+              </h2>
+            </div>
+            <a
+              href="products.html"
+              class="view-all-link"
+              data-i18n="products.viewall"
+            >
+              View All
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </a>
+          </div>
+
+          <div class="product-grid" id="productGrid">
+            <!-- Products will be rendered by JS -->
+          </div>
+
+          <div class="view-all-block">
+            <a
+              href="products.html"
+              class="btn-view-all"
+              data-i18n="products.viewall.btn"
+            >
+              View All Products
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURED BANNER -->
+      <section class="container">
+        <div class="featured-banner">
+          <div class="banner-left">
+            <p class="banner-eyebrow" data-i18n="banner.eyebrow">
+              Limited Time Offer
+            </p>
+            <h2 class="banner-title" data-i18n-html="banner.title">
+              RAMP UP YOUR<em>PERFORMANCE</em>
+            </h2>
+            <p class="banner-desc" data-i18n="banner.desc">
+              Get our most popular Whey Protein bundle at 30% off. Limited stock
+              — order now and fuel your next workout.
+            </p>
+            <a href="#" class="btn-primary">
+              <span data-i18n="banner.cta">Grab the Deal</span>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </a>
+          </div>
+          <div class="banner-right">
+            <img src="./images/bundle.png" />
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT SECTION -->
+      <section
+        class="section-pad"
+        id="contact"
+        style="background: var(--off-white)"
+      >
+        <div class="container">
+          <div style="max-width: 600px; margin: 0 auto; text-align: center">
+            <p
+              class="section-label"
+              style="justify-content: center"
+              data-i18n="contact.label"
+            >
+              Get In Touch
+            </p>
+            <h2
+              class="section-title"
+              style="margin-bottom: 16px"
+              data-i18n="contact.title"
+            >
+              CONTACT US
+            </h2>
+            <p
+              style="
+                font-size: 15px;
+                color: var(--gray-600);
+                margin-bottom: 40px;
+              "
+              data-i18n="contact.desc"
+            >
+              Have questions? We're here to help. Reach out via the form below
+              or find us on social media.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+    <footer id="contact-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <!-- Brand -->
+          <div class="footer-brand">
+            <a href="#" class="logo">
+              <img
+                src="images/logo.png"
+                alt="ByBens Logo"
+                style="height: 150px; width: auto; object-fit: contain"
+              />
+            </a>
+            <p data-i18n="footer.brand.desc">
+              Algeria's premier destination for authentic sports nutrition. We
+              bring world-class supplements directly to your door.
+            </p>
+            <div class="social-links">
+              <a href="#" class="social-link" aria-label="Facebook">f</a>
+              <a
+                href="https://www.instagram.com/bens.supplements?igsh=MTlpaGRnOGxsazBvbA%3D%3D"
+                class="social-link"
+                aria-label="Instagram"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                </svg>
+              </a>
+              <a
+                href="https://api.whatsapp.com/send/?phone=213662269449&text&type=phone_number&app_absent=0"
+                class="social-link"
+                aria-label="WhatsApp"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="footer-col">
+            <h4 data-i18n="footer.links">Quick Links</h4>
+            <ul>
+              <li><a href="#" data-i18n="nav.home">Home</a></li>
+              <li><a href="#products" data-i18n="nav.products">Products</a></li>
+            </ul>
+          </div>
+
+          <!-- Categories -->
+          <div class="footer-col">
+            <h4 data-i18n="footer.categories">Categories</h4>
+            <ul>
+              <li><a href="#">Protein</a></li>
+              <li><a href="#">Mass Gainers</a></li>
+              <li><a href="#">Pre-Workout</a></li>
+              <li><a href="#">Vitamins</a></li>
+              <li><a href="#">Creatine</a></li>
+              <li><a href="#">Accessories</a></li>
+            </ul>
+          </div>
+
+          <!-- Contact Form -->
+          <div class="footer-col">
+            <h4 data-i18n="footer.contact">Send a Message</h4>
+            <form
+              class="contact-form"
+              onsubmit="handleContactForm(event)"
+              novalidate
+            >
+              <div class="form-group">
+                <label
+                  class="form-label"
+                  for="contactName"
+                  data-i18n="form.name"
+                  >Your Name</label
+                >
+                <input
+                  class="form-input"
+                  type="text"
+                  id="contactName"
+                  placeholder="John doe"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label
+                  class="form-label"
+                  for="contactEmail"
+                  data-i18n="form.email"
+                  >Email / Phone</label
+                >
+                <input
+                  class="form-input"
+                  type="text"
+                  id="contactEmail"
+                  placeholder="exemple@email.com or 0550…"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label
+                  class="form-label"
+                  for="contactMsg"
+                  data-i18n="form.message"
+                  >Message</label
+                >
+                <textarea
+                  class="form-input form-textarea"
+                  id="contactMsg"
+                  placeholder="How can we help you?"
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="btn-send">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="m22 2-7 20-4-9-9-4 20-7z" />
+                  <path d="M22 2 11 13" />
+                </svg>
+                <span data-i18n="form.send">Send Message</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+          <p>
+            © 2026 ByBen's Algeria.
+            <span data-i18n="footer.rights">All rights reserved.</span>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Toast -->
+    <div id="toast" role="alert" aria-live="polite">
+      <span class="toast-dot"></span>
+      <span id="toastMsg">Added to cart!</span>
+    </div>
+
+    <!-- Scroll to Top -->
+    <button
+      id="scrollTop"
+      aria-label="Scroll to top"
+      onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+    >
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
+        <path d="m18 15-6-6-6 6" />
+      </svg>
+    </button>
+
+    <a
+      href="https://wa.me/213662269449"
+      target="_blank"
+      class="wa-btn"
+      aria-label="https://wa.me/213662269449"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="30"
+        height="30"
+        viewBox="0 0 24 24"
+        fill="white"
+      >
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+        />
+      </svg>
+    </a>
+
+    <script>
+      /* ─────────────────────────────────────────────────────────────
+   TRANSLATION STRINGS
+   NOTE: Categories and subcategories are intentionally NOT included
+   here — they stay in English regardless of language selection.
+───────────────────────────────────────────────────────────── */
+      const i18n = {
+        en: {
+          "nav.home": "Home",
+          "nav.products": "Products",
+          "nav.contact": "Contact",
+          "hero.eyebrow": "Algeria's #1 Supplements Store",
+          "hero.title": "FUEL YOUR<em>AMBITION</em>PERFORM",
+          "hero.desc":
+            "Premium sports nutrition delivered across Algeria. Authentic products, unbeatable prices, and certified quality for serious athletes.",
+          "hero.cta1": "Shop Now",
+          "hero.cta2": "Learn More",
+          "hero.stat1": "Happy Customers",
+          "hero.stat2": "Products",
+          "hero.stat3": "Hour Delivery",
+          "trust.delivery": "Free Delivery",
+          "trust.delivery.sub": "Orders over 15000 DA",
+          "trust.authentic": "100% Authentic",
+          "trust.authentic.sub": "Quality Guaranteed",
+          "trust.nationwide": "Nationwide",
+          "trust.nationwide.sub": "All 58 Wilayas",
+          "trust.payment": "Cash on Delivery",
+          "trust.payment.sub": "Pay on Arrival",
+          "trust.support": "24/7 Support",
+          "trust.support.sub": "Always Here to Help",
+          "products.label": "Featured Products",
+          "products.title": "BEST SELLERS",
+          "products.viewall": "View All",
+          "products.viewall.btn": "View All Products",
+          "banner.eyebrow": "Limited Time Offer",
+          "banner.title": "RAMP UP YOUR<em>PERFORMANCE</em>",
+          "banner.desc":
+            "Get our most popular Whey Protein bundle at 30% off. Limited stock — order now and fuel your next workout.",
+          "banner.cta": "Grab the Deal",
+          "contact.label": "Get In Touch",
+          "contact.title": "CONTACT US",
+          "contact.desc":
+            "Have questions? We're here to help. Reach out via the form below or find us on social media.",
+          "footer.brand.desc":
+            "Algeria's premier destination for authentic sports nutrition. We bring world-class supplements directly to your door.",
+          "footer.links": "Quick Links",
+          "footer.categories": "Categories",
+          "footer.contact": "Send a Message",
+          "footer.rights": "All rights reserved.",
+          "form.name": "Your Name",
+          "form.email": "Email / Phone",
+          "form.message": "Message",
+          "form.send": "Send Message",
+          "btn.addcart": "Add to Cart",
+          "btn.buynow": "Buy Now",
+          "toast.added": "Added to cart!",
+          "toast.sent": "Message sent! We'll reply soon.",
+        },
+        fr: {
+          "nav.home": "Accueil",
+          "nav.products": "Produits",
+          "nav.contact": "Contact",
+          "hero.eyebrow": "N°1 Suppléments en Algérie",
+          "hero.title": "ALIMENTEZ VOTRE<em>AMBITION</em>PERFORMEZ",
+          "hero.desc":
+            "Nutrition sportive premium livrée partout en Algérie. Produits authentiques, prix imbattables et qualité certifiée.",
+          "hero.cta1": "Commander",
+          "hero.cta2": "En savoir plus",
+          "hero.stat1": "Clients Satisfaits",
+          "hero.stat2": "Produits",
+          "hero.stat3": "H Livraison",
+          "trust.delivery": "Livraison Gratuite",
+          "trust.delivery.sub": "Commandes +15000 DA",
+          "trust.authentic": "100% Authentique",
+          "trust.authentic.sub": "Qualité Garantie",
+          "trust.nationwide": "Partout en Algérie",
+          "trust.nationwide.sub": "69 Wilayas",
+          "trust.payment": "Paiement à Livraison",
+          "trust.payment.sub": "Payez à la réception",
+          "trust.support": "Support 24/7",
+          "trust.support.sub": "Toujours disponible",
+          "products.label": "Produits Vedettes",
+          "products.title": "MEILLEURES VENTES",
+          "products.viewall": "Voir Tout",
+          "products.viewall.btn": "Voir Tous les Produits",
+          "banner.eyebrow": "Offre Limitée",
+          "banner.title": "BOOSTEZ VOS<em>PERFORMANCES</em>",
+          "banner.desc":
+            "Obtenez notre bundle Whey Protein le plus populaire à -30%. Stock limité — commandez maintenant.",
+          "banner.cta": "Profiter de l'Offre",
+          "contact.label": "Contactez-nous",
+          "contact.title": "CONTACT",
+          "contact.desc":
+            "Des questions ? Nous sommes là pour vous aider. Contactez-nous via le formulaire ci-dessous.",
+          "footer.brand.desc":
+            "La première destination algérienne pour la nutrition sportive authentique.",
+          "footer.links": "Liens Rapides",
+          "footer.categories": "Catégories",
+          "footer.contact": "Envoyer un Message",
+          "footer.rights": "Tous droits réservés.",
+          "form.name": "Votre Nom",
+          "form.email": "Email / Téléphone",
+          "form.message": "Message",
+          "form.send": "Envoyer",
+          "btn.addcart": "Ajouter",
+          "btn.buynow": "Acheter",
+          "toast.added": "Ajouté au panier!",
+          "toast.sent": "Message envoyé!",
+        },
+        ar: {
+          "nav.home": "الرئيسية",
+          "nav.products": "المنتجات",
+          "nav.contact": "اتصل بنا",
+          /* Categories intentionally omitted — stay in English always */
+          "hero.eyebrow": "رقم 1 للمكملات في الجزائر",
+          "hero.title": "أشعل<em>طموحك</em>وتفوّق",
+          "hero.desc":
+            "تغذية رياضية متميزة تُوصَّل في كل أنحاء الجزائر. منتجات أصيلة وأسعار لا تُنافَس وجودة معتمدة.",
+          "hero.cta1": "تسوّق الآن",
+          "hero.cta2": "اكتشف المزيد",
+          "hero.stat1": "عميل سعيد",
+          "hero.stat2": "منتج",
+          "hero.stat3": " توصيل",
+          "trust.delivery": "توصيل مجاني",
+          "trust.delivery.sub": "طلبات + 15000 دج",
+          "trust.authentic": "100% أصيل",
+          "trust.authentic.sub": "جودة مضمونة",
+          "trust.nationwide": "على المستوى الوطني",
+          "trust.nationwide.sub": "69 ولاية",
+          "trust.payment": "دفع عند الاستلام",
+          "trust.payment.sub": "ادفع عند الوصول",
+          "trust.support": "دعم 24/7",
+          "trust.support.sub": "دائماً في خدمتك",
+          "products.label": "المنتجات المميزة",
+          "products.title": "الأكثر مبيعاً",
+          "products.viewall": "عرض الكل",
+          "products.viewall.btn": "عرض جميع المنتجات",
+          "banner.eyebrow": "عرض محدود",
+          "banner.title": "ارفع <span> أداءك </span>للقمة",
+          "banner.desc":
+            "احصل على حزمة بروتين الواي الأكثر مبيعاً بخصم 30%. مخزون محدود — اطلب الآن.",
+          "banner.cta": "اغتنم العرض",
+          "contact.label": "تواصل معنا",
+          "contact.title": "اتصل بنا",
+          "contact.desc":
+            "هل لديك أسئلة؟ نحن هنا للمساعدة. تواصل معنا عبر النموذج أدناه.",
+          "footer.brand.desc":
+            "وجهتك الأولى في الجزائر للمكملات الرياضية الأصيلة.",
+          "footer.links": "روابط سريعة",
+          "footer.categories": "الفئات",
+          "footer.contact": "أرسل رسالة",
+          "footer.rights": "جميع الحقوق محفوظة.",
+          "form.name": "اسمك",
+          "form.email": "البريد / الهاتف",
+          "form.message": "رسالتك",
+          "form.send": "إرسال",
+          "btn.addcart": "أضف للسلة",
+          "btn.buynow": "اشتر الآن",
+          "toast.added": "تمت الإضافة للسلة!",
+          "toast.sent": "تم إرسال رسالتك!",
+        },
+      };
+
+      let currentLang = "en";
+      let cartCount = 3;
+
+      /* ─────────────────────────────────────────────────────────────
+   PRODUCTS DATA
+───────────────────────────────────────────────────────────── */
+      const products = [
+        {
+          id: 1,
+          brand: "MyProtein",
+          name: "Impact Whey Protein",
+          flavor: "Chocolate Smooth",
+          price: "4 800",
+          oldPrice: "6 200",
+          save: "-23%",
+          badge: "sale",
+          rating: 4.8,
+          reviews: 412,
+        },
+        {
+          id: 2,
+          brand: "Optimum Nutrition",
+          name: "Gold Standard Whey",
+          flavor: "Double Rich Chocolate",
+          price: "7 200",
+          oldPrice: "8 500",
+          save: "-15%",
+          badge: "hot",
+          rating: 4.9,
+          reviews: 856,
+        },
+        {
+          id: 3,
+          brand: "ByBens",
+          name: "Mass Gainer 3KG",
+          flavor: "Vanilla Cream",
+          price: "5 500",
+          oldPrice: null,
+          save: null,
+          badge: "new",
+          rating: 4.7,
+          reviews: 128,
+        },
+        {
+          id: 4,
+          brand: "Scitec Nutrition",
+          name: "100% Whey Isolate",
+          flavor: "Strawberry",
+          price: "6 900",
+          oldPrice: "7 800",
+          save: "-12%",
+          badge: null,
+          rating: 4.6,
+          reviews: 245,
+        },
+        {
+          id: 5,
+          brand: "ByBens",
+          name: "Pre-Workout Blast",
+          flavor: "Watermelon Rush",
+          price: "3 200",
+          oldPrice: "4 000",
+          save: "-20%",
+          badge: "sale",
+          rating: 4.5,
+          reviews: 99,
+        },
+        {
+          id: 6,
+          brand: "MyProtein",
+          name: "Creatine Monohydrate",
+          flavor: "Unflavoured",
+          price: "2 400",
+          oldPrice: null,
+          save: null,
+          badge: "new",
+          rating: 4.8,
+          reviews: 632,
+        },
+        {
+          id: 7,
+          brand: "Optimum Nutrition",
+          name: "Serious Mass",
+          flavor: "Chocolate",
+          price: "8 900",
+          oldPrice: "10 500",
+          save: "-15%",
+          badge: "hot",
+          rating: 4.7,
+          reviews: 301,
+        },
+        {
+          id: 8,
+          brand: "ByBens",
+          name: "Omega-3 Fish Oil",
+          flavor: "1000mg Capsules",
+          price: "1 600",
+          oldPrice: null,
+          save: null,
+          badge: null,
+          rating: 4.6,
+          reviews: 188,
+        },
+      ];
+
+      function renderStars(rating) {
+        const full = Math.floor(rating);
+        const half = rating % 1 >= 0.5;
+        let stars = "★".repeat(full);
+        if (half) stars += "½";
+        return stars;
+      }
+
+      function renderProducts(lang) {
+        const grid = document.getElementById("productGrid");
+        const t = i18n[lang];
+        grid.innerHTML = products
+          .map(
+            (p) => `
+    <article class="product-card">
+      <div class="product-img">
+        ${p.badge ? `<span class="product-badge badge-${p.badge}">${p.badge === "sale" ? "SALE" : p.badge === "new" ? "NEW" : "HOT"}</span>` : ""}
+        <button class="wishlist-btn" aria-label="Add to wishlist" onclick="toggleWishlist(this)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>
+      </div>
+      <div class="product-info">
+        <span class="product-brand">${p.brand}</span>
+        <h3 class="product-name">${p.name}</h3>
+        <span class="product-flavor">${p.flavor}</span>
+        <div class="product-rating">
+          <span class="stars">${renderStars(p.rating)}</span>
+          <span class="rating-count">(${p.reviews})</span>
+        </div>
+        <div class="product-pricing">
+          <span class="price">${p.price} DA</span>
+          ${p.oldPrice ? `<span class="price-old">${p.oldPrice} DA</span>` : ""}
+          ${p.save ? `<span class="price-save">${p.save}</span>` : ""}
+        </div>
+        <div class="product-actions">
+          <button class="btn-cart" onclick="addToCart('${p.name}')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span>${t["btn.addcart"]}</span>
+          </button>
+          <button class="btn-buy" onclick="buyNow('${p.id}')">
+            <span>${t["btn.buynow"]}</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+  `,
+          )
+          .join("");
+      }
+
+      /* ─────────────────────────────────────────────────────────────
+   LANGUAGE SWITCHER
+   - Switches UI text for elements with data-i18n / data-i18n-html
+   - Categories and subcategories have NO data-i18n, so they are
+     never touched and always remain in English
+   - In Arabic (RTL) mode, .product-pricing keeps direction:ltr
+     via CSS so prices always render correctly
+───────────────────────────────────────────────────────────── */
+      function switchLang(lang) {
+        localStorage.setItem("bybens_lang", lang); // ← ADD THIS
+
+        currentLang = lang;
+        const t = i18n[lang];
+        const isAr = lang === "ar";
+
+        document.documentElement.lang = lang;
+        document.documentElement.dir = isAr ? "rtl" : "ltr";
+
+        // Update all translatable text nodes
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const key = el.getAttribute("data-i18n");
+          if (t[key]) el.textContent = t[key];
+        });
+        document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+          const key = el.getAttribute("data-i18n-html");
+          if (t[key]) el.innerHTML = t[key];
+        });
+
+        // Update lang buttons
+        document.querySelectorAll(".lang-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.lang === lang);
+        });
+
+        // Re-render products with new button labels
+        renderProducts(lang);
+      }
+
+      /* ─────────────────────────────────────────────────────────────
+   CART
+───────────────────────────────────────────────────────────── */
+      function addToCart(name) {
+        cartCount++;
+        document.getElementById("cartBadge").textContent = cartCount;
+        showToast(i18n[currentLang]["toast.added"]);
+
+        // Bounce the badge
+        const badge = document.getElementById("cartBadge");
+        badge.style.animation = "none";
+        setTimeout(() => {
+          badge.style.animation = "";
+        }, 10);
+      }
+
+      function buyNow(id) {
+        window.location.href = `product-detail.html?id=${id}`;
+      }
+
+      function toggleCart() {
+        showToast(`Cart (${cartCount} items) — checkout coming soon!`);
+      }
+
+      function toggleWishlist(btn) {
+        btn.classList.toggle("active");
+        const isActive = btn.classList.contains("active");
+        btn.style.color = isActive ? "var(--red)" : "";
+        const icon = btn.querySelector("svg");
+        icon.style.fill = isActive ? "var(--red)" : "none";
+      }
+
+      /* ─────────────────────────────────────────────────────────────
+   MOBILE MENU
+───────────────────────────────────────────────────────────── */
+      function toggleMobileMenu() {
+        const btn = document.getElementById("hamburgerBtn");
+        const menu = document.getElementById("mobileMenu");
+        const isOpen = menu.classList.toggle("open");
+        btn.classList.toggle("open", isOpen);
+        btn.setAttribute("aria-expanded", isOpen);
+        document.body.style.overflow = isOpen ? "hidden" : "";
+      }
+
+      /* ─────────────────────────────────────────────────────────────
+   SEARCH
+───────────────────────────────────────────────────────────── */
+      function handleSearch() {
+        const q = document.getElementById("searchInput").value.trim();
+        if (q) showToast(`Searching for "${q}"…`);
+      }
+      document
+        .getElementById("searchInput")
+        .addEventListener("keydown", (e) => {
+          if (e.key === "Enter") handleSearch();
+        });
+
+      /* ─────────────────────────────────────────────────────────────
+   CONTACT FORM
+───────────────────────────────────────────────────────────── */
+      function handleContactForm(e) {
+        e.preventDefault();
+        showToast(i18n[currentLang]["toast.sent"]);
+        e.target.reset();
+      }
+
+      /* ─────────────────────────────────────────────────────────────
+   TOAST
+───────────────────────────────────────────────────────────── */
+      let toastTimer;
+      function showToast(msg) {
+        const toast = document.getElementById("toast");
+        document.getElementById("toastMsg").textContent = msg;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 3000);
+      }
+
+      /* ─────────────────────────────────────────────────────────────
+   SCROLL EFFECTS
+───────────────────────────────────────────────────────────── */
+      window.addEventListener(
+        "scroll",
+        () => {
+          const header = document.getElementById("site-header");
+          header.classList.toggle("scrolled", window.scrollY > 12);
+
+          const scrollTop = document.getElementById("scrollTop");
+          scrollTop.classList.toggle("visible", window.scrollY > 400);
+        },
+        { passive: true },
+      );
+
+      /* ─────────────────────────────────────────────────────────────
+   INIT
+───────────────────────────────────────────────────────────── */
+      document.addEventListener("DOMContentLoaded", () => {
+        const savedLang = localStorage.getItem("bybens_lang") || "en";
+        if (savedLang !== "en") {
+          switchLang(savedLang);
+        } else {
+          renderProducts(currentLang);
+        }
+      });
+
+      function toggleMobileCat(btn) {
+        const item = btn.closest(".m-cat-item");
+        const isOpen = item.classList.contains("open");
+        // Close all others first
+        document
+          .querySelectorAll(".m-cat-item.open")
+          .forEach((el) => el.classList.remove("open"));
+        // Toggle clicked one
+        if (!isOpen) item.classList.add("open");
+      }
+
+      function openMobileSearch() {
+        const overlay = document.getElementById("mobileSearchOverlay");
+        overlay.style.display = "flex";
+        document.body.style.overflow = "hidden";
+        setTimeout(
+          () => document.getElementById("mobileSearchInput").focus(),
+          50,
+        );
+      }
+
+      function closeMobileSearch() {
+        const overlay = document.getElementById("mobileSearchOverlay");
+        overlay.style.display = "none";
+        document.body.style.overflow = "";
+        document.getElementById("mobileSearchInput").value = "";
+        document.getElementById("mobileSearchResults").innerHTML =
+          '<p style="font-size:13px; color:var(--gray-400); text-align:center; margin-top:40px;">Start typing to search products…</p>';
+      }
+
+      function handleMobileSearch(query) {
+        const resultsEl = document.getElementById("mobileSearchResults");
+        if (!query.trim()) {
+          resultsEl.innerHTML =
+            '<p style="font-size:13px; color:var(--gray-400); text-align:center; margin-top:40px;">Start typing to search products…</p>';
+          return;
+        }
+        const matches = products.filter(
+          (p) =>
+            p.name.toLowerCase().includes(query.toLowerCase()) ||
+            p.brand.toLowerCase().includes(query.toLowerCase()) ||
+            p.flavor.toLowerCase().includes(query.toLowerCase()),
+        );
+        if (!matches.length) {
+          resultsEl.innerHTML = `<p style="font-size:13px; color:var(--gray-400); text-align:center; margin-top:40px;">No results for "${query}"</p>`;
+          return;
+        }
+        resultsEl.innerHTML = matches
+          .map(
+            (p) => `
+    <div onclick="closeMobileSearch(); addToCart('${p.name}')" style="display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--gray-100); cursor:pointer;">
+      <div style="width:48px; height:48px; background:var(--gray-50); border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:1px solid var(--gray-100);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>
+      </div>
+      <div style="flex:1; min-width:0;">
+        <p style="font-size:13px; color:var(--gray-400); font-weight:600; letter-spacing:1px; text-transform:uppercase; margin:0 0 2px;">${p.brand}</p>
+        <p style="font-size:15px; font-weight:600; color:var(--black); margin:0 0 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</p>
+        <p style="font-size:12px; color:var(--gray-400); margin:0;">${p.flavor}</p>
+      </div>
+      <span style="font-family:var(--font-display); font-size:18px; color:var(--black); flex-shrink:0; direction:ltr;">${p.price} DA</span>
+    </div>
+  `,
+          )
+          .join("");
+      }
+    </script>
+  </body>
+</html>

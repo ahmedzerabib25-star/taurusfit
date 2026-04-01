@@ -1,0 +1,3229 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products – ByBens Sports Nutrition Algeria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" href="./images/favicon.ico" />
+
+    <style>
+      /* ─── VARIABLES ─────────────────────────────────────────── */
+      :root {
+        --red: #ad0000;
+        --red-hover: #8a0000;
+        --red-light: rgba(173, 0, 0, 0.08);
+        --white: #ffffff;
+        --off-white: #f7f7f5;
+        --gray-50: #f5f5f5;
+        --gray-100: #ebebeb;
+        --gray-200: #d9d9d9;
+        --gray-400: #9c9c9c;
+        --gray-600: #5a5a5a;
+        --gray-800: #1c1c1c;
+        --black: #0a0a0a;
+        --font-display: "Bebas Neue", sans-serif;
+        --font-body: "DM Sans", sans-serif;
+        --nav-h: 64px;
+        --cat-h: 44px;
+        --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+        --shadow-sm:
+          0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+        --shadow-md:
+          0 4px 16px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.06);
+        --shadow-lg:
+          0 12px 40px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(0, 0, 0, 0.08);
+        --shadow-red: 0 4px 20px rgba(173, 0, 0, 0.3);
+        --sidebar-w: 260px;
+      }
+
+      /* ─── RESET ─────────────────────────────────────────────── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: var(--font-body);
+        color: var(--black);
+        background: var(--white);
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      button {
+        cursor: pointer;
+        border: none;
+        background: none;
+        font-family: inherit;
+      }
+      ul {
+        list-style: none;
+      }
+      input,
+      select,
+      textarea {
+        font-family: inherit;
+      }
+
+      /* ─── UTILITY ───────────────────────────────────────────── */
+      .container {
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* ─── ANIMATIONS ────────────────────────────────────────── */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.15);
+        }
+      }
+      @keyframes marqueeTick {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+      @keyframes shimmer {
+        0% {
+          background-position: -600px 0;
+        }
+        100% {
+          background-position: 600px 0;
+        }
+      }
+      @keyframes wa-float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      @keyframes wa-pulse {
+        0% {
+          box-shadow:
+            0 4px 16px rgba(37, 211, 102, 0.4),
+            0 0 0 0 rgba(37, 211, 102, 0.5);
+        }
+        70% {
+          box-shadow:
+            0 4px 16px rgba(37, 211, 102, 0.4),
+            0 0 0 14px rgba(37, 211, 102, 0);
+        }
+        100% {
+          box-shadow:
+            0 4px 16px rgba(37, 211, 102, 0.4),
+            0 0 0 0 rgba(37, 211, 102, 0);
+        }
+      }
+
+      /* ─── MARQUEE ───────────────────────────────────────────── */
+      .marquee-bar {
+        background: var(--red);
+        color: var(--white);
+        overflow: hidden;
+        height: 36px;
+        display: flex;
+        align-items: center;
+      }
+      .marquee-track {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        animation: marqueeTick 28s linear infinite;
+      }
+      .marquee-track:hover {
+        animation-play-state: paused;
+      }
+      .marquee-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        padding: 0 32px;
+        text-transform: uppercase;
+      }
+      .marquee-sep {
+        opacity: 0.5;
+      }
+
+      /* ─── HEADER ────────────────────────────────────────────── */
+      #site-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: var(--white);
+        border-bottom: 1px solid var(--gray-100);
+        transition: box-shadow var(--transition);
+      }
+      #site-header.scrolled {
+        box-shadow: var(--shadow-md);
+      }
+
+      .top-nav {
+        height: var(--nav-h);
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .logo {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .logo img {
+        height: auto;
+        width: auto;
+        max-width: 140px;
+        object-fit: contain;
+      }
+
+      .nav-right {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: auto;
+      }
+      .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--gray-600);
+        border-radius: 6px;
+        transition:
+          color var(--transition),
+          background var(--transition);
+      }
+      .nav-link:hover {
+        color: var(--black);
+        background: var(--gray-50);
+      }
+      .nav-link.active {
+        color: var(--red);
+      }
+
+      .lang-switch {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        margin-left: 4px;
+      }
+      .lang-btn {
+        padding: 4px 8px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--gray-400);
+        border-radius: 4px;
+        transition:
+          color var(--transition),
+          background var(--transition);
+        letter-spacing: 0.5px;
+      }
+      .lang-btn:hover {
+        color: var(--black);
+        background: var(--gray-50);
+      }
+      .lang-btn.active {
+        color: var(--white);
+        background: var(--red);
+      }
+
+      .cart-btn {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 8px;
+        border-radius: 8px;
+        color: var(--black);
+        transition:
+          background var(--transition),
+          color var(--transition);
+      }
+      .cart-btn:hover {
+        background: var(--gray-50);
+        color: var(--red);
+      }
+      .cart-badge {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        min-width: 18px;
+        height: 18px;
+        background: var(--red);
+        color: var(--white);
+        font-size: 10px;
+        font-weight: 700;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      .hamburger {
+        display: none;
+        width: 40px;
+        height: 40px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        border-radius: 8px;
+        transition: background var(--transition);
+      }
+      .hamburger:hover {
+        background: var(--gray-50);
+      }
+      .hamburger span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: var(--black);
+        border-radius: 2px;
+        transition:
+          transform var(--transition),
+          opacity var(--transition);
+      }
+      .hamburger.open span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+      .hamburger.open span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      .hamburger.open span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+
+      /* ─── CATEGORY NAV ──────────────────────────────────────── */
+      .cat-nav {
+        background: var(--white);
+        border-bottom: 1px solid var(--gray-100);
+        position: relative;
+        z-index: 999;
+      }
+      .cat-nav-inner {
+        display: flex;
+        align-items: center;
+        height: var(--cat-h);
+        gap: 2px;
+        overflow: visible;
+      }
+      .cat-item {
+        position: relative;
+      }
+      .cat-link {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 0 14px;
+        height: var(--cat-h);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--gray-600);
+        white-space: nowrap;
+        transition: color var(--transition);
+        position: relative;
+      }
+      .cat-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        right: 50%;
+        height: 2px;
+        background: var(--red);
+        transition:
+          left var(--transition),
+          right var(--transition);
+      }
+      .cat-item:hover .cat-link,
+      .cat-link:hover {
+        color: var(--red);
+      }
+      .cat-item:hover .cat-link::after {
+        left: 14px;
+        right: 14px;
+      }
+      .cat-link svg {
+        width: 12px;
+        height: 12px;
+        transition: transform var(--transition);
+      }
+      .cat-item:hover .cat-link svg {
+        transform: rotate(180deg);
+      }
+
+      .dropdown {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        background: var(--white);
+        border: 1px solid var(--gray-100);
+        border-radius: 10px;
+        box-shadow: var(--shadow-lg);
+        min-width: 200px;
+        padding: 8px;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(-6px);
+        transition:
+          opacity var(--transition),
+          transform var(--transition),
+          visibility var(--transition);
+        z-index: 1001;
+      }
+      .cat-item:hover .dropdown {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+        transform: translateY(0);
+      }
+      .dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--gray-600);
+        border-radius: 7px;
+        transition:
+          background var(--transition),
+          color var(--transition),
+          padding-left var(--transition);
+      }
+      .dropdown a:hover {
+        background: var(--red-light);
+        color: var(--red);
+        padding-left: 18px;
+      }
+      .dropdown a::before {
+        content: "→";
+        font-size: 11px;
+        opacity: 0;
+        transition: opacity var(--transition);
+      }
+      .dropdown a:hover::before {
+        opacity: 1;
+      }
+
+      /* ─── MOBILE MENU ───────────────────────────────────────── */
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        inset: 0;
+        top: var(--nav-h);
+        background: var(--white);
+        z-index: 997;
+        flex-direction: column;
+        padding: 20px 24px 40px;
+        overflow-y: auto;
+        animation: slideDown 0.25s ease both;
+      }
+      .mobile-menu.open {
+        display: flex;
+      }
+      .mobile-menu .m-link {
+        display: flex;
+        align-items: center;
+        padding: 14px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--black);
+        border-bottom: 1px solid var(--gray-100);
+      }
+      .mobile-menu .m-link:hover {
+        color: var(--red);
+      }
+      .mobile-menu .m-link.active {
+        color: var(--red);
+      }
+      .mobile-lang {
+        display: flex;
+        gap: 8px;
+        margin-top: 24px;
+      }
+
+      .m-cat-item {
+        border-bottom: 1px solid var(--gray-100);
+      }
+      .m-cat-toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--black);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: var(--font-body);
+        transition: color var(--transition);
+      }
+      .m-cat-toggle:hover {
+        color: var(--red);
+      }
+      .m-arrow {
+        font-size: 18px;
+        transition: transform 0.25s ease;
+        display: inline-block;
+        color: var(--gray-400);
+      }
+      .m-cat-item.open .m-arrow {
+        transform: rotate(90deg);
+        color: var(--red);
+      }
+      .m-cat-item.open .m-cat-toggle {
+        color: var(--red);
+      }
+      .m-sub {
+        display: none;
+        flex-direction: column;
+        padding: 0 0 12px 16px;
+        gap: 2px;
+      }
+      .m-cat-item.open .m-sub {
+        display: flex;
+      }
+      .m-sub-link {
+        padding: 9px 12px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--gray-600);
+        border-radius: 7px;
+        transition:
+          background var(--transition),
+          color var(--transition);
+      }
+      .m-sub-link:hover {
+        background: var(--red-light);
+        color: var(--red);
+      }
+
+      /* ─── PAGE HERO ─────────────────────────────────────────── */
+      .page-hero {
+        background: var(--black);
+        padding: 48px 0 40px;
+        position: relative;
+        overflow: hidden;
+      }
+      .page-hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at 70% 50%,
+          rgba(173, 0, 0, 0.18) 0%,
+          transparent 65%
+        );
+      }
+      .page-hero-inner {
+        position: relative;
+        z-index: 1;
+      }
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .breadcrumb a {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.45);
+        transition: color var(--transition);
+      }
+      .breadcrumb a:hover {
+        color: rgba(255, 255, 255, 0.8);
+      }
+      .breadcrumb span {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.25);
+      }
+      .breadcrumb strong {
+        font-size: 13px;
+        color: var(--red);
+        font-weight: 600;
+      }
+      .page-hero h1 {
+        font-family: var(--font-display);
+        font-size: clamp(40px, 6vw, 72px);
+        color: var(--white);
+        letter-spacing: 1px;
+        line-height: 0.95;
+        margin-bottom: 12px;
+      }
+      .page-hero h1 em {
+        color: var(--red);
+        font-style: normal;
+      }
+      .page-hero p {
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.5);
+        max-width: 480px;
+      }
+
+      /* ─── TOOLBAR ───────────────────────────────────────────── */
+      .toolbar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--gray-100);
+        flex-wrap: wrap;
+      }
+      .toolbar-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+        flex-wrap: wrap;
+      }
+      .toolbar-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+
+      .product-search {
+        position: relative;
+        flex: 1;
+        min-width: 200px;
+        max-width: 360px;
+      }
+      .product-search input {
+        width: 100%;
+        height: 40px;
+        padding: 0 40px 0 14px;
+        border: 1.5px solid var(--gray-200);
+        border-radius: 8px;
+        font-size: 14px;
+        color: var(--black);
+        background: var(--gray-50);
+        outline: none;
+        transition:
+          border-color var(--transition),
+          box-shadow var(--transition);
+      }
+      .product-search input:focus {
+        border-color: var(--red);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(173, 0, 0, 0.1);
+      }
+      .product-search input::placeholder {
+        color: var(--gray-400);
+      }
+      .product-search .ps-icon {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--gray-400);
+        pointer-events: none;
+      }
+
+      .result-count {
+        font-size: 13px;
+        color: var(--gray-400);
+        white-space: nowrap;
+      }
+      .result-count strong {
+        color: var(--black);
+      }
+
+      .sort-select {
+        height: 40px;
+        padding: 0 32px 0 12px;
+        border: 1.5px solid var(--gray-200);
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--black);
+        background: var(--white);
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239C9C9C' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        cursor: pointer;
+        outline: none;
+        transition: border-color var(--transition);
+      }
+      .sort-select:focus {
+        border-color: var(--red);
+      }
+
+      .view-toggle {
+        display: flex;
+        gap: 4px;
+      }
+      .view-btn {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 7px;
+        color: var(--gray-400);
+        transition:
+          background var(--transition),
+          color var(--transition);
+      }
+      .view-btn.active {
+        background: var(--red);
+        color: var(--white);
+      }
+      .view-btn:hover:not(.active) {
+        background: var(--gray-50);
+        color: var(--black);
+      }
+
+      .filter-toggle-btn {
+        display: none;
+        align-items: center;
+        gap: 8px;
+        height: 40px;
+        padding: 0 16px;
+        border: 1.5px solid var(--gray-200);
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--black);
+        background: var(--white);
+        transition:
+          border-color var(--transition),
+          background var(--transition);
+      }
+      .filter-toggle-btn:hover {
+        border-color: var(--red);
+        color: var(--red);
+      }
+      .filter-toggle-btn .filter-count {
+        background: var(--red);
+        color: var(--white);
+        font-size: 10px;
+        font-weight: 700;
+        min-width: 18px;
+        height: 18px;
+        border-radius: 9px;
+        padding: 0 4px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+      .filter-toggle-btn .filter-count.visible {
+        display: flex;
+      }
+
+      /* ─── ACTIVE FILTER CHIPS ───────────────────────────────── */
+      .active-filters {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 0;
+        flex-wrap: wrap;
+      }
+      .active-filters:empty {
+        display: none;
+      }
+      .filter-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px 4px 12px;
+        background: var(--red-light);
+        border: 1px solid rgba(173, 0, 0, 0.2);
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--red);
+        animation: fadeUp 0.2s ease both;
+      }
+      .filter-chip button {
+        display: flex;
+        align-items: center;
+        color: var(--red);
+        opacity: 0.7;
+        transition: opacity var(--transition);
+      }
+      .filter-chip button:hover {
+        opacity: 1;
+      }
+      .clear-all-btn {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--gray-400);
+        padding: 4px 8px;
+        border-radius: 6px;
+        transition: color var(--transition);
+        margin-left: 4px;
+      }
+      .clear-all-btn:hover {
+        color: var(--red);
+      }
+
+      /* ─── MAIN LAYOUT ───────────────────────────────────────── */
+      .products-layout {
+        display: grid;
+        grid-template-columns: var(--sidebar-w) 1fr;
+        gap: 32px;
+        padding: 24px 0 80px;
+        align-items: start;
+      }
+
+      /* ─── SIDEBAR ───────────────────────────────────────────── */
+      .sidebar {
+        position: sticky;
+        top: calc(var(--nav-h) + var(--cat-h) + 16px);
+        background: var(--white);
+        border: 1px solid var(--gray-100);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+
+      /* Mobile overlay sidebar */
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1100;
+      }
+      .sidebar-overlay.open {
+        display: block;
+      }
+      .sidebar-drawer {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: min(320px, 85vw);
+        background: var(--white);
+        z-index: 1101;
+        overflow-y: auto;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+      }
+      .sidebar-overlay.open .sidebar-drawer {
+        transform: translateX(0);
+      }
+      .drawer-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--gray-100);
+        position: sticky;
+        top: 0;
+        background: var(--white);
+        z-index: 1;
+      }
+      .drawer-header h3 {
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .drawer-close {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        color: var(--gray-600);
+        transition: background var(--transition);
+      }
+      .drawer-close:hover {
+        background: var(--gray-50);
+      }
+
+      /* Filter sections */
+      .filter-section {
+        border-bottom: 1px solid var(--gray-100);
+      }
+      .filter-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 20px;
+        cursor: pointer;
+        user-select: none;
+      }
+      .filter-header h4 {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--black);
+        letter-spacing: 0.3px;
+      }
+      .filter-header svg {
+        color: var(--gray-400);
+        transition: transform var(--transition);
+      }
+      .filter-section.open .filter-header svg {
+        transform: rotate(180deg);
+      }
+      .filter-body {
+        display: none;
+        padding: 0 20px 16px;
+      }
+      .filter-section.open .filter-body {
+        display: block;
+      }
+
+      .filter-title-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .filter-badge {
+        font-size: 10px;
+        font-weight: 700;
+        background: var(--red);
+        color: var(--white);
+        padding: 1px 6px;
+        border-radius: 10px;
+      }
+
+      .filter-option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 6px 0;
+        cursor: pointer;
+      }
+      .filter-option label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: var(--gray-600);
+        cursor: pointer;
+        transition: color var(--transition);
+      }
+      .filter-option:hover label {
+        color: var(--black);
+      }
+      .filter-option input[type="checkbox"] {
+        display: none;
+      }
+      .custom-checkbox {
+        width: 18px;
+        height: 18px;
+        border: 2px solid var(--gray-200);
+        border-radius: 4px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          border-color var(--transition),
+          background var(--transition);
+      }
+      .filter-option.checked .custom-checkbox {
+        border-color: var(--red);
+        background: var(--red);
+      }
+      .custom-checkbox svg {
+        display: none;
+      }
+      .filter-option.checked .custom-checkbox svg {
+        display: block;
+      }
+      .option-count {
+        font-size: 11px;
+        color: var(--gray-400);
+      }
+
+      .price-inputs {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-top: 4px;
+      }
+      .price-input {
+        flex: 1;
+        height: 36px;
+        padding: 0 10px;
+        border: 1.5px solid var(--gray-200);
+        border-radius: 7px;
+        font-size: 13px;
+        color: var(--black);
+        outline: none;
+        transition: border-color var(--transition);
+      }
+      .price-input:focus {
+        border-color: var(--red);
+      }
+      .price-sep {
+        font-size: 12px;
+        color: var(--gray-400);
+        flex-shrink: 0;
+      }
+      .price-apply {
+        width: 100%;
+        height: 36px;
+        margin-top: 10px;
+        background: var(--red);
+        color: var(--white);
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 700;
+        transition: background var(--transition);
+      }
+      .price-apply:hover {
+        background: var(--red-hover);
+      }
+
+      .rating-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 0;
+        cursor: pointer;
+        font-size: 13px;
+        color: var(--gray-600);
+        transition: color var(--transition);
+        border-radius: 6px;
+      }
+      .rating-option:hover {
+        color: var(--black);
+      }
+      .rating-option.selected {
+        color: var(--red);
+        font-weight: 600;
+      }
+      .rating-stars {
+        color: #ffab00;
+        font-size: 13px;
+        letter-spacing: 1px;
+      }
+
+      .reset-filters {
+        padding: 16px 20px;
+        display: flex;
+        justify-content: center;
+      }
+      .reset-btn {
+        width: 100%;
+        height: 38px;
+        border: 2px solid var(--gray-200);
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--gray-600);
+        transition:
+          border-color var(--transition),
+          color var(--transition);
+      }
+      .reset-btn:hover {
+        border-color: var(--red);
+        color: var(--red);
+      }
+
+      /* ─── PRODUCT GRID ──────────────────────────────────────── */
+      .products-area {
+        min-width: 0;
+      }
+
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+      .product-grid.list-view {
+        grid-template-columns: 1fr;
+      }
+
+      .product-card {
+        background: var(--white);
+        border: 1px solid var(--gray-100);
+        border-radius: 14px;
+        overflow: hidden;
+        transition:
+          box-shadow var(--transition),
+          transform var(--transition),
+          border-color var(--transition);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        animation: fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      .product-card:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-3px);
+        border-color: var(--gray-200);
+      }
+
+      .product-grid.list-view .product-card {
+        flex-direction: row;
+        transform: none !important;
+      }
+      .product-grid.list-view .product-img {
+        width: 180px;
+        flex-shrink: 0;
+        aspect-ratio: auto;
+        min-height: 160px;
+      }
+      .product-grid.list-view .product-info {
+        flex: 1;
+      }
+      .product-grid.list-view .product-card:hover {
+        transform: none;
+        box-shadow: var(--shadow-md);
+      }
+
+      .product-img {
+        position: relative;
+        aspect-ratio: 4/3;
+        background: linear-gradient(145deg, #f0f0f0, #fafafa);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .product-img svg.placeholder-icon {
+        color: var(--gray-200);
+        transition: transform var(--transition);
+      }
+      .product-card:hover .product-img svg.placeholder-icon {
+        transform: scale(0.95);
+      }
+
+      .product-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+      }
+      .badge-sale {
+        background: var(--red);
+        color: var(--white);
+      }
+      .badge-new {
+        background: var(--black);
+        color: var(--white);
+      }
+      .badge-hot {
+        background: #ff6b00;
+        color: var(--white);
+      }
+
+      .wishlist-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 32px;
+        height: 32px;
+        background: var(--white);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-sm);
+        color: var(--gray-400);
+        transition:
+          color var(--transition),
+          transform var(--transition);
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      .product-card:hover .wishlist-btn {
+        opacity: 1;
+        transform: scale(1);
+      }
+      .wishlist-btn:hover {
+        color: var(--red);
+      }
+      .wishlist-btn.active {
+        color: var(--red);
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .product-info {
+        padding: 14px 16px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .product-brand {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--gray-400);
+      }
+      .product-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--black);
+        line-height: 1.35;
+      }
+      .product-flavor {
+        font-size: 12px;
+        color: var(--gray-400);
+      }
+      .product-rating {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .stars {
+        color: #ffab00;
+        font-size: 11px;
+        letter-spacing: 1px;
+      }
+      .rating-count {
+        font-size: 11px;
+        color: var(--gray-400);
+      }
+
+      .product-pricing {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 2px;
+        /* Always LTR so prices render correctly in Arabic/RTL mode */
+        direction: ltr;
+      }
+      .price {
+        font-family: var(--font-display);
+        font-size: 22px;
+        color: var(--black);
+        letter-spacing: 0.5px;
+      }
+      .price-old {
+        font-size: 13px;
+        color: var(--gray-400);
+        text-decoration: line-through;
+      }
+      .price-save {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--red);
+        background: var(--red-light);
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+
+      .product-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 6px;
+      }
+      .btn-cart {
+        flex: 1;
+        height: 38px;
+        border: 2px solid var(--gray-200);
+        border-radius: 7px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--black);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition:
+          border-color var(--transition),
+          background var(--transition),
+          color var(--transition);
+      }
+      .btn-cart:hover {
+        border-color: var(--black);
+        background: var(--black);
+        color: var(--white);
+      }
+      .btn-buy {
+        flex: 1;
+        height: 38px;
+        background: var(--red);
+        border-radius: 7px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition:
+          background var(--transition),
+          box-shadow var(--transition);
+      }
+      .btn-buy:hover {
+        background: var(--red-hover);
+        box-shadow: 0 4px 12px rgba(173, 0, 0, 0.25);
+      }
+
+      /* Skeleton loader */
+      .skeleton-card {
+        background: var(--white);
+        border: 1px solid var(--gray-100);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      .skeleton-img {
+        height: 180px;
+        background: linear-gradient(
+          90deg,
+          #f0f0f0 25%,
+          #fafafa 50%,
+          #f0f0f0 75%
+        );
+        background-size: 600px 100%;
+        animation: shimmer 1.5s infinite;
+      }
+      .skeleton-body {
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .skeleton-line {
+        height: 12px;
+        border-radius: 6px;
+        background: linear-gradient(
+          90deg,
+          #f0f0f0 25%,
+          #fafafa 50%,
+          #f0f0f0 75%
+        );
+        background-size: 600px 100%;
+        animation: shimmer 1.5s infinite;
+      }
+      .skeleton-line.short {
+        width: 60%;
+      }
+      .skeleton-line.med {
+        width: 80%;
+      }
+
+      /* Empty state */
+      .empty-state {
+        grid-column: 1/-1;
+        text-align: center;
+        padding: 80px 24px;
+      }
+      .empty-icon {
+        font-size: 56px;
+        margin-bottom: 16px;
+      }
+      .empty-state h3 {
+        font-family: var(--font-display);
+        font-size: 32px;
+        color: var(--black);
+        margin-bottom: 8px;
+      }
+      .empty-state p {
+        font-size: 14px;
+        color: var(--gray-400);
+        margin-bottom: 24px;
+      }
+
+      /* Pagination */
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 40px 0 0;
+      }
+      .page-btn {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--gray-600);
+        border: 1.5px solid var(--gray-200);
+        transition: all var(--transition);
+      }
+      .page-btn:hover {
+        border-color: var(--red);
+        color: var(--red);
+      }
+      .page-btn.active {
+        background: var(--red);
+        border-color: var(--red);
+        color: var(--white);
+      }
+      .page-btn.dots {
+        border-color: transparent;
+        cursor: default;
+      }
+      .page-btn.dots:hover {
+        border-color: transparent;
+        color: var(--gray-600);
+      }
+
+      /* ─── FOOTER ────────────────────────────────────────────── */
+      footer {
+        background: var(--black);
+        color: rgba(255, 255, 255, 0.65);
+        padding: 48px 0 0;
+      }
+      .footer-mini {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding-bottom: 32px;
+        flex-wrap: wrap;
+      }
+      .footer-mini p {
+        font-size: 14px;
+        max-width: 360px;
+      }
+      .social-links {
+        display: flex;
+        gap: 10px;
+      }
+      .social-link {
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.6);
+        transition:
+          background var(--transition),
+          color var(--transition);
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .social-link:hover {
+        background: var(--red);
+        color: var(--white);
+      }
+      .footer-bottom-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .footer-bottom-bar p {
+        font-size: 13px;
+      }
+
+      /* ─── TOAST ─────────────────────────────────────────────── */
+      #toast {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: var(--black);
+        color: var(--white);
+        padding: 14px 20px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        box-shadow: var(--shadow-lg);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 9999;
+        transform: translateY(80px);
+        opacity: 0;
+        transition:
+          transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 0.3s;
+        pointer-events: none;
+      }
+      #toast.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      .toast-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22c55e;
+        flex-shrink: 0;
+      }
+
+      /* ─── SCROLL TOP ─────────────────────────────────────────── */
+      #scrollTop {
+        position: fixed;
+        bottom: 24px;
+        left: 24px;
+        width: 44px;
+        height: 44px;
+        background: var(--red);
+        color: var(--white);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-red);
+        transition:
+          opacity var(--transition),
+          transform var(--transition);
+        opacity: 0;
+        transform: translateY(12px);
+        pointer-events: none;
+        z-index: 998;
+      }
+      #scrollTop.visible {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: all;
+      }
+      #scrollTop:hover {
+        background: var(--red-hover);
+      }
+
+      /* ─── WHATSAPP BUTTON ────────────────────────────────────── */
+      .wa-btn {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 58px;
+        height: 58px;
+        background: #25d366;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        z-index: 9999;
+        animation:
+          wa-float 2.4s ease-in-out infinite,
+          wa-pulse 2.4s ease-in-out infinite;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .wa-btn:hover {
+        animation: none;
+        transform: scale(1.12);
+        box-shadow: 0 8px 28px rgba(37, 211, 102, 0.6);
+      }
+
+      /* ─── RESPONSIVE ─────────────────────────────────────────── */
+      @media (max-width: 1024px) {
+        .product-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .nav-link {
+          display: none;
+        }
+        .lang-switch {
+          display: none;
+        }
+        .hamburger {
+          display: flex;
+        }
+        .cat-nav {
+          display: none;
+        }
+
+        .products-layout {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          display: none;
+        }
+        .filter-toggle-btn {
+          display: flex;
+        }
+
+        .logo img {
+          max-width: 110px;
+        }
+        .top-nav {
+          gap: 10px;
+        }
+
+        .product-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+        }
+        .product-grid.list-view .product-img {
+          width: 120px;
+        }
+
+        .wa-btn {
+          width: 50px;
+          height: 50px;
+        }
+        .wa-btn svg {
+          width: 26px;
+          height: 26px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .product-grid {
+          grid-template-columns: 1fr;
+        }
+        .product-grid.list-view .product-img {
+          width: 100px;
+        }
+        .toolbar-right {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ═══ MARQUEE ══════════════════════════════════════════════ -->
+    <div class="marquee-bar">
+      <div class="marquee-track">
+        <span class="marquee-item"
+          >🚚 Livraison Gratuite dès 5000 DA
+          <span class="marquee-sep">|</span></span
+        >
+        <span class="marquee-item"
+          >💪 Qualité Certifiée &amp; Authentique
+          <span class="marquee-sep">|</span></span
+        >
+        <span class="marquee-item"
+          >⚡ Paiement à la Livraison Disponible
+          <span class="marquee-sep">|</span></span
+        >
+        <span class="marquee-item"
+          >🇩🇿 Livraison partout en Algérie
+          <span class="marquee-sep">|</span></span
+        >
+        <span class="marquee-item"
+          >🎁 Promo – Jusqu'à -30% <span class="marquee-sep">|</span></span
+        >
+        <!-- duplicate for seamless loop -->
+        <span class="marquee-item"
+          >🚚 Livraison Gratuite dès 5000 DA
+          <span class="marquee-sep">|</span></span
+        >
+        <span class="marquee-item"
+          >💪 Qualité Certifiée &amp; Authentique
+          <span class="marquee-sep">|</span></span
+        >
+        <span class="marquee-item"
+          >⚡ Paiement à la Livraison Disponible
+          <span class="marquee-sep">|</span></span
+        >
+        <span class="marquee-item"
+          >🇩🇿 Livraison partout en Algérie
+          <span class="marquee-sep">|</span></span
+        >
+        <span class="marquee-item"
+          >🎁 Promo – Jusqu'à -30% <span class="marquee-sep">|</span></span
+        >
+      </div>
+    </div>
+
+    <!-- ═══ HEADER ═══════════════════════════════════════════════ -->
+    <header id="site-header">
+      <div class="container">
+        <nav class="top-nav" aria-label="Main navigation">
+          <!-- Logo — single <a> tag, no nesting -->
+          <a href="index.html" class="logo" aria-label="ByBens Home">
+            <img src="images/logo.png" alt="ByBens Logo" />
+          </a>
+
+          <!-- Right nav (no search bar here — products page has its own toolbar search) -->
+          <div class="nav-right">
+            <a href="index.html" class="nav-link" data-i18n="nav.home">Home</a>
+            <a
+              href="products.html"
+              class="nav-link active"
+              data-i18n="nav.products"
+              >Products</a
+            >
+            <a
+              href="index.html#contact"
+              class="nav-link"
+              data-i18n="nav.contact"
+              >Contact</a
+            >
+
+            <div
+              class="lang-switch"
+              role="group"
+              aria-label="Language switcher"
+            >
+              <button
+                class="lang-btn active"
+                data-lang="en"
+                onclick="switchLang('en')"
+              >
+                EN
+              </button>
+              <button
+                class="lang-btn"
+                data-lang="fr"
+                onclick="switchLang('fr')"
+              >
+                FR
+              </button>
+              <button
+                class="lang-btn"
+                data-lang="ar"
+                onclick="switchLang('ar')"
+              >
+                AR
+              </button>
+            </div>
+
+            <button
+              class="cart-btn"
+              aria-label="Shopping cart"
+              onclick="showToast('Cart coming soon!')"
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <path d="M16 10a4 4 0 0 1-8 0" />
+              </svg>
+              <span class="cart-badge" id="cartBadge">3</span>
+            </button>
+
+            <button
+              class="hamburger"
+              id="hamburgerBtn"
+              aria-label="Toggle menu"
+              aria-expanded="false"
+              onclick="toggleMobileMenu()"
+            >
+              <span></span><span></span><span></span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Category Nav -->
+      <div class="cat-nav" aria-label="Product categories">
+        <div class="container">
+          <div class="cat-nav-inner">
+            <div class="cat-item">
+              <a href="#" class="cat-link"
+                >Protein
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="m6 9 6 6 6-6" /></svg
+              ></a>
+              <div class="dropdown">
+                <a href="#">Protein Powder</a><a href="#">Protein Drinks</a>
+                <a href="#">Whey Protein</a><a href="#">Casein Protein</a>
+                <a href="#">Plant-Based Protein</a>
+              </div>
+            </div>
+            <div class="cat-item">
+              <a href="#" class="cat-link"
+                >Mass Gainers
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="m6 9 6 6 6-6" /></svg
+              ></a>
+              <div class="dropdown">
+                <a href="#">Weight Gainers</a><a href="#">Serious Mass</a
+                ><a href="#">Hard Gainers</a>
+              </div>
+            </div>
+            <div class="cat-item">
+              <a href="#" class="cat-link"
+                >Pre-Workout
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="m6 9 6 6 6-6" /></svg
+              ></a>
+              <div class="dropdown">
+                <a href="#">Pre-Workout Powders</a
+                ><a href="#">Caffeine Boosters</a> <a href="#">Nitric Oxide</a
+                ><a href="#">BCAA Pre-Workout</a>
+              </div>
+            </div>
+            <div class="cat-item">
+              <a href="#" class="cat-link"
+                >Vitamins
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="m6 9 6 6 6-6" /></svg
+              ></a>
+              <div class="dropdown">
+                <a href="#">Multivitamins</a><a href="#">Vitamin D3</a>
+                <a href="#">Omega-3</a><a href="#">Zinc &amp; Magnesium</a>
+              </div>
+            </div>
+            <div class="cat-item">
+              <a href="#" class="cat-link"
+                >Creatine
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="m6 9 6 6 6-6" /></svg
+              ></a>
+              <div class="dropdown">
+                <a href="#">Creatine Monohydrate</a><a href="#">Creatine HCL</a
+                ><a href="#">Micronized Creatine</a>
+              </div>
+            </div>
+            <div class="cat-item">
+              <a href="#" class="cat-link"
+                >Accessories
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="m6 9 6 6 6-6" /></svg
+              ></a>
+              <div class="dropdown">
+                <a href="#">Shaker Bottles</a><a href="#">Gym Gloves</a
+                ><a href="#">Resistance Bands</a>
+              </div>
+            </div>
+            <a href="#" class="cat-link">🔥 Hot Deals</a>
+            <a href="#" class="cat-link">New Arrivals</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Menu — no search bar, categories always in English -->
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+      <a
+        href="index.html"
+        class="m-link"
+        data-i18n="nav.home"
+        onclick="toggleMobileMenu()"
+        >Home</a
+      >
+      <a href="products.html" class="m-link active" onclick="toggleMobileMenu()"
+        >Products</a
+      >
+
+      <div class="m-cat-item">
+        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
+          Protein <span class="m-arrow">›</span>
+        </button>
+        <div class="m-sub">
+          <a href="#" class="m-sub-link">Protein Powder</a>
+          <a href="#" class="m-sub-link">Protein Drinks</a>
+          <a href="#" class="m-sub-link">Whey Protein</a>
+          <a href="#" class="m-sub-link">Casein Protein</a>
+        </div>
+      </div>
+      <div class="m-cat-item">
+        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
+          Mass Gainers <span class="m-arrow">›</span>
+        </button>
+        <div class="m-sub">
+          <a href="#" class="m-sub-link">Weight Gainers</a>
+          <a href="#" class="m-sub-link">Serious Mass</a>
+          <a href="#" class="m-sub-link">Hard Gainers</a>
+        </div>
+      </div>
+      <div class="m-cat-item">
+        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
+          Pre-Workout <span class="m-arrow">›</span>
+        </button>
+        <div class="m-sub">
+          <a href="#" class="m-sub-link">Pre-Workout Powders</a>
+          <a href="#" class="m-sub-link">Caffeine Boosters</a>
+          <a href="#" class="m-sub-link">BCAA</a>
+        </div>
+      </div>
+      <div class="m-cat-item">
+        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
+          Vitamins <span class="m-arrow">›</span>
+        </button>
+        <div class="m-sub">
+          <a href="#" class="m-sub-link">Multivitamins</a>
+          <a href="#" class="m-sub-link">Vitamin D3</a>
+          <a href="#" class="m-sub-link">Omega-3</a>
+        </div>
+      </div>
+      <div class="m-cat-item">
+        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
+          Creatine <span class="m-arrow">›</span>
+        </button>
+        <div class="m-sub">
+          <a href="#" class="m-sub-link">Creatine Monohydrate</a>
+          <a href="#" class="m-sub-link">Creatine HCL</a>
+        </div>
+      </div>
+
+      <a
+        href="index.html#contact"
+        class="m-link"
+        data-i18n="nav.contact"
+        onclick="toggleMobileMenu()"
+        >Contact</a
+      >
+
+      <div class="mobile-lang">
+        <button
+          class="lang-btn active"
+          data-lang="en"
+          onclick="switchLang('en')"
+        >
+          EN
+        </button>
+        <button class="lang-btn" data-lang="fr" onclick="switchLang('fr')">
+          FR
+        </button>
+        <button class="lang-btn" data-lang="ar" onclick="switchLang('ar')">
+          AR
+        </button>
+      </div>
+    </nav>
+
+    <!-- ═══ PAGE HERO ═════════════════════════════════════════════ -->
+    <section class="page-hero">
+      <div class="container page-hero-inner">
+        <div class="breadcrumb">
+          <a href="index.html" data-i18n="nav.home">Home</a>
+          <span>›</span>
+          <strong data-i18n="products.title">All Products</strong>
+        </div>
+        <h1 data-i18n-html="page.hero.title">ALL <em>PRODUCTS</em></h1>
+        <p data-i18n="page.hero.desc">
+          Browse our full collection of authentic sports nutrition supplements.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══ MAIN CONTENT ══════════════════════════════════════════ -->
+    <div class="container">
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <!-- Mobile filter button -->
+          <button class="filter-toggle-btn" onclick="openFilterDrawer()">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="4" y1="6" x2="20" y2="6" />
+              <line x1="8" y1="12" x2="16" y2="12" />
+              <line x1="11" y1="18" x2="13" y2="18" />
+            </svg>
+            <span data-i18n="toolbar.filters">Filters</span>
+            <span class="filter-count" id="mobileFilterCount">0</span>
+          </button>
+
+          <!-- Product search -->
+          <div class="product-search">
+            <input
+              type="search"
+              id="productSearch"
+              placeholder="Search products…"
+              autocomplete="off"
+              oninput="handleProductSearch()"
+            />
+            <span class="ps-icon">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+            </span>
+          </div>
+
+          <span class="result-count" id="resultCount"
+            ><strong>16</strong>
+            <span data-i18n="toolbar.products">products</span></span
+          >
+        </div>
+
+        <div class="toolbar-right">
+          <select class="sort-select" id="sortSelect" onchange="handleSort()">
+            <option value="default" data-i18n="sort.featured">
+              Sort: Featured
+            </option>
+            <option value="price-asc" data-i18n="sort.priceAsc">
+              Price: Low to High
+            </option>
+            <option value="price-desc" data-i18n="sort.priceDesc">
+              Price: High to Low
+            </option>
+            <option value="rating" data-i18n="sort.rating">Top Rated</option>
+            <option value="newest" data-i18n="sort.newest">Newest First</option>
+            <option value="name" data-i18n="sort.name">Name A–Z</option>
+          </select>
+
+          <div class="view-toggle">
+            <button
+              class="view-btn active"
+              id="gridViewBtn"
+              onclick="setView('grid')"
+              title="Grid view"
+            >
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
+                <rect x="14" y="14" width="7" height="7" />
+              </svg>
+            </button>
+            <button
+              class="view-btn"
+              id="listViewBtn"
+              onclick="setView('list')"
+              title="List view"
+            >
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="8" y1="6" x2="21" y2="6" />
+                <line x1="8" y1="12" x2="21" y2="12" />
+                <line x1="8" y1="18" x2="21" y2="18" />
+                <line x1="3" y1="6" x2="3.01" y2="6" />
+                <line x1="3" y1="12" x2="3.01" y2="12" />
+                <line x1="3" y1="18" x2="3.01" y2="18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active filter chips -->
+      <div class="active-filters" id="activeFilters"></div>
+
+      <!-- Products Layout -->
+      <div class="products-layout">
+        <!-- Desktop sidebar -->
+        <aside class="sidebar" id="desktopSidebar">
+          <div id="sidebarContent"></div>
+        </aside>
+
+        <!-- Products area -->
+        <div class="products-area">
+          <div class="product-grid" id="productGrid"></div>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Filter Drawer -->
+    <div
+      class="sidebar-overlay"
+      id="filterOverlay"
+      onclick="handleOverlayClick(event)"
+    >
+      <div class="sidebar-drawer" id="filterDrawer">
+        <div class="drawer-header">
+          <h3 data-i18n="toolbar.filters">Filters</h3>
+          <button class="drawer-close" onclick="closeFilterDrawer()">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div id="drawerContent"></div>
+      </div>
+    </div>
+
+    <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+    <footer>
+      <div class="container">
+        <div class="footer-mini">
+          <a href="index.html" class="logo" aria-label="ByBens Home">
+            <img
+              src="images/logo.png"
+              alt="ByBens Logo"
+              style="height: 150px; width: auto; object-fit: contain"
+            />
+          </a>
+          <p data-i18n="footer.brand.desc">
+            Algeria's premier destination for authentic sports nutrition,
+            delivered to your door.
+          </p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook">f</a>
+            <a href="#" class="social-link" aria-label="Instagram">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </a>
+            <a href="#" class="social-link" aria-label="TikTok">T</a>
+          </div>
+        </div>
+        <div class="footer-bottom-bar">
+          <p>
+            © 2026 ByBen's Algeria.
+            <span data-i18n="footer.rights">All rights reserved.</span>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Toast & Scroll top -->
+    <div id="toast">
+      <span class="toast-dot"></span><span id="toastMsg"></span>
+    </div>
+    <button
+      id="scrollTop"
+      aria-label="Scroll to top"
+      onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+    >
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
+        <path d="m18 15-6-6-6 6" />
+      </svg>
+    </button>
+
+    <!-- WhatsApp floating button -->
+    <a
+      href="https://wa.me/213662269449"
+      target="_blank"
+      class="wa-btn"
+      aria-label="WhatsApp"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="30"
+        height="30"
+        viewBox="0 0 24 24"
+        fill="white"
+      >
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+        />
+      </svg>
+    </a>
+
+    <script>
+      /* ══════════════════════════════════════════════════════════════
+   TRANSLATIONS — same keys as index.html where applicable,
+   plus products-page-specific keys
+══════════════════════════════════════════════════════════════ */
+      const i18n = {
+        en: {
+          "nav.home": "Home",
+          "nav.products": "Products",
+          "nav.contact": "Contact",
+          "page.hero.title": "ALL <em>PRODUCTS</em>",
+          "page.hero.desc":
+            "Browse our full collection of authentic sports nutrition supplements.",
+          "toolbar.filters": "Filters",
+          "toolbar.products": "products",
+          "sort.featured": "Sort: Featured",
+          "sort.priceAsc": "Price: Low to High",
+          "sort.priceDesc": "Price: High to Low",
+          "sort.rating": "Top Rated",
+          "sort.newest": "Newest First",
+          "sort.name": "Name A–Z",
+          "footer.brand.desc":
+            "Algeria's premier destination for authentic sports nutrition, delivered to your door.",
+          "footer.rights": "All rights reserved.",
+          "btn.addcart": "Add to Cart",
+          "btn.buynow": "Buy Now",
+          "toast.added": "Added to cart!",
+        },
+        fr: {
+          "nav.home": "Accueil",
+          "nav.products": "Produits",
+          "nav.contact": "Contact",
+          "page.hero.title": "TOUS LES <em>PRODUITS</em>",
+          "page.hero.desc":
+            "Parcourez notre collection complète de suppléments sportifs authentiques.",
+          "toolbar.filters": "Filtres",
+          "toolbar.products": "produits",
+          "sort.featured": "Tri : Vedettes",
+          "sort.priceAsc": "Prix : Croissant",
+          "sort.priceDesc": "Prix : Décroissant",
+          "sort.rating": "Mieux notés",
+          "sort.newest": "Nouveautés",
+          "sort.name": "Nom A–Z",
+          "footer.brand.desc":
+            "La première destination algérienne pour la nutrition sportive authentique.",
+          "footer.rights": "Tous droits réservés.",
+          "btn.addcart": "Ajouter",
+          "btn.buynow": "Acheter",
+          "toast.added": "Ajouté au panier !",
+        },
+        ar: {
+          "nav.home": "الرئيسية",
+          "nav.products": "المنتجات",
+          "nav.contact": "اتصل بنا",
+          "page.hero.title": "جميع <em>المنتجات</em>",
+          "page.hero.desc":
+            "تصفّح مجموعتنا الكاملة من مكملات التغذية الرياضية الأصيلة.",
+          "toolbar.filters": "الفلاتر",
+          "toolbar.products": "منتج",
+          "sort.featured": "الترتيب: مميز",
+          "sort.priceAsc": "السعر: الأقل أولاً",
+          "sort.priceDesc": "السعر: الأعلى أولاً",
+          "sort.rating": "الأعلى تقييماً",
+          "sort.newest": "الأحدث أولاً",
+          "sort.name": "الاسم أ–ي",
+          "footer.brand.desc":
+            "وجهتك الأولى في الجزائر للمكملات الرياضية الأصيلة.",
+          "footer.rights": "جميع الحقوق محفوظة.",
+          "btn.addcart": "أضف للسلة",
+          "btn.buynow": "اشتر الآن",
+          "toast.added": "تمت الإضافة للسلة!",
+        },
+      };
+
+      let currentLang = "en";
+
+      /* ══════════════════════════════════════════════════════════════
+   LANGUAGE SWITCHER
+   - Only translates elements with data-i18n / data-i18n-html
+   - Categories & subcategories have no data-i18n → always English
+   - Prices stay direction:ltr via CSS so they never break in RTL
+══════════════════════════════════════════════════════════════ */
+      function switchLang(lang) {
+        localStorage.setItem("bybens_lang", lang);
+        currentLang = lang;
+        const t = i18n[lang];
+        const isAr = lang === "ar";
+
+        document.documentElement.lang = lang;
+        document.documentElement.dir = isAr ? "rtl" : "ltr";
+
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const key = el.getAttribute("data-i18n");
+          if (t[key]) el.textContent = t[key];
+        });
+        document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+          const key = el.getAttribute("data-i18n-html");
+          if (t[key]) el.innerHTML = t[key];
+        });
+
+        // Sync all lang buttons on both desktop & mobile
+        document.querySelectorAll(".lang-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.lang === lang);
+        });
+
+        // Re-render product buttons in new language
+        renderProducts();
+      }
+
+      /* ══════════════════════════════════════════════════════════════
+   DATA
+══════════════════════════════════════════════════════════════ */
+      const allProducts = [
+        {
+          id: 1,
+          brand: "MyProtein",
+          name: "Impact Whey Protein",
+          flavor: "Chocolate Smooth",
+          priceNum: 4800,
+          price: "4 800",
+          oldPrice: "6 200",
+          save: "-23%",
+          badge: "sale",
+          rating: 4.8,
+          reviews: 412,
+          category: "protein",
+          isNew: false,
+        },
+        {
+          id: 2,
+          brand: "Optimum Nutrition",
+          name: "Gold Standard Whey",
+          flavor: "Double Rich Chocolate",
+          priceNum: 7200,
+          price: "7 200",
+          oldPrice: "8 500",
+          save: "-15%",
+          badge: "hot",
+          rating: 4.9,
+          reviews: 856,
+          category: "protein",
+          isNew: false,
+        },
+        {
+          id: 3,
+          brand: "ByBens",
+          name: "Mass Gainer 3KG",
+          flavor: "Vanilla Cream",
+          priceNum: 5500,
+          price: "5 500",
+          oldPrice: null,
+          save: null,
+          badge: "new",
+          rating: 4.7,
+          reviews: 128,
+          category: "gainers",
+          isNew: true,
+        },
+        {
+          id: 4,
+          brand: "Scitec Nutrition",
+          name: "100% Whey Isolate",
+          flavor: "Strawberry",
+          priceNum: 6900,
+          price: "6 900",
+          oldPrice: "7 800",
+          save: "-12%",
+          badge: null,
+          rating: 4.6,
+          reviews: 245,
+          category: "protein",
+          isNew: false,
+        },
+        {
+          id: 5,
+          brand: "ByBens",
+          name: "Pre-Workout Blast",
+          flavor: "Watermelon Rush",
+          priceNum: 3200,
+          price: "3 200",
+          oldPrice: "4 000",
+          save: "-20%",
+          badge: "sale",
+          rating: 4.5,
+          reviews: 99,
+          category: "preworkout",
+          isNew: false,
+        },
+        {
+          id: 6,
+          brand: "MyProtein",
+          name: "Creatine Monohydrate",
+          flavor: "Unflavoured",
+          priceNum: 2400,
+          price: "2 400",
+          oldPrice: null,
+          save: null,
+          badge: "new",
+          rating: 4.8,
+          reviews: 632,
+          category: "creatine",
+          isNew: true,
+        },
+        {
+          id: 7,
+          brand: "Optimum Nutrition",
+          name: "Serious Mass",
+          flavor: "Chocolate",
+          priceNum: 8900,
+          price: "8 900",
+          oldPrice: "10 500",
+          save: "-15%",
+          badge: "hot",
+          rating: 4.7,
+          reviews: 301,
+          category: "gainers",
+          isNew: false,
+        },
+        {
+          id: 8,
+          brand: "ByBens",
+          name: "Omega-3 Fish Oil",
+          flavor: "1000mg Capsules",
+          priceNum: 1600,
+          price: "1 600",
+          oldPrice: null,
+          save: null,
+          badge: null,
+          rating: 4.6,
+          reviews: 188,
+          category: "vitamins",
+          isNew: false,
+        },
+        {
+          id: 9,
+          brand: "Scitec Nutrition",
+          name: "Amino 5600",
+          flavor: "Unflavoured Tablets",
+          priceNum: 3800,
+          price: "3 800",
+          oldPrice: "4 500",
+          save: "-16%",
+          badge: null,
+          rating: 4.4,
+          reviews: 77,
+          category: "protein",
+          isNew: false,
+        },
+        {
+          id: 10,
+          brand: "MyProtein",
+          name: "THE Pre-Workout",
+          flavor: "Blue Raspberry",
+          priceNum: 4200,
+          price: "4 200",
+          oldPrice: null,
+          save: null,
+          badge: "new",
+          rating: 4.6,
+          reviews: 143,
+          category: "preworkout",
+          isNew: true,
+        },
+        {
+          id: 11,
+          brand: "ByBens",
+          name: "Vitamin D3 + K2",
+          flavor: "2000IU Capsules",
+          priceNum: 1200,
+          price: "1 200",
+          oldPrice: null,
+          save: null,
+          badge: null,
+          rating: 4.7,
+          reviews: 209,
+          category: "vitamins",
+          isNew: false,
+        },
+        {
+          id: 12,
+          brand: "Optimum Nutrition",
+          name: "BCAA 1000 Caps",
+          flavor: "Unflavoured",
+          priceNum: 5100,
+          price: "5 100",
+          oldPrice: "6 000",
+          save: "-15%",
+          badge: "sale",
+          rating: 4.5,
+          reviews: 334,
+          category: "protein",
+          isNew: false,
+        },
+        {
+          id: 13,
+          brand: "ByBens",
+          name: "Shaker Pro 700ml",
+          flavor: "Red / Black",
+          priceNum: 900,
+          price: "900",
+          oldPrice: null,
+          save: null,
+          badge: null,
+          rating: 4.3,
+          reviews: 56,
+          category: "accessories",
+          isNew: false,
+        },
+        {
+          id: 14,
+          brand: "Scitec Nutrition",
+          name: "Jumbo Mass Gainer",
+          flavor: "Chocolate Hazelnut",
+          priceNum: 9500,
+          price: "9 500",
+          oldPrice: "11 000",
+          save: "-14%",
+          badge: "hot",
+          rating: 4.6,
+          reviews: 198,
+          category: "gainers",
+          isNew: false,
+        },
+        {
+          id: 15,
+          brand: "MyProtein",
+          name: "Zinc Magnesium ZMA",
+          flavor: "Capsules",
+          priceNum: 1800,
+          price: "1 800",
+          oldPrice: null,
+          save: null,
+          badge: "new",
+          rating: 4.5,
+          reviews: 88,
+          category: "vitamins",
+          isNew: true,
+        },
+        {
+          id: 16,
+          brand: "ByBens",
+          name: "Gym Grip Gloves",
+          flavor: "Black / M / L / XL",
+          priceNum: 1400,
+          price: "1 400",
+          oldPrice: null,
+          save: null,
+          badge: null,
+          rating: 4.4,
+          reviews: 42,
+          category: "accessories",
+          isNew: false,
+        },
+      ];
+
+      /* ══════════════════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════════════════ */
+      let state = {
+        search: "",
+        categories: [],
+        brands: [],
+        badges: [],
+        rating: 0,
+        priceMin: "",
+        priceMax: "",
+        sort: "default",
+        view: "grid",
+        page: 1,
+        perPage: 12,
+      };
+
+      /* ══════════════════════════════════════════════════════════════
+   FILTER DEFINITIONS
+══════════════════════════════════════════════════════════════ */
+      const categoryOptions = [
+        {
+          value: "protein",
+          label: "Protein",
+          count: allProducts.filter((p) => p.category === "protein").length,
+        },
+        {
+          value: "gainers",
+          label: "Mass Gainers",
+          count: allProducts.filter((p) => p.category === "gainers").length,
+        },
+        {
+          value: "preworkout",
+          label: "Pre-Workout",
+          count: allProducts.filter((p) => p.category === "preworkout").length,
+        },
+        {
+          value: "vitamins",
+          label: "Vitamins",
+          count: allProducts.filter((p) => p.category === "vitamins").length,
+        },
+        {
+          value: "creatine",
+          label: "Creatine",
+          count: allProducts.filter((p) => p.category === "creatine").length,
+        },
+        {
+          value: "accessories",
+          label: "Accessories",
+          count: allProducts.filter((p) => p.category === "accessories").length,
+        },
+      ];
+      const brandOptions = [...new Set(allProducts.map((p) => p.brand))].map(
+        (b) => ({
+          value: b,
+          label: b,
+          count: allProducts.filter((p) => p.brand === b).length,
+        }),
+      );
+
+      /* ══════════════════════════════════════════════════════════════
+   BUILD SIDEBAR HTML
+══════════════════════════════════════════════════════════════ */
+      function buildSidebarHTML() {
+        return `
+        <!-- Category -->
+        <div class="filter-section open">
+          <div class="filter-header" onclick="toggleFilterSection(this)">
+            <div class="filter-title-wrap">
+              <h4>Category</h4>
+              ${state.categories.length ? `<span class="filter-badge">${state.categories.length}</span>` : ""}
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="filter-body">
+            ${categoryOptions
+              .map(
+                (opt) => `
+              <div class="filter-option ${state.categories.includes(opt.value) ? "checked" : ""}" onclick="toggleFilter('categories','${opt.value}',this)">
+                <label>
+                  <div class="custom-checkbox">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  ${opt.label}
+                </label>
+                <span class="option-count">${opt.count}</span>
+              </div>`,
+              )
+              .join("")}
+          </div>
+        </div>
+
+        <!-- Brand -->
+        <div class="filter-section open">
+          <div class="filter-header" onclick="toggleFilterSection(this)">
+            <div class="filter-title-wrap">
+              <h4>Brand</h4>
+              ${state.brands.length ? `<span class="filter-badge">${state.brands.length}</span>` : ""}
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="filter-body">
+            ${brandOptions
+              .map(
+                (opt) => `
+              <div class="filter-option ${state.brands.includes(opt.value) ? "checked" : ""}" onclick="toggleFilter('brands','${opt.value}',this)">
+                <label>
+                  <div class="custom-checkbox">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  ${opt.label}
+                </label>
+                <span class="option-count">${opt.count}</span>
+              </div>`,
+              )
+              .join("")}
+          </div>
+        </div>
+
+        <!-- Price -->
+        <div class="filter-section open">
+          <div class="filter-header" onclick="toggleFilterSection(this)">
+            <div class="filter-title-wrap">
+              <h4>Price (DA)</h4>
+              ${state.priceMin || state.priceMax ? `<span class="filter-badge">1</span>` : ""}
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="filter-body">
+            <div class="price-inputs">
+              <input class="price-input" type="number" id="priceMin" placeholder="Min" value="${state.priceMin}" min="0"/>
+              <span class="price-sep">—</span>
+              <input class="price-input" type="number" id="priceMax" placeholder="Max" value="${state.priceMax}" min="0"/>
+            </div>
+            <button class="price-apply" onclick="applyPrice()">Apply Price</button>
+          </div>
+        </div>
+
+        <!-- Rating -->
+        <div class="filter-section open">
+          <div class="filter-header" onclick="toggleFilterSection(this)">
+            <div class="filter-title-wrap">
+              <h4>Min Rating</h4>
+              ${state.rating ? `<span class="filter-badge">${state.rating}+</span>` : ""}
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="filter-body">
+            ${[4.5, 4, 3.5, 0]
+              .map(
+                (r) => `
+              <div class="rating-option ${state.rating === r ? "selected" : ""}" onclick="setRating(${r})">
+                <span class="rating-stars">${"★".repeat(Math.floor(r))}${r % 1 ? "½" : ""}</span>
+                <span>${r > 0 ? r + "+ stars" : "All ratings"}</span>
+              </div>`,
+              )
+              .join("")}
+          </div>
+        </div>
+
+        <!-- Availability -->
+        <div class="filter-section open">
+          <div class="filter-header" onclick="toggleFilterSection(this)">
+            <div class="filter-title-wrap">
+              <h4>Availability</h4>
+              ${state.badges.length ? `<span class="filter-badge">${state.badges.length}</span>` : ""}
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="filter-body">
+            ${[
+              { v: "sale", l: "On Sale" },
+              { v: "new", l: "New Arrivals" },
+              { v: "hot", l: "Hot Items" },
+            ]
+              .map(
+                (opt) => `
+              <div class="filter-option ${state.badges.includes(opt.v) ? "checked" : ""}" onclick="toggleFilter('badges','${opt.v}',this)">
+                <label>
+                  <div class="custom-checkbox">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  ${opt.l}
+                </label>
+              </div>`,
+              )
+              .join("")}
+          </div>
+        </div>
+
+        <div class="reset-filters">
+          <button class="reset-btn" onclick="resetFilters()">Reset All Filters</button>
+        </div>`;
+      }
+
+      function renderSidebars() {
+        const html = buildSidebarHTML();
+        document.getElementById("sidebarContent").innerHTML = html;
+        document.getElementById("drawerContent").innerHTML = html;
+      }
+
+      /* ══════════════════════════════════════════════════════════════
+   FILTER LOGIC
+══════════════════════════════════════════════════════════════ */
+      function getFiltered() {
+        let list = [...allProducts];
+        const q = state.search.toLowerCase().trim();
+        if (q)
+          list = list.filter(
+            (p) =>
+              p.name.toLowerCase().includes(q) ||
+              p.brand.toLowerCase().includes(q) ||
+              p.flavor.toLowerCase().includes(q),
+          );
+        if (state.categories.length)
+          list = list.filter((p) => state.categories.includes(p.category));
+        if (state.brands.length)
+          list = list.filter((p) => state.brands.includes(p.brand));
+        if (state.badges.length)
+          list = list.filter((p) => state.badges.includes(p.badge));
+        if (state.rating > 0)
+          list = list.filter((p) => p.rating >= state.rating);
+        if (state.priceMin !== "")
+          list = list.filter((p) => p.priceNum >= Number(state.priceMin));
+        if (state.priceMax !== "")
+          list = list.filter((p) => p.priceNum <= Number(state.priceMax));
+
+        switch (state.sort) {
+          case "price-asc":
+            list.sort((a, b) => a.priceNum - b.priceNum);
+            break;
+          case "price-desc":
+            list.sort((a, b) => b.priceNum - a.priceNum);
+            break;
+          case "rating":
+            list.sort((a, b) => b.rating - a.rating);
+            break;
+          case "newest":
+            list.sort((a, b) => b.isNew - a.isNew);
+            break;
+          case "name":
+            list.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        }
+        return list;
+      }
+
+      function countActiveFilters() {
+        return (
+          state.categories.length +
+          state.brands.length +
+          state.badges.length +
+          (state.rating > 0 ? 1 : 0) +
+          (state.priceMin || state.priceMax ? 1 : 0)
+        );
+      }
+
+      /* ══════════════════════════════════════════════════════════════
+   RENDER PRODUCTS
+══════════════════════════════════════════════════════════════ */
+      function renderStars(r) {
+        return "★".repeat(Math.floor(r)) + (r % 1 >= 0.5 ? "½" : "");
+      }
+
+      function renderProducts() {
+        const t = i18n[currentLang];
+        const filtered = getFiltered();
+        const grid = document.getElementById("productGrid");
+        const total = filtered.length;
+        const start = (state.page - 1) * state.perPage;
+        const page = filtered.slice(start, start + state.perPage);
+
+        // Result count
+        document.getElementById("resultCount").innerHTML =
+          `<strong>${total}</strong> <span data-i18n="toolbar.products">${t["toolbar.products"]}</span>`;
+
+        // View class
+        grid.className =
+          "product-grid" + (state.view === "list" ? " list-view" : "");
+
+        if (page.length === 0) {
+          grid.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <h3>No Products Found</h3>
+            <p>Try adjusting your search or filters.</p>
+            <button onclick="resetFilters()" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:var(--red);color:#fff;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;">
+              Clear All Filters
+            </button>
+          </div>`;
+          document.getElementById("pagination").innerHTML = "";
+          return;
+        }
+
+        grid.innerHTML = page
+          .map(
+            (p, i) => `
+        <article class="product-card" style="animation-delay:${i * 0.05}s">
+          <div class="product-img">
+            ${p.badge ? `<span class="product-badge badge-${p.badge}">${p.badge.toUpperCase()}</span>` : ""}
+            <button class="wishlist-btn" aria-label="Wishlist" onclick="toggleWishlist(this)">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </button>
+            <svg class="placeholder-icon" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/>
+            </svg>
+          </div>
+          <div class="product-info">
+            <span class="product-brand">${p.brand}</span>
+            <h3 class="product-name">${p.name}</h3>
+            <span class="product-flavor">${p.flavor}</span>
+            <div class="product-rating">
+              <span class="stars">${renderStars(p.rating)}</span>
+              <span class="rating-count">(${p.reviews})</span>
+            </div>
+            <div class="product-pricing">
+              <span class="price">${p.price} DA</span>
+              ${p.oldPrice ? `<span class="price-old">${p.oldPrice} DA</span>` : ""}
+              ${p.save ? `<span class="price-save">${p.save}</span>` : ""}
+            </div>
+            <div class="product-actions">
+              <button class="btn-cart" onclick="addToCart('${p.name}')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                  <line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+                </svg>
+                ${t["btn.addcart"]}
+              </button>
+              <button class="btn-buy" onclick="window.location.href='product-detail.html?id=${p.id}'">
+                ${t["btn.buynow"]}
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="m9 18 6-6-6-6"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </article>`,
+          )
+          .join("");
+
+        renderPagination(total);
+      }
+
+      /* ══════════════════════════════════════════════════════════════
+   PAGINATION
+══════════════════════════════════════════════════════════════ */
+      function renderPagination(total) {
+        const pages = Math.ceil(total / state.perPage);
+        if (pages <= 1) {
+          document.getElementById("pagination").innerHTML = "";
+          return;
+        }
+
+        let html = `<button class="page-btn" onclick="goPage(${state.page - 1})" ${state.page === 1 ? 'disabled style="opacity:.4;cursor:default"' : ""}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+      </button>`;
+
+        for (let i = 1; i <= pages; i++) {
+          if (
+            i === 1 ||
+            i === pages ||
+            (i >= state.page - 1 && i <= state.page + 1)
+          ) {
+            html += `<button class="page-btn ${i === state.page ? "active" : ""}" onclick="goPage(${i})">${i}</button>`;
+          } else if (i === state.page - 2 || i === state.page + 2) {
+            html += `<span class="page-btn dots">…</span>`;
+          }
+        }
+
+        html += `<button class="page-btn" onclick="goPage(${state.page + 1})" ${state.page === pages ? 'disabled style="opacity:.4;cursor:default"' : ""}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+      </button>`;
+
+        document.getElementById("pagination").innerHTML = html;
+      }
+
+      function goPage(p) {
+        const pages = Math.ceil(getFiltered().length / state.perPage);
+        if (p < 1 || p > pages) return;
+        state.page = p;
+        renderProducts();
+        window.scrollTo({
+          top: document.getElementById("productGrid").offsetTop - 120,
+          behavior: "smooth",
+        });
+      }
+
+      /* ══════════════════════════════════════════════════════════════
+   ACTIVE FILTER CHIPS
+══════════════════════════════════════════════════════════════ */
+      function renderChips() {
+        const wrap = document.getElementById("activeFilters");
+        const chips = [];
+
+        state.categories.forEach((v) =>
+          chips.push({
+            label: categoryOptions.find((o) => o.value === v)?.label || v,
+            remove: () => {
+              state.categories = state.categories.filter((x) => x !== v);
+              refresh();
+            },
+          }),
+        );
+        state.brands.forEach((v) =>
+          chips.push({
+            label: v,
+            remove: () => {
+              state.brands = state.brands.filter((x) => x !== v);
+              refresh();
+            },
+          }),
+        );
+        state.badges.forEach((v) =>
+          chips.push({
+            label: v === "sale" ? "On Sale" : v === "new" ? "New" : "Hot",
+            remove: () => {
+              state.badges = state.badges.filter((x) => x !== v);
+              refresh();
+            },
+          }),
+        );
+        if (state.rating > 0)
+          chips.push({
+            label: `${state.rating}+ Stars`,
+            remove: () => {
+              state.rating = 0;
+              refresh();
+            },
+          });
+        if (state.priceMin || state.priceMax)
+          chips.push({
+            label: `${state.priceMin || "0"} – ${state.priceMax || "∞"} DA`,
+            remove: () => {
+              state.priceMin = "";
+              state.priceMax = "";
+              refresh();
+            },
+          });
+
+        if (chips.length === 0) {
+          wrap.innerHTML = "";
+          return;
+        }
+
+        wrap.innerHTML =
+          chips
+            .map(
+              (c, i) => `
+        <span class="filter-chip">
+          ${c.label}
+          <button onclick="chipRemove(${i})" aria-label="Remove filter">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </span>`,
+            )
+            .join("") +
+          `<button class="clear-all-btn" onclick="resetFilters()">Clear all</button>`;
+
+        window._chipRemovers = chips.map((c) => c.remove);
+      }
+
+      function chipRemove(i) {
+        window._chipRemovers[i]();
+      }
+
+      /* ══════════════════════════════════════════════════════════════
+   FILTER INTERACTIONS
+══════════════════════════════════════════════════════════════ */
+      function toggleFilter(key, value, el) {
+        const arr = state[key];
+        const idx = arr.indexOf(value);
+        if (idx === -1) arr.push(value);
+        else arr.splice(idx, 1);
+        el.classList.toggle("checked", arr.includes(value));
+        refresh();
+      }
+
+      function setRating(r) {
+        state.rating = r;
+        refresh();
+      }
+
+      function applyPrice() {
+        const minEl = document.getElementById("priceMin");
+        const maxEl = document.getElementById("priceMax");
+        if (minEl) state.priceMin = minEl.value;
+        if (maxEl) state.priceMax = maxEl.value;
+        refresh();
+      }
+
+      function resetFilters() {
+        state.categories = [];
+        state.brands = [];
+        state.badges = [];
+        state.rating = 0;
+        state.priceMin = "";
+        state.priceMax = "";
+        state.search = "";
+        state.page = 1;
+        document.getElementById("productSearch").value = "";
+        refresh();
+      }
+
+      function handleProductSearch() {
+        state.search = document.getElementById("productSearch").value;
+        state.page = 1;
+        refresh();
+      }
+
+      function handleSort() {
+        state.sort = document.getElementById("sortSelect").value;
+        state.page = 1;
+        renderProducts();
+      }
+
+      function refresh() {
+        state.page = 1;
+        renderSidebars();
+        renderChips();
+        renderProducts();
+        const count = countActiveFilters();
+        const badge = document.getElementById("mobileFilterCount");
+        badge.textContent = count;
+        badge.classList.toggle("visible", count > 0);
+      }
+
+      /* ══════════════════════════════════════════════════════════════
+   SIDEBAR ACCORDION
+══════════════════════════════════════════════════════════════ */
+      function toggleFilterSection(header) {
+        header.closest(".filter-section").classList.toggle("open");
+      }
+
+      /* ══════════════════════════════════════════════════════════════
+   MOBILE FILTER DRAWER
+══════════════════════════════════════════════════════════════ */
+      function openFilterDrawer() {
+        document.getElementById("filterOverlay").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+      function closeFilterDrawer() {
+        document.getElementById("filterOverlay").classList.remove("open");
+        document.body.style.overflow = "";
+      }
+      function handleOverlayClick(e) {
+        if (e.target === document.getElementById("filterOverlay"))
+          closeFilterDrawer();
+      }
+
+      /* ══════════════════════════════════════════════════════════════
+   VIEW TOGGLE
+══════════════════════════════════════════════════════════════ */
+      function setView(v) {
+        state.view = v;
+        document
+          .getElementById("gridViewBtn")
+          .classList.toggle("active", v === "grid");
+        document
+          .getElementById("listViewBtn")
+          .classList.toggle("active", v === "list");
+        renderProducts();
+      }
+
+      /* ══════════════════════════════════════════════════════════════
+   CART / WISHLIST
+══════════════════════════════════════════════════════════════ */
+      let cartCount = 3;
+      function addToCart(name) {
+        cartCount++;
+        document.getElementById("cartBadge").textContent = cartCount;
+        showToast(i18n[currentLang]["toast.added"]);
+      }
+      function toggleWishlist(btn) {
+        btn.classList.toggle("active");
+        const active = btn.classList.contains("active");
+        btn.querySelector("svg").style.fill = active ? "var(--red)" : "none";
+        btn.style.color = active ? "var(--red)" : "";
+        showToast(active ? "Added to wishlist ♥" : "Removed from wishlist");
+      }
+
+      /* ══════════════════════════════════════════════════════════════
+   MOBILE MENU
+══════════════════════════════════════════════════════════════ */
+      function toggleMobileMenu() {
+        const btn = document.getElementById("hamburgerBtn");
+        const menu = document.getElementById("mobileMenu");
+        const isOpen = menu.classList.toggle("open");
+        btn.classList.toggle("open", isOpen);
+        btn.setAttribute("aria-expanded", isOpen);
+        document.body.style.overflow = isOpen ? "hidden" : "";
+      }
+      function toggleMobileCat(btn) {
+        const item = btn.closest(".m-cat-item");
+        const isOpen = item.classList.contains("open");
+        document
+          .querySelectorAll(".m-cat-item.open")
+          .forEach((el) => el.classList.remove("open"));
+        if (!isOpen) item.classList.add("open");
+      }
+
+      /* ══════════════════════════════════════════════════════════════
+   TOAST / SCROLL
+══════════════════════════════════════════════════════════════ */
+      let toastTimer;
+      function showToast(msg) {
+        const toast = document.getElementById("toast");
+        document.getElementById("toastMsg").textContent = msg;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 3000);
+      }
+
+      window.addEventListener(
+        "scroll",
+        () => {
+          document
+            .getElementById("site-header")
+            .classList.toggle("scrolled", window.scrollY > 12);
+          document
+            .getElementById("scrollTop")
+            .classList.toggle("visible", window.scrollY > 400);
+        },
+        { passive: true },
+      );
+
+      /* ══════════════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════════════ */
+      document.addEventListener("DOMContentLoaded", () => {
+        renderSidebars();
+        renderProducts();
+        renderChips();
+        const savedLang = localStorage.getItem("bybens_lang") || "en";
+        if (savedLang !== "en") switchLang(savedLang);
+      });
+    </script>
+  </body>
+</html>
