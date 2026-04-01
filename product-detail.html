@@ -2210,7 +2210,43 @@
                   </div>
                 </div>
               </div>
-
+              <!-- Promo Code -->
+              <div class="form-group" style="margin-bottom: 14px">
+                <label for="promoCode">Promo Code</label>
+                <div style="display: flex; gap: 8px">
+                  <input
+                    type="text"
+                    id="promoCode"
+                    placeholder="Enter code…"
+                    style="text-transform: uppercase"
+                    oninput="this.value = this.value.toUpperCase()"
+                  />
+                  <button
+                    onclick="applyPromo()"
+                    style="
+                      flex-shrink: 0;
+                      padding: 0 18px;
+                      height: 44px;
+                      background: var(--black);
+                      color: #fff;
+                      border-radius: 8px;
+                      font-size: 13px;
+                      font-weight: 700;
+                      letter-spacing: 0.5px;
+                      cursor: pointer;
+                      transition: background var(--transition);
+                    "
+                    onmouseover="this.style.background = 'var(--red)'"
+                    onmouseout="this.style.background = 'var(--black)'"
+                  >
+                    APPLY
+                  </button>
+                </div>
+                <span
+                  id="promoMsg"
+                  style="font-size: 12px; margin-top: 4px"
+                ></span>
+              </div>
               <!-- Order summary -->
               <div class="order-summary">
                 <div class="order-summary-title" data-i18n="form.orderSummary">
@@ -4584,6 +4620,12 @@
       let selectedFlavor = null;
       let selectedDelivery = "home";
       const DELIVERY_COST = { home: 500, office: 400 };
+      const PROMO_CODES = {
+        BYBENS10: 10,
+        SPORT20: 20,
+        WELCOME15: 15,
+      };
+      let appliedDiscount = 0;
 
       /* ══════════════════════════════════════════════════════
          RENDER PRODUCT
@@ -4741,9 +4783,37 @@
         document.getElementById("summaryDelivery").textContent =
           `+${cost} DA (${selectedDelivery === "home" ? "Home" : "Office"})`;
 
-        const total = p.priceNum + cost;
+        const discount = Math.round(p.priceNum * (appliedDiscount / 100));
+        const total = p.priceNum + cost - discount;
         document.getElementById("summaryTotal").textContent =
-          total.toLocaleString("fr-DZ") + " DA";
+          (appliedDiscount ? `(-${appliedDiscount}%) ` : "") +
+          total.toLocaleString("fr-DZ") +
+          " DA";
+      }
+
+      function applyPromo() {
+        const code = document
+          .getElementById("promoCode")
+          .value.trim()
+          .toUpperCase();
+        const msgEl = document.getElementById("promoMsg");
+
+        if (!code) {
+          msgEl.style.color = "var(--red)";
+          msgEl.textContent = "Please enter a promo code.";
+          return;
+        }
+        if (PROMO_CODES[code]) {
+          appliedDiscount = PROMO_CODES[code];
+          msgEl.style.color = "#0a7c3e";
+          msgEl.textContent = `✓ Code applied! ${appliedDiscount}% off`;
+          updateSummary();
+        } else {
+          appliedDiscount = 0;
+          msgEl.style.color = "var(--red)";
+          msgEl.textContent = "✗ Invalid promo code.";
+          updateSummary();
+        }
       }
 
       /* ══════════════════════════════════════════════════════
