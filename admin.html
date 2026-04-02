@@ -83,13 +83,12 @@
         list-style: none;
       }
 
-      /* ─── LAYOUT ── */
       #app {
         display: flex;
         min-height: 100vh;
       }
 
-      /* ─── SIDEBAR ── */
+      /* SIDEBAR */
       #sidebar {
         width: var(--sidebar-w);
         flex-shrink: 0;
@@ -307,7 +306,7 @@
         color: rgba(255, 255, 255, 0.4);
       }
 
-      /* ─── MAIN ── */
+      /* MAIN */
       #main {
         flex: 1;
         margin-left: var(--sidebar-w);
@@ -320,7 +319,7 @@
         margin-left: var(--sidebar-collapsed);
       }
 
-      /* ─── TOPBAR ── */
+      /* TOPBAR */
       #topbar {
         height: 64px;
         background: #fff;
@@ -345,33 +344,6 @@
         align-items: center;
         gap: 10px;
       }
-      .tb-icon-btn {
-        width: 38px;
-        height: 38px;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--g600);
-        transition:
-          background var(--tr),
-          color var(--tr);
-        position: relative;
-      }
-      .tb-icon-btn:hover {
-        background: var(--g50);
-        color: var(--black);
-      }
-      .notif-dot {
-        position: absolute;
-        top: 6px;
-        right: 6px;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--red);
-        border: 2px solid #fff;
-      }
       .tb-logout {
         display: flex;
         align-items: center;
@@ -392,7 +364,7 @@
         color: #fff;
       }
 
-      /* ─── PAGE ── */
+      /* PAGE */
       .page {
         display: none;
         padding: 28px;
@@ -402,7 +374,7 @@
         display: block;
       }
 
-      /* ─── STATS ── */
+      /* STATS */
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -455,7 +427,7 @@
         margin-top: 2px;
       }
 
-      /* ─── SECTION HEADER ── */
+      /* SECTION HEADER */
       .sec-header {
         display: flex;
         align-items: center;
@@ -514,7 +486,7 @@
         background: var(--g50);
       }
 
-      /* ─── TABLE ── */
+      /* TABLE */
       .table-wrap {
         background: #fff;
         border-radius: 12px;
@@ -590,7 +562,7 @@
         background: var(--g50);
       }
 
-      /* ─── BADGES ── */
+      /* BADGES */
       .badge {
         display: inline-flex;
         align-items: center;
@@ -657,7 +629,7 @@
         background: var(--g400);
       }
 
-      /* ─── ACTION BUTTONS ── */
+      /* ACTION BUTTONS */
       .action-group {
         display: flex;
         align-items: center;
@@ -725,7 +697,7 @@
         color: #fff;
       }
 
-      /* ─── PRODUCT THUMB ── */
+      /* PRODUCT THUMB */
       .prod-thumb {
         width: 42px;
         height: 42px;
@@ -756,7 +728,7 @@
         color: var(--g400);
       }
 
-      /* ─── MODAL ── */
+      /* MODAL */
       .modal-overlay {
         position: fixed;
         inset: 0;
@@ -844,7 +816,7 @@
         z-index: 1;
       }
 
-      /* ─── FORMS ── */
+      /* FORMS */
       .form-row {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -901,7 +873,7 @@
         padding-right: 32px;
       }
 
-      /* ─── UPLOAD ── */
+      /* UPLOAD */
       .upload-box {
         border: 2px dashed var(--g200);
         border-radius: 10px;
@@ -954,7 +926,7 @@
         margin-top: 6px;
       }
 
-      /* ─── VARIANTS ── */
+      /* VARIANTS */
       .variants-list {
         display: flex;
         flex-direction: column;
@@ -1008,7 +980,7 @@
         color: var(--red);
       }
 
-      /* ─── FLAVORS ── */
+      /* FLAVORS */
       .flavors-list {
         display: flex;
         flex-direction: column;
@@ -1025,7 +997,7 @@
         height: 38px;
       }
 
-      /* ─── CATEGORY CHIPS in product modal ── */
+      /* CAT CHIPS */
       .cat-chips-wrap {
         display: flex;
         flex-direction: column;
@@ -1062,7 +1034,7 @@
         font-size: 13px;
       }
 
-      /* ─── PROMO TOGGLE ── */
+      /* TOGGLE */
       .toggle-row {
         display: flex;
         align-items: center;
@@ -1124,7 +1096,7 @@
         transform: translateX(18px);
       }
 
-      /* ─── CATEGORY TREE ── */
+      /* CATEGORY TREE */
       .cat-tree {
         display: flex;
         flex-direction: column;
@@ -1219,6 +1191,27 @@
         display: flex;
         gap: 6px;
       }
+      .add-sub-inline {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .add-sub-inline input {
+        flex: 1;
+        height: 36px;
+      }
+      .add-sub-inline button {
+        height: 36px;
+        padding: 0 14px;
+        border-radius: 8px;
+        background: var(--red);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+
+      /* SUB ADDER (cat modal) */
       .sub-adder {
         background: var(--g50);
         border: 1px solid var(--g100);
@@ -1280,28 +1273,7 @@
         color: #fff;
       }
 
-      /* ── add-sub-modal for existing category ── */
-      .add-sub-inline {
-        display: flex;
-        gap: 8px;
-        margin-top: 8px;
-      }
-      .add-sub-inline input {
-        flex: 1;
-        height: 36px;
-      }
-      .add-sub-inline button {
-        height: 36px;
-        padding: 0 14px;
-        border-radius: 8px;
-        background: var(--red);
-        color: #fff;
-        font-size: 12px;
-        font-weight: 700;
-        flex-shrink: 0;
-      }
-
-      /* ─── SETTINGS ── */
+      /* SETTINGS */
       .settings-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1324,7 +1296,7 @@
         gap: 8px;
       }
 
-      /* ─── ORDER DETAIL MODAL ── */
+      /* ORDER DETAIL */
       .order-detail-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -1368,7 +1340,7 @@
         word-break: break-word;
       }
 
-      /* ─── CODE TAG ── */
+      /* CODE TAG */
       .code-tag {
         display: inline-flex;
         align-items: center;
@@ -1381,7 +1353,7 @@
         letter-spacing: 0.5px;
       }
 
-      /* ─── TOAST ── */
+      /* TOAST */
       #toast {
         position: fixed;
         bottom: 24px;
@@ -1418,7 +1390,6 @@
         color: #dc2626;
       }
 
-      /* ─── ANIMATIONS ── */
       @keyframes fadeUp {
         from {
           opacity: 0;
@@ -1430,7 +1401,7 @@
         }
       }
 
-      /* ─── CONFIRM ── */
+      /* CONFIRM */
       .confirm-overlay {
         position: fixed;
         inset: 0;
@@ -1511,7 +1482,7 @@
         background: #b91c1c;
       }
 
-      /* ─── LOADER ── */
+      /* LOADER */
       .page-loader {
         display: flex;
         align-items: center;
@@ -1535,8 +1506,6 @@
           transform: rotate(360deg);
         }
       }
-
-      /* empty state */
       .empty-state {
         padding: 48px;
         text-align: center;
@@ -1550,7 +1519,6 @@
         font-size: 14px;
       }
 
-      /* ─── SECTION DIVIDER ── */
       .form-section-label {
         font-size: 11px;
         font-weight: 700;
@@ -1562,7 +1530,6 @@
         margin-bottom: 14px;
       }
 
-      /* ─── BACK TO SITE ── */
       .back-to-site {
         display: flex;
         align-items: center;
@@ -1602,7 +1569,6 @@
         max-width: 0;
       }
 
-      /* ─── RESPONSIVE ── */
       @media (max-width: 768px) {
         #sidebar {
           transform: translateX(-100%);
@@ -1798,7 +1764,19 @@
       <!-- MAIN -->
       <div id="main">
         <header id="topbar">
-          <button class="tb-icon-btn" onclick="toggleSidebar()">
+          <button
+            class="tb-icon-btn"
+            onclick="toggleSidebar()"
+            style="
+              width: 38px;
+              height: 38px;
+              border-radius: 8px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: var(--g600);
+            "
+          >
             <svg
               width="20"
               height="20"
@@ -2206,15 +2184,9 @@
           </div>
         </div>
       </div>
-      <!-- end #main -->
     </div>
-    <!-- end #app -->
 
-    <!-- ═══════════════════════════════════════════════════════════
-     MODALS
-═══════════════════════════════════════════════════════════ -->
-
-    <!-- ORDER DETAIL MODAL (read-only front) -->
+    <!-- ORDER DETAIL MODAL -->
     <div class="modal-overlay" id="order-modal">
       <div class="modal" style="max-width: 660px">
         <div class="modal-header">
@@ -2313,7 +2285,6 @@
           </button>
         </div>
         <div class="modal-body">
-          <!-- Basic Info -->
           <div class="form-section-label">Basic Info</div>
           <div class="form-row">
             <div class="form-group">
@@ -2347,7 +2318,6 @@
             </div>
           </div>
 
-          <!-- Image -->
           <div class="form-section-label">Product Image</div>
           <div class="form-group" style="margin-bottom: 16px">
             <div class="upload-box" id="upload-box">
@@ -2396,7 +2366,6 @@
             <input type="hidden" id="pm-image-url" />
           </div>
 
-          <!-- Categories -->
           <div class="form-section-label">Categories & Sub-categories</div>
           <div
             class="cat-chips-wrap"
@@ -2422,7 +2391,6 @@
             Add Category
           </button>
 
-          <!-- Weight/Price Variants -->
           <div class="form-section-label">Weight / Size Variants</div>
           <div class="variants-list" id="variants-list"></div>
           <button
@@ -2444,7 +2412,6 @@
             Add Variant
           </button>
 
-          <!-- Flavors -->
           <div class="form-section-label">Flavors & Quantities</div>
           <div class="flavors-list" id="flavors-list"></div>
           <button
@@ -2466,7 +2433,6 @@
             Add Flavor
           </button>
 
-          <!-- Discount & Status -->
           <div class="form-section-label">Pricing & Availability</div>
           <div class="form-row thirds">
             <div class="form-group">
@@ -2710,24 +2676,21 @@
       <span id="toast-msg">Done!</span>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════════
-     JAVASCRIPT
-═══════════════════════════════════════════════════════════ -->
     <script>
       "use strict";
 
       /* ══════════════════════════════════
-   CONFIG
-══════════════════════════════════ */
+         CONFIG  ← only change these two lines
+      ══════════════════════════════════ */
       const API_URL =
-        "https://script.google.com/macros/s/AKfycbxGQYWw3J6i8Q_YhuH9WZP5s-pQWn5wmjXR_4XWc3BidBEnbDBKwmVJ8QdFCECGbCqC/exec";
-      const CLOUD_NAME = "dsnunoax8";
+        "https://script.google.com/macros/s/AKfycbx2f4CBnWFcYAGQrB3TRizW5w27Eplnmsfrp_gzPPXhU80hOTi1z8IDdlRUOaet44CB1A/exec";
+      const CLOUD_NAME = "dbxna1ipc";
       const UPLOAD_PRESET = "bybens";
       const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
 
       /* ══════════════════════════════════
-   STATE
-══════════════════════════════════ */
+         STATE
+      ══════════════════════════════════ */
       let adminCreds = {
         username: "admin",
         password: "1234",
@@ -2738,44 +2701,27 @@
       let editingProductId = null;
       let editingPromoId = null;
 
-      // Local cache
-      let _categories = []; // [{id, name, description, subCategories:[{id,name}]}]
+      let _categories = [];
       let _products = [];
       let _promos = [];
-      let _orders = [
-        {
-          id: "BB-0148",
-          name: "Youcef Mansouri",
-          phone: "0555 123 456",
-          wilaya: "Alger",
-          commune: "Bab El Oued",
-          address: "Rue de la Liberté",
-          note: "Call before delivery",
-          product: "ON Gold Standard Whey",
-          flavor: "Double Rich Chocolate",
-          variant: "2.27 kg",
-          qty: 1,
-          total: 5800,
-          status: "pending",
-          date: "01 Apr 2026",
-        },
-      ];
+      let _orders = [];
 
       /* ══════════════════════════════════
-   API HELPERS
-══════════════════════════════════ */
+         API HELPER  ← fixed: action in URL param, no Content-Type header
+      ══════════════════════════════════ */
       async function api(action, body = {}) {
-        body.action = action;
-        const res = await fetch(API_URL, {
+        const url = API_URL + "?action=" + encodeURIComponent(action);
+        const res = await fetch(url, {
           method: "POST",
           body: JSON.stringify(body),
+          // No Content-Type header on purpose — avoids CORS preflight
         });
         return res.json();
       }
 
       /* ══════════════════════════════════
-   SIDEBAR / NAVIGATION
-══════════════════════════════════ */
+         SIDEBAR / NAV
+      ══════════════════════════════════ */
       function toggleSidebar() {
         const isMobile = window.innerWidth < 768;
         if (isMobile) {
@@ -2799,6 +2745,7 @@
         promos: "Promo Codes",
         settings: "Settings",
       };
+
       function showPage(name, el) {
         document
           .querySelectorAll(".page")
@@ -2815,25 +2762,24 @@
       }
 
       /* ══════════════════════════════════
-   AUTH
-══════════════════════════════════ */
+         AUTH
+      ══════════════════════════════════ */
       function doLogout() {
         sessionStorage.removeItem("bb_admin_auth");
         window.location.href = "login.html";
       }
 
       /* ══════════════════════════════════
-   DASHBOARD
-══════════════════════════════════ */
+         DASHBOARD
+      ══════════════════════════════════ */
       function updateDashboard() {
         document.getElementById("stat-orders").textContent = _orders.length;
         document.getElementById("stat-products").textContent = _products.length;
         document.getElementById("stat-categories").textContent =
           _categories.length;
-        const activePromos = _promos.filter(
+        document.getElementById("stat-promos").textContent = _promos.filter(
           (p) => p.status === "active",
         ).length;
-        document.getElementById("stat-promos").textContent = activePromos;
         document.getElementById("sb-orders-badge").textContent =
           _orders.filter((o) => o.status === "pending").length || "—";
 
@@ -2846,25 +2792,28 @@
         tbody.innerHTML = recent
           .map(
             (o) => `
-    <tr>
-      <td><strong>#${o.id}</strong></td>
-      <td>${o.name}</td>
-      <td>${o.product}</td>
-      <td><strong>${Number(o.total).toLocaleString()} DA</strong></td>
-      <td><span class="badge badge-${o.status}">${cap(o.status)}</span></td>
-      <td style="font-size:12px;color:var(--g600)">${o.date}</td>
-    </tr>`,
+          <tr>
+            <td><strong>#${o.id}</strong></td>
+            <td>${o.name}</td>
+            <td>${o.product}</td>
+            <td><strong>${Number(o.total).toLocaleString()} DA</strong></td>
+            <td><span class="badge badge-${o.status}">${cap(o.status)}</span></td>
+            <td style="font-size:12px;color:var(--g600)">${o.date || o.createdAt || "—"}</td>
+          </tr>`,
           )
           .join("");
       }
 
       /* ══════════════════════════════════
-   ORDERS (static/frontend for now)
-══════════════════════════════════ */
+         ORDERS
+      ══════════════════════════════════ */
       function filterOrders(q = "") {
-        const sf = document.getElementById("orderFilter").value;
-        renderOrders(q.toLowerCase(), sf);
+        renderOrders(
+          q.toLowerCase(),
+          document.getElementById("orderFilter").value,
+        );
       }
+
       function renderOrders(filter = "", statusFilter = "") {
         const tbody = document.getElementById("orders-tbody");
         const filtered = _orders.filter((o) => {
@@ -2882,21 +2831,22 @@
         tbody.innerHTML = filtered
           .map(
             (o) => `
-    <tr>
-      <td><strong>#${o.id}</strong></td>
-      <td>${o.name}</td>
-      <td style="font-size:12px">${o.phone}</td>
-      <td>${o.wilaya}</td>
-      <td>${o.product}</td>
-      <td style="font-size:12px;color:var(--g600)">${o.flavor || "—"}</td>
-      <td><strong>${Number(o.total).toLocaleString()} DA</strong></td>
-      <td><span class="badge badge-${o.status}">${cap(o.status)}</span></td>
-      <td style="font-size:12px;color:var(--g600)">${o.date}</td>
-      <td><div class="action-group"><button class="act-btn act-view" onclick="viewOrder('${o.id}')">View</button></div></td>
-    </tr>`,
+          <tr>
+            <td><strong>#${o.id}</strong></td>
+            <td>${o.name}</td>
+            <td style="font-size:12px">${o.phone}</td>
+            <td>${o.wilaya}</td>
+            <td>${o.product}</td>
+            <td style="font-size:12px;color:var(--g600)">${o.flavor || "—"}</td>
+            <td><strong>${Number(o.total).toLocaleString()} DA</strong></td>
+            <td><span class="badge badge-${o.status}">${cap(o.status)}</span></td>
+            <td style="font-size:12px;color:var(--g600)">${o.date || o.createdAt || "—"}</td>
+            <td><div class="action-group"><button class="act-btn act-view" onclick="viewOrder('${o.id}')">View</button></div></td>
+          </tr>`,
           )
           .join("");
       }
+
       function viewOrder(id) {
         const o = _orders.find((x) => x.id === id);
         if (!o) return;
@@ -2920,8 +2870,8 @@
       }
 
       /* ══════════════════════════════════
-   CLOUDINARY IMAGE UPLOAD
-══════════════════════════════════ */
+         CLOUDINARY IMAGE UPLOAD
+      ══════════════════════════════════ */
       async function handleImageUpload(e) {
         const file = e.target.files[0];
         if (!file) return;
@@ -2930,7 +2880,6 @@
           return;
         }
 
-        // Preview immediately
         const reader = new FileReader();
         reader.onload = (ev) => {
           const img = document.getElementById("upload-preview");
@@ -2940,11 +2889,11 @@
         };
         reader.readAsDataURL(file);
 
-        // Upload to Cloudinary
         const box = document.getElementById("upload-box");
         const progress = document.getElementById("upload-progress");
         box.classList.add("uploading");
         progress.style.display = "block";
+        progress.style.color = "var(--blue)";
         progress.textContent = "⏳ Uploading to Cloudinary…";
 
         try {
@@ -2964,17 +2913,17 @@
             throw new Error(data.error?.message || "Upload failed");
           }
         } catch (err) {
-          progress.textContent = "❌ Upload failed: " + err.message;
+          progress.textContent = "❌ " + err.message;
           progress.style.color = "#dc2626";
-          showToast("Image upload failed", "error");
+          showToast("Image upload failed: " + err.message, "error");
         } finally {
           box.classList.remove("uploading");
         }
       }
 
       /* ══════════════════════════════════
-   PRODUCTS
-══════════════════════════════════ */
+         PRODUCTS
+      ══════════════════════════════════ */
       async function loadProducts() {
         const tbody = document.getElementById("products-tbody");
         tbody.innerHTML = `<tr><td colspan="9"><div class="page-loader"><div class="spinner"></div> Loading products…</div></td></tr>`;
@@ -3004,8 +2953,10 @@
       }
 
       function filterProducts(q = "") {
-        const cf = document.getElementById("prodCatFilter").value;
-        renderProducts(q.toLowerCase(), cf);
+        renderProducts(
+          q.toLowerCase(),
+          document.getElementById("prodCatFilter").value,
+        );
       }
 
       function renderProducts(filter = "", catFilter = "") {
@@ -3030,7 +2981,7 @@
             const variants = p.variants || [];
             const flavors = p.flavors || [];
             const thumbSrc = p.imageUrl
-              ? `<img src="${p.imageUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:8px" />`
+              ? `<img src="${p.imageUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:8px"/>`
               : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>`;
             const catStr =
               cats
@@ -3054,26 +3005,19 @@
                 )
                 .join("<br>") || "—";
             return `<tr>
-      <td>
-        <div class="prod-info">
-          <div class="prod-thumb">${thumbSrc}</div>
-          <div class="prod-name-block"><div class="name">${p.name}</div></div>
-        </div>
-      </td>
-      <td style="font-size:12px;color:var(--g600)">${p.brand || "—"}</td>
-      <td>${catStr}</td>
-      <td style="font-size:12px;color:var(--g600)">${flvStr}</td>
-      <td style="font-size:12px">${varStr}</td>
-      <td style="font-size:12px">${p.discount > 0 ? '<span class="badge badge-pending">' + p.discount + "%</span>" : "—"}</td>
-      <td>${p.allowPromo ? '<span class="badge badge-active">Yes</span>' : '<span class="badge badge-inactive">No</span>'}</td>
-      <td><span class="badge badge-${p.status}">${cap(p.status)}</span></td>
-      <td>
-        <div class="action-group">
-          <button class="act-btn act-edit" onclick="editProduct('${p.id}')">Edit</button>
-          <button class="act-btn act-delete" onclick="confirmDelete('product','${p.id}')">Delete</button>
-        </div>
-      </td>
-    </tr>`;
+            <td><div class="prod-info"><div class="prod-thumb">${thumbSrc}</div><div class="prod-name-block"><div class="name">${p.name}</div></div></div></td>
+            <td style="font-size:12px;color:var(--g600)">${p.brand || "—"}</td>
+            <td>${catStr}</td>
+            <td style="font-size:12px;color:var(--g600)">${flvStr}</td>
+            <td style="font-size:12px">${varStr}</td>
+            <td style="font-size:12px">${p.discount > 0 ? `<span class="badge badge-pending">${p.discount}%</span>` : "—"}</td>
+            <td>${p.allowPromo ? '<span class="badge badge-active">Yes</span>' : '<span class="badge badge-inactive">No</span>'}</td>
+            <td><span class="badge badge-${p.status}">${cap(p.status)}</span></td>
+            <td><div class="action-group">
+              <button class="act-btn act-edit" onclick="editProduct('${p.id}')">Edit</button>
+              <button class="act-btn act-delete" onclick="confirmDelete('product','${p.id}')">Delete</button>
+            </div></td>
+          </tr>`;
           })
           .join("");
       }
@@ -3131,35 +3075,29 @@
         openProductModal(id);
       }
 
-      /* Category chips in product modal */
       function addCatChip(existing = null) {
         const wrap = document.getElementById("pm-cat-chips");
         const div = document.createElement("div");
         div.className = "cat-chip-entry";
-
         const catOptions = _categories
           .map(
             (c) =>
               `<option value="${c.id}" data-name="${c.name}" ${existing && existing.catId == c.id ? "selected" : ""}>${c.name}</option>`,
           )
           .join("");
-
         div.innerHTML = `
-    <div class="cat-chip-header">
-      <select class="form-control form-select" onchange="refreshSubOptions(this)">
-        <option value="">Select category…</option>
-        ${catOptions}
-      </select>
-      <button class="btn-remove-variant" onclick="this.closest('.cat-chip-entry').remove()">×</button>
-    </div>
-    <div class="cat-chip-subrow">
-      <select class="form-control form-select sub-select" style="height:34px;font-size:13px">
-        <option value="">No sub-category</option>
-      </select>
-    </div>`;
+          <div class="cat-chip-header">
+            <select class="form-control form-select" onchange="refreshSubOptions(this)">
+              <option value="">Select category…</option>${catOptions}
+            </select>
+            <button class="btn-remove-variant" onclick="this.closest('.cat-chip-entry').remove()">×</button>
+          </div>
+          <div class="cat-chip-subrow">
+            <select class="form-control form-select sub-select" style="height:34px;font-size:13px">
+              <option value="">No sub-category</option>
+            </select>
+          </div>`;
         wrap.appendChild(div);
-
-        // Populate sub-options if editing
         if (existing && existing.catId) {
           const catSel = div.querySelector("select");
           catSel.value = existing.catId;
@@ -3188,10 +3126,9 @@
       }
 
       function getCatChipsData() {
-        const chips = document.querySelectorAll(
-          "#pm-cat-chips .cat-chip-entry",
-        );
-        return Array.from(chips)
+        return Array.from(
+          document.querySelectorAll("#pm-cat-chips .cat-chip-entry"),
+        )
           .map((chip) => {
             const catSel = chip.querySelector("select");
             const subSel = chip.querySelector(".sub-select");
@@ -3216,51 +3153,36 @@
           .filter(Boolean);
       }
 
-      /* Weight variants */
       function addVariant(v = null) {
         const list = document.getElementById("variants-list");
         const div = document.createElement("div");
         div.className = "variant-row";
         div.innerHTML = `
-    <div class="form-group">
-      <label>Weight / Size</label>
-      <input type="number" class="form-control" placeholder="e.g. 908" value="${v ? v.weight : ""}" />
-    </div>
-    <div class="form-group">
-      <label>Unit</label>
-      <select class="form-control form-select">
-        <option ${v && v.unit === "g" ? "selected" : ""}>g</option>
-        <option ${v && v.unit === "kg" ? "selected" : ""}>kg</option>
-        <option ${v && v.unit === "caps" ? "selected" : ""}>caps</option>
-        <option ${v && v.unit === "ml" ? "selected" : ""}>ml</option>
-        <option ${v && v.unit === "tabs" ? "selected" : ""}>tabs</option>
-        <option ${v && v.unit === "oz" ? "selected" : ""}>oz</option>
-        <option ${v && v.unit === "lbs" ? "selected" : ""}>lbs</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Price (DA)</label>
-      <input type="number" class="form-control" placeholder="0" value="${v ? v.price : ""}" />
-    </div>
-    <button class="btn-remove-variant" onclick="this.closest('.variant-row').remove()" style="margin-top:18px">×</button>`;
+          <div class="form-group"><label>Weight / Size</label><input type="number" class="form-control" placeholder="e.g. 908" value="${v ? v.weight : ""}"/></div>
+          <div class="form-group"><label>Unit</label>
+            <select class="form-control form-select">
+              <option ${v && v.unit === "g" ? "selected" : ""}>g</option>
+              <option ${v && v.unit === "kg" ? "selected" : ""}>kg</option>
+              <option ${v && v.unit === "caps" ? "selected" : ""}>caps</option>
+              <option ${v && v.unit === "ml" ? "selected" : ""}>ml</option>
+              <option ${v && v.unit === "tabs" ? "selected" : ""}>tabs</option>
+              <option ${v && v.unit === "oz" ? "selected" : ""}>oz</option>
+              <option ${v && v.unit === "lbs" ? "selected" : ""}>lbs</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Price (DA)</label><input type="number" class="form-control" placeholder="0" value="${v ? v.price : ""}"/></div>
+          <button class="btn-remove-variant" onclick="this.closest('.variant-row').remove()" style="margin-top:18px">×</button>`;
         list.appendChild(div);
       }
 
-      /* Flavors */
       function addFlavor(f = null) {
         const list = document.getElementById("flavors-list");
         const div = document.createElement("div");
         div.className = "flavor-row";
         div.innerHTML = `
-    <div class="form-group">
-      <label>Flavor / Scent</label>
-      <input type="text" class="form-control" placeholder="e.g. Double Rich Chocolate" value="${f ? f.name : ""}" />
-    </div>
-    <div class="form-group">
-      <label>Quantity in stock</label>
-      <input type="number" class="form-control" placeholder="0" value="${f ? f.quantity : ""}" min="0" />
-    </div>
-    <button class="btn-remove-variant" onclick="this.closest('.flavor-row').remove()" style="margin-top:18px">×</button>`;
+          <div class="form-group"><label>Flavor / Scent</label><input type="text" class="form-control" placeholder="e.g. Double Rich Chocolate" value="${f ? f.name : ""}"/></div>
+          <div class="form-group"><label>Quantity in stock</label><input type="number" class="form-control" placeholder="0" value="${f ? f.quantity : ""}" min="0"/></div>
+          <button class="btn-remove-variant" onclick="this.closest('.flavor-row').remove()" style="margin-top:18px">×</button>`;
         list.appendChild(div);
       }
 
@@ -3275,11 +3197,11 @@
           document.querySelectorAll("#variants-list .variant-row"),
         )
           .map((r) => {
-            const inputs = r.querySelectorAll("input,select");
+            const i = r.querySelectorAll("input,select");
             return {
-              weight: inputs[0].value,
-              unit: inputs[1].value,
-              price: parseFloat(inputs[2].value) || 0,
+              weight: i[0].value,
+              unit: i[1].value,
+              price: parseFloat(i[2].value) || 0,
             };
           })
           .filter((v) => v.weight);
@@ -3288,19 +3210,18 @@
           document.querySelectorAll("#flavors-list .flavor-row"),
         )
           .map((r) => {
-            const inputs = r.querySelectorAll("input");
+            const i = r.querySelectorAll("input");
             return {
-              name: inputs[0].value.trim(),
-              quantity: parseInt(inputs[1].value) || 0,
+              name: i[0].value.trim(),
+              quantity: parseInt(i[1].value) || 0,
             };
           })
           .filter((f) => f.name);
 
         const categories = getCatChipsData();
         const imageUrl = document.getElementById("pm-image-url").value;
-
-        // Check if image is still uploading
         const progress = document.getElementById("upload-progress");
+
         if (
           progress.style.display !== "none" &&
           progress.textContent.includes("⏳")
@@ -3350,8 +3271,8 @@
       }
 
       /* ══════════════════════════════════
-   CATEGORIES
-══════════════════════════════════ */
+         CATEGORIES
+      ══════════════════════════════════ */
       async function loadCategories() {
         const tree = document.getElementById("cat-tree");
         tree.innerHTML =
@@ -3378,34 +3299,34 @@
         tree.innerHTML = _categories
           .map(
             (c) => `
-    <div class="cat-node">
-      <div class="cat-row" onclick="toggleCat(this)">
-        <div class="cat-expand"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
-        <div class="cat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div>
-        <div class="cat-name">${c.name}</div>
-        ${c.description ? `<span style="font-size:11px;color:var(--g400)">${c.description}</span>` : ""}
-        <span class="cat-count">${(c.subCategories || []).length} sub${(c.subCategories || []).length !== 1 ? "s" : ""}</span>
-        <div class="action-group" onclick="event.stopPropagation()">
-          <button class="act-btn act-delete" onclick="confirmDelete('cat','${c.id}')">Delete</button>
-        </div>
-      </div>
-      <div class="sub-cats">
-        ${(c.subCategories || [])
-          .map(
-            (s) => `
-          <div class="sub-node">
-            <div class="sub-icon"></div>
-            <div class="sub-name">${s.name}</div>
-            <div class="sub-actions"><button class="act-btn act-delete" onclick="confirmDelete('subcat','${s.id}')">×</button></div>
+          <div class="cat-node">
+            <div class="cat-row" onclick="toggleCat(this)">
+              <div class="cat-expand"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+              <div class="cat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div>
+              <div class="cat-name">${c.name}</div>
+              ${c.description ? `<span style="font-size:11px;color:var(--g400)">${c.description}</span>` : ""}
+              <span class="cat-count">${(c.subCategories || []).length} sub${(c.subCategories || []).length !== 1 ? "s" : ""}</span>
+              <div class="action-group" onclick="event.stopPropagation()">
+                <button class="act-btn act-delete" onclick="confirmDelete('cat','${c.id}')">Delete</button>
+              </div>
+            </div>
+            <div class="sub-cats">
+              ${(c.subCategories || [])
+                .map(
+                  (s) => `
+                <div class="sub-node">
+                  <div class="sub-icon"></div>
+                  <div class="sub-name">${s.name}</div>
+                  <div class="sub-actions"><button class="act-btn act-delete" onclick="confirmDelete('subcat','${s.id}')">×</button></div>
+                </div>`,
+                )
+                .join("")}
+              <div class="add-sub-inline" onclick="event.stopPropagation()">
+                <input type="text" class="form-control" id="add-sub-${c.id}" placeholder="New sub-category…"/>
+                <button onclick="addSubToCat('${c.id}','${c.name}')">+ Add</button>
+              </div>
+            </div>
           </div>`,
-          )
-          .join("")}
-        <div class="add-sub-inline" onclick="event.stopPropagation()">
-          <input type="text" class="form-control" id="add-sub-${c.id}" placeholder="New sub-category…" />
-          <button onclick="addSubToCat('${c.id}','${c.name}')">+ Add</button>
-        </div>
-      </div>
-    </div>`,
           )
           .join("");
       }
@@ -3428,7 +3349,7 @@
         const list = document.getElementById("sub-items-list");
         const div = document.createElement("div");
         div.className = "sub-item-row";
-        div.innerHTML = `<input type="text" class="form-control" placeholder="Sub-category name…" /><button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button>`;
+        div.innerHTML = `<input type="text" class="form-control" placeholder="Sub-category name…"/><button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button>`;
         list.appendChild(div);
       }
 
@@ -3438,17 +3359,15 @@
           showToast("Name required", "error");
           return;
         }
-        const subInputs = document.querySelectorAll(
-          "#sub-items-list .sub-item-row input",
-        );
-        const subs = Array.from(subInputs)
+        const subs = Array.from(
+          document.querySelectorAll("#sub-items-list .sub-item-row input"),
+        )
           .map((i) => i.value.trim())
           .filter(Boolean);
 
         const btn = document.getElementById("cat-save-btn");
         btn.disabled = true;
         btn.textContent = "Saving…";
-
         try {
           const res = await api("addCategory", {
             name,
@@ -3490,8 +3409,8 @@
       }
 
       /* ══════════════════════════════════
-   PROMO CODES
-══════════════════════════════════ */
+         PROMO CODES
+      ══════════════════════════════════ */
       async function loadPromos() {
         const tbody = document.getElementById("promos-tbody");
         tbody.innerHTML = `<tr><td colspan="7"><div class="page-loader"><div class="spinner"></div> Loading…</div></td></tr>`;
@@ -3530,25 +3449,25 @@
               ? new Date(p.createdAt).toLocaleDateString("fr-DZ")
               : "—";
             return `<tr>
-      <td><span class="code-tag">${p.code}</span></td>
-      <td>${typeLabel}</td>
-      <td><strong>${valStr}</strong></td>
-      <td style="font-size:12px;color:var(--g600)">${p.expiryDate || "—"}</td>
-      <td><span class="badge badge-${p.status}">${cap(p.status)}</span></td>
-      <td style="font-size:12px;color:var(--g600)">${dateStr}</td>
-      <td><div class="action-group">
-        <button class="act-btn act-edit" onclick="editPromo('${p.id}')">Edit</button>
-        <button class="act-btn act-delete" onclick="confirmDelete('promo','${p.id}')">Delete</button>
-      </div></td>
-    </tr>`;
+            <td><span class="code-tag">${p.code}</span></td>
+            <td>${typeLabel}</td>
+            <td><strong>${valStr}</strong></td>
+            <td style="font-size:12px;color:var(--g600)">${p.expiryDate || "—"}</td>
+            <td><span class="badge badge-${p.status}">${cap(p.status)}</span></td>
+            <td style="font-size:12px;color:var(--g600)">${dateStr}</td>
+            <td><div class="action-group">
+              <button class="act-btn act-edit" onclick="editPromo('${p.id}')">Edit</button>
+              <button class="act-btn act-delete" onclick="confirmDelete('promo','${p.id}')">Delete</button>
+            </div></td>
+          </tr>`;
           })
           .join("");
       }
 
       function updatePromoValueLabel() {
         const t = document.getElementById("promo-type").value;
-        const row = document.getElementById("promo-value-row");
-        row.style.display = t === "free_delivery" ? "none" : "";
+        document.getElementById("promo-value-row").style.display =
+          t === "free_delivery" ? "none" : "";
         document.getElementById("promo-value-label").textContent =
           t === "percent" ? "Percentage (%) *" : "Amount (DA) *";
       }
@@ -3608,7 +3527,6 @@
           expiryDate: document.getElementById("promo-expiry").value,
           status: document.getElementById("promo-status").value,
         };
-
         const btn = document.getElementById("promo-save-btn");
         btn.disabled = true;
         btn.textContent = "Saving…";
@@ -3637,8 +3555,8 @@
       }
 
       /* ══════════════════════════════════
-   CONFIRM DELETE
-══════════════════════════════════ */
+         CONFIRM DELETE
+      ══════════════════════════════════ */
       function confirmDelete(type, id) {
         const msgs = {
           product:
@@ -3668,13 +3586,14 @@
         };
         document.getElementById("confirm-overlay").classList.add("open");
       }
+
       function closeConfirm() {
         document.getElementById("confirm-overlay").classList.remove("open");
       }
 
       /* ══════════════════════════════════
-   SETTINGS
-══════════════════════════════════ */
+         SETTINGS
+      ══════════════════════════════════ */
       function saveUsername() {
         const u = document.getElementById("set-username").value.trim();
         if (!u) {
@@ -3688,6 +3607,7 @@
           adminCreds.displayName;
         showToast("Account info saved!", "success");
       }
+
       function savePassword() {
         const cur = document.getElementById("set-cur-pass").value;
         const nw = document.getElementById("set-new-pass").value;
@@ -3712,8 +3632,8 @@
       }
 
       /* ══════════════════════════════════
-   MODALS
-══════════════════════════════════ */
+         MODALS
+      ══════════════════════════════════ */
       function openModal(id) {
         document.getElementById(id).classList.add("open");
       }
@@ -3727,8 +3647,8 @@
       });
 
       /* ══════════════════════════════════
-   TOAST
-══════════════════════════════════ */
+         TOAST
+      ══════════════════════════════════ */
       let toastTimer;
       function showToast(msg, type = "success") {
         const t = document.getElementById("toast");
@@ -3741,23 +3661,19 @@
       }
 
       /* ══════════════════════════════════
-   HELPERS
-══════════════════════════════════ */
+         HELPERS
+      ══════════════════════════════════ */
       function cap(s) {
         return s ? s[0].toUpperCase() + s.slice(1) : s;
       }
 
       /* ══════════════════════════════════
-   INIT
-══════════════════════════════════ */
+         INIT
+      ══════════════════════════════════ */
       document.addEventListener("DOMContentLoaded", async () => {
-        renderOrders();
         updateDashboard();
-
-        // Load all data in parallel
+        renderOrders();
         await Promise.all([loadCategories(), loadProducts(), loadPromos()]);
-
-        // Re-render after all loaded
         updateDashboard();
         renderOrders();
       });
