@@ -88,7 +88,6 @@
         min-height: 100vh;
       }
 
-      /* SIDEBAR */
       #sidebar {
         width: var(--sidebar-w);
         flex-shrink: 0;
@@ -306,7 +305,6 @@
         color: rgba(255, 255, 255, 0.4);
       }
 
-      /* MAIN */
       #main {
         flex: 1;
         margin-left: var(--sidebar-w);
@@ -319,7 +317,6 @@
         margin-left: var(--sidebar-collapsed);
       }
 
-      /* TOPBAR */
       #topbar {
         height: 64px;
         background: #fff;
@@ -344,6 +341,33 @@
         align-items: center;
         gap: 10px;
       }
+      .tb-icon-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--g600);
+        transition:
+          background var(--tr),
+          color var(--tr);
+        position: relative;
+      }
+      .tb-icon-btn:hover {
+        background: var(--g50);
+        color: var(--black);
+      }
+      .notif-dot {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--red);
+        border: 2px solid #fff;
+      }
       .tb-logout {
         display: flex;
         align-items: center;
@@ -364,7 +388,6 @@
         color: #fff;
       }
 
-      /* PAGE */
       .page {
         display: none;
         padding: 28px;
@@ -374,7 +397,6 @@
         display: block;
       }
 
-      /* STATS */
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -427,7 +449,6 @@
         margin-top: 2px;
       }
 
-      /* SECTION HEADER */
       .sec-header {
         display: flex;
         align-items: center;
@@ -460,10 +481,6 @@
         background: var(--red-h);
         box-shadow: var(--sh-red);
       }
-      .btn-primary:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
       .btn-secondary {
         display: flex;
         align-items: center;
@@ -486,7 +503,6 @@
         background: var(--g50);
       }
 
-      /* TABLE */
       .table-wrap {
         background: #fff;
         border-radius: 12px;
@@ -562,7 +578,6 @@
         background: var(--g50);
       }
 
-      /* BADGES */
       .badge {
         display: inline-flex;
         align-items: center;
@@ -629,7 +644,6 @@
         background: var(--g400);
       }
 
-      /* ACTION BUTTONS */
       .action-group {
         display: flex;
         align-items: center;
@@ -697,7 +711,6 @@
         color: #fff;
       }
 
-      /* PRODUCT THUMB */
       .prod-thumb {
         width: 42px;
         height: 42px;
@@ -728,7 +741,6 @@
         color: var(--g400);
       }
 
-      /* MODAL */
       .modal-overlay {
         position: fixed;
         inset: 0;
@@ -752,8 +764,8 @@
         background: #fff;
         border-radius: 16px;
         width: 100%;
-        max-width: 760px;
-        max-height: 92vh;
+        max-width: 700px;
+        max-height: 90vh;
         overflow-y: auto;
         box-shadow: var(--sh-lg);
         transform: scale(0.96);
@@ -810,13 +822,8 @@
         align-items: center;
         justify-content: flex-end;
         gap: 10px;
-        position: sticky;
-        bottom: 0;
-        background: #fff;
-        z-index: 1;
       }
 
-      /* FORMS */
       .form-row {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -825,9 +832,6 @@
       }
       .form-row.full {
         grid-template-columns: 1fr;
-      }
-      .form-row.thirds {
-        grid-template-columns: 1fr 1fr 1fr;
       }
       .form-group {
         display: flex;
@@ -873,7 +877,6 @@
         padding-right: 32px;
       }
 
-      /* UPLOAD */
       .upload-box {
         border: 2px dashed var(--g200);
         border-radius: 10px;
@@ -888,11 +891,6 @@
       .upload-box:hover {
         border-color: var(--red);
         background: var(--red-light);
-      }
-      .upload-box.uploading {
-        border-color: var(--blue);
-        background: var(--blue-l);
-        pointer-events: none;
       }
       .upload-box input[type="file"] {
         position: absolute;
@@ -912,21 +910,13 @@
         color: var(--red);
       }
       .upload-preview {
-        width: 90px;
-        height: 90px;
+        width: 80px;
+        height: 80px;
         border-radius: 8px;
         object-fit: cover;
         margin: 0 auto 8px;
-        border: 2px solid var(--g100);
-      }
-      .upload-progress {
-        font-size: 12px;
-        color: var(--blue);
-        font-weight: 600;
-        margin-top: 6px;
       }
 
-      /* VARIANTS */
       .variants-list {
         display: flex;
         flex-direction: column;
@@ -935,7 +925,7 @@
       }
       .variant-row {
         display: grid;
-        grid-template-columns: 1fr 100px 120px 36px;
+        grid-template-columns: 1fr 1fr 120px 36px;
         gap: 10px;
         align-items: end;
       }
@@ -980,61 +970,6 @@
         color: var(--red);
       }
 
-      /* FLAVORS */
-      .flavors-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-bottom: 10px;
-      }
-      .flavor-row {
-        display: grid;
-        grid-template-columns: 1fr 120px 36px;
-        gap: 10px;
-        align-items: end;
-      }
-      .flavor-row .form-control {
-        height: 38px;
-      }
-
-      /* CAT CHIPS */
-      .cat-chips-wrap {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-      .cat-chip-entry {
-        background: var(--g50);
-        border: 1px solid var(--g100);
-        border-radius: 10px;
-        padding: 12px 14px;
-      }
-      .cat-chip-header {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 8px;
-      }
-      .cat-chip-header select {
-        flex: 1;
-      }
-      .cat-chip-header .btn-remove-variant {
-        height: 32px;
-        width: 32px;
-        font-size: 14px;
-      }
-      .cat-chip-subrow {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .cat-chip-subrow select {
-        flex: 1;
-        height: 34px;
-        font-size: 13px;
-      }
-
-      /* TOGGLE */
       .toggle-row {
         display: flex;
         align-items: center;
@@ -1043,7 +978,7 @@
         background: var(--g50);
         border-radius: 8px;
         border: 1.5px solid var(--g200);
-        margin-bottom: 0;
+        margin-bottom: 16px;
         cursor: pointer;
         transition: border-color var(--tr);
       }
@@ -1096,7 +1031,7 @@
         transform: translateX(18px);
       }
 
-      /* CATEGORY TREE */
+      /* ─── CATEGORY TREE ── */
       .cat-tree {
         display: flex;
         flex-direction: column;
@@ -1191,27 +1126,35 @@
         display: flex;
         gap: 6px;
       }
+
+      /* Add sub inline inside cat node */
       .add-sub-inline {
         display: flex;
         gap: 8px;
-        margin-top: 8px;
+        align-items: center;
+        margin-top: 6px;
       }
-      .add-sub-inline input {
+      .add-sub-inline .form-control {
+        height: 34px;
+        font-size: 13px;
         flex: 1;
-        height: 36px;
       }
-      .add-sub-inline button {
-        height: 36px;
-        padding: 0 14px;
-        border-radius: 8px;
+      .btn-add-sub-inline {
+        height: 34px;
+        padding: 0 12px;
+        border-radius: 6px;
         background: var(--red);
         color: #fff;
         font-size: 12px;
-        font-weight: 700;
-        flex-shrink: 0;
+        font-weight: 600;
+        transition: background var(--tr);
+        white-space: nowrap;
+      }
+      .btn-add-sub-inline:hover {
+        background: var(--red-h);
       }
 
-      /* SUB ADDER (cat modal) */
+      /* inline sub-category adder in modal */
       .sub-adder {
         background: var(--g50);
         border: 1px solid var(--g100);
@@ -1273,7 +1216,6 @@
         color: #fff;
       }
 
-      /* SETTINGS */
       .settings-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1296,7 +1238,6 @@
         gap: 8px;
       }
 
-      /* ORDER DETAIL */
       .order-detail-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -1340,7 +1281,6 @@
         word-break: break-word;
       }
 
-      /* CODE TAG */
       .code-tag {
         display: inline-flex;
         align-items: center;
@@ -1353,7 +1293,6 @@
         letter-spacing: 0.5px;
       }
 
-      /* TOAST */
       #toast {
         position: fixed;
         bottom: 24px;
@@ -1390,6 +1329,36 @@
         color: #dc2626;
       }
 
+      /* loading spinner */
+      .spinner {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        vertical-align: middle;
+        margin-right: 6px;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .cat-loading {
+        padding: 32px;
+        text-align: center;
+        color: var(--g400);
+        font-size: 13px;
+      }
+      .cat-loading .spinner {
+        border-color: rgba(0, 0, 0, 0.12);
+        border-top-color: var(--red);
+        width: 24px;
+        height: 24px;
+      }
+
       @keyframes fadeUp {
         from {
           opacity: 0;
@@ -1400,8 +1369,15 @@
           transform: translateY(0);
         }
       }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
 
-      /* CONFIRM */
       .confirm-overlay {
         position: fixed;
         inset: 0;
@@ -1482,30 +1458,6 @@
         background: #b91c1c;
       }
 
-      /* LOADER */
-      .page-loader {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 60px;
-        color: var(--g400);
-        gap: 10px;
-        font-size: 13px;
-      }
-      .spinner {
-        width: 20px;
-        height: 20px;
-        border: 2.5px solid var(--g200);
-        border-top-color: var(--red);
-        border-radius: 50%;
-        animation: spin 0.7s linear infinite;
-        flex-shrink: 0;
-      }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
       .empty-state {
         padding: 48px;
         text-align: center;
@@ -1517,17 +1469,6 @@
       }
       .empty-state p {
         font-size: 14px;
-      }
-
-      .form-section-label {
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.6px;
-        color: var(--g600);
-        padding: 4px 0 10px;
-        border-bottom: 1px solid var(--g100);
-        margin-bottom: 14px;
       }
 
       .back-to-site {
@@ -1582,17 +1523,12 @@
         .form-row {
           grid-template-columns: 1fr;
         }
-        .form-row.thirds {
-          grid-template-columns: 1fr;
-        }
         .order-detail-grid {
           grid-template-columns: 1fr;
         }
         .variant-row {
           grid-template-columns: 1fr 1fr;
-        }
-        .flavor-row {
-          grid-template-columns: 1fr 1fr;
+          grid-template-rows: auto auto;
         }
         .page {
           padding: 16px;
@@ -1678,7 +1614,7 @@
               <path d="M16 10a4 4 0 0 1-8 0" />
             </svg>
             <span>Orders</span>
-            <span class="sb-badge" id="sb-orders-badge">—</span>
+            <span class="sb-badge" id="sb-orders-badge">1</span>
           </div>
           <div class="sb-link" onclick="showPage('products', this)">
             <svg
@@ -1764,19 +1700,7 @@
       <!-- MAIN -->
       <div id="main">
         <header id="topbar">
-          <button
-            class="tb-icon-btn"
-            onclick="toggleSidebar()"
-            style="
-              width: 38px;
-              height: 38px;
-              border-radius: 8px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              color: var(--g600);
-            "
-          >
+          <button class="tb-icon-btn" onclick="toggleSidebar()">
             <svg
               width="20"
               height="20"
@@ -1792,6 +1716,20 @@
           </button>
           <div class="tb-title" id="page-title">Dashboard</div>
           <div class="tb-actions">
+            <button class="tb-icon-btn" title="Notifications">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
+              <div class="notif-dot"></div>
+            </button>
             <button class="tb-logout" onclick="doLogout()">
               <svg
                 width="14"
@@ -1831,8 +1769,27 @@
                 </svg>
               </div>
               <div>
-                <div class="stat-num" id="stat-orders">—</div>
+                <div class="stat-num">148</div>
                 <div class="stat-label">Total Orders</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon green">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <line x1="12" y1="1" x2="12" y2="23" />
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg>
+              </div>
+              <div>
+                <div class="stat-num">842K</div>
+                <div class="stat-label">Revenue (DA)</div>
               </div>
             </div>
             <div class="stat-card">
@@ -1851,28 +1808,8 @@
                 </svg>
               </div>
               <div>
-                <div class="stat-num" id="stat-products">—</div>
+                <div class="stat-num">36</div>
                 <div class="stat-label">Products</div>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon green">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"
-                  />
-                </svg>
-              </div>
-              <div>
-                <div class="stat-num" id="stat-categories">—</div>
-                <div class="stat-label">Categories</div>
               </div>
             </div>
             <div class="stat-card">
@@ -1891,7 +1828,7 @@
                 </svg>
               </div>
               <div>
-                <div class="stat-num" id="stat-promos">—</div>
+                <div class="stat-num">3</div>
                 <div class="stat-label">Active Promos</div>
               </div>
             </div>
@@ -1911,14 +1848,14 @@
                   <th>Date</th>
                 </tr>
               </thead>
-              <tbody id="dashboard-orders-tbody">
+              <tbody>
                 <tr>
-                  <td colspan="6">
-                    <div class="page-loader">
-                      <div class="spinner"></div>
-                      Loading…
-                    </div>
-                  </td>
+                  <td>#BB-0148</td>
+                  <td>Youcef Mansouri</td>
+                  <td>ON Gold Standard Whey</td>
+                  <td>5 800 DA</td>
+                  <td><span class="badge badge-pending">Pending</span></td>
+                  <td>31 Mar 2026</td>
                 </tr>
               </tbody>
             </table>
@@ -1948,7 +1885,7 @@
                 <option value="delivered">Delivered</option>
               </select>
             </div>
-            <table>
+            <table id="orders-table">
               <thead>
                 <tr>
                   <th>Order ID</th>
@@ -1993,26 +1930,24 @@
                 class="search-box"
                 type="text"
                 placeholder="Search products…"
-                oninput="filterProducts(this.value)"
               />
-              <select
-                class="filter-select"
-                id="prodCatFilter"
-                onchange="filterProducts()"
-              >
+              <select class="filter-select">
                 <option value="">All Categories</option>
+                <option>Protein</option>
+                <option>Creatine</option>
+                <option>Pre-Workout</option>
+                <option>Vitamins</option>
               </select>
             </div>
             <table>
               <thead>
                 <tr>
                   <th>Product</th>
-                  <th>Brand</th>
-                  <th>Categories</th>
-                  <th>Flavors</th>
+                  <th>Category</th>
+                  <th>Flavor</th>
                   <th>Variants / Prices</th>
-                  <th>Discount</th>
                   <th>Promo</th>
+                  <th>Stock</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -2022,7 +1957,7 @@
           </div>
         </div>
 
-        <!-- CATEGORIES -->
+        <!-- CATEGORIES — Google Sheets backed -->
         <div class="page" id="page-categories">
           <div class="sec-header">
             <div class="sec-title">Categories</div>
@@ -2042,9 +1977,8 @@
             </button>
           </div>
           <div class="cat-tree" id="cat-tree">
-            <div class="page-loader">
-              <div class="spinner"></div>
-              Loading categories…
+            <div class="cat-loading">
+              <span class="spinner"></span> Loading categories…
             </div>
           </div>
         </div>
@@ -2075,9 +2009,10 @@
                   <th>Code</th>
                   <th>Type</th>
                   <th>Value</th>
+                  <th>Min. Order</th>
+                  <th>Uses</th>
                   <th>Expiry</th>
                   <th>Status</th>
-                  <th>Created</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -2254,11 +2189,48 @@
                 ><span class="value" id="od-qty">—</span>
               </div>
               <div class="detail-item">
+                <span class="label">Subtotal</span
+                ><span class="value" id="od-subtotal">—</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Promo</span
+                ><span class="value" id="od-promo">—</span>
+              </div>
+              <div class="detail-item">
                 <span class="label">Total</span
                 ><span class="value" id="od-total" style="color: var(--red)"
                   >—</span
                 >
               </div>
+            </div>
+          </div>
+          <div class="detail-block">
+            <h4>Update Status</h4>
+            <div class="action-group" style="margin-top: 10px">
+              <button
+                class="act-btn act-approve"
+                onclick="setOrderStatus(currentOrderId, 'approved')"
+              >
+                ✓ Approve
+              </button>
+              <button
+                class="act-btn act-waiting"
+                onclick="setOrderStatus(currentOrderId, 'waiting')"
+              >
+                ⏳ Waiting
+              </button>
+              <button
+                class="act-btn act-deliver"
+                onclick="setOrderStatus(currentOrderId, 'delivered')"
+              >
+                🚚 Delivered
+              </button>
+              <button
+                class="act-btn act-delete"
+                onclick="setOrderStatus(currentOrderId, 'deleted')"
+              >
+                ✕ Delete
+              </button>
             </div>
           </div>
         </div>
@@ -2285,7 +2257,6 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="form-section-label">Basic Info</div>
           <div class="form-row">
             <div class="form-group">
               <label>Product Name *</label
@@ -2306,26 +2277,38 @@
               />
             </div>
           </div>
-          <div class="form-row full" style="margin-bottom: 16px">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Category</label>
+              <select class="form-control form-select" id="pm-cat">
+                <option value="">Select category…</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Sub-Category</label>
+              <select class="form-control form-select" id="pm-subcat">
+                <option value="">Select sub-category…</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row full">
             <div class="form-group">
               <label>Description</label
               ><textarea
                 class="form-control textarea"
                 id="pm-desc"
                 placeholder="Describe the product…"
-                style="min-height: 80px"
+                style="min-height: 90px"
               ></textarea>
             </div>
           </div>
-
-          <div class="form-section-label">Product Image</div>
           <div class="form-group" style="margin-bottom: 16px">
+            <label>Product Image</label>
             <div class="upload-box" id="upload-box">
               <input
                 type="file"
                 accept="image/*"
-                id="pm-image-input"
-                onchange="handleImageUpload(event)"
+                onchange="previewImage(event)"
               />
               <div id="upload-placeholder">
                 <div class="upload-icon">
@@ -2349,7 +2332,7 @@
                   class="upload-text"
                   style="font-size: 11px; color: var(--g400); margin-top: 4px"
                 >
-                  PNG, JPG, WEBP — max 5MB — uploaded to Cloudinary
+                  PNG, JPG, WEBP — max 5MB
                 </div>
               </div>
               <img
@@ -2357,47 +2340,13 @@
                 class="upload-preview"
                 style="display: none"
               />
-              <div
-                id="upload-progress"
-                class="upload-progress"
-                style="display: none"
-              ></div>
             </div>
-            <input type="hidden" id="pm-image-url" />
           </div>
-
-          <div class="form-section-label">Categories & Sub-categories</div>
-          <div
-            class="cat-chips-wrap"
-            id="pm-cat-chips"
-            style="margin-bottom: 10px"
-          ></div>
-          <button
-            class="btn-add-variant"
-            style="margin-bottom: 16px"
-            onclick="addCatChip()"
-          >
-            <svg
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-            >
-              <line x1="12" y1="5" x2="12" y2="19" />
-              <line x1="5" y1="12" x2="19" y2="12" />
-            </svg>
-            Add Category
-          </button>
-
-          <div class="form-section-label">Weight / Size Variants</div>
+          <div class="form-group" style="margin-bottom: 8px">
+            <label>Weight / Size Variants & Prices</label>
+          </div>
           <div class="variants-list" id="variants-list"></div>
-          <button
-            class="btn-add-variant"
-            style="margin-bottom: 16px"
-            onclick="addVariant()"
-          >
+          <button class="btn-add-variant" onclick="addVariant()">
             <svg
               width="13"
               height="13"
@@ -2411,37 +2360,35 @@
             </svg>
             Add Variant
           </button>
-
-          <div class="form-section-label">Flavors & Quantities</div>
-          <div class="flavors-list" id="flavors-list"></div>
-          <button
-            class="btn-add-variant"
-            style="margin-bottom: 16px"
-            onclick="addFlavor()"
-          >
-            <svg
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-            >
-              <line x1="12" y1="5" x2="12" y2="19" />
-              <line x1="5" y1="12" x2="19" y2="12" />
-            </svg>
-            Add Flavor
-          </button>
-
-          <div class="form-section-label">Pricing & Availability</div>
-          <div class="form-row thirds">
+          <div class="form-row" style="margin-top: 16px">
             <div class="form-group">
-              <label>Discount %</label>
-              <input
+              <label>Flavor / Notes</label
+              ><input
+                type="text"
+                class="form-control"
+                id="pm-flavor"
+                placeholder="e.g. Chocolate, Vanilla…"
+              />
+            </div>
+            <div class="form-group">
+              <label>Stock Quantity</label
+              ><input
+                type="number"
+                class="form-control"
+                id="pm-stock"
+                placeholder="0"
+                min="0"
+              />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Discount %</label
+              ><input
                 type="number"
                 class="form-control"
                 id="pm-discount"
-                placeholder="0 = no discount"
+                placeholder="0"
                 min="0"
                 max="100"
               />
@@ -2453,16 +2400,22 @@
                 <option value="inactive">Inactive</option>
               </select>
             </div>
-            <div class="form-group" style="justify-content: flex-end">
-              <label>Promo Eligibility</label>
+          </div>
+          <div class="form-row full" style="margin-bottom: 0">
+            <div class="form-group">
+              <label>Promo Code Eligibility</label>
               <label
                 class="toggle-row"
                 for="pm-promo-toggle"
                 style="margin-top: 4px"
               >
                 <div>
-                  <div class="toggle-label">Allow promo codes</div>
-                  <div class="toggle-desc">Customers can apply promo codes</div>
+                  <div class="toggle-label">
+                    Allow promo codes on this product
+                  </div>
+                  <div class="toggle-desc">
+                    Customers can apply promo/discount codes at checkout
+                  </div>
                 </div>
                 <label class="toggle-switch">
                   <input type="checkbox" id="pm-promo-toggle" checked />
@@ -2476,7 +2429,7 @@
           <button class="btn-secondary" onclick="closeModal('product-modal')">
             Cancel
           </button>
-          <button class="btn-primary" id="pm-save-btn" onclick="saveProduct()">
+          <button class="btn-primary" onclick="saveProduct()">
             Save Product
           </button>
         </div>
@@ -2485,7 +2438,7 @@
 
     <!-- CATEGORY MODAL -->
     <div class="modal-overlay" id="cat-modal">
-      <div class="modal" style="max-width: 540px">
+      <div class="modal" style="max-width: 480px">
         <div class="modal-header">
           <div class="modal-title">Add Category</div>
           <button class="modal-close" onclick="closeModal('cat-modal')">
@@ -2503,22 +2456,13 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="form-group" style="margin-bottom: 14px">
+          <div class="form-group" style="margin-bottom: 20px">
             <label>Category Name *</label>
             <input
               type="text"
               class="form-control"
               id="cat-name"
               placeholder="e.g. Protein"
-            />
-          </div>
-          <div class="form-group" style="margin-bottom: 14px">
-            <label>Description</label>
-            <input
-              type="text"
-              class="form-control"
-              id="cat-desc"
-              placeholder="Optional short description"
             />
           </div>
           <div class="sub-adder">
@@ -2553,7 +2497,7 @@
 
     <!-- PROMO MODAL -->
     <div class="modal-overlay" id="promo-modal">
-      <div class="modal" style="max-width: 500px">
+      <div class="modal" style="max-width: 520px">
         <div class="modal-header">
           <div class="modal-title" id="promo-modal-title">New Promo Code</div>
           <button class="modal-close" onclick="closeModal('promo-modal')">
@@ -2573,8 +2517,8 @@
         <div class="modal-body">
           <div class="form-row">
             <div class="form-group">
-              <label>Code *</label>
-              <input
+              <label>Code *</label
+              ><input
                 type="text"
                 class="form-control"
                 id="promo-code"
@@ -2597,36 +2541,52 @@
           </div>
           <div class="form-row" id="promo-value-row">
             <div class="form-group">
-              <label id="promo-value-label">Value *</label>
-              <input
+              <label id="promo-value-label">Value *</label
+              ><input
                 type="number"
                 class="form-control"
                 id="promo-value"
                 placeholder="e.g. 15"
               />
             </div>
+            <div class="form-group">
+              <label>Min. Order (DA)</label
+              ><input
+                type="number"
+                class="form-control"
+                id="promo-min"
+                placeholder="0"
+              />
+            </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Expiry Date</label>
-              <input type="date" class="form-control" id="promo-expiry" />
+              <label>Max Uses</label
+              ><input
+                type="number"
+                class="form-control"
+                id="promo-max-uses"
+                placeholder="Unlimited"
+              />
             </div>
             <div class="form-group">
-              <label>Status</label>
-              <select class="form-control form-select" id="promo-status">
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-              </select>
+              <label>Expiry Date</label
+              ><input type="date" class="form-control" id="promo-expiry" />
             </div>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select class="form-control form-select" id="promo-status">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
           </div>
         </div>
         <div class="modal-footer">
           <button class="btn-secondary" onclick="closeModal('promo-modal')">
             Cancel
           </button>
-          <button class="btn-primary" id="promo-save-btn" onclick="savePromo()">
-            Save Code
-          </button>
+          <button class="btn-primary" onclick="savePromo()">Save Code</button>
         </div>
       </div>
     </div>
@@ -2649,7 +2609,7 @@
             <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
           </svg>
         </div>
-        <div class="confirm-title">Are you sure?</div>
+        <div class="confirm-title" id="confirm-title">Are you sure?</div>
         <div class="confirm-msg" id="confirm-msg">
           This action cannot be undone.
         </div>
@@ -2677,20 +2637,14 @@
     </div>
 
     <script>
-      "use strict";
+      // ════════════════════════════════════════════════════════════
+      //  ⚙️  CONFIGURATION — paste your deployed Apps Script URL here
+      // ════════════════════════════════════════════════════════════
+      const APPS_SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbykCIeXNjr1z7va-gH30ZTJWYk2Pk0vtoDZ_aJBY7NnEM36hRAF0iqwajRvlFdKmZ_uIQ/exec";
+      // ════════════════════════════════════════════════════════════
 
-      /* ══════════════════════════════════
-         CONFIG  ← only change these two lines
-      ══════════════════════════════════ */
-      const API_URL =
-        "https://script.google.com/macros/s/AKfycbx2f4CBnWFcYAGQrB3TRizW5w27Eplnmsfrp_gzPPXhU80hOTi1z8IDdlRUOaet44CB1A/exec";
-      const CLOUD_NAME = "dbxna1ipc";
-      const UPLOAD_PRESET = "bybens";
-      const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
-
-      /* ══════════════════════════════════
-         STATE
-      ══════════════════════════════════ */
+      /* ── STATE ── */
       let adminCreds = {
         username: "admin",
         password: "1234",
@@ -2701,27 +2655,324 @@
       let editingProductId = null;
       let editingPromoId = null;
 
-      let _categories = [];
-      let _products = [];
-      let _promos = [];
-      let _orders = [];
+      // In-memory categories cache (loaded from Sheets)
+      let categoriesCache = [];
 
-      /* ══════════════════════════════════
-         API HELPER  ← fixed: action in URL param, no Content-Type header
-      ══════════════════════════════════ */
-      async function api(action, body = {}) {
-        const url = API_URL + "?action=" + encodeURIComponent(action);
-        const res = await fetch(url, {
+      let orders = [
+        {
+          id: "BB-0148",
+          name: "Youcef Mansouri",
+          phone: "0555 123 456",
+          wilaya: "Alger",
+          commune: "Bab El Oued",
+          address: "Rue de la Liberté, Bab El Oued",
+          note: "Call before delivery",
+          product: "ON Gold Standard Whey",
+          flavor: "Double Rich Chocolate",
+          variant: "2.27 kg",
+          qty: 1,
+          subtotal: 5800,
+          promo: null,
+          total: 5800,
+          status: "pending",
+          date: "31 Mar 2026",
+        },
+      ];
+
+      let products = [
+        {
+          id: 1,
+          name: "Gold Standard Whey",
+          brand: "Optimum Nutrition",
+          category: "Protein",
+          subcat: "Whey Protein",
+          flavor: "Double Rich Chocolate",
+          variants: [
+            { weight: "908", unit: "g", price: 4200 },
+            { weight: "2.27", unit: "kg", price: 7800 },
+          ],
+          stock: 24,
+          discount: 0,
+          allowPromo: true,
+          status: "active",
+        },
+      ];
+
+      let promos = [
+        {
+          id: 1,
+          code: "WELCOME10",
+          type: "percent",
+          value: 10,
+          min: 2000,
+          maxUses: 100,
+          uses: 23,
+          expiry: "2026-06-30",
+          status: "active",
+        },
+      ];
+
+      /* ═══════════════════════════════════════════════════════════
+       GOOGLE SHEETS API LAYER
+    ═══════════════════════════════════════════════════════════ */
+      async function sheetAPI(action, data = {}) {
+        const payload = { action, ...data };
+        const res = await fetch(APPS_SCRIPT_URL, {
           method: "POST",
-          body: JSON.stringify(body),
-          // No Content-Type header on purpose — avoids CORS preflight
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
         });
-        return res.json();
+        const json = await res.json();
+        if (!json.success) throw new Error(json.error || "Unknown error");
+        return json;
       }
 
-      /* ══════════════════════════════════
-         SIDEBAR / NAV
-      ══════════════════════════════════ */
+      /* ═══════════════════════════════════════════════════════════
+       CATEGORIES — fully backed by Google Sheets
+    ═══════════════════════════════════════════════════════════ */
+
+      async function loadCategories() {
+        const tree = document.getElementById("cat-tree");
+        tree.innerHTML =
+          '<div class="cat-loading"><span class="spinner"></span> Loading categories…</div>';
+        try {
+          const res = await sheetAPI("getCategories");
+          categoriesCache = res.categories;
+          renderCats();
+          populateCategorySelects();
+        } catch (e) {
+          tree.innerHTML = `<div class="empty-state"><p>Failed to load: ${e.message}</p></div>`;
+          showToast("Failed to load categories", "error");
+        }
+      }
+
+      function renderCats() {
+        const tree = document.getElementById("cat-tree");
+        if (!categoriesCache.length) {
+          tree.innerHTML =
+            '<div class="empty-state"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><p>No categories yet. Add one!</p></div>';
+          return;
+        }
+        tree.innerHTML = categoriesCache
+          .map(
+            (c) => `
+        <div class="cat-node" data-cat-id="${c.id}">
+          <div class="cat-row" onclick="toggleCat(this)">
+            <div class="cat-expand">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="cat-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
+            </div>
+            <div class="cat-name">${esc(c.name)}</div>
+            <span class="cat-count">${c.subs.length} sub${c.subs.length !== 1 ? "s" : ""}</span>
+            <div class="action-group" onclick="event.stopPropagation()">
+              <button class="act-btn act-delete" onclick="confirmDeleteCat('${c.id}', '${esc(c.name)}')">Delete</button>
+            </div>
+          </div>
+          <div class="sub-cats">
+            ${c.subs
+              .map(
+                (s) => `
+              <div class="sub-node" data-sub-id="${s.id}">
+                <div class="sub-icon"></div>
+                <div class="sub-name">${esc(s.name)}</div>
+                <div class="sub-actions">
+                  <button class="act-btn act-delete" onclick="confirmDeleteSubCat('${s.id}', '${esc(s.name)}')">×</button>
+                </div>
+              </div>`,
+              )
+              .join("")}
+            <!-- Add sub-category inline -->
+            <div class="add-sub-inline">
+              <input type="text" class="form-control" placeholder="New sub-category name…" id="new-sub-${c.id}" onkeydown="if(event.key==='Enter') addSubCatInline('${c.id}')" />
+              <button class="btn-add-sub-inline" onclick="addSubCatInline('${c.id}')">+ Add</button>
+            </div>
+          </div>
+        </div>`,
+          )
+          .join("");
+      }
+
+      /* Populate category/sub-category dropdowns in product modal */
+      function populateCategorySelects() {
+        const catSel = document.getElementById("pm-cat");
+        const current = catSel.value;
+        catSel.innerHTML = '<option value="">Select category…</option>';
+        categoriesCache.forEach((c) => {
+          const opt = document.createElement("option");
+          opt.value = c.id;
+          opt.textContent = c.name;
+          catSel.appendChild(opt);
+        });
+        catSel.value = current;
+      }
+
+      document.addEventListener("change", (e) => {
+        if (e.target.id === "pm-cat") {
+          const catId = e.target.value;
+          const subcatSel = document.getElementById("pm-subcat");
+          subcatSel.innerHTML =
+            '<option value="">Select sub-category…</option>';
+          const cat = categoriesCache.find((c) => c.id === catId);
+          if (cat) {
+            cat.subs.forEach((s) => {
+              const opt = document.createElement("option");
+              opt.value = s.id;
+              opt.textContent = s.name;
+              subcatSel.appendChild(opt);
+            });
+          }
+        }
+      });
+
+      function toggleCat(row) {
+        const exp = row.querySelector(".cat-expand");
+        const sub = row.nextElementSibling;
+        const isOpen = sub.classList.toggle("open");
+        exp.classList.toggle("open", isOpen);
+      }
+
+      /* ── ADD CATEGORY (modal) ── */
+      function openCatModal() {
+        document.getElementById("cat-name").value = "";
+        document.getElementById("sub-items-list").innerHTML = "";
+        document.getElementById("cat-save-btn").disabled = false;
+        document.getElementById("cat-save-btn").innerHTML = "Save Category";
+        openModal("cat-modal");
+      }
+
+      function addSubItem() {
+        const list = document.getElementById("sub-items-list");
+        const div = document.createElement("div");
+        div.className = "sub-item-row";
+        div.innerHTML = `<input type="text" class="form-control" placeholder="Sub-category name…" /><button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button>`;
+        list.appendChild(div);
+      }
+
+      async function saveCat() {
+        const name = document.getElementById("cat-name").value.trim();
+        if (!name) {
+          showToast("Category name required", "error");
+          return;
+        }
+
+        const subInputs = document.querySelectorAll(
+          "#sub-items-list .sub-item-row input",
+        );
+        const subs = Array.from(subInputs)
+          .map((i) => i.value.trim())
+          .filter(Boolean);
+
+        const btn = document.getElementById("cat-save-btn");
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Saving…';
+
+        try {
+          const res = await sheetAPI("addCategory", { name, subs });
+          categoriesCache.push(res.category);
+          renderCats();
+          populateCategorySelects();
+          closeModal("cat-modal");
+          showToast("Category saved!", "success");
+        } catch (e) {
+          showToast("Error: " + e.message, "error");
+          btn.disabled = false;
+          btn.innerHTML = "Save Category";
+        }
+      }
+
+      /* ── ADD SUB-CATEGORY INLINE (inside cat tree) ── */
+      async function addSubCatInline(categoryId) {
+        const input = document.getElementById("new-sub-" + categoryId);
+        const name = (input.value || "").trim();
+        if (!name) {
+          input.focus();
+          return;
+        }
+
+        input.disabled = true;
+        try {
+          const res = await sheetAPI("addSubCategory", { name, categoryId });
+          const cat = categoriesCache.find((c) => c.id === categoryId);
+          if (cat) cat.subs.push(res.subCategory);
+          renderCats();
+          // re-open the accordion for this cat
+          const node = document.querySelector(`[data-cat-id="${categoryId}"]`);
+          if (node) {
+            const subDiv = node.querySelector(".sub-cats");
+            const exp = node.querySelector(".cat-expand");
+            if (subDiv) {
+              subDiv.classList.add("open");
+              exp.classList.add("open");
+            }
+          }
+          populateCategorySelects();
+          showToast("Sub-category added!", "success");
+        } catch (e) {
+          showToast("Error: " + e.message, "error");
+          input.disabled = false;
+          input.focus();
+        }
+      }
+
+      /* ── DELETE CATEGORY ── */
+      function confirmDeleteCat(id, name) {
+        document.getElementById("confirm-title").textContent =
+          "Delete Category?";
+        document.getElementById("confirm-msg").textContent =
+          `"${name}" and all its sub-categories will be permanently deleted.`;
+        document.getElementById("confirm-ok").onclick = () => doDeleteCat(id);
+        document.getElementById("confirm-overlay").classList.add("open");
+      }
+
+      async function doDeleteCat(id) {
+        closeConfirm();
+        try {
+          await sheetAPI("deleteCategory", { id });
+          categoriesCache = categoriesCache.filter((c) => c.id !== id);
+          renderCats();
+          populateCategorySelects();
+          showToast("Category deleted", "success");
+        } catch (e) {
+          showToast("Error: " + e.message, "error");
+        }
+      }
+
+      /* ── DELETE SUBCATEGORY ── */
+      function confirmDeleteSubCat(id, name) {
+        document.getElementById("confirm-title").textContent =
+          "Delete Sub-category?";
+        document.getElementById("confirm-msg").textContent =
+          `"${name}" will be permanently removed.`;
+        document.getElementById("confirm-ok").onclick = () =>
+          doDeleteSubCat(id);
+        document.getElementById("confirm-overlay").classList.add("open");
+      }
+
+      async function doDeleteSubCat(id) {
+        closeConfirm();
+        try {
+          await sheetAPI("deleteSubCategory", { id });
+          categoriesCache.forEach(
+            (c) => (c.subs = c.subs.filter((s) => s.id !== id)),
+          );
+          renderCats();
+          populateCategorySelects();
+          showToast("Sub-category deleted", "success");
+        } catch (e) {
+          showToast("Error: " + e.message, "error");
+        }
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+       AUTH & SIDEBAR
+    ═══════════════════════════════════════════════════════════ */
+      function doLogout() {
+        sessionStorage.removeItem("bb_admin_auth");
+        window.location.href = "login.html";
+      }
+
       function toggleSidebar() {
         const isMobile = window.innerWidth < 768;
         if (isMobile) {
@@ -2745,7 +2996,6 @@
         promos: "Promo Codes",
         settings: "Settings",
       };
-
       function showPage(name, el) {
         document
           .querySelectorAll(".page")
@@ -2759,68 +3009,25 @@
           pageNames[name] || name;
         if (window.innerWidth < 768)
           document.getElementById("sidebar").classList.remove("mobile-open");
+        // Reload categories when switching to that page
+        if (name === "categories") loadCategories();
       }
 
-      /* ══════════════════════════════════
-         AUTH
-      ══════════════════════════════════ */
-      function doLogout() {
-        sessionStorage.removeItem("bb_admin_auth");
-        window.location.href = "login.html";
-      }
-
-      /* ══════════════════════════════════
-         DASHBOARD
-      ══════════════════════════════════ */
-      function updateDashboard() {
-        document.getElementById("stat-orders").textContent = _orders.length;
-        document.getElementById("stat-products").textContent = _products.length;
-        document.getElementById("stat-categories").textContent =
-          _categories.length;
-        document.getElementById("stat-promos").textContent = _promos.filter(
-          (p) => p.status === "active",
-        ).length;
-        document.getElementById("sb-orders-badge").textContent =
-          _orders.filter((o) => o.status === "pending").length || "—";
-
-        const tbody = document.getElementById("dashboard-orders-tbody");
-        const recent = _orders.slice(0, 5);
-        if (!recent.length) {
-          tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><p>No orders yet</p></div></td></tr>`;
-          return;
-        }
-        tbody.innerHTML = recent
-          .map(
-            (o) => `
-          <tr>
-            <td><strong>#${o.id}</strong></td>
-            <td>${o.name}</td>
-            <td>${o.product}</td>
-            <td><strong>${Number(o.total).toLocaleString()} DA</strong></td>
-            <td><span class="badge badge-${o.status}">${cap(o.status)}</span></td>
-            <td style="font-size:12px;color:var(--g600)">${o.date || o.createdAt || "—"}</td>
-          </tr>`,
-          )
-          .join("");
-      }
-
-      /* ══════════════════════════════════
-         ORDERS
-      ══════════════════════════════════ */
+      /* ═══════════════════════════════════════════════════════════
+       ORDERS (local state, unchanged)
+    ═══════════════════════════════════════════════════════════ */
       function filterOrders(q = "") {
-        renderOrders(
-          q.toLowerCase(),
-          document.getElementById("orderFilter").value,
-        );
+        const sf = document.getElementById("orderFilter").value;
+        renderOrders(q.toLowerCase(), sf);
       }
-
       function renderOrders(filter = "", statusFilter = "") {
         const tbody = document.getElementById("orders-tbody");
-        const filtered = _orders.filter((o) => {
+        const filtered = orders.filter((o) => {
           const mQ =
             !filter ||
             o.name.toLowerCase().includes(filter) ||
-            o.id.toLowerCase().includes(filter);
+            o.id.toLowerCase().includes(filter) ||
+            o.product.toLowerCase().includes(filter);
           const mS = !statusFilter || o.status === statusFilter;
           return mQ && mS;
         });
@@ -2831,24 +3038,24 @@
         tbody.innerHTML = filtered
           .map(
             (o) => `
-          <tr>
-            <td><strong>#${o.id}</strong></td>
-            <td>${o.name}</td>
-            <td style="font-size:12px">${o.phone}</td>
-            <td>${o.wilaya}</td>
-            <td>${o.product}</td>
-            <td style="font-size:12px;color:var(--g600)">${o.flavor || "—"}</td>
-            <td><strong>${Number(o.total).toLocaleString()} DA</strong></td>
-            <td><span class="badge badge-${o.status}">${cap(o.status)}</span></td>
-            <td style="font-size:12px;color:var(--g600)">${o.date || o.createdAt || "—"}</td>
-            <td><div class="action-group"><button class="act-btn act-view" onclick="viewOrder('${o.id}')">View</button></div></td>
-          </tr>`,
+        <tr>
+          <td><strong>#${o.id}</strong></td>
+          <td>${o.name}</td>
+          <td style="font-size:12px">${o.phone}</td>
+          <td>${o.wilaya}</td>
+          <td>${o.product}</td>
+          <td style="font-size:12px;color:var(--g600)">${o.flavor || "—"}</td>
+          <td><strong>${o.total.toLocaleString()} DA</strong></td>
+          <td><span class="badge badge-${o.status}">${cap(o.status)}</span></td>
+          <td style="font-size:12px;color:var(--g600)">${o.date}</td>
+          <td><div class="action-group"><button class="act-btn act-view" onclick="viewOrder('${o.id}')">View</button></div></td>
+        </tr>`,
           )
           .join("");
       }
 
       function viewOrder(id) {
-        const o = _orders.find((x) => x.id === id);
+        const o = orders.find((x) => x.id === id);
         if (!o) return;
         currentOrderId = id;
         document.getElementById("om-id").textContent = "Order #" + o.id;
@@ -2862,163 +3069,55 @@
         document.getElementById("od-note").textContent = o.note || "—";
         document.getElementById("od-product").textContent = o.product;
         document.getElementById("od-flavor").textContent = o.flavor || "—";
-        document.getElementById("od-variant").textContent = o.variant || "—";
+        document.getElementById("od-variant").textContent = o.variant;
         document.getElementById("od-qty").textContent = o.qty;
+        document.getElementById("od-subtotal").textContent =
+          o.subtotal.toLocaleString() + " DA";
+        document.getElementById("od-promo").textContent = o.promo || "—";
         document.getElementById("od-total").textContent =
-          Number(o.total).toLocaleString() + " DA";
+          o.total.toLocaleString() + " DA";
         openModal("order-modal");
       }
 
-      /* ══════════════════════════════════
-         CLOUDINARY IMAGE UPLOAD
-      ══════════════════════════════════ */
-      async function handleImageUpload(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-        if (file.size > 5 * 1024 * 1024) {
-          showToast("Image must be under 5MB", "error");
+      function setOrderStatus(id, status) {
+        const o = orders.find((x) => x.id === id);
+        if (o) {
+          o.status = status;
+          renderOrders();
+          showToast("Order updated to " + cap(status), "success");
+        }
+        document.getElementById("om-status-badge").innerHTML =
+          `<span class="badge badge-${status}">${cap(status)}</span>`;
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+       PRODUCTS (local state, unchanged)
+    ═══════════════════════════════════════════════════════════ */
+      function renderProducts() {
+        const tbody = document.getElementById("products-tbody");
+        if (!products.length) {
+          tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><p>No products</p></div></td></tr>`;
           return;
         }
-
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          const img = document.getElementById("upload-preview");
-          img.src = ev.target.result;
-          img.style.display = "block";
-          document.getElementById("upload-placeholder").style.display = "none";
-        };
-        reader.readAsDataURL(file);
-
-        const box = document.getElementById("upload-box");
-        const progress = document.getElementById("upload-progress");
-        box.classList.add("uploading");
-        progress.style.display = "block";
-        progress.style.color = "var(--blue)";
-        progress.textContent = "⏳ Uploading to Cloudinary…";
-
-        try {
-          const fd = new FormData();
-          fd.append("file", file);
-          fd.append("upload_preset", UPLOAD_PRESET);
-          fd.append("folder", "bybens_products");
-
-          const res = await fetch(CLOUDINARY_URL, { method: "POST", body: fd });
-          const data = await res.json();
-
-          if (data.secure_url) {
-            document.getElementById("pm-image-url").value = data.secure_url;
-            progress.textContent = "✅ Uploaded successfully";
-            progress.style.color = "var(--green)";
-          } else {
-            throw new Error(data.error?.message || "Upload failed");
-          }
-        } catch (err) {
-          progress.textContent = "❌ " + err.message;
-          progress.style.color = "#dc2626";
-          showToast("Image upload failed: " + err.message, "error");
-        } finally {
-          box.classList.remove("uploading");
-        }
-      }
-
-      /* ══════════════════════════════════
-         PRODUCTS
-      ══════════════════════════════════ */
-      async function loadProducts() {
-        const tbody = document.getElementById("products-tbody");
-        tbody.innerHTML = `<tr><td colspan="9"><div class="page-loader"><div class="spinner"></div> Loading products…</div></td></tr>`;
-        try {
-          const data = await api("getProducts");
-          _products = data.products || [];
-          renderProducts();
-          populateProdCatFilter();
-          updateDashboard();
-        } catch (e) {
-          tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><p>Failed to load products</p></div></td></tr>`;
-          showToast("Failed to load products", "error");
-        }
-      }
-
-      function populateProdCatFilter() {
-        const sel = document.getElementById("prodCatFilter");
-        const cur = sel.value;
-        sel.innerHTML = '<option value="">All Categories</option>';
-        _categories.forEach((c) => {
-          const opt = document.createElement("option");
-          opt.value = c.name;
-          opt.textContent = c.name;
-          sel.appendChild(opt);
-        });
-        sel.value = cur;
-      }
-
-      function filterProducts(q = "") {
-        renderProducts(
-          q.toLowerCase(),
-          document.getElementById("prodCatFilter").value,
-        );
-      }
-
-      function renderProducts(filter = "", catFilter = "") {
-        const tbody = document.getElementById("products-tbody");
-        const filtered = _products.filter((p) => {
-          const mQ =
-            !filter ||
-            p.name.toLowerCase().includes(filter) ||
-            (p.brand || "").toLowerCase().includes(filter);
-          const mC =
-            !catFilter ||
-            (p.categories || []).some((c) => c.catName === catFilter);
-          return mQ && mC;
-        });
-        if (!filtered.length) {
-          tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><p>No products found</p></div></td></tr>`;
-          return;
-        }
-        tbody.innerHTML = filtered
-          .map((p) => {
-            const cats = p.categories || [];
-            const variants = p.variants || [];
-            const flavors = p.flavors || [];
-            const thumbSrc = p.imageUrl
-              ? `<img src="${p.imageUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:8px"/>`
-              : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>`;
-            const catStr =
-              cats
-                .map(
-                  (c) =>
-                    `<span style="display:block;font-size:11px">${c.catName}${c.subCatName ? " › " + c.subCatName : ""}</span>`,
-                )
-                .join("") || "—";
-            const varStr =
-              variants
-                .map(
-                  (v) =>
-                    `${v.weight}${v.unit} — ${Number(v.price).toLocaleString()} DA`,
-                )
-                .join("<br>") || "—";
-            const flvStr =
-              flavors
-                .map(
-                  (f) =>
-                    `${f.name}${f.quantity ? " (" + f.quantity + ")" : ""}`,
-                )
-                .join("<br>") || "—";
-            return `<tr>
-            <td><div class="prod-info"><div class="prod-thumb">${thumbSrc}</div><div class="prod-name-block"><div class="name">${p.name}</div></div></div></td>
-            <td style="font-size:12px;color:var(--g600)">${p.brand || "—"}</td>
-            <td>${catStr}</td>
-            <td style="font-size:12px;color:var(--g600)">${flvStr}</td>
-            <td style="font-size:12px">${varStr}</td>
-            <td style="font-size:12px">${p.discount > 0 ? `<span class="badge badge-pending">${p.discount}%</span>` : "—"}</td>
-            <td>${p.allowPromo ? '<span class="badge badge-active">Yes</span>' : '<span class="badge badge-inactive">No</span>'}</td>
-            <td><span class="badge badge-${p.status}">${cap(p.status)}</span></td>
-            <td><div class="action-group">
-              <button class="act-btn act-edit" onclick="editProduct('${p.id}')">Edit</button>
-              <button class="act-btn act-delete" onclick="confirmDelete('product','${p.id}')">Delete</button>
-            </div></td>
-          </tr>`;
-          })
+        tbody.innerHTML = products
+          .map(
+            (p) => `
+        <tr>
+          <td>
+            <div class="prod-info">
+              <div class="prod-thumb"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+              <div class="prod-name-block"><div class="name">${p.name}</div><div class="sub">${p.brand}</div></div>
+            </div>
+          </td>
+          <td style="font-size:12px">${p.category}</td>
+          <td style="font-size:12px;color:var(--g600)">${p.flavor || "—"}</td>
+          <td style="font-size:12px">${p.variants.map((v) => `${v.weight}${v.unit} — ${v.price.toLocaleString()} DA`).join("<br>")}</td>
+          <td>${p.allowPromo ? '<span class="badge badge-active">Yes</span>' : '<span class="badge badge-inactive">No</span>'}</td>
+          <td>${p.stock}</td>
+          <td><span class="badge badge-${p.status}">${cap(p.status)}</span></td>
+          <td><div class="action-group"><button class="act-btn act-edit" onclick="editProduct(${p.id})">Edit</button><button class="act-btn act-delete" onclick="confirmDeleteLocal('product',${p.id})">Delete</button></div></td>
+        </tr>`,
+          )
           .join("");
       }
 
@@ -3028,129 +3127,39 @@
           ? "Edit Product"
           : "Add Product";
         document.getElementById("variants-list").innerHTML = "";
-        document.getElementById("flavors-list").innerHTML = "";
-        document.getElementById("pm-cat-chips").innerHTML = "";
-        document.getElementById("pm-image-url").value = "";
-        document.getElementById("upload-preview").style.display = "none";
-        document.getElementById("upload-placeholder").style.display = "block";
-        document.getElementById("upload-progress").style.display = "none";
-        document.getElementById("upload-progress").style.color = "var(--blue)";
-        document.getElementById("upload-box").classList.remove("uploading");
-
         if (id) {
-          const p = _products.find((x) => String(x.id) === String(id));
+          const p = products.find((x) => x.id === id);
           if (p) {
             document.getElementById("pm-name").value = p.name;
-            document.getElementById("pm-brand").value = p.brand || "";
-            document.getElementById("pm-desc").value = p.description || "";
-            document.getElementById("pm-discount").value = p.discount || 0;
-            document.getElementById("pm-status").value = p.status || "active";
+            document.getElementById("pm-brand").value = p.brand;
+            document.getElementById("pm-cat").value = p.category;
+            document.getElementById("pm-subcat").value = p.subcat;
+            document.getElementById("pm-desc").value = p.desc || "";
+            document.getElementById("pm-flavor").value = p.flavor || "";
+            document.getElementById("pm-stock").value = p.stock;
+            document.getElementById("pm-discount").value = p.discount;
+            document.getElementById("pm-status").value = p.status;
             document.getElementById("pm-promo-toggle").checked =
-              p.allowPromo !== false && p.allowPromo !== "FALSE";
-            document.getElementById("pm-image-url").value = p.imageUrl || "";
-            if (p.imageUrl) {
-              const img = document.getElementById("upload-preview");
-              img.src = p.imageUrl;
-              img.style.display = "block";
-              document.getElementById("upload-placeholder").style.display =
-                "none";
-            }
-            (p.categories || []).forEach((c) => addCatChip(c));
-            (p.variants || []).forEach((v) => addVariant(v));
-            (p.flavors || []).forEach((f) => addFlavor(f));
+              p.allowPromo !== false;
+            p.variants.forEach((v) => addVariant(v));
           }
         } else {
-          ["pm-name", "pm-brand", "pm-desc", "pm-discount"].forEach(
-            (x) => (document.getElementById(x).value = ""),
-          );
+          [
+            "pm-name",
+            "pm-brand",
+            "pm-desc",
+            "pm-flavor",
+            "pm-stock",
+            "pm-discount",
+          ].forEach((x) => (document.getElementById(x).value = ""));
           document.getElementById("pm-status").value = "active";
           document.getElementById("pm-promo-toggle").checked = true;
           addVariant();
-          addFlavor();
         }
         openModal("product-modal");
       }
-
       function editProduct(id) {
         openProductModal(id);
-      }
-
-      function addCatChip(existing = null) {
-        const wrap = document.getElementById("pm-cat-chips");
-        const div = document.createElement("div");
-        div.className = "cat-chip-entry";
-        const catOptions = _categories
-          .map(
-            (c) =>
-              `<option value="${c.id}" data-name="${c.name}" ${existing && existing.catId == c.id ? "selected" : ""}>${c.name}</option>`,
-          )
-          .join("");
-        div.innerHTML = `
-          <div class="cat-chip-header">
-            <select class="form-control form-select" onchange="refreshSubOptions(this)">
-              <option value="">Select category…</option>${catOptions}
-            </select>
-            <button class="btn-remove-variant" onclick="this.closest('.cat-chip-entry').remove()">×</button>
-          </div>
-          <div class="cat-chip-subrow">
-            <select class="form-control form-select sub-select" style="height:34px;font-size:13px">
-              <option value="">No sub-category</option>
-            </select>
-          </div>`;
-        wrap.appendChild(div);
-        if (existing && existing.catId) {
-          const catSel = div.querySelector("select");
-          catSel.value = existing.catId;
-          refreshSubOptions(catSel, existing.subCatId);
-        }
-      }
-
-      function refreshSubOptions(catSel, preselectSubId = null) {
-        const catId = catSel.value;
-        const subSel = catSel
-          .closest(".cat-chip-entry")
-          .querySelector(".sub-select");
-        const cat = _categories.find((c) => String(c.id) === String(catId));
-        subSel.innerHTML = '<option value="">No sub-category</option>';
-        if (cat && cat.subCategories) {
-          cat.subCategories.forEach((s) => {
-            const opt = document.createElement("option");
-            opt.value = s.id;
-            opt.dataset.name = s.name;
-            opt.textContent = s.name;
-            if (preselectSubId && String(s.id) === String(preselectSubId))
-              opt.selected = true;
-            subSel.appendChild(opt);
-          });
-        }
-      }
-
-      function getCatChipsData() {
-        return Array.from(
-          document.querySelectorAll("#pm-cat-chips .cat-chip-entry"),
-        )
-          .map((chip) => {
-            const catSel = chip.querySelector("select");
-            const subSel = chip.querySelector(".sub-select");
-            const catId = catSel.value;
-            const catOpt = catSel.options[catSel.selectedIndex];
-            const subId = subSel ? subSel.value : "";
-            const subOpt =
-              subSel && subSel.selectedIndex >= 0
-                ? subSel.options[subSel.selectedIndex]
-                : null;
-            if (!catId) return null;
-            return {
-              catId,
-              catName: catOpt ? catOpt.dataset.name || catOpt.textContent : "",
-              subCatId: subId || "",
-              subCatName:
-                subOpt && subId
-                  ? subOpt.dataset.name || subOpt.textContent
-                  : "",
-            };
-          })
-          .filter(Boolean);
       }
 
       function addVariant(v = null) {
@@ -3158,318 +3167,119 @@
         const div = document.createElement("div");
         div.className = "variant-row";
         div.innerHTML = `
-          <div class="form-group"><label>Weight / Size</label><input type="number" class="form-control" placeholder="e.g. 908" value="${v ? v.weight : ""}"/></div>
-          <div class="form-group"><label>Unit</label>
-            <select class="form-control form-select">
-              <option ${v && v.unit === "g" ? "selected" : ""}>g</option>
-              <option ${v && v.unit === "kg" ? "selected" : ""}>kg</option>
-              <option ${v && v.unit === "caps" ? "selected" : ""}>caps</option>
-              <option ${v && v.unit === "ml" ? "selected" : ""}>ml</option>
-              <option ${v && v.unit === "tabs" ? "selected" : ""}>tabs</option>
-              <option ${v && v.unit === "oz" ? "selected" : ""}>oz</option>
-              <option ${v && v.unit === "lbs" ? "selected" : ""}>lbs</option>
-            </select>
-          </div>
-          <div class="form-group"><label>Price (DA)</label><input type="number" class="form-control" placeholder="0" value="${v ? v.price : ""}"/></div>
-          <button class="btn-remove-variant" onclick="this.closest('.variant-row').remove()" style="margin-top:18px">×</button>`;
+        <div class="form-group"><label>Weight</label><input type="number" class="form-control" placeholder="e.g. 908" value="${v ? v.weight : ""}" /></div>
+        <div class="form-group">
+          <label>Unit</label>
+          <select class="form-control form-select">
+            <option ${v && v.unit === "g" ? "selected" : ""}>g</option>
+            <option ${v && v.unit === "kg" ? "selected" : ""}>kg</option>
+            <option ${v && v.unit === "caps" ? "selected" : ""}>caps</option>
+            <option ${v && v.unit === "ml" ? "selected" : ""}>ml</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Price (DA)</label><input type="number" class="form-control" placeholder="0" value="${v ? v.price : ""}" /></div>
+        <button class="btn-remove-variant" onclick="this.closest('.variant-row').remove()">×</button>`;
         list.appendChild(div);
       }
 
-      function addFlavor(f = null) {
-        const list = document.getElementById("flavors-list");
-        const div = document.createElement("div");
-        div.className = "flavor-row";
-        div.innerHTML = `
-          <div class="form-group"><label>Flavor / Scent</label><input type="text" class="form-control" placeholder="e.g. Double Rich Chocolate" value="${f ? f.name : ""}"/></div>
-          <div class="form-group"><label>Quantity in stock</label><input type="number" class="form-control" placeholder="0" value="${f ? f.quantity : ""}" min="0"/></div>
-          <button class="btn-remove-variant" onclick="this.closest('.flavor-row').remove()" style="margin-top:18px">×</button>`;
-        list.appendChild(div);
+      function previewImage(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = document.getElementById("upload-preview");
+          img.src = ev.target.result;
+          img.style.display = "block";
+          document.getElementById("upload-placeholder").style.display = "none";
+        };
+        reader.readAsDataURL(file);
       }
 
-      async function saveProduct() {
+      function saveProduct() {
         const name = document.getElementById("pm-name").value.trim();
         if (!name) {
           showToast("Product name required", "error");
           return;
         }
-
-        const variants = Array.from(
-          document.querySelectorAll("#variants-list .variant-row"),
-        )
-          .map((r) => {
-            const i = r.querySelectorAll("input,select");
-            return {
-              weight: i[0].value,
-              unit: i[1].value,
-              price: parseFloat(i[2].value) || 0,
-            };
-          })
-          .filter((v) => v.weight);
-
-        const flavors = Array.from(
-          document.querySelectorAll("#flavors-list .flavor-row"),
-        )
-          .map((r) => {
-            const i = r.querySelectorAll("input");
-            return {
-              name: i[0].value.trim(),
-              quantity: parseInt(i[1].value) || 0,
-            };
-          })
-          .filter((f) => f.name);
-
-        const categories = getCatChipsData();
-        const imageUrl = document.getElementById("pm-image-url").value;
-        const progress = document.getElementById("upload-progress");
-
-        if (
-          progress.style.display !== "none" &&
-          progress.textContent.includes("⏳")
-        ) {
-          showToast("Please wait for image upload to finish", "error");
-          return;
-        }
-
-        const payload = {
+        const rows = document.querySelectorAll("#variants-list .variant-row");
+        const variants = Array.from(rows).map((r) => {
+          const inputs = r.querySelectorAll("input,select");
+          return {
+            weight: inputs[0].value,
+            unit: inputs[1].value,
+            price: parseFloat(inputs[2].value) || 0,
+          };
+        });
+        const prod = {
           name,
           brand: document.getElementById("pm-brand").value,
-          description: document.getElementById("pm-desc").value,
-          categories,
-          imageUrl,
+          category: document.getElementById("pm-cat").value,
+          subcat: document.getElementById("pm-subcat").value,
+          desc: document.getElementById("pm-desc").value,
+          flavor: document.getElementById("pm-flavor").value,
           variants,
-          flavors,
+          stock: parseInt(document.getElementById("pm-stock").value) || 0,
           discount: parseInt(document.getElementById("pm-discount").value) || 0,
           allowPromo: document.getElementById("pm-promo-toggle").checked,
           status: document.getElementById("pm-status").value,
         };
-
-        const btn = document.getElementById("pm-save-btn");
-        btn.disabled = true;
-        btn.textContent = "Saving…";
-
-        try {
-          let res;
-          if (editingProductId) {
-            payload.id = editingProductId;
-            res = await api("updateProduct", payload);
-          } else {
-            res = await api("addProduct", payload);
-          }
-          if (res.error) throw new Error(res.error);
-          showToast(
-            editingProductId ? "Product updated!" : "Product added!",
-            "success",
-          );
-          closeModal("product-modal");
-          await loadProducts();
-        } catch (e) {
-          showToast("Error: " + e.message, "error");
-        } finally {
-          btn.disabled = false;
-          btn.textContent = "Save Product";
+        if (editingProductId) {
+          const idx = products.findIndex((p) => p.id === editingProductId);
+          if (idx >= 0) products[idx] = { ...products[idx], ...prod };
+          showToast("Product updated!", "success");
+        } else {
+          prod.id = Date.now();
+          products.push(prod);
+          showToast("Product added!", "success");
         }
+        closeModal("product-modal");
+        renderProducts();
       }
 
-      /* ══════════════════════════════════
-         CATEGORIES
-      ══════════════════════════════════ */
-      async function loadCategories() {
-        const tree = document.getElementById("cat-tree");
-        tree.innerHTML =
-          '<div class="page-loader"><div class="spinner"></div> Loading…</div>';
-        try {
-          const data = await api("getCategories");
-          _categories = data.categories || [];
-          renderCats();
-          populateProdCatFilter();
-          updateDashboard();
-        } catch (e) {
-          tree.innerHTML =
-            '<div class="empty-state"><p>Failed to load categories</p></div>';
-          showToast("Failed to load categories", "error");
-        }
-      }
-
-      function renderCats() {
-        const tree = document.getElementById("cat-tree");
-        if (!_categories.length) {
-          tree.innerHTML = `<div class="empty-state"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><p>No categories yet</p></div>`;
-          return;
-        }
-        tree.innerHTML = _categories
-          .map(
-            (c) => `
-          <div class="cat-node">
-            <div class="cat-row" onclick="toggleCat(this)">
-              <div class="cat-expand"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
-              <div class="cat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div>
-              <div class="cat-name">${c.name}</div>
-              ${c.description ? `<span style="font-size:11px;color:var(--g400)">${c.description}</span>` : ""}
-              <span class="cat-count">${(c.subCategories || []).length} sub${(c.subCategories || []).length !== 1 ? "s" : ""}</span>
-              <div class="action-group" onclick="event.stopPropagation()">
-                <button class="act-btn act-delete" onclick="confirmDelete('cat','${c.id}')">Delete</button>
-              </div>
-            </div>
-            <div class="sub-cats">
-              ${(c.subCategories || [])
-                .map(
-                  (s) => `
-                <div class="sub-node">
-                  <div class="sub-icon"></div>
-                  <div class="sub-name">${s.name}</div>
-                  <div class="sub-actions"><button class="act-btn act-delete" onclick="confirmDelete('subcat','${s.id}')">×</button></div>
-                </div>`,
-                )
-                .join("")}
-              <div class="add-sub-inline" onclick="event.stopPropagation()">
-                <input type="text" class="form-control" id="add-sub-${c.id}" placeholder="New sub-category…"/>
-                <button onclick="addSubToCat('${c.id}','${c.name}')">+ Add</button>
-              </div>
-            </div>
-          </div>`,
-          )
-          .join("");
-      }
-
-      function toggleCat(row) {
-        const exp = row.querySelector(".cat-expand");
-        const sub = row.nextElementSibling;
-        const open = sub.classList.toggle("open");
-        exp.classList.toggle("open", open);
-      }
-
-      function openCatModal() {
-        document.getElementById("cat-name").value = "";
-        document.getElementById("cat-desc").value = "";
-        document.getElementById("sub-items-list").innerHTML = "";
-        openModal("cat-modal");
-      }
-
-      function addSubItem() {
-        const list = document.getElementById("sub-items-list");
-        const div = document.createElement("div");
-        div.className = "sub-item-row";
-        div.innerHTML = `<input type="text" class="form-control" placeholder="Sub-category name…"/><button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button>`;
-        list.appendChild(div);
-      }
-
-      async function saveCat() {
-        const name = document.getElementById("cat-name").value.trim();
-        if (!name) {
-          showToast("Name required", "error");
-          return;
-        }
-        const subs = Array.from(
-          document.querySelectorAll("#sub-items-list .sub-item-row input"),
-        )
-          .map((i) => i.value.trim())
-          .filter(Boolean);
-
-        const btn = document.getElementById("cat-save-btn");
-        btn.disabled = true;
-        btn.textContent = "Saving…";
-        try {
-          const res = await api("addCategory", {
-            name,
-            description: document.getElementById("cat-desc").value,
-            subCategories: subs,
-          });
-          if (res.error) throw new Error(res.error);
-          showToast("Category saved!", "success");
-          closeModal("cat-modal");
-          await loadCategories();
-        } catch (e) {
-          showToast("Error: " + e.message, "error");
-        } finally {
-          btn.disabled = false;
-          btn.textContent = "Save Category";
-        }
-      }
-
-      async function addSubToCat(catId, catName) {
-        const input = document.getElementById("add-sub-" + catId);
-        const name = input.value.trim();
-        if (!name) {
-          showToast("Enter a sub-category name", "error");
-          return;
-        }
-        try {
-          const res = await api("addSubCategory", {
-            categoryId: catId,
-            categoryName: catName,
-            name,
-          });
-          if (res.error) throw new Error(res.error);
-          input.value = "";
-          showToast("Sub-category added!", "success");
-          await loadCategories();
-        } catch (e) {
-          showToast("Error: " + e.message, "error");
-        }
-      }
-
-      /* ══════════════════════════════════
-         PROMO CODES
-      ══════════════════════════════════ */
-      async function loadPromos() {
-        const tbody = document.getElementById("promos-tbody");
-        tbody.innerHTML = `<tr><td colspan="7"><div class="page-loader"><div class="spinner"></div> Loading…</div></td></tr>`;
-        try {
-          const data = await api("getPromos");
-          _promos = data.promos || [];
-          renderPromos();
-          updateDashboard();
-        } catch (e) {
-          tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><p>Failed to load promos</p></div></td></tr>`;
-          showToast("Failed to load promos", "error");
-        }
-      }
-
+      /* ═══════════════════════════════════════════════════════════
+       PROMOS (local state, unchanged)
+    ═══════════════════════════════════════════════════════════ */
       function renderPromos() {
         const tbody = document.getElementById("promos-tbody");
-        if (!_promos.length) {
-          tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><p>No promo codes yet</p></div></td></tr>`;
+        if (!promos.length) {
+          tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><p>No promo codes</p></div></td></tr>`;
           return;
         }
-        tbody.innerHTML = _promos
+        tbody.innerHTML = promos
           .map((p) => {
-            const typeLabel =
+            let typeLabel =
               p.type === "percent"
                 ? "Percentage"
                 : p.type === "fixed"
                   ? "Fixed"
                   : "Free Delivery";
-            const valStr =
+            let valStr =
               p.type === "free_delivery"
                 ? "—"
                 : p.type === "percent"
                   ? p.value + "%"
-                  : Number(p.value).toLocaleString() + " DA";
-            const dateStr = p.createdAt
-              ? new Date(p.createdAt).toLocaleDateString("fr-DZ")
-              : "—";
+                  : p.value.toLocaleString() + " DA";
             return `<tr>
-            <td><span class="code-tag">${p.code}</span></td>
-            <td>${typeLabel}</td>
-            <td><strong>${valStr}</strong></td>
-            <td style="font-size:12px;color:var(--g600)">${p.expiryDate || "—"}</td>
-            <td><span class="badge badge-${p.status}">${cap(p.status)}</span></td>
-            <td style="font-size:12px;color:var(--g600)">${dateStr}</td>
-            <td><div class="action-group">
-              <button class="act-btn act-edit" onclick="editPromo('${p.id}')">Edit</button>
-              <button class="act-btn act-delete" onclick="confirmDelete('promo','${p.id}')">Delete</button>
-            </div></td>
-          </tr>`;
+          <td><span class="code-tag">${p.code}</span></td>
+          <td>${typeLabel}</td>
+          <td><strong>${valStr}</strong></td>
+          <td>${p.min ? p.min.toLocaleString() + " DA" : "—"}</td>
+          <td>${p.uses}${p.maxUses ? " / " + p.maxUses : ""}</td>
+          <td style="font-size:12px;color:var(--g600)">${p.expiry || "—"}</td>
+          <td><span class="badge badge-${p.status}">${cap(p.status)}</span></td>
+          <td><div class="action-group"><button class="act-btn act-edit" onclick="editPromo(${p.id})">Edit</button><button class="act-btn act-delete" onclick="confirmDeleteLocal('promo',${p.id})">Delete</button></div></td>
+        </tr>`;
           })
           .join("");
       }
 
       function updatePromoValueLabel() {
         const t = document.getElementById("promo-type").value;
-        document.getElementById("promo-value-row").style.display =
-          t === "free_delivery" ? "none" : "";
-        document.getElementById("promo-value-label").textContent =
-          t === "percent" ? "Percentage (%) *" : "Amount (DA) *";
+        const row = document.getElementById("promo-value-row");
+        row.style.display = t === "free_delivery" ? "none" : "";
+        if (t !== "free_delivery")
+          document.getElementById("promo-value-label").textContent =
+            t === "percent" ? "Percentage (%) *" : "Amount (DA) *";
       }
 
       function openPromoModal(id = null) {
@@ -3478,30 +3288,35 @@
           ? "Edit Promo Code"
           : "New Promo Code";
         if (id) {
-          const p = _promos.find((x) => String(x.id) === String(id));
+          const p = promos.find((x) => x.id === id);
           if (p) {
             document.getElementById("promo-code").value = p.code;
             document.getElementById("promo-type").value = p.type;
             document.getElementById("promo-value").value = p.value || "";
-            document.getElementById("promo-expiry").value = p.expiryDate || "";
+            document.getElementById("promo-min").value = p.min || "";
+            document.getElementById("promo-max-uses").value = p.maxUses || "";
+            document.getElementById("promo-expiry").value = p.expiry || "";
             document.getElementById("promo-status").value = p.status;
           }
         } else {
-          ["promo-code", "promo-value", "promo-expiry"].forEach(
-            (x) => (document.getElementById(x).value = ""),
-          );
+          [
+            "promo-code",
+            "promo-value",
+            "promo-min",
+            "promo-max-uses",
+            "promo-expiry",
+          ].forEach((x) => (document.getElementById(x).value = ""));
           document.getElementById("promo-type").value = "percent";
           document.getElementById("promo-status").value = "active";
         }
         updatePromoValueLabel();
         openModal("promo-modal");
       }
-
       function editPromo(id) {
         openPromoModal(id);
       }
 
-      async function savePromo() {
+      function savePromo() {
         const code = document
           .getElementById("promo-code")
           .value.trim()
@@ -3519,81 +3334,33 @@
           showToast("Value required", "error");
           return;
         }
-
-        const payload = {
+        const promo = {
           code,
           type,
           value,
-          expiryDate: document.getElementById("promo-expiry").value,
+          min: parseFloat(document.getElementById("promo-min").value) || 0,
+          maxUses:
+            parseInt(document.getElementById("promo-max-uses").value) || null,
+          expiry: document.getElementById("promo-expiry").value,
           status: document.getElementById("promo-status").value,
+          uses: 0,
         };
-        const btn = document.getElementById("promo-save-btn");
-        btn.disabled = true;
-        btn.textContent = "Saving…";
-
-        try {
-          let res;
-          if (editingPromoId) {
-            payload.id = editingPromoId;
-            res = await api("updatePromo", payload);
-          } else {
-            res = await api("addPromo", payload);
-          }
-          if (res.error) throw new Error(res.error);
-          showToast(
-            editingPromoId ? "Promo updated!" : "Promo code created!",
-            "success",
-          );
-          closeModal("promo-modal");
-          await loadPromos();
-        } catch (e) {
-          showToast("Error: " + e.message, "error");
-        } finally {
-          btn.disabled = false;
-          btn.textContent = "Save Code";
+        if (editingPromoId) {
+          const idx = promos.findIndex((p) => p.id === editingPromoId);
+          if (idx >= 0) promos[idx] = { ...promos[idx], ...promo };
+          showToast("Promo updated!", "success");
+        } else {
+          promo.id = Date.now();
+          promos.push(promo);
+          showToast("Promo code created!", "success");
         }
+        closeModal("promo-modal");
+        renderPromos();
       }
 
-      /* ══════════════════════════════════
-         CONFIRM DELETE
-      ══════════════════════════════════ */
-      function confirmDelete(type, id) {
-        const msgs = {
-          product:
-            "This product will be permanently deleted from Google Sheets.",
-          cat: "This category and all its sub-categories will be removed.",
-          subcat: "This sub-category will be removed.",
-          promo: "This promo code will be deleted.",
-        };
-        document.getElementById("confirm-msg").textContent =
-          msgs[type] || "This action cannot be undone.";
-        document.getElementById("confirm-ok").onclick = async () => {
-          closeConfirm();
-          try {
-            let res;
-            if (type === "product") res = await api("deleteProduct", { id });
-            if (type === "cat") res = await api("deleteCategory", { id });
-            if (type === "subcat") res = await api("deleteSubCategory", { id });
-            if (type === "promo") res = await api("deletePromo", { id });
-            if (res && res.error) throw new Error(res.error);
-            showToast("Deleted successfully");
-            if (type === "product") await loadProducts();
-            if (type === "cat" || type === "subcat") await loadCategories();
-            if (type === "promo") await loadPromos();
-          } catch (e) {
-            showToast("Delete failed: " + e.message, "error");
-          }
-        };
-        document.getElementById("confirm-overlay").classList.add("open");
-      }
-
-      function closeConfirm() {
-        document.getElementById("confirm-overlay").classList.remove("open");
-      }
-
-      /* ══════════════════════════════════
-         SETTINGS
-      ══════════════════════════════════ */
+      /* ═══════════════════════════════════════════════════════════
+       SETTINGS
+    ═══════════════════════════════════════════════════════════ */
       function saveUsername() {
         const u = document.getElementById("set-username").value.trim();
         if (!u) {
@@ -3607,7 +3374,6 @@
           adminCreds.displayName;
         showToast("Account info saved!", "success");
       }
-
       function savePassword() {
         const cur = document.getElementById("set-cur-pass").value;
         const nw = document.getElementById("set-new-pass").value;
@@ -3631,9 +3397,39 @@
         showToast("Password updated!", "success");
       }
 
-      /* ══════════════════════════════════
-         MODALS
-      ══════════════════════════════════ */
+      /* ═══════════════════════════════════════════════════════════
+       LOCAL CONFIRM DELETE (for non-sheets entities)
+    ═══════════════════════════════════════════════════════════ */
+      function confirmDeleteLocal(type, id) {
+        const msgs = {
+          product: "This product will be permanently deleted.",
+          promo: "This promo code will be deleted.",
+        };
+        document.getElementById("confirm-title").textContent = "Are you sure?";
+        document.getElementById("confirm-msg").textContent =
+          msgs[type] || "This action cannot be undone.";
+        document.getElementById("confirm-ok").onclick = () => {
+          if (type === "product") {
+            products = products.filter((p) => p.id !== id);
+            renderProducts();
+            showToast("Product deleted");
+          } else if (type === "promo") {
+            promos = promos.filter((p) => p.id !== id);
+            renderPromos();
+            showToast("Promo deleted");
+          }
+          closeConfirm();
+        };
+        document.getElementById("confirm-overlay").classList.add("open");
+      }
+
+      function closeConfirm() {
+        document.getElementById("confirm-overlay").classList.remove("open");
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+       MODALS & TOAST
+    ═══════════════════════════════════════════════════════════ */
       function openModal(id) {
         document.getElementById(id).classList.add("open");
       }
@@ -3646,9 +3442,6 @@
         });
       });
 
-      /* ══════════════════════════════════
-         TOAST
-      ══════════════════════════════════ */
       let toastTimer;
       function showToast(msg, type = "success") {
         const t = document.getElementById("toast");
@@ -3657,25 +3450,32 @@
         t.classList.add("show");
         if (type === "error") t.classList.add("error");
         clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => t.classList.remove("show"), 3500);
+        toastTimer = setTimeout(() => t.classList.remove("show"), 3000);
       }
 
-      /* ══════════════════════════════════
-         HELPERS
-      ══════════════════════════════════ */
+      /* ═══════════════════════════════════════════════════════════
+       HELPERS
+    ═══════════════════════════════════════════════════════════ */
       function cap(s) {
         return s ? s[0].toUpperCase() + s.slice(1) : s;
       }
+      function esc(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
 
-      /* ══════════════════════════════════
-         INIT
-      ══════════════════════════════════ */
-      document.addEventListener("DOMContentLoaded", async () => {
-        updateDashboard();
+      /* ═══════════════════════════════════════════════════════════
+       INIT
+    ═══════════════════════════════════════════════════════════ */
+      document.addEventListener("DOMContentLoaded", () => {
         renderOrders();
-        await Promise.all([loadCategories(), loadProducts(), loadPromos()]);
-        updateDashboard();
-        renderOrders();
+        renderProducts();
+        renderPromos();
+        loadCategories(); // load on startup too
       });
     </script>
   </body>
