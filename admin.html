@@ -82,14 +82,11 @@
       ul {
         list-style: none;
       }
-
-      /* ─── LAYOUT ── */
       #app {
         display: flex;
         min-height: 100vh;
       }
 
-      /* ─── SIDEBAR ── */
       #sidebar {
         width: var(--sidebar-w);
         flex-shrink: 0;
@@ -238,23 +235,6 @@
         opacity: 0;
         max-width: 0;
       }
-      .sb-badge {
-        margin-left: auto;
-        flex-shrink: 0;
-        background: var(--red);
-        color: #fff;
-        font-size: 10px;
-        font-weight: 700;
-        padding: 1px 6px;
-        border-radius: 20px;
-        transition: opacity var(--tr);
-      }
-      .sb-link.active .sb-badge {
-        background: rgba(255, 255, 255, 0.25);
-      }
-      #sidebar.collapsed .sb-badge {
-        opacity: 0;
-      }
       .sb-footer {
         padding: 12px;
         border-top: 1px solid rgba(255, 255, 255, 0.07);
@@ -307,7 +287,6 @@
         color: rgba(255, 255, 255, 0.4);
       }
 
-      /* ─── MAIN ── */
       #main {
         flex: 1;
         margin-left: var(--sidebar-w);
@@ -320,7 +299,6 @@
         margin-left: var(--sidebar-collapsed);
       }
 
-      /* ─── TOPBAR ── */
       #topbar {
         height: 64px;
         background: #fff;
@@ -362,16 +340,6 @@
         background: var(--g50);
         color: var(--black);
       }
-      .notif-dot {
-        position: absolute;
-        top: 6px;
-        right: 6px;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--red);
-        border: 2px solid #fff;
-      }
       .tb-logout {
         display: flex;
         align-items: center;
@@ -392,7 +360,6 @@
         color: #fff;
       }
 
-      /* ─── PAGE ── */
       .page {
         display: none;
         padding: 28px;
@@ -402,7 +369,6 @@
         display: block;
       }
 
-      /* ─── STATS ── */
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -455,7 +421,6 @@
         margin-top: 2px;
       }
 
-      /* ─── SECTION HEADER ── */
       .sec-header {
         display: flex;
         align-items: center;
@@ -514,7 +479,6 @@
         background: var(--g50);
       }
 
-      /* ─── TABLE ── */
       .table-wrap {
         background: #fff;
         border-radius: 12px;
@@ -548,17 +512,6 @@
         border-color: var(--red);
         background: #fff;
       }
-      .filter-select {
-        height: 36px;
-        padding: 0 10px;
-        border: 1.5px solid var(--g200);
-        border-radius: 8px;
-        font-size: 13px;
-        background: var(--g50);
-        color: var(--black);
-        outline: none;
-        cursor: pointer;
-      }
       table {
         width: 100%;
         border-collapse: collapse;
@@ -590,7 +543,6 @@
         background: var(--g50);
       }
 
-      /* ─── BADGES ── */
       .badge {
         display: inline-flex;
         align-items: center;
@@ -657,7 +609,6 @@
         background: var(--g400);
       }
 
-      /* ─── ACTION BUTTONS ── */
       .action-group {
         display: flex;
         align-items: center;
@@ -675,30 +626,6 @@
         transition:
           background var(--tr),
           color var(--tr);
-      }
-      .act-approve {
-        background: var(--green-l);
-        color: var(--green);
-      }
-      .act-approve:hover {
-        background: var(--green);
-        color: #fff;
-      }
-      .act-waiting {
-        background: var(--orange-l);
-        color: var(--orange);
-      }
-      .act-waiting:hover {
-        background: var(--orange);
-        color: #fff;
-      }
-      .act-deliver {
-        background: var(--blue-l);
-        color: var(--blue);
-      }
-      .act-deliver:hover {
-        background: var(--blue);
-        color: #fff;
       }
       .act-delete {
         background: #fee2e2;
@@ -725,7 +652,6 @@
         color: #fff;
       }
 
-      /* ─── PRODUCT THUMB ── */
       .prod-thumb {
         width: 42px;
         height: 42px;
@@ -756,7 +682,6 @@
         color: var(--g400);
       }
 
-      /* ─── MODAL ── */
       .modal-overlay {
         position: fixed;
         inset: 0;
@@ -840,7 +765,6 @@
         gap: 10px;
       }
 
-      /* ─── FORMS ── */
       .form-row {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -894,7 +818,6 @@
         padding-right: 32px;
       }
 
-      /* ─── UPLOAD ── */
       .upload-box {
         border: 2px dashed var(--g200);
         border-radius: 10px;
@@ -941,7 +864,6 @@
         color: var(--g600);
       }
 
-      /* ─── VARIANTS ── */
       .variants-list {
         display: flex;
         flex-direction: column;
@@ -995,7 +917,6 @@
         color: var(--red);
       }
 
-      /* ─── FLAVORS ── */
       .flavors-list {
         display: flex;
         flex-direction: column;
@@ -1012,7 +933,6 @@
         height: 38px;
       }
 
-      /* ─── PROMO TOGGLE ── */
       .toggle-row {
         display: flex;
         align-items: center;
@@ -1074,7 +994,7 @@
         transform: translateX(18px);
       }
 
-      /* ─── MULTI-SELECT CHECKBOXES ── */
+      /* ─── CHECKBOX GROUP (categories, subcategories, promo codes) ── */
       .checkbox-group {
         display: flex;
         flex-wrap: wrap;
@@ -1102,11 +1022,10 @@
         background: var(--red-light);
         color: var(--red);
       }
-      .checkbox-item input {
+      .checkbox-item input[type="checkbox"] {
         display: none;
       }
 
-      /* ─── CATEGORY TREE ── */
       .cat-tree {
         display: flex;
         flex-direction: column;
@@ -1262,7 +1181,6 @@
         color: #fff;
       }
 
-      /* ─── SETTINGS ── */
       .settings-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1285,7 +1203,6 @@
         gap: 8px;
       }
 
-      /* ─── CODE TAG ── */
       .code-tag {
         display: inline-flex;
         align-items: center;
@@ -1298,7 +1215,6 @@
         letter-spacing: 0.5px;
       }
 
-      /* ─── TOAST ── */
       #toast {
         position: fixed;
         bottom: 24px;
@@ -1335,7 +1251,6 @@
         color: #dc2626;
       }
 
-      /* ─── LOADING OVERLAY ── */
       .loading-overlay {
         position: fixed;
         inset: 0;
@@ -1368,8 +1283,6 @@
           transform: rotate(360deg);
         }
       }
-
-      /* ─── ANIMATIONS ── */
       @keyframes fadeUp {
         from {
           opacity: 0;
@@ -1381,7 +1294,6 @@
         }
       }
 
-      /* ─── CONFIRM ── */
       .confirm-overlay {
         position: fixed;
         inset: 0;
@@ -1514,7 +1426,6 @@
         max-width: 0;
       }
 
-      /* ─── RESPONSIVE ── */
       @media (max-width: 768px) {
         #sidebar {
           transform: translateX(-100%);
@@ -1569,15 +1480,12 @@
     </style>
   </head>
   <body>
-    <!-- LOADING -->
     <div class="loading-overlay" id="loading-overlay">
       <div class="spinner"></div>
       <div class="loading-text" id="loading-text">Loading…</div>
     </div>
 
-    <!-- MAIN APP -->
     <div id="app">
-      <!-- SIDEBAR -->
       <aside id="sidebar">
         <div class="sb-header">
           <div class="sb-logo-mark"><span>B</span></div>
@@ -1609,9 +1517,8 @@
               <rect x="3" y="3" width="7" height="7" />
               <rect x="14" y="3" width="7" height="7" />
               <rect x="14" y="14" width="7" height="7" />
-              <rect x="3" y="14" width="7" height="7" />
-            </svg>
-            <span>Dashboard</span>
+              <rect x="3" y="14" width="7" height="7" /></svg
+            ><span>Dashboard</span>
           </div>
           <div class="sb-section-label">Store</div>
           <div class="sb-link" onclick="showPage('products', this)">
@@ -1623,9 +1530,8 @@
             >
               <path
                 d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
-              />
-            </svg>
-            <span>Products</span>
+              /></svg
+            ><span>Products</span>
           </div>
           <div class="sb-link" onclick="showPage('categories', this)">
             <svg
@@ -1634,9 +1540,10 @@
               stroke="currentColor"
               stroke-width="2"
             >
-              <path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" />
-            </svg>
-            <span>Categories</span>
+              <path
+                d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"
+              /></svg
+            ><span>Categories</span>
           </div>
           <div class="sb-link" onclick="showPage('promos', this)">
             <svg
@@ -1647,9 +1554,8 @@
             >
               <path
                 d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
-              />
-            </svg>
-            <span>Promo Codes</span>
+              /></svg
+            ><span>Promo Codes</span>
           </div>
           <div class="sb-section-label">Admin</div>
           <div class="sb-link" onclick="showPage('settings', this)">
@@ -1662,9 +1568,8 @@
               <circle cx="12" cy="12" r="3" />
               <path
                 d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
-              />
-            </svg>
-            <span>Settings</span>
+              /></svg
+            ><span>Settings</span>
           </div>
         </nav>
         <div class="sb-footer">
@@ -1680,22 +1585,20 @@
               <div class="sb-user-role">Super Admin</div>
             </div>
           </div>
-          <a href="index.html" class="back-to-site">
-            <svg
+          <a href="index.html" class="back-to-site"
+            ><svg
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="2"
             >
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-              <polyline points="9 22 9 12 15 12 15 22" />
-            </svg>
-            <span>Back to Website</span>
-          </a>
+              <polyline points="9 22 9 12 15 12 15 22" /></svg
+            ><span>Back to Website</span></a
+          >
         </div>
       </aside>
 
-      <!-- MAIN -->
       <div id="main">
         <header id="topbar">
           <button
@@ -1729,9 +1632,8 @@
               >
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                 <polyline points="16 17 21 12 16 7" />
-                <line x1="21" y1="12" x2="9" y2="12" />
-              </svg>
-              Logout
+                <line x1="21" y1="12" x2="9" y2="12" /></svg
+              >Logout
             </button>
           </div>
         </header>
@@ -1816,9 +1718,8 @@
                 stroke-width="2.5"
               >
                 <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-              Add Product
+                <line x1="5" y1="12" x2="19" y2="12" /></svg
+              >Add Product
             </button>
           </div>
           <div class="table-wrap">
@@ -1837,7 +1738,7 @@
                   <th>Categories</th>
                   <th>Flavors</th>
                   <th>Variants / Prices</th>
-                  <th>Promo</th>
+                  <th>Promos</th>
                   <th>Stock</th>
                   <th>Status</th>
                   <th>Actions</th>
@@ -1862,9 +1763,8 @@
                 stroke-width="2.5"
               >
                 <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-              Add Category
+                <line x1="5" y1="12" x2="19" y2="12" /></svg
+              >Add Category
             </button>
           </div>
           <div class="cat-tree" id="cat-tree"></div>
@@ -1884,9 +1784,8 @@
                 stroke-width="2.5"
               >
                 <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-              New Code
+                <line x1="5" y1="12" x2="19" y2="12" /></svg
+              >New Code
             </button>
           </div>
           <div class="table-wrap">
@@ -1923,17 +1822,16 @@
                   stroke-width="2"
                 >
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-                Account Info
+                  <circle cx="12" cy="7" r="4" /></svg
+                >Account Info
               </div>
               <div class="form-group" style="margin-bottom: 14px">
-                <label>Username</label>
-                <input type="text" class="form-control" id="set-username" />
+                <label>Username</label
+                ><input type="text" class="form-control" id="set-username" />
               </div>
               <div class="form-group" style="margin-bottom: 18px">
-                <label>Display Name</label>
-                <input type="text" class="form-control" id="set-displayname" />
+                <label>Display Name</label
+                ><input type="text" class="form-control" id="set-displayname" />
               </div>
               <button
                 class="btn-primary"
@@ -1954,13 +1852,12 @@
                   stroke-width="2"
                 >
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                </svg>
-                Change Password
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg
+                >Change Password
               </div>
               <div class="form-group" style="margin-bottom: 14px">
-                <label>Current Password</label>
-                <input
+                <label>Current Password</label
+                ><input
                   type="password"
                   class="form-control"
                   id="set-cur-pass"
@@ -1968,8 +1865,8 @@
                 />
               </div>
               <div class="form-group" style="margin-bottom: 14px">
-                <label>New Password</label>
-                <input
+                <label>New Password</label
+                ><input
                   type="password"
                   class="form-control"
                   id="set-new-pass"
@@ -1977,8 +1874,8 @@
                 />
               </div>
               <div class="form-group" style="margin-bottom: 18px">
-                <label>Confirm New Password</label>
-                <input
+                <label>Confirm New Password</label
+                ><input
                   type="password"
                   class="form-control"
                   id="set-confirm-pass"
@@ -2038,19 +1935,14 @@
               />
             </div>
           </div>
-
-          <!-- Categories multi-select -->
           <div class="form-group" style="margin-bottom: 16px">
             <label>Categories (select one or more)</label>
             <div class="checkbox-group" id="pm-categories"></div>
           </div>
-
-          <!-- Sub-categories multi-select (filtered by selected categories) -->
           <div class="form-group" style="margin-bottom: 16px">
-            <label>Sub-Categories (must belong to selected categories)</label>
+            <label>Sub-Categories</label>
             <div class="checkbox-group" id="pm-subcategories"></div>
           </div>
-
           <div class="form-row full">
             <div class="form-group">
               <label>Description</label
@@ -2062,7 +1954,6 @@
               ></textarea>
             </div>
           </div>
-
           <div class="form-group" style="margin-bottom: 16px">
             <label>Product Image</label>
             <div class="upload-box" id="upload-box">
@@ -2107,7 +1998,6 @@
             </div>
             <input type="hidden" id="pm-image-url" />
           </div>
-
           <div class="form-group" style="margin-bottom: 8px">
             <label>Weight / Size Variants & Prices</label>
           </div>
@@ -2122,11 +2012,9 @@
               stroke-width="2.5"
             >
               <line x1="12" y1="5" x2="12" y2="19" />
-              <line x1="5" y1="12" x2="19" y2="12" />
-            </svg>
-            Add Variant
+              <line x1="5" y1="12" x2="19" y2="12" /></svg
+            >Add Variant
           </button>
-
           <div class="form-group" style="margin-top: 16px; margin-bottom: 8px">
             <label>Flavors & Quantity per Flavor</label>
           </div>
@@ -2141,11 +2029,9 @@
               stroke-width="2.5"
             >
               <line x1="12" y1="5" x2="12" y2="19" />
-              <line x1="5" y1="12" x2="19" y2="12" />
-            </svg>
-            Add Flavor
+              <line x1="5" y1="12" x2="19" y2="12" /></svg
+            >Add Flavor
           </button>
-
           <div class="form-row" style="margin-top: 16px">
             <div class="form-group">
               <label>Total Stock Quantity</label
@@ -2171,42 +2057,58 @@
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Status</label>
-              <select class="form-control form-select" id="pm-status">
+              <label>Status</label
+              ><select class="form-control form-select" id="pm-status">
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
               </select>
             </div>
           </div>
+          <!-- Promo toggle + specific promo code assignment -->
           <div class="form-row full" style="margin-bottom: 0">
             <div class="form-group">
               <label>Promo Code Eligibility</label>
-              <label
+              <div
                 class="toggle-row"
-                for="pm-promo-toggle"
                 style="margin-top: 4px"
+                onclick="
+                  document.getElementById('pm-promo-toggle').click();
+                  setTimeout(togglePromoSection, 50);
+                "
               >
                 <div>
                   <div class="toggle-label">
                     Allow promo codes on this product
                   </div>
                   <div class="toggle-desc">
-                    Customers can apply promo/discount codes at checkout
+                    When enabled, select which promo codes apply
                   </div>
                 </div>
-                <label class="toggle-switch">
-                  <input type="checkbox" id="pm-promo-toggle" checked />
-                  <span class="toggle-slider"></span>
-                </label>
-              </label>
+                <label class="toggle-switch" onclick="event.stopPropagation()"
+                  ><input
+                    type="checkbox"
+                    id="pm-promo-toggle"
+                    checked
+                    onchange="togglePromoSection()" /><span
+                    class="toggle-slider"
+                  ></span
+                ></label>
+              </div>
             </div>
+          </div>
+          <div
+            id="pm-promo-section"
+            class="form-group"
+            style="margin-bottom: 16px"
+          >
+            <label>Assign Promo Codes</label>
+            <div class="checkbox-group" id="pm-promo-codes"></div>
           </div>
         </div>
         <div class="modal-footer">
           <button class="btn-secondary" onclick="closeModal('product-modal')">
-            Cancel
-          </button>
-          <button class="btn-primary" id="pm-save-btn" onclick="saveProduct()">
+            Cancel</button
+          ><button class="btn-primary" id="pm-save-btn" onclick="saveProduct()">
             Save Product
           </button>
         </div>
@@ -2234,8 +2136,8 @@
         </div>
         <div class="modal-body">
           <div class="form-group" style="margin-bottom: 14px">
-            <label>Category Name *</label>
-            <input
+            <label>Category Name *</label
+            ><input
               type="text"
               class="form-control"
               id="cat-name"
@@ -2243,8 +2145,8 @@
             />
           </div>
           <div class="form-group" style="margin-bottom: 14px">
-            <label>Description</label>
-            <input
+            <label>Description</label
+            ><input
               type="text"
               class="form-control"
               id="cat-desc"
@@ -2264,17 +2166,17 @@
                 stroke-width="2.5"
               >
                 <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-              Add Sub-category
+                <line x1="5" y1="12" x2="19" y2="12" /></svg
+              >Add Sub-category
             </button>
           </div>
         </div>
         <div class="modal-footer">
           <button class="btn-secondary" onclick="closeModal('cat-modal')">
-            Cancel
+            Cancel</button
+          ><button class="btn-primary" onclick="saveCat()">
+            Save Category
           </button>
-          <button class="btn-primary" onclick="saveCat()">Save Category</button>
         </div>
       </div>
     </div>
@@ -2311,8 +2213,8 @@
               />
             </div>
             <div class="form-group">
-              <label>Type</label>
-              <select
+              <label>Type</label
+              ><select
                 class="form-control form-select"
                 id="promo-type"
                 onchange="updatePromoValueLabel()"
@@ -2359,8 +2261,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label>Status</label>
-            <select class="form-control form-select" id="promo-status">
+            <label>Status</label
+            ><select class="form-control form-select" id="promo-status">
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
             </select>
@@ -2368,9 +2270,8 @@
         </div>
         <div class="modal-footer">
           <button class="btn-secondary" onclick="closeModal('promo-modal')">
-            Cancel
-          </button>
-          <button class="btn-primary" onclick="savePromo()">Save Code</button>
+            Cancel</button
+          ><button class="btn-primary" onclick="savePromo()">Save Code</button>
         </div>
       </div>
     </div>
@@ -2398,13 +2299,12 @@
           This action cannot be undone.
         </div>
         <div class="confirm-actions">
-          <button class="btn-cancel" onclick="closeConfirm()">Cancel</button>
-          <button class="btn-danger" id="confirm-ok">Delete</button>
+          <button class="btn-cancel" onclick="closeConfirm()">Cancel</button
+          ><button class="btn-danger" id="confirm-ok">Delete</button>
         </div>
       </div>
     </div>
 
-    <!-- TOAST -->
     <div id="toast">
       <svg
         class="t-icon"
@@ -2415,36 +2315,40 @@
         stroke="currentColor"
         stroke-width="2.5"
       >
-        <polyline points="20 6 9 17 4 12" />
-      </svg>
-      <span id="toast-msg">Done!</span>
+        <polyline points="20 6 9 17 4 12" /></svg
+      ><span id="toast-msg">Done!</span>
     </div>
 
     <script>
-      // ════════════════════════════════════════════════════════════
-      // CONFIG — paste your Apps Script URL here
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
+      // CONFIG
+      // ════════════════════════════════════════════
       const API_URL =
         "https://script.google.com/macros/s/AKfycbzUMqYKL0xk7cYsuQZUW1Eg-O5YfZI5GULCIW0zsFNZvcoVHN7hJuoh_eydxscnNEtlHw/exec"; // ← YOUR DEPLOYED APPS SCRIPT WEB APP URL
       const CLOUDINARY_CLOUD = "dbxna1ipc";
       const CLOUDINARY_PRESET = "Bybens";
+
+      // ════════════════════════════════════════════
+      // AUTH GUARD — redirect to login if not authenticated
+      // ════════════════════════════════════════════
+      if (sessionStorage.getItem("bb_admin_auth") !== "1") {
+        window.location.href = "login.html";
+      }
 
       // ── STATE ──
       let sidebarCollapsed = false;
       let editingProductId = null;
       let editingPromoId = null;
       let currentImageUrl = "";
+      let categories = [],
+        subCategories = [],
+        products = [],
+        promos = [],
+        settings = {};
 
-      // Cached data from Google Sheets
-      let categories = [];
-      let subCategories = [];
-      let products = [];
-      let promos = [];
-      let settings = {};
-
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
       // API HELPERS
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
       async function apiGet(action, params = {}) {
         const url = new URL(API_URL);
         url.searchParams.set("action", action);
@@ -2452,7 +2356,6 @@
         const res = await fetch(url.toString());
         return res.json();
       }
-
       async function apiPost(body) {
         const res = await fetch(API_URL, {
           method: "POST",
@@ -2461,7 +2364,6 @@
         });
         return res.json();
       }
-
       function showLoading(msg = "Loading…") {
         document.getElementById("loading-text").textContent = msg;
         document.getElementById("loading-overlay").classList.add("show");
@@ -2470,12 +2372,12 @@
         document.getElementById("loading-overlay").classList.remove("show");
       }
 
-      // ════════════════════════════════════════════════════════════
-      // INIT — Load all data
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
+      // INIT
+      // ════════════════════════════════════════════
       document.addEventListener("DOMContentLoaded", async () => {
         if (!API_URL) {
-          showToast("Set API_URL in the script config!", "error");
+          showToast("Set API_URL in the script!", "error");
           return;
         }
         showLoading("Loading dashboard…");
@@ -2489,7 +2391,7 @@
           ]);
           updateDashboard();
         } catch (e) {
-          showToast("Failed to load data: " + e.message, "error");
+          showToast("Failed to load: " + e.message, "error");
         }
         hideLoading();
       });
@@ -2527,13 +2429,13 @@
             settings.admin_username || "";
           document.getElementById("set-displayname").value =
             settings.admin_displayname || "";
-          document.getElementById("sb-username").textContent =
+          const name =
             settings.admin_displayname || settings.admin_username || "Admin";
+          document.getElementById("sb-username").textContent = name;
           document.querySelector(".sb-avatar").textContent =
-            (settings.admin_displayname || "A")[0].toUpperCase();
+            name[0].toUpperCase();
         }
       }
-
       function updateDashboard() {
         document.getElementById("stat-products").textContent = products.length;
         document.getElementById("stat-categories").textContent =
@@ -2543,12 +2445,11 @@
         ).length;
       }
 
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
       // SIDEBAR & NAV
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
       function toggleSidebar() {
-        const isMobile = window.innerWidth < 768;
-        if (isMobile) {
+        if (window.innerWidth < 768) {
           document.getElementById("sidebar").classList.toggle("mobile-open");
         } else {
           sidebarCollapsed = !sidebarCollapsed;
@@ -2560,7 +2461,6 @@
             .classList.toggle("full", sidebarCollapsed);
         }
       }
-
       const pageNames = {
         dashboard: "Dashboard",
         products: "Products",
@@ -2582,20 +2482,18 @@
         if (window.innerWidth < 768)
           document.getElementById("sidebar").classList.remove("mobile-open");
       }
-
       function doLogout() {
         sessionStorage.removeItem("bb_admin_auth");
+        sessionStorage.removeItem("bb_admin_name");
         window.location.href = "login.html";
       }
 
-      // ════════════════════════════════════════════════════════════
-      // CLOUDINARY IMAGE UPLOAD
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
+      // CLOUDINARY
+      // ════════════════════════════════════════════
       async function handleImageUpload(e) {
         const file = e.target.files[0];
         if (!file) return;
-
-        // Show local preview
         const reader = new FileReader();
         reader.onload = (ev) => {
           document.getElementById("upload-preview").src = ev.target.result;
@@ -2603,55 +2501,88 @@
           document.getElementById("upload-placeholder").style.display = "none";
         };
         reader.readAsDataURL(file);
-
-        // Upload to Cloudinary
         document.getElementById("upload-spinner").style.display = "block";
         try {
           const fd = new FormData();
           fd.append("file", file);
           fd.append("upload_preset", CLOUDINARY_PRESET);
           fd.append("folder", "bybens-products");
-
           const res = await fetch(
             `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
-            {
-              method: "POST",
-              body: fd,
-            },
+            { method: "POST", body: fd },
           );
           const data = await res.json();
           if (data.secure_url) {
             currentImageUrl = data.secure_url;
             document.getElementById("pm-image-url").value = data.secure_url;
             showToast("Image uploaded!");
-          } else {
+          } else
             showToast(
               "Upload failed: " + (data.error?.message || "Unknown"),
               "error",
             );
-          }
         } catch (err) {
           showToast("Upload error: " + err.message, "error");
         }
         document.getElementById("upload-spinner").style.display = "none";
       }
 
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
+      // CHECKBOX HELPERS (FIXED — no double-toggle)
+      // ════════════════════════════════════════════
+      function buildCheckboxGroup(
+        containerId,
+        items,
+        selectedIds = [],
+        onChangeFn = null,
+      ) {
+        const container = document.getElementById(containerId);
+        if (!items.length) {
+          container.innerHTML =
+            '<span style="font-size:12px;color:var(--g400)">None available</span>';
+          return;
+        }
+        container.innerHTML = items
+          .map((item) => {
+            const checked = selectedIds.includes(item.id);
+            return `<div class="checkbox-item ${checked ? "checked" : ""}" data-value="${item.id}" onclick="handleCheckboxClick(this${onChangeFn ? ",'" + onChangeFn + "'" : ""})">
+          <input type="checkbox" value="${item.id}" ${checked ? "checked" : ""} />
+          ${item.label || item.name || item.code}
+        </div>`;
+          })
+          .join("");
+      }
+
+      function handleCheckboxClick(el, callbackName) {
+        const cb = el.querySelector('input[type="checkbox"]');
+        cb.checked = !cb.checked;
+        el.classList.toggle("checked", cb.checked);
+        if (callbackName && window[callbackName]) window[callbackName]();
+      }
+
+      function getCheckedValues(containerId) {
+        return Array.from(
+          document.querySelectorAll(
+            `#${containerId} input[type="checkbox"]:checked`,
+          ),
+        ).map((cb) => cb.value);
+      }
+
+      // ════════════════════════════════════════════
       // PRODUCTS
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
       function filterProducts(q = "") {
         renderProducts(q.toLowerCase());
       }
 
       function renderProducts(filter = "") {
         const tbody = document.getElementById("products-tbody");
-        const filtered = products.filter((p) => {
-          if (!filter) return true;
-          return (
+        const filtered = products.filter(
+          (p) =>
+            !filter ||
             p.name.toLowerCase().includes(filter) ||
-            (p.brand || "").toLowerCase().includes(filter)
-          );
-        });
+            (p.brand || "").toLowerCase().includes(filter),
+        );
         if (!filtered.length) {
           tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><p>No products</p></div></td></tr>`;
           return;
@@ -2679,81 +2610,57 @@
                   `${v.weight}${v.unit} — ${Number(v.price).toLocaleString()} DA`,
               )
               .join("<br>");
+            const promoNames = (p.promoCodeIds || [])
+              .map((id) => {
+                const pr = promos.find((x) => x.id === id);
+                return pr ? pr.code : "";
+              })
+              .filter(Boolean);
+            const promoStr = p.allowPromo
+              ? promoNames.length
+                ? promoNames
+                    .map(
+                      (c) =>
+                        `<span class="code-tag" style="margin:1px">${c}</span>`,
+                    )
+                    .join(" ")
+                : '<span class="badge badge-active">All</span>'
+              : '<span class="badge badge-inactive">No</span>';
             const imgHtml = p.imageUrl
               ? `<img src="${p.imageUrl}" alt="" />`
               : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>`;
-
             return `<tr>
-          <td>
-            <div class="prod-info">
-              <div class="prod-thumb">${imgHtml}</div>
-              <div class="prod-name-block"><div class="name">${p.name}</div><div class="sub">${p.brand || ""}</div></div>
-            </div>
-          </td>
+          <td><div class="prod-info"><div class="prod-thumb">${imgHtml}</div><div class="prod-name-block"><div class="name">${p.name}</div><div class="sub">${p.brand || ""}</div></div></div></td>
           <td><span style="font-size:12px">${catNames}${subNames ? '<br><span style="color:var(--g400)">' + subNames + "</span>" : ""}</span></td>
           <td style="font-size:12px;color:var(--g600)">${flavorStr || "—"}</td>
           <td style="font-size:12px">${variantStr || "—"}</td>
-          <td>${p.allowPromo ? '<span class="badge badge-active">Yes</span>' : '<span class="badge badge-inactive">No</span>'}</td>
+          <td>${promoStr}</td>
           <td>${p.stock}</td>
           <td><span class="badge badge-${p.status}">${cap(p.status)}</span></td>
-          <td>
-            <div class="action-group">
-              <button class="act-btn act-edit" onclick="editProduct('${p.id}')">Edit</button>
-              <button class="act-btn act-delete" onclick="confirmDelete('product','${p.id}')">Delete</button>
-            </div>
-          </td>
+          <td><div class="action-group"><button class="act-btn act-edit" onclick="editProduct('${p.id}')">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('product','${p.id}')">Delete</button></div></td>
         </tr>`;
           })
           .join("");
       }
 
-      function buildCategoryCheckboxes(selectedIds = []) {
-        const container = document.getElementById("pm-categories");
-        container.innerHTML = categories
-          .map((c) => {
-            const checked = selectedIds.includes(c.id);
-            return `<label class="checkbox-item ${checked ? "checked" : ""}" onclick="toggleCheckbox(this); updateSubCatCheckboxes();">
-          <input type="checkbox" value="${c.id}" ${checked ? "checked" : ""} />
-          ${c.name}
-        </label>`;
-          })
-          .join("");
-      }
-
-      function updateSubCatCheckboxes(selectedSubIds = []) {
-        const selectedCatIds = getSelectedCheckboxValues("pm-categories");
-        const container = document.getElementById("pm-subcategories");
-        // Filter subcategories that belong to at least one selected category
+      function refreshSubCatCheckboxes() {
+        const selectedCatIds = getCheckedValues("pm-categories");
         const filteredSubs = subCategories.filter((s) =>
           s.categoryIds.some((cid) => selectedCatIds.includes(cid)),
         );
-        if (!filteredSubs.length) {
-          container.innerHTML =
-            '<span style="font-size:12px;color:var(--g400)">Select a category first</span>';
-          return;
-        }
-        container.innerHTML = filteredSubs
-          .map((s) => {
-            const checked = selectedSubIds.includes(s.id);
-            return `<label class="checkbox-item ${checked ? "checked" : ""}">
-          <input type="checkbox" value="${s.id}" ${checked ? "checked" : ""} onclick="toggleCheckbox(this.closest('.checkbox-item'))" />
-          ${s.name}
-        </label>`;
-          })
-          .join("");
-      }
-
-      function toggleCheckbox(el) {
-        const cb = el.querySelector('input[type="checkbox"]');
-        cb.checked = !cb.checked;
-        el.classList.toggle("checked", cb.checked);
-      }
-
-      function getSelectedCheckboxValues(containerId) {
-        const boxes = document.querySelectorAll(
-          `#${containerId} input[type="checkbox"]:checked`,
+        // Preserve currently checked subs that are still valid
+        const currentSubIds = getCheckedValues("pm-subcategories");
+        const validSubIds = currentSubIds.filter((id) =>
+          filteredSubs.some((s) => s.id === id),
         );
-        return Array.from(boxes).map((b) => b.value);
+        buildCheckboxGroup("pm-subcategories", filteredSubs, validSubIds);
+      }
+
+      function togglePromoSection() {
+        const on = document.getElementById("pm-promo-toggle").checked;
+        document.getElementById("pm-promo-section").style.display = on
+          ? ""
+          : "none";
       }
 
       function openProductModal(id = null) {
@@ -2787,10 +2694,28 @@
               document.getElementById("upload-placeholder").style.display =
                 "none";
             }
-            buildCategoryCheckboxes(p.categoryIds || []);
-            setTimeout(
-              () => updateSubCatCheckboxes(p.subCategoryIds || []),
-              50,
+            buildCheckboxGroup(
+              "pm-categories",
+              categories,
+              p.categoryIds || [],
+              "refreshSubCatCheckboxes",
+            );
+            setTimeout(() => {
+              const selectedCatIds = p.categoryIds || [];
+              const filteredSubs = subCategories.filter((s) =>
+                s.categoryIds.some((cid) => selectedCatIds.includes(cid)),
+              );
+              buildCheckboxGroup(
+                "pm-subcategories",
+                filteredSubs,
+                p.subCategoryIds || [],
+              );
+            }, 30);
+            const activePromos = promos.filter((pr) => pr.status === "active");
+            buildCheckboxGroup(
+              "pm-promo-codes",
+              activePromos.map((pr) => ({ id: pr.id, name: pr.code })),
+              p.promoCodeIds || [],
             );
             (p.variants || []).forEach((v) => addVariant(v));
             (p.flavors || []).forEach((f) => addFlavor(f));
@@ -2801,11 +2726,23 @@
           );
           document.getElementById("pm-status").value = "active";
           document.getElementById("pm-promo-toggle").checked = true;
-          buildCategoryCheckboxes([]);
-          updateSubCatCheckboxes([]);
+          buildCheckboxGroup(
+            "pm-categories",
+            categories,
+            [],
+            "refreshSubCatCheckboxes",
+          );
+          buildCheckboxGroup("pm-subcategories", [], []);
+          const activePromos = promos.filter((pr) => pr.status === "active");
+          buildCheckboxGroup(
+            "pm-promo-codes",
+            activePromos.map((pr) => ({ id: pr.id, name: pr.code })),
+            [],
+          );
           addVariant();
           addFlavor();
         }
+        togglePromoSection();
         openModal("product-modal");
       }
 
@@ -2817,32 +2754,14 @@
         const list = document.getElementById("variants-list");
         const div = document.createElement("div");
         div.className = "variant-row";
-        div.innerHTML = `
-        <div class="form-group"><label>Weight</label><input type="number" class="form-control" placeholder="e.g. 908" value="${v ? v.weight : ""}" /></div>
-        <div class="form-group">
-          <label>Unit</label>
-          <select class="form-control form-select">
-            <option ${v && v.unit === "g" ? "selected" : ""}>g</option>
-            <option ${v && v.unit === "kg" ? "selected" : ""}>kg</option>
-            <option ${v && v.unit === "caps" ? "selected" : ""}>caps</option>
-            <option ${v && v.unit === "ml" ? "selected" : ""}>ml</option>
-            <option ${v && v.unit === "L" ? "selected" : ""}>L</option>
-            <option ${v && v.unit === "pcs" ? "selected" : ""}>pcs</option>
-          </select>
-        </div>
-        <div class="form-group"><label>Price (DA)</label><input type="number" class="form-control" placeholder="0" value="${v ? v.price : ""}" /></div>
-        <button class="btn-remove-variant" onclick="this.closest('.variant-row').remove()">×</button>`;
+        div.innerHTML = `<div class="form-group"><label>Weight</label><input type="number" class="form-control" placeholder="e.g. 908" value="${v ? v.weight : ""}" /></div><div class="form-group"><label>Unit</label><select class="form-control form-select"><option ${v && v.unit === "g" ? "selected" : ""}>g</option><option ${v && v.unit === "kg" ? "selected" : ""}>kg</option><option ${v && v.unit === "caps" ? "selected" : ""}>caps</option><option ${v && v.unit === "ml" ? "selected" : ""}>ml</option><option ${v && v.unit === "L" ? "selected" : ""}>L</option><option ${v && v.unit === "pcs" ? "selected" : ""}>pcs</option></select></div><div class="form-group"><label>Price (DA)</label><input type="number" class="form-control" placeholder="0" value="${v ? v.price : ""}" /></div><button class="btn-remove-variant" onclick="this.closest('.variant-row').remove()">×</button>`;
         list.appendChild(div);
       }
-
       function addFlavor(f = null) {
         const list = document.getElementById("flavors-list");
         const div = document.createElement("div");
         div.className = "flavor-row";
-        div.innerHTML = `
-        <div class="form-group"><label>Flavor Name</label><input type="text" class="form-control" placeholder="e.g. Chocolate" value="${f ? f.name : ""}" /></div>
-        <div class="form-group"><label>Qty</label><input type="number" class="form-control" placeholder="0" value="${f ? f.qty : ""}" min="0" /></div>
-        <button class="btn-remove-variant" onclick="this.closest('.flavor-row').remove()">×</button>`;
+        div.innerHTML = `<div class="form-group"><label>Flavor Name</label><input type="text" class="form-control" placeholder="e.g. Chocolate" value="${f ? f.name : ""}" /></div><div class="form-group"><label>Qty</label><input type="number" class="form-control" placeholder="0" value="${f ? f.qty : ""}" min="0" /></div><button class="btn-remove-variant" onclick="this.closest('.flavor-row').remove()">×</button>`;
         list.appendChild(div);
       }
 
@@ -2852,37 +2771,31 @@
           showToast("Product name required", "error");
           return;
         }
-
-        const categoryIds = getSelectedCheckboxValues("pm-categories");
-        const subCategoryIds = getSelectedCheckboxValues("pm-subcategories");
-
-        const variantRows = document.querySelectorAll(
-          "#variants-list .variant-row",
-        );
-        const variants = Array.from(variantRows)
+        const categoryIds = getCheckedValues("pm-categories");
+        const subCategoryIds = getCheckedValues("pm-subcategories");
+        const promoCodeIds = document.getElementById("pm-promo-toggle").checked
+          ? getCheckedValues("pm-promo-codes")
+          : [];
+        const variants = Array.from(
+          document.querySelectorAll("#variants-list .variant-row"),
+        )
           .map((r) => {
-            const inputs = r.querySelectorAll("input,select");
+            const i = r.querySelectorAll("input,select");
             return {
-              weight: inputs[0].value,
-              unit: inputs[1].value,
-              price: parseFloat(inputs[2].value) || 0,
+              weight: i[0].value,
+              unit: i[1].value,
+              price: parseFloat(i[2].value) || 0,
             };
           })
           .filter((v) => v.weight);
-
-        const flavorRows = document.querySelectorAll(
-          "#flavors-list .flavor-row",
-        );
-        const flavors = Array.from(flavorRows)
+        const flavors = Array.from(
+          document.querySelectorAll("#flavors-list .flavor-row"),
+        )
           .map((r) => {
-            const inputs = r.querySelectorAll("input");
-            return {
-              name: inputs[0].value.trim(),
-              qty: parseInt(inputs[1].value) || 0,
-            };
+            const i = r.querySelectorAll("input");
+            return { name: i[0].value.trim(), qty: parseInt(i[1].value) || 0 };
           })
           .filter((f) => f.name);
-
         const payload = {
           name,
           brand: document.getElementById("pm-brand").value.trim(),
@@ -2896,28 +2809,21 @@
           stock: parseInt(document.getElementById("pm-stock").value) || 0,
           discount: parseInt(document.getElementById("pm-discount").value) || 0,
           allowPromo: document.getElementById("pm-promo-toggle").checked,
+          promoCodeIds,
           status: document.getElementById("pm-status").value,
         };
-
         document.getElementById("pm-save-btn").disabled = true;
         showLoading("Saving product…");
-
         try {
-          if (editingProductId) {
-            payload.action = "updateProduct";
-            payload.id = editingProductId;
-          } else {
-            payload.action = "addProduct";
-          }
+          payload.action = editingProductId ? "updateProduct" : "addProduct";
+          if (editingProductId) payload.id = editingProductId;
           const r = await apiPost(payload);
           if (r.success) {
             showToast(editingProductId ? "Product updated!" : "Product added!");
             closeModal("product-modal");
             await loadProducts();
             updateDashboard();
-          } else {
-            showToast("Error: " + (r.error || "Unknown"), "error");
-          }
+          } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {
           showToast("Error: " + e.message, "error");
         }
@@ -2925,9 +2831,9 @@
         hideLoading();
       }
 
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
       // CATEGORIES
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
       function renderCats() {
         const tree = document.getElementById("cat-tree");
         if (!categories.length) {
@@ -2940,49 +2846,22 @@
             const subs = subCategories.filter((s) =>
               s.categoryIds.includes(c.id),
             );
-            return `
-        <div class="cat-node">
-          <div class="cat-row" onclick="toggleCat(this)">
-            <div class="cat-expand"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
-            <div class="cat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div>
-            <div class="cat-name">${c.name}</div>
-            ${c.description ? `<span style="font-size:11px;color:var(--g400)">${c.description}</span>` : ""}
-            <span class="cat-count">${subs.length} sub${subs.length !== 1 ? "s" : ""}</span>
-            <div class="action-group" onclick="event.stopPropagation()">
-              <button class="act-btn act-delete" onclick="confirmDelete('cat','${c.id}')">Delete</button>
-            </div>
-          </div>
-          <div class="sub-cats">
-            ${subs
-              .map(
-                (s) => `
-              <div class="sub-node">
-                <div class="sub-icon"></div>
-                <div class="sub-name">${s.name}</div>
-                <div class="sub-actions"><button class="act-btn act-delete" onclick="confirmDelete('subcat','${s.id}')">×</button></div>
-              </div>`,
-              )
-              .join("")}
-          </div>
-        </div>`;
+            return `<div class="cat-node"><div class="cat-row" onclick="toggleCat(this)"><div class="cat-expand"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div><div class="cat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div><div class="cat-name">${c.name}</div>${c.description ? `<span style="font-size:11px;color:var(--g400)">${c.description}</span>` : ""}<span class="cat-count">${subs.length} sub${subs.length !== 1 ? "s" : ""}</span><div class="action-group" onclick="event.stopPropagation()"><button class="act-btn act-delete" onclick="confirmDelete('cat','${c.id}')">Delete</button></div></div><div class="sub-cats">${subs.map((s) => `<div class="sub-node"><div class="sub-icon"></div><div class="sub-name">${s.name}</div><div class="sub-actions"><button class="act-btn act-delete" onclick="confirmDelete('subcat','${s.id}')">×</button></div></div>`).join("")}</div></div>`;
           })
           .join("");
       }
-
       function toggleCat(row) {
         const exp = row.querySelector(".cat-expand");
         const sub = row.nextElementSibling;
         const isOpen = sub.classList.toggle("open");
         exp.classList.toggle("open", isOpen);
       }
-
       function openCatModal() {
         document.getElementById("cat-name").value = "";
         document.getElementById("cat-desc").value = "";
         document.getElementById("sub-items-list").innerHTML = "";
         openModal("cat-modal");
       }
-
       function addSubItem() {
         const list = document.getElementById("sub-items-list");
         const div = document.createElement("div");
@@ -2990,21 +2869,17 @@
         div.innerHTML = `<input type="text" class="form-control" style="flex:1" placeholder="Sub-category name…" /><button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button>`;
         list.appendChild(div);
       }
-
       async function saveCat() {
         const name = document.getElementById("cat-name").value.trim();
         if (!name) {
           showToast("Name required", "error");
           return;
         }
-
-        const subInputs = document.querySelectorAll(
-          "#sub-items-list .sub-item-row input",
-        );
-        const subs = Array.from(subInputs)
+        const subs = Array.from(
+          document.querySelectorAll("#sub-items-list .sub-item-row input"),
+        )
           .map((i) => i.value.trim())
           .filter(Boolean);
-
         showLoading("Saving category…");
         try {
           const r = await apiPost({
@@ -3018,18 +2893,16 @@
             closeModal("cat-modal");
             await Promise.all([loadCategories(), loadSubCategories()]);
             updateDashboard();
-          } else {
-            showToast("Error: " + (r.error || "Unknown"), "error");
-          }
+          } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {
           showToast("Error: " + e.message, "error");
         }
         hideLoading();
       }
 
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
       // PROMOS
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
       function renderPromos() {
         const tbody = document.getElementById("promos-tbody");
         if (!promos.length) {
@@ -3050,20 +2923,10 @@
                 : p.type === "percent"
                   ? p.value + "%"
                   : p.value.toLocaleString() + " DA";
-            return `<tr>
-          <td><span class="code-tag">${p.code}</span></td>
-          <td>${typeLabel}</td>
-          <td><strong>${valStr}</strong></td>
-          <td>${p.minOrder ? p.minOrder.toLocaleString() + " DA" : "—"}</td>
-          <td>${p.uses}${p.maxUses ? " / " + p.maxUses : ""}</td>
-          <td style="font-size:12px;color:var(--g600)">${p.expiry || "—"}</td>
-          <td><span class="badge badge-${p.status}">${cap(p.status)}</span></td>
-          <td><div class="action-group"><button class="act-btn act-edit" onclick="editPromo('${p.id}')">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('promo','${p.id}')">Delete</button></div></td>
-        </tr>`;
+            return `<tr><td><span class="code-tag">${p.code}</span></td><td>${typeLabel}</td><td><strong>${valStr}</strong></td><td>${p.minOrder ? p.minOrder.toLocaleString() + " DA" : "—"}</td><td>${p.uses}${p.maxUses ? " / " + p.maxUses : ""}</td><td style="font-size:12px;color:var(--g600)">${p.expiry || "—"}</td><td><span class="badge badge-${p.status}">${cap(p.status)}</span></td><td><div class="action-group"><button class="act-btn act-edit" onclick="editPromo('${p.id}')">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('promo','${p.id}')">Delete</button></div></td></tr>`;
           })
           .join("");
       }
-
       function updatePromoValueLabel() {
         const t = document.getElementById("promo-type").value;
         const row = document.getElementById("promo-value-row");
@@ -3075,7 +2938,6 @@
             t === "percent" ? "Percentage (%) *" : "Amount (DA) *";
         }
       }
-
       function openPromoModal(id = null) {
         editingPromoId = id;
         document.getElementById("promo-modal-title").textContent = id
@@ -3106,11 +2968,9 @@
         updatePromoValueLabel();
         openModal("promo-modal");
       }
-
       function editPromo(id) {
         openPromoModal(id);
       }
-
       async function savePromo() {
         const code = document
           .getElementById("promo-code")
@@ -3129,7 +2989,6 @@
           showToast("Value required", "error");
           return;
         }
-
         const payload = {
           code,
           type,
@@ -3140,35 +2999,26 @@
           expiry: document.getElementById("promo-expiry").value,
           status: document.getElementById("promo-status").value,
         };
-
         showLoading("Saving promo…");
         try {
-          if (editingPromoId) {
-            payload.action = "updatePromo";
-            payload.id = editingPromoId;
-          } else {
-            payload.action = "addPromo";
-          }
+          payload.action = editingPromoId ? "updatePromo" : "addPromo";
+          if (editingPromoId) payload.id = editingPromoId;
           const r = await apiPost(payload);
           if (r.success) {
-            showToast(
-              editingPromoId ? "Promo updated!" : "Promo code created!",
-            );
+            showToast(editingPromoId ? "Promo updated!" : "Promo created!");
             closeModal("promo-modal");
             await loadPromos();
             updateDashboard();
-          } else {
-            showToast("Error: " + (r.error || "Unknown"), "error");
-          }
+          } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {
           showToast("Error: " + e.message, "error");
         }
         hideLoading();
       }
 
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
       // SETTINGS
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
       async function saveUsername() {
         const u = document.getElementById("set-username").value.trim();
         const d = document.getElementById("set-displayname").value.trim();
@@ -3195,7 +3045,6 @@
         }
         hideLoading();
       }
-
       async function savePassword() {
         const cur = document.getElementById("set-cur-pass").value;
         const nw = document.getElementById("set-new-pass").value;
@@ -3205,15 +3054,13 @@
           return;
         }
         if (nw.length < 4) {
-          showToast("Password must be at least 4 characters", "error");
+          showToast("Min 4 characters", "error");
           return;
         }
         if (nw !== cf) {
           showToast("Passwords do not match", "error");
           return;
         }
-
-        // Verify current password
         showLoading("Verifying…");
         try {
           const check = await apiGet("login", {
@@ -3225,7 +3072,6 @@
             showToast("Current password is wrong", "error");
             return;
           }
-
           const r = await apiPost({
             action: "updateSettings",
             updates: { admin_password: nw },
@@ -3242,9 +3088,9 @@
         hideLoading();
       }
 
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
       // CONFIRM DELETE
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
       function confirmDelete(type, id) {
         const msgs = {
           product: "This product will be permanently deleted.",
@@ -3263,7 +3109,6 @@
             else if (type === "cat") action = "deleteCategory";
             else if (type === "subcat") action = "deleteSubCategory";
             else if (type === "promo") action = "deletePromo";
-
             const r = await apiPost({ action, id });
             if (r.success) {
               showToast(
@@ -3275,9 +3120,7 @@
                 await loadSubCategories();
               } else if (type === "promo") await loadPromos();
               updateDashboard();
-            } else {
-              showToast("Error: " + (r.error || "Unknown"), "error");
-            }
+            } else showToast("Error: " + (r.error || "Unknown"), "error");
           } catch (e) {
             showToast("Error: " + e.message, "error");
           }
@@ -3289,9 +3132,9 @@
         document.getElementById("confirm-overlay").classList.remove("open");
       }
 
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
       // MODALS & TOAST
-      // ════════════════════════════════════════════════════════════
+      // ════════════════════════════════════════════
       function openModal(id) {
         document.getElementById(id).classList.add("open");
       }
@@ -3303,7 +3146,6 @@
           if (e.target === o) o.classList.remove("open");
         });
       });
-
       let toastTimer;
       function showToast(msg, type = "success") {
         const t = document.getElementById("toast");
@@ -3314,7 +3156,6 @@
         clearTimeout(toastTimer);
         toastTimer = setTimeout(() => t.classList.remove("show"), 3000);
       }
-
       function cap(s) {
         return s ? s[0].toUpperCase() + s.slice(1) : s;
       }

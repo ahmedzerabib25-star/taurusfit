@@ -38,8 +38,6 @@
         overflow: hidden;
         -webkit-font-smoothing: antialiased;
       }
-
-      /* ── BACKGROUND GRID ── */
       .bg-grid {
         position: fixed;
         inset: 0;
@@ -64,7 +62,6 @@
         );
         z-index: 1;
       }
-      /* floating orbs */
       .orb {
         position: fixed;
         border-radius: 50%;
@@ -97,7 +94,6 @@
         }
       }
 
-      /* ── WRAPPER ── */
       .login-wrap {
         position: relative;
         z-index: 10;
@@ -117,7 +113,6 @@
         }
       }
 
-      /* ── CARD ── */
       .card {
         background: rgba(255, 255, 255, 0.04);
         border: 1px solid rgba(255, 255, 255, 0.1);
@@ -148,11 +143,10 @@
         );
       }
 
-      /* ── LOGO ── */
       .logo-area {
         display: flex;
-        flex-direction: column; /* Stack logo elements */
-        align-items: center; /* Center horizontally */
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
         width: 100%;
       }
@@ -170,18 +164,13 @@
         flex-shrink: 0;
       }
       .logo-text img {
-        height: auto !important; /* Overrides the inline 400px */
-        max-height: 400px; /* Set a professional size */
+        height: auto !important;
+        max-height: 400px;
         width: auto;
         object-fit: contain;
         margin-bottom: -100px;
       }
-      .logo-text em {
-        color: var(--red);
-        font-style: normal;
-      }
 
-      /* ── HEADINGS ── */
       .heading {
         font-size: 26px;
         font-weight: 800;
@@ -196,7 +185,6 @@
         font-weight: 400;
       }
 
-      /* ── FORM FIELDS ── */
       .field {
         margin-bottom: 18px;
         position: relative;
@@ -251,7 +239,6 @@
       .input-wrap:focus-within .input-icon {
         color: var(--red);
       }
-      /* show-password toggle */
       .toggle-pass {
         position: absolute;
         right: 14px;
@@ -268,7 +255,6 @@
         color: rgba(255, 255, 255, 0.6);
       }
 
-      /* ── ERROR ── */
       .error-msg {
         display: none;
         align-items: center;
@@ -301,7 +287,6 @@
         }
       }
 
-      /* ── BUTTON ── */
       .btn-login {
         width: 100%;
         height: 54px;
@@ -340,6 +325,10 @@
       .btn-login:active {
         transform: translateY(1px);
       }
+      .btn-login:disabled {
+        opacity: 0.6;
+        pointer-events: none;
+      }
       .btn-login .btn-inner {
         position: relative;
         display: flex;
@@ -348,7 +337,27 @@
         gap: 8px;
       }
 
-      /* ── HINT ── */
+      .btn-spinner {
+        display: none;
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+      }
+      .btn-login.loading .btn-text {
+        display: none;
+      }
+      .btn-login.loading .btn-spinner {
+        display: block;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
       .hint {
         text-align: center;
         margin-top: 20px;
@@ -361,7 +370,6 @@
         font-weight: 600;
       }
 
-      /* ── BACK BUTTON ── */
       .back-btn {
         display: flex;
         align-items: center;
@@ -378,7 +386,6 @@
         color: rgba(255, 255, 255, 0.7);
       }
 
-      /* ── RESPONSIVE ── */
       @media (max-width: 480px) {
         .card {
           padding: 36px 28px 32px;
@@ -425,7 +432,7 @@
             <line x1="12" y1="8" x2="12" y2="12" />
             <line x1="12" y1="16" x2="12.01" y2="16" />
           </svg>
-          Invalid username or password
+          <span id="loginErrMsg">Invalid username or password</span>
         </div>
 
         <div class="field">
@@ -479,7 +486,6 @@
               class="toggle-pass"
               type="button"
               onclick="togglePw()"
-              id="togglePwBtn"
               title="Show/hide password"
             >
               <svg
@@ -498,21 +504,24 @@
           </div>
         </div>
 
-        <button class="btn-login" onclick="doLogin()">
+        <button class="btn-login" id="loginBtn" onclick="doLogin()">
           <span class="btn-inner">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-            >
-              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
-              <polyline points="10 17 15 12 10 7" />
-              <line x1="15" y1="12" x2="3" y2="12" />
-            </svg>
-            Sign In
+            <span class="btn-text">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                <polyline points="10 17 15 12 10 7" />
+                <line x1="15" y1="12" x2="3" y2="12" />
+              </svg>
+              Sign In
+            </span>
+            <div class="btn-spinner"></div>
           </span>
         </button>
 
@@ -537,22 +546,75 @@
     </div>
 
     <script>
-      function doLogin() {
+      // ════════════════════════════════════════════
+      // CONFIG — SAME URL AS admin.html
+      // ════════════════════════════════════════════
+      const API_URL =
+        "https://script.google.com/macros/s/AKfycbzUMqYKL0xk7cYsuQZUW1Eg-O5YfZI5GULCIW0zsFNZvcoVHN7hJuoh_eydxscnNEtlHw/exec"; // ← YOUR DEPLOYED APPS SCRIPT WEB APP URL
+
+      // If already logged in, go straight to admin
+      if (sessionStorage.getItem("bb_admin_auth") === "1") {
+        window.location.href = "admin.html";
+      }
+
+      async function doLogin() {
         const u = document.getElementById("loginUser").value.trim();
         const p = document.getElementById("loginPass").value;
         const err = document.getElementById("loginErr");
-        if (u === "admin" && p === "1234") {
-          err.classList.remove("show");
-          sessionStorage.setItem("bb_admin_auth", "1");
-          window.location.href = "admin.html";
-        } else {
-          err.classList.remove("show");
-          void err.offsetWidth; // re-trigger animation
-          err.classList.add("show");
-          document.getElementById("loginPass").value = "";
-          document.getElementById("loginPass").focus();
+        const errMsg = document.getElementById("loginErrMsg");
+        const btn = document.getElementById("loginBtn");
+
+        if (!u || !p) {
+          showError("Please enter username and password");
+          return;
         }
+
+        if (!API_URL) {
+          showError("API_URL not configured — check the script");
+          return;
+        }
+
+        // Show loading state
+        btn.classList.add("loading");
+        btn.disabled = true;
+        err.classList.remove("show");
+
+        try {
+          const url = new URL(API_URL);
+          url.searchParams.set("action", "login");
+          url.searchParams.set("username", u);
+          url.searchParams.set("password", p);
+
+          const res = await fetch(url.toString());
+          const data = await res.json();
+
+          if (data.success) {
+            // Store auth + display name
+            sessionStorage.setItem("bb_admin_auth", "1");
+            sessionStorage.setItem("bb_admin_name", data.displayName || u);
+            window.location.href = "admin.html";
+          } else {
+            showError("Invalid username or password");
+            document.getElementById("loginPass").value = "";
+            document.getElementById("loginPass").focus();
+          }
+        } catch (e) {
+          showError("Connection failed — check your API URL");
+        }
+
+        btn.classList.remove("loading");
+        btn.disabled = false;
       }
+
+      function showError(msg) {
+        const err = document.getElementById("loginErr");
+        const errMsg = document.getElementById("loginErrMsg");
+        errMsg.textContent = msg;
+        err.classList.remove("show");
+        void err.offsetWidth; // re-trigger shake animation
+        err.classList.add("show");
+      }
+
       function togglePw() {
         const inp = document.getElementById("loginPass");
         const ico = document.getElementById("eye-icon");
@@ -566,6 +628,7 @@
             '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
         }
       }
+
       document.addEventListener("DOMContentLoaded", () => {
         document
           .getElementById("loginUser")
