@@ -128,14 +128,6 @@
           transform: translateX(0);
         }
       }
-      @keyframes checkmark {
-        from {
-          stroke-dashoffset: 100;
-        }
-        to {
-          stroke-dashoffset: 0;
-        }
-      }
 
       /* ─── MARQUEE ──────────────────────────────────────────────── */
       .marquee-bar {
@@ -222,56 +214,90 @@
         font-style: normal;
       }
 
-      .nav-spacer {
+      /* Search */
+      .search-wrap {
         flex: 1;
+        max-width: 480px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .search-wrap input {
+        width: 100%;
+        height: 40px;
+        padding: 0 44px 0 16px;
+        border: 1.5px solid var(--gray-200);
+        border-radius: 8px;
+        font-size: 14px;
+        color: var(--black);
+        background: var(--gray-50);
+        transition:
+          border-color var(--transition),
+          box-shadow var(--transition),
+          background var(--transition);
+        outline: none;
+      }
+      .search-wrap input::placeholder {
+        color: var(--gray-400);
+      }
+      .search-wrap input:focus {
+        border-color: var(--red);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(173, 0, 0, 0.1);
+      }
+      .search-btn {
+        position: absolute;
+        right: 2px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        color: var(--gray-400);
+        transition:
+          color var(--transition),
+          background var(--transition);
+      }
+      .search-btn:hover {
+        color: var(--red);
+        background: var(--red-light);
       }
 
-      /* Nav icons */
-      .nav-icons {
+      /* Nav right */
+      .nav-right {
+        flex-shrink: 0;
         display: flex;
         align-items: center;
         gap: 4px;
       }
-      .nav-icon-btn {
-        width: 40px;
-        height: 40px;
+      .nav-link {
         display: flex;
         align-items: center;
-        justify-content: center;
-        border-radius: 8px;
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 500;
         color: var(--gray-600);
+        border-radius: 6px;
         transition:
           color var(--transition),
           background var(--transition);
-        position: relative;
       }
-      .nav-icon-btn:hover {
+      .nav-link:hover {
         color: var(--black);
         background: var(--gray-50);
       }
-      .cart-badge {
-        position: absolute;
-        top: 4px;
-        right: 4px;
-        width: 18px;
-        height: 18px;
-        background: var(--red);
-        color: #fff;
-        font-size: 10px;
-        font-weight: 700;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        animation: pulse 2s ease-in-out infinite;
+      .nav-link.active {
+        color: var(--red);
       }
 
       /* Lang */
-      .lang-group {
+      .lang-switch {
         display: flex;
         align-items: center;
         gap: 2px;
-        margin-left: 8px;
+        margin-left: 4px;
       }
       .lang-btn {
         font-size: 11px;
@@ -292,84 +318,76 @@
         color: var(--white);
       }
 
-      /* Hamburger */
-      .hamburger-btn {
-        display: none;
-        flex-direction: column;
-        justify-content: center;
-        gap: 5px;
+      /* Cart btn */
+      .cart-btn {
+        position: relative;
         width: 40px;
         height: 40px;
-        border-radius: 8px;
-        padding: 8px;
-        transition: background var(--transition);
-      }
-      .hamburger-btn:hover {
-        background: var(--gray-50);
-      }
-      .hamburger-btn span {
-        display: block;
-        height: 2px;
-        background: var(--black);
-        border-radius: 2px;
-        transition:
-          transform 0.3s,
-          opacity 0.3s;
-        transform-origin: center;
-      }
-      .hamburger-btn.open span:nth-child(1) {
-        transform: translateY(7px) rotate(45deg);
-      }
-      .hamburger-btn.open span:nth-child(2) {
-        opacity: 0;
-      }
-      .hamburger-btn.open span:nth-child(3) {
-        transform: translateY(-7px) rotate(-45deg);
-      }
-
-      /* Mobile menu */
-      .mobile-menu {
-        display: none;
-        position: fixed;
-        inset: 0;
-        top: var(--nav-h);
-        z-index: 999;
-        background: var(--white);
-        padding: 24px;
-        overflow-y: auto;
-        opacity: 0;
-        transform: translateY(-12px);
-        transition:
-          opacity 0.3s,
-          transform 0.3s;
-        pointer-events: none;
-      }
-      .mobile-menu.open {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: all;
-      }
-      .mobile-nav-links {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-      }
-      .mobile-nav-link {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 14px 16px;
-        border-radius: 10px;
-        font-size: 15px;
-        font-weight: 500;
-        color: var(--gray-800);
+        justify-content: center;
+        margin-left: 8px;
+        border-radius: 8px;
+        color: var(--black);
         transition:
           background var(--transition),
           color var(--transition);
       }
-      .mobile-nav-link:hover {
+      .cart-btn:hover {
         background: var(--gray-50);
-        color: var(--black);
+        color: var(--red);
+      }
+      .cart-badge {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 18px;
+        height: 18px;
+        background: var(--red);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      /* Hamburger */
+      .hamburger {
+        display: none;
+        width: 40px;
+        height: 40px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        border-radius: 8px;
+        transition: background var(--transition);
+      }
+      .hamburger:hover {
+        background: var(--gray-50);
+      }
+      .hamburger span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: var(--black);
+        border-radius: 2px;
+        transition:
+          transform var(--transition),
+          opacity var(--transition);
+      }
+      .hamburger.open span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+      .hamburger.open span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      .hamburger.open span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
       }
 
       /* ─── CATEGORY NAV ──────────────────────────────────────────── */
@@ -386,6 +404,8 @@
         gap: 2px;
         overflow: visible;
       }
+
+      /* cat-item wraps EVERY link so hover always works */
       .cat-item {
         position: relative;
       }
@@ -414,8 +434,7 @@
           left var(--transition),
           right var(--transition);
       }
-      .cat-item:hover .cat-link,
-      .cat-link:hover {
+      .cat-item:hover .cat-link {
         color: var(--red);
       }
       .cat-item:hover .cat-link::after {
@@ -430,6 +449,8 @@
       .cat-item:hover .cat-link svg {
         transform: rotate(180deg);
       }
+
+      /* dropdown */
       .dropdown {
         position: absolute;
         top: calc(100% + 4px);
@@ -485,7 +506,51 @@
         opacity: 1;
       }
 
-      /* ─── MOBILE CATEGORY ITEMS ──────────────────────────────── */
+      /* ─── MOBILE ────────────────────────────────────────────────── */
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        inset: 0;
+        top: var(--nav-h);
+        z-index: 999;
+        background: var(--white);
+        padding: 24px;
+        overflow-y: auto;
+        opacity: 0;
+        transform: translateY(-12px);
+        transition:
+          opacity 0.3s,
+          transform 0.3s;
+        pointer-events: none;
+      }
+      .mobile-menu.open {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: all;
+      }
+      .mobile-nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .mobile-nav-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--gray-800);
+        transition:
+          background var(--transition),
+          color var(--transition);
+      }
+      .mobile-nav-link:hover {
+        background: var(--gray-50);
+        color: var(--black);
+      }
+
       .m-cat-item {
         border-bottom: 1px solid var(--gray-100);
       }
@@ -580,7 +645,6 @@
         margin-top: 24px;
       }
 
-      /* Left: Image */
       .product-gallery {
         position: sticky;
         top: calc(var(--nav-h) + 20px);
@@ -620,7 +684,6 @@
         background: #d97706;
         color: #fff;
       }
-
       .placeholder-img-wrap {
         display: flex;
         flex-direction: column;
@@ -634,7 +697,6 @@
         color: var(--gray-400);
       }
 
-      /* Right: Info */
       .product-info-col {
         animation: slideIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
       }
@@ -658,24 +720,6 @@
         font-size: 14px;
         color: var(--gray-600);
         margin-bottom: 14px;
-      }
-      .product-detail-rating {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 20px;
-      }
-      .product-detail-rating .stars {
-        color: #f59e0b;
-        font-size: 16px;
-      }
-      .product-detail-rating .rating-val {
-        font-size: 14px;
-        font-weight: 600;
-      }
-      .product-detail-rating .rating-count {
-        font-size: 13px;
-        color: var(--gray-400);
       }
 
       /* Variants */
@@ -716,6 +760,63 @@
         font-weight: 700;
       }
 
+      /* Quantity */
+      .qty-stepper {
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        border: 1.5px solid var(--gray-200);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .qty-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        font-weight: 400;
+        color: var(--gray-600);
+        background: var(--gray-50);
+        border: none;
+        cursor: pointer;
+        transition:
+          background var(--transition),
+          color var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .qty-btn:hover {
+        background: var(--red-light);
+        color: var(--red);
+      }
+      .qty-value {
+        min-width: 48px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--black);
+        border-left: 1.5px solid var(--gray-200);
+        border-right: 1.5px solid var(--gray-200);
+        padding: 0 8px;
+        line-height: 40px;
+      }
+
+      .cat-tag {
+        display: inline-flex;
+        align-items: center;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        background: var(--gray-100);
+        color: var(--gray-600);
+      }
+      .cat-tag.primary {
+        background: var(--red-light);
+        color: var(--red);
+      }
+
       /* Price */
       .product-detail-pricing {
         display: flex;
@@ -747,7 +848,6 @@
         border-radius: 20px;
       }
 
-      /* Divider */
       .section-divider {
         border: none;
         border-top: 1px solid var(--gray-100);
@@ -768,7 +868,6 @@
       .order-form-title svg {
         color: var(--red);
       }
-
       .form-row {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -778,7 +877,6 @@
       .form-row.single {
         grid-template-columns: 1fr;
       }
-
       .form-group {
         display: flex;
         flex-direction: column;
@@ -826,31 +924,8 @@
         color: var(--red);
         margin-top: 2px;
       }
-      .select-wrap {
-        position: relative;
-      }
-      .select-wrap select {
-        width: 100%;
-        padding-right: 36px;
-        cursor: pointer;
-      }
-      .select-wrap::after {
-        content: "";
-        pointer-events: none;
-        position: absolute;
-        right: 14px;
-        top: 50%;
-        transform: translateY(-50%);
-        border: 5px solid transparent;
-        border-top-color: var(--gray-400);
-        margin-top: 2px;
-      }
-      select:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
 
-      /* Delivery type */
+      /* Delivery options */
       .delivery-options {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -1007,6 +1082,178 @@
         transform: translateY(0);
       }
 
+      /* ─── PRODUCT DESCRIPTION ──────────────────────────────────── */
+      .product-description {
+        margin: 0 0 24px;
+        padding: 18px 20px;
+        background: var(--gray-50);
+        border: 1px solid var(--gray-100);
+        border-radius: 12px;
+      }
+      .product-description-title {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: var(--gray-600);
+        margin-bottom: 8px;
+      }
+      .product-description p {
+        font-size: 14px;
+        color: var(--gray-600);
+        line-height: 1.7;
+      }
+
+      /* ─── CUSTOM DROPDOWN ──────────────────────────────────────── */
+      .custom-select-wrap {
+        position: relative;
+      }
+      .custom-select-trigger {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 44px;
+        padding: 0 14px;
+        border: 1.5px solid var(--gray-200);
+        border-radius: 8px;
+        font-size: 14px;
+        color: var(--gray-800);
+        background: var(--gray-50);
+        cursor: pointer;
+        transition:
+          border-color var(--transition),
+          box-shadow var(--transition),
+          background var(--transition);
+        user-select: none;
+      }
+      .custom-select-trigger:focus,
+      .custom-select-trigger.open {
+        border-color: var(--red);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(173, 0, 0, 0.1);
+        outline: none;
+      }
+      .custom-select-trigger.placeholder {
+        color: var(--gray-400);
+      }
+      .custom-select-trigger .caret {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        color: var(--gray-400);
+        transition: transform 0.2s ease;
+      }
+      .custom-select-trigger.open .caret {
+        transform: rotate(180deg);
+      }
+      .custom-select-trigger.error-field {
+        border-color: var(--red);
+      }
+      .custom-select-trigger[aria-disabled="true"] {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+
+      @keyframes dropdownOpen {
+        from {
+          opacity: 0;
+          transform: translateY(-6px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      .custom-dropdown-list {
+        display: none;
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        z-index: 500;
+        background: var(--white);
+        border: 1.5px solid var(--gray-100);
+        border-radius: 10px;
+        box-shadow: var(--shadow-lg);
+        max-height: 240px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--gray-200) transparent;
+        animation: dropdownOpen 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      .custom-dropdown-list.open {
+        display: block;
+      }
+      .custom-dropdown-list::-webkit-scrollbar {
+        width: 5px;
+      }
+      .custom-dropdown-list::-webkit-scrollbar-thumb {
+        background: var(--gray-200);
+        border-radius: 4px;
+      }
+      .dropdown-option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 11px 16px;
+        font-size: 14px;
+        color: var(--gray-800);
+        cursor: pointer;
+        transition:
+          background var(--transition),
+          color var(--transition);
+        border-bottom: 1px solid var(--gray-50);
+      }
+      .dropdown-option:last-child {
+        border-bottom: none;
+      }
+      .dropdown-option:hover {
+        background: var(--red-light);
+        color: var(--red);
+      }
+      .dropdown-option.selected {
+        background: var(--red-light);
+        color: var(--red);
+        font-weight: 600;
+      }
+      .dropdown-option .check-icon {
+        display: none;
+      }
+      .dropdown-option.selected .check-icon {
+        display: block;
+        color: var(--red);
+      }
+      .dropdown-search {
+        padding: 10px 12px 6px;
+        border-bottom: 1px solid var(--gray-100);
+        position: sticky;
+        top: 0;
+        background: var(--white);
+        z-index: 1;
+      }
+      .dropdown-search input {
+        width: 100%;
+        height: 34px;
+        padding: 0 10px;
+        border: 1.5px solid var(--gray-200);
+        border-radius: 6px;
+        font-size: 13px;
+        font-family: var(--font-body);
+        outline: none;
+        background: var(--gray-50);
+        color: var(--black);
+      }
+      .dropdown-search input:focus {
+        border-color: var(--red);
+      }
+      .dropdown-empty {
+        padding: 16px;
+        font-size: 13px;
+        color: var(--gray-400);
+        text-align: center;
+      }
+
       /* ─── SUCCESS OVERLAY ──────────────────────────────────────── */
       .success-overlay {
         display: none;
@@ -1127,59 +1374,7 @@
         background: var(--red);
       }
 
-      /* ─── RESPONSIVE ───────────────────────────────────────────── */
-      @media (max-width: 900px) {
-        .product-detail-grid {
-          grid-template-columns: 1fr;
-          gap: 32px;
-        }
-        .product-gallery {
-          position: static;
-        }
-        .product-detail-name {
-          font-size: 34px;
-        }
-        .form-row {
-          grid-template-columns: 1fr;
-        }
-      }
-      @media (max-width: 600px) {
-        .hamburger {
-          display: flex;
-        }
-        .mobile-menu {
-          display: block;
-        }
-        .nav-link {
-          display: none !important;
-        }
-        .delivery-options {
-          grid-template-columns: 1fr;
-        }
-        .product-detail-name {
-          font-size: 28px;
-        }
-      }
-
-      .wa-btn {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        width: 58px;
-        height: 58px;
-        background: #25d366;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
-        text-decoration: none;
-        z-index: 9999;
-        transition:
-          transform 0.2s ease,
-          box-shadow 0.2s ease;
-      }
-
+      /* ─── WHATSAPP ──────────────────────────────────────────────── */
       @keyframes wa-float {
         0%,
         100% {
@@ -1206,7 +1401,6 @@
             0 0 0 0 rgba(37, 211, 102, 0);
         }
       }
-
       .wa-btn {
         position: fixed;
         bottom: 24px;
@@ -1227,396 +1421,10 @@
           transform 0.2s ease,
           box-shadow 0.2s ease;
       }
-
       .wa-btn:hover {
         animation: none;
         transform: scale(1.12);
         box-shadow: 0 8px 28px rgba(37, 211, 102, 0.6);
-      }
-
-      /* ─── SEARCH BAR (match index.html) ───────────────────────── */
-      .search-wrap {
-        flex: 1;
-        max-width: 480px;
-        margin: 0 auto;
-        position: relative;
-      }
-      .search-wrap input {
-        width: 100%;
-        height: 40px;
-        padding: 0 44px 0 16px;
-        border: 1.5px solid var(--gray-200);
-        border-radius: 8px;
-        font-size: 14px;
-        color: var(--black);
-        background: var(--gray-50);
-        transition:
-          border-color var(--transition),
-          box-shadow var(--transition),
-          background var(--transition);
-        outline: none;
-      }
-      .search-wrap input::placeholder {
-        color: var(--gray-400);
-      }
-      .search-wrap input:focus {
-        border-color: var(--red);
-        background: var(--white);
-        box-shadow: 0 0 0 3px rgba(173, 0, 0, 0.1);
-      }
-      .search-btn {
-        position: absolute;
-        right: 2px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 6px;
-        color: var(--gray-400);
-        transition:
-          color var(--transition),
-          background var(--transition);
-      }
-      .search-btn:hover {
-        color: var(--red);
-        background: var(--red-light);
-      }
-
-      /* Nav links */
-      .nav-right {
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-      }
-      .nav-link {
-        display: flex;
-        align-items: center;
-        padding: 6px 12px;
-        font-size: 14px;
-        font-weight: 500;
-        color: var(--gray-600);
-        border-radius: 6px;
-        transition:
-          color var(--transition),
-          background var(--transition);
-      }
-      .nav-link:hover {
-        color: var(--black);
-        background: var(--gray-50);
-      }
-      .nav-link.active {
-        color: var(--red);
-      }
-
-      /* Cart btn */
-      .cart-btn {
-        position: relative;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-left: 8px;
-        border-radius: 8px;
-        color: var(--black);
-        transition:
-          background var(--transition),
-          color var(--transition);
-      }
-      .cart-btn:hover {
-        background: var(--gray-50);
-        color: var(--red);
-      }
-
-      /* Hamburger */
-      .hamburger {
-        display: none;
-        width: 40px;
-        height: 40px;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-        border-radius: 8px;
-        transition: background var(--transition);
-      }
-      .hamburger:hover {
-        background: var(--gray-50);
-      }
-      .hamburger span {
-        display: block;
-        width: 22px;
-        height: 2px;
-        background: var(--black);
-        border-radius: 2px;
-        transition:
-          transform var(--transition),
-          opacity var(--transition);
-      }
-      .hamburger.open span:nth-child(1) {
-        transform: translateY(7px) rotate(45deg);
-      }
-      .hamburger.open span:nth-child(2) {
-        opacity: 0;
-        transform: scaleX(0);
-      }
-      .hamburger.open span:nth-child(3) {
-        transform: translateY(-7px) rotate(-45deg);
-      }
-
-      /* lang-switch override for detail page (uses .lang-switch now) */
-      .lang-switch {
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        margin-left: 4px;
-      }
-
-      @media (max-width: 768px) {
-        #desktopSearch {
-          display: none !important;
-        }
-        #mobileSearchBtn {
-          display: flex !important;
-        }
-        .nav-link {
-          display: none;
-        }
-        .cat-nav {
-          display: none;
-        }
-      }
-      @media (max-width: 600px) {
-        .hamburger {
-          display: flex;
-        }
-        .lang-switch {
-          display: none;
-        }
-        .cart-btn {
-          margin-left: 0;
-        }
-      }
-
-      /* ─── PRODUCT DESCRIPTION ──────────────────────────────────── */
-      .product-description {
-        margin: 0 0 24px;
-        padding: 18px 20px;
-        background: var(--gray-50);
-        border: 1px solid var(--gray-100);
-        border-radius: 12px;
-      }
-      .product-description-title {
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.8px;
-        text-transform: uppercase;
-        color: var(--gray-600);
-        margin-bottom: 8px;
-      }
-      .product-description p {
-        font-size: 14px;
-        color: var(--gray-600);
-        line-height: 1.7;
-      }
-
-      /* ─── USER STAR RATING ─────────────────────────────────────── */
-      .user-rating-section {
-        margin-bottom: 20px;
-      }
-      .user-rating-label {
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.8px;
-        text-transform: uppercase;
-        color: var(--gray-600);
-        margin-bottom: 8px;
-      }
-      .star-picker {
-        display: flex;
-        gap: 4px;
-        align-items: center;
-      }
-      .star-picker .star {
-        font-size: 26px;
-        color: var(--gray-200);
-        cursor: pointer;
-        transition:
-          color 0.15s,
-          transform 0.15s;
-        line-height: 1;
-        user-select: none;
-      }
-      .star-picker .star:hover,
-      .star-picker .star.active {
-        color: #f59e0b;
-        transform: scale(1.15);
-      }
-      .star-picker .star.hovered {
-        color: #f59e0b;
-      }
-      .star-rating-feedback {
-        font-size: 13px;
-        color: var(--gray-400);
-        margin-left: 8px;
-        font-weight: 500;
-        min-width: 80px;
-      }
-
-      /* ─── CUSTOM DROPDOWN ──────────────────────────────────────── */
-      .custom-select-wrap {
-        position: relative;
-      }
-      .custom-select-trigger {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 44px;
-        padding: 0 14px;
-        border: 1.5px solid var(--gray-200);
-        border-radius: 8px;
-        font-size: 14px;
-        color: var(--gray-800);
-        background: var(--gray-50);
-        cursor: pointer;
-        transition:
-          border-color var(--transition),
-          box-shadow var(--transition),
-          background var(--transition);
-        user-select: none;
-      }
-      .custom-select-trigger:focus,
-      .custom-select-trigger.open {
-        border-color: var(--red);
-        background: var(--white);
-        box-shadow: 0 0 0 3px rgba(173, 0, 0, 0.1);
-        outline: none;
-      }
-      .custom-select-trigger.placeholder {
-        color: var(--gray-400);
-      }
-      .custom-select-trigger .caret {
-        width: 16px;
-        height: 16px;
-        flex-shrink: 0;
-        color: var(--gray-400);
-        transition: transform 0.2s ease;
-      }
-      .custom-select-trigger.open .caret {
-        transform: rotate(180deg);
-      }
-      .custom-select-trigger.error-field {
-        border-color: var(--red);
-      }
-      .custom-select-trigger:disabled,
-      .custom-select-trigger[aria-disabled="true"] {
-        opacity: 0.5;
-        cursor: not-allowed;
-        pointer-events: none;
-      }
-
-      .custom-dropdown-list {
-        display: none;
-        position: absolute;
-        top: calc(100% + 4px);
-        left: 0;
-        right: 0;
-        z-index: 500;
-        background: var(--white);
-        border: 1.5px solid var(--gray-100);
-        border-radius: 10px;
-        box-shadow: var(--shadow-lg);
-        max-height: 240px;
-        overflow-y: auto;
-        scrollbar-width: thin;
-        scrollbar-color: var(--gray-200) transparent;
-        animation: dropdownOpen 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
-      }
-      @keyframes dropdownOpen {
-        from {
-          opacity: 0;
-          transform: translateY(-6px) scale(0.98);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
-      }
-      .custom-dropdown-list.open {
-        display: block;
-      }
-      .custom-dropdown-list::-webkit-scrollbar {
-        width: 5px;
-      }
-      .custom-dropdown-list::-webkit-scrollbar-thumb {
-        background: var(--gray-200);
-        border-radius: 4px;
-      }
-
-      .dropdown-option {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 11px 16px;
-        font-size: 14px;
-        color: var(--gray-800);
-        cursor: pointer;
-        transition:
-          background var(--transition),
-          color var(--transition);
-        border-bottom: 1px solid var(--gray-50);
-      }
-      .dropdown-option:last-child {
-        border-bottom: none;
-      }
-      .dropdown-option:hover {
-        background: var(--red-light);
-        color: var(--red);
-      }
-      .dropdown-option.selected {
-        background: var(--red-light);
-        color: var(--red);
-        font-weight: 600;
-      }
-      .dropdown-option .check-icon {
-        display: none;
-      }
-      .dropdown-option.selected .check-icon {
-        display: block;
-        color: var(--red);
-      }
-      .dropdown-search {
-        padding: 10px 12px 6px;
-        border-bottom: 1px solid var(--gray-100);
-        position: sticky;
-        top: 0;
-        background: var(--white);
-        z-index: 1;
-      }
-      .dropdown-search input {
-        width: 100%;
-        height: 34px;
-        padding: 0 10px;
-        border: 1.5px solid var(--gray-200);
-        border-radius: 6px;
-        font-size: 13px;
-        font-family: var(--font-body);
-        outline: none;
-        background: var(--gray-50);
-        color: var(--black);
-      }
-      .dropdown-search input:focus {
-        border-color: var(--red);
-      }
-      .dropdown-empty {
-        padding: 16px;
-        font-size: 13px;
-        color: var(--gray-400);
-        text-align: center;
       }
 
       /* ─── FOOTER ───────────────────────────────────────────────── */
@@ -1632,12 +1440,6 @@
         gap: 40px;
         padding-bottom: 48px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-      }
-      .footer-brand .logo {
-        margin-bottom: 16px;
-      }
-      .footer-brand .logo-text {
-        color: var(--white);
       }
       .footer-brand p {
         font-size: 13px;
@@ -1684,7 +1486,6 @@
       .footer-links a {
         font-size: 13px;
         color: #6b6b6b;
-        text-decoration: none;
         transition: color var(--transition);
       }
       .footer-links a:hover {
@@ -1718,12 +1519,56 @@
       .footer-bottom a:hover {
         color: var(--white);
       }
+
+      /* ─── RESPONSIVE ───────────────────────────────────────────── */
       @media (max-width: 900px) {
+        .product-detail-grid {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+        .product-gallery {
+          position: static;
+        }
+        .product-detail-name {
+          font-size: 34px;
+        }
+        .form-row {
+          grid-template-columns: 1fr;
+        }
         .footer-grid {
           grid-template-columns: 1fr 1fr;
         }
       }
-      @media (max-width: 560px) {
+      @media (max-width: 768px) {
+        #desktopSearch {
+          display: none !important;
+        }
+        #mobileSearchBtn {
+          display: flex !important;
+        }
+        .nav-link {
+          display: none;
+        }
+        .cat-nav {
+          display: none;
+        }
+      }
+      @media (max-width: 600px) {
+        .hamburger {
+          display: flex;
+        }
+        .lang-switch {
+          display: none;
+        }
+        .cart-btn {
+          margin-left: 0;
+        }
+        .delivery-options {
+          grid-template-columns: 1fr;
+        }
+        .product-detail-name {
+          font-size: 28px;
+        }
         .footer-grid {
           grid-template-columns: 1fr;
           gap: 28px;
@@ -1748,7 +1593,6 @@
         <span class="marquee-item marquee-sep">✦</span>
         <span class="marquee-item">🔒 Secure checkout</span>
         <span class="marquee-item marquee-sep">✦</span>
-        <!-- Duplicate for infinite loop -->
         <span class="marquee-item">🚚 Free delivery over 5 000 DA</span>
         <span class="marquee-item marquee-sep">✦</span>
         <span class="marquee-item">💪 100% Authentic Products</span>
@@ -1764,7 +1608,6 @@
     <header id="site-header">
       <div class="container">
         <nav class="top-nav" aria-label="Main navigation">
-          <!-- Logo -->
           <a href="index.html" class="logo" aria-label="ByBens Home">
             <img
               src="images/logo.png"
@@ -1789,7 +1632,6 @@
             </span>
           </a>
 
-          <!-- Search (desktop) -->
           <div class="search-wrap" role="search" id="desktopSearch">
             <input
               type="search"
@@ -1819,7 +1661,6 @@
             </button>
           </div>
 
-          <!-- Mobile search icon -->
           <button
             id="mobileSearchBtn"
             onclick="openMobileSearch()"
@@ -1852,19 +1693,8 @@
             </svg>
           </button>
 
-          <!-- Right nav -->
           <div class="nav-right">
-            <a href="index.html" class="nav-link" data-i18n="nav.home">Home</a>
-            <a href="products.html" class="nav-link" data-i18n="nav.products"
-              >Products</a
-            >
-            <a
-              href="index.html#contact"
-              class="nav-link"
-              data-i18n="nav.contact"
-              >Contact</a
-            >
-
+            <a href="products.html" class="nav-link">Supplements</a>
             <div
               class="lang-switch"
               role="group"
@@ -1892,7 +1722,6 @@
                 AR
               </button>
             </div>
-
             <button
               class="cart-btn"
               aria-label="Shopping cart"
@@ -1914,7 +1743,6 @@
               </svg>
               <span class="cart-badge" id="cartBadge">3</span>
             </button>
-
             <button
               class="hamburger"
               id="hamburgerBtn"
@@ -1929,125 +1757,10 @@
       </div>
     </header>
 
-    <!-- Category Nav -->
+    <!-- Category Nav — populated by JS -->
     <div class="cat-nav" aria-label="Product categories">
       <div class="container">
-        <div class="cat-nav-inner">
-          <div class="cat-item">
-            <a href="products.html" class="cat-link"
-              >Protein
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-              >
-                <path d="m6 9 6 6 6-6" />
-              </svg>
-            </a>
-            <div class="dropdown">
-              <a href="products.html">Protein Powder</a>
-              <a href="products.html">Protein Drinks</a>
-              <a href="products.html">Whey Protein</a>
-              <a href="products.html">Casein Protein</a>
-              <a href="products.html">Plant-Based Protein</a>
-            </div>
-          </div>
-          <div class="cat-item">
-            <a href="products.html" class="cat-link"
-              >Mass Gainers
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-              >
-                <path d="m6 9 6 6 6-6" />
-              </svg>
-            </a>
-            <div class="dropdown">
-              <a href="products.html">Weight Gainers</a>
-              <a href="products.html">Serious Mass</a>
-              <a href="products.html">Hard Gainers</a>
-            </div>
-          </div>
-          <div class="cat-item">
-            <a href="products.html" class="cat-link"
-              >Pre-Workout
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-              >
-                <path d="m6 9 6 6 6-6" />
-              </svg>
-            </a>
-            <div class="dropdown">
-              <a href="products.html">Pre-Workout Powders</a>
-              <a href="products.html">Caffeine Boosters</a>
-              <a href="products.html">Nitric Oxide</a>
-              <a href="products.html">BCAA Pre-Workout</a>
-            </div>
-          </div>
-          <div class="cat-item">
-            <a href="products.html" class="cat-link"
-              >Vitamins
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-              >
-                <path d="m6 9 6 6 6-6" />
-              </svg>
-            </a>
-            <div class="dropdown">
-              <a href="products.html">Multivitamins</a>
-              <a href="products.html">Vitamin D3</a>
-              <a href="products.html">Omega-3</a>
-              <a href="products.html">Zinc &amp; Magnesium</a>
-            </div>
-          </div>
-          <div class="cat-item">
-            <a href="products.html" class="cat-link"
-              >Creatine
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-              >
-                <path d="m6 9 6 6 6-6" />
-              </svg>
-            </a>
-            <div class="dropdown">
-              <a href="products.html">Creatine Monohydrate</a>
-              <a href="products.html">Creatine HCL</a>
-              <a href="products.html">Micronized Creatine</a>
-            </div>
-          </div>
-          <div class="cat-item">
-            <a href="products.html" class="cat-link"
-              >Accessories
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-              >
-                <path d="m6 9 6 6 6-6" />
-              </svg>
-            </a>
-            <div class="dropdown">
-              <a href="products.html">Shaker Bottles</a>
-              <a href="products.html">Gym Gloves</a>
-              <a href="products.html">Resistance Bands</a>
-            </div>
-          </div>
-          <a href="products.html" class="cat-link">🔥 Hot Deals</a>
-          <a href="products.html" class="cat-link">New Arrivals</a>
-        </div>
+        <div class="cat-nav-inner" id="catNavInner"></div>
       </div>
     </div>
 
@@ -2088,7 +1801,6 @@
               outline: none;
               font-family: var(--font-body);
             "
-            oninput="handleMobileSearch(this.value)"
           />
           <svg
             style="
@@ -2122,7 +1834,6 @@
             font-family: var(--font-body);
             padding: 8px 4px;
           "
-          data-i18n="search.cancel"
         >
           Cancel
         </button>
@@ -2144,86 +1855,14 @@
     <!-- Mobile menu -->
     <div class="mobile-menu" id="mobileMenu">
       <div class="mobile-nav-links">
-        <a class="mobile-nav-link" href="index.html" data-i18n="nav.home"
-          >Home</a
-        >
-        <a class="mobile-nav-link" href="products.html" data-i18n="nav.products"
-          >Products</a
-        >
-        <a
-          class="mobile-nav-link"
-          href="index.html#contact"
-          data-i18n="nav.contact"
-          >Contact</a
-        >
+        <a class="mobile-nav-link" href="products.html">Supplements</a>
       </div>
-
-      <div class="m-cat-item">
-        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
-          Protein <span class="m-arrow">›</span>
-        </button>
-        <div class="m-sub">
-          <a href="products.html" class="m-sub-link">Protein Powder</a>
-          <a href="products.html" class="m-sub-link">Protein Drinks</a>
-          <a href="products.html" class="m-sub-link">Whey Protein</a>
-          <a href="products.html" class="m-sub-link">Casein Protein</a>
-        </div>
-      </div>
-      <div class="m-cat-item">
-        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
-          Mass Gainers <span class="m-arrow">›</span>
-        </button>
-        <div class="m-sub">
-          <a href="products.html" class="m-sub-link">Weight Gainers</a>
-          <a href="products.html" class="m-sub-link">Serious Mass</a>
-          <a href="products.html" class="m-sub-link">Hard Gainers</a>
-        </div>
-      </div>
-      <div class="m-cat-item">
-        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
-          Pre-Workout <span class="m-arrow">›</span>
-        </button>
-        <div class="m-sub">
-          <a href="products.html" class="m-sub-link">Pre-Workout Powders</a>
-          <a href="products.html" class="m-sub-link">Caffeine Boosters</a>
-          <a href="products.html" class="m-sub-link">BCAA</a>
-        </div>
-      </div>
-      <div class="m-cat-item">
-        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
-          Vitamins <span class="m-arrow">›</span>
-        </button>
-        <div class="m-sub">
-          <a href="products.html" class="m-sub-link">Multivitamins</a>
-          <a href="products.html" class="m-sub-link">Vitamin D3</a>
-          <a href="products.html" class="m-sub-link">Omega-3</a>
-        </div>
-      </div>
-      <div class="m-cat-item">
-        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
-          Creatine <span class="m-arrow">›</span>
-        </button>
-        <div class="m-sub">
-          <a href="products.html" class="m-sub-link">Creatine Monohydrate</a>
-          <a href="products.html" class="m-sub-link">Creatine HCL</a>
-        </div>
-      </div>
-      <div class="m-cat-item">
-        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
-          Accessories <span class="m-arrow">›</span>
-        </button>
-        <div class="m-sub">
-          <a href="products.html" class="m-sub-link">Shaker Bottles</a>
-          <a href="products.html" class="m-sub-link">Gym Gloves</a>
-          <a href="products.html" class="m-sub-link">Resistance Bands</a>
-        </div>
-      </div>
+      <div id="mobileCatItems"></div>
     </div>
 
     <!-- ─── MAIN ─────────────────────────────────────────────────── -->
     <main>
       <div class="container">
-        <!-- Breadcrumb -->
         <nav class="breadcrumb">
           <a href="index.html" data-i18n="breadcrumb.home">Home</a>
           <span class="sep">›</span>
@@ -2232,7 +1871,6 @@
           <span class="current" id="breadcrumbName">Product</span>
         </nav>
 
-        <!-- Product detail -->
         <section class="product-detail-section">
           <div class="product-detail-grid">
             <!-- LEFT: Image -->
@@ -2264,17 +1902,16 @@
             <div class="product-info-col">
               <div class="product-detail-brand" id="productBrand">Brand</div>
               <h1 class="product-detail-name" id="productName">Product Name</h1>
-              <div class="product-detail-flavor" id="productFlavor">
-                Flavor / Variant
-              </div>
-
-              <div class="product-detail-rating">
-                <span class="stars" id="productStars">★★★★★</span>
-                <span class="rating-val" id="productRatingVal">4.8</span>
-                <span class="rating-count" id="productRatingCount"
-                  >(0 reviews)</span
-                >
-              </div>
+              <div class="product-detail-flavor" id="productFlavor"></div>
+              <div
+                id="productCategories"
+                style="
+                  margin-bottom: 14px;
+                  display: flex;
+                  flex-wrap: wrap;
+                  gap: 6px;
+                "
+              ></div>
 
               <div class="product-detail-pricing">
                 <span class="product-detail-price" id="productPrice">0 DA</span>
@@ -2291,7 +1928,7 @@
               </div>
 
               <!-- Weight selector -->
-              <div class="variant-group" id="weightGroup">
+              <div class="variant-group" id="weightGroup" style="display: none">
                 <div class="variant-label" data-i18n="detail.weight">
                   Weight
                 </div>
@@ -2299,79 +1936,29 @@
               </div>
 
               <!-- Flavor selector -->
-              <div class="variant-group" id="flavorGroup">
+              <div class="variant-group" id="flavorGroup" style="display: none">
                 <div class="variant-label" data-i18n="detail.flavor">
                   Flavor
                 </div>
                 <div class="variant-pills" id="flavorPills"></div>
               </div>
 
-              <!-- Product description -->
+              <!-- Quantity -->
+              <div class="variant-group">
+                <div class="variant-label">Quantity</div>
+                <div class="qty-stepper">
+                  <button class="qty-btn" onclick="changeQty(-1)">−</button>
+                  <span class="qty-value" id="qtyValue">1</span>
+                  <button class="qty-btn" onclick="changeQty(1)">+</button>
+                </div>
+              </div>
+
+              <!-- Description -->
               <div class="product-description" id="productDescriptionBox">
                 <div class="product-description-title" data-i18n="detail.about">
                   About this product
                 </div>
                 <p id="productDescription">Loading…</p>
-              </div>
-
-              <!-- User star rating -->
-              <div class="user-rating-section">
-                <div class="user-rating-label" data-i18n="detail.yourRating">
-                  Rate this product
-                </div>
-                <div
-                  class="star-picker"
-                  id="starPicker"
-                  role="group"
-                  aria-label="Rate product"
-                >
-                  <span
-                    class="star"
-                    data-val="1"
-                    role="button"
-                    tabindex="0"
-                    aria-label="1 star"
-                    >★</span
-                  >
-                  <span
-                    class="star"
-                    data-val="2"
-                    role="button"
-                    tabindex="0"
-                    aria-label="2 stars"
-                    >★</span
-                  >
-                  <span
-                    class="star"
-                    data-val="3"
-                    role="button"
-                    tabindex="0"
-                    aria-label="3 stars"
-                    >★</span
-                  >
-                  <span
-                    class="star"
-                    data-val="4"
-                    role="button"
-                    tabindex="0"
-                    aria-label="4 stars"
-                    >★</span
-                  >
-                  <span
-                    class="star"
-                    data-val="5"
-                    role="button"
-                    tabindex="0"
-                    aria-label="5 stars"
-                    >★</span
-                  >
-                  <span
-                    class="star-rating-feedback"
-                    id="starFeedback"
-                    data-i18n="detail.tapToRate"
-                    >Tap to rate</span
-                  >
-                </div>
               </div>
 
               <hr class="section-divider" />
@@ -2394,7 +1981,6 @@
                 <span data-i18n="form.orderNow">Order Now</span>
               </div>
 
-              <!-- First name / Last name -->
               <div class="form-row">
                 <div class="form-group">
                   <label for="firstName" data-i18n="form.firstName"
@@ -2412,7 +1998,6 @@
                 </div>
               </div>
 
-              <!-- Phone -->
               <div class="form-row single">
                 <div class="form-group">
                   <label for="phone" data-i18n="form.phone">Phone Number</label>
@@ -2421,7 +2006,6 @@
                 </div>
               </div>
 
-              <!-- Wilaya / Commune -->
               <div class="form-row">
                 <div class="form-group">
                   <label data-i18n="form.wilaya">Wilaya</label>
@@ -2435,7 +2019,6 @@
                       aria-expanded="false"
                       onclick="toggleCustomSelect('wilaya')"
                       onkeydown="handleDropdownKey(event, 'wilaya')"
-                      data-i18n-placeholder="form.selectWilaya"
                     >
                       <span id="wilayaLabel" data-i18n="form.selectWilaya"
                         >Select wilaya…</span
@@ -2481,7 +2064,6 @@
                       aria-disabled="true"
                       onclick="toggleCustomSelect('commune')"
                       onkeydown="handleDropdownKey(event, 'commune')"
-                      data-i18n-placeholder="form.selectWilayaFirst"
                     >
                       <span id="communeLabel" data-i18n="form.selectWilayaFirst"
                         >Select wilaya first</span
@@ -2569,8 +2151,13 @@
                   </div>
                 </div>
               </div>
-              <!-- Promo Code -->
-              <div class="form-group" style="margin-bottom: 14px">
+
+              <!-- Promo Code — shown only when allowPromo is true -->
+              <div
+                class="form-group"
+                id="promoSection"
+                style="margin-bottom: 14px; display: none"
+              >
                 <label for="promoCode">Promo Code</label>
                 <div style="display: flex; gap: 8px">
                   <input
@@ -2606,7 +2193,8 @@
                   style="font-size: 12px; margin-top: 4px"
                 ></span>
               </div>
-              <!-- Order summary -->
+
+              <!-- Order Summary -->
               <div class="order-summary">
                 <div class="order-summary-title" data-i18n="form.orderSummary">
                   Order Summary
@@ -2664,7 +2252,6 @@
     <footer class="site-footer" role="contentinfo">
       <div class="container">
         <div class="footer-grid">
-          <!-- Brand -->
           <div class="footer-brand">
             <a
               href="index.html"
@@ -2722,8 +2309,6 @@
               ></a>
             </div>
           </div>
-
-          <!-- Shop -->
           <div>
             <div class="footer-col-title" data-i18n="footer.shop">Shop</div>
             <div class="footer-links">
@@ -2746,8 +2331,6 @@
               >
             </div>
           </div>
-
-          <!-- Info -->
           <div>
             <div class="footer-col-title" data-i18n="footer.info">
               Information
@@ -2760,8 +2343,6 @@
               <a href="#" data-i18n="footer.faq">FAQ</a>
             </div>
           </div>
-
-          <!-- Contact -->
           <div>
             <div class="footer-col-title" data-i18n="footer.contact">
               Contact Us
@@ -2795,14 +2376,7 @@
                 />
                 <polyline points="22,6 12,13 2,6" />
               </svg>
-              <span
-                ><a
-                  href="/cdn-cgi/l/email-protection"
-                  class="__cf_email__"
-                  data-cfemail="3a5955544e5b594e7a5843585f5449145e40"
-                  >[email&#160;protected]</a
-                ></span
-              >
+              <span>contact@bybens.dz</span>
             </div>
             <div class="footer-contact-item">
               <svg
@@ -2820,7 +2394,6 @@
             </div>
           </div>
         </div>
-
         <div class="footer-bottom">
           <span
             >© <span id="footerYear"></span> ByBens.
@@ -2831,7 +2404,7 @@
       </div>
     </footer>
 
-    <!-- ─── SUCCESS OVERLAY ─────────────────────────────────────── -->
+    <!-- Success overlay -->
     <div class="success-overlay" id="successOverlay">
       <div class="success-card">
         <div class="success-icon">
@@ -2866,10 +2439,8 @@
       </div>
     </div>
 
-    <!-- ─── TOAST ────────────────────────────────────────────────── -->
     <div class="toast" id="toast"><span id="toastMsg"></span></div>
 
-    <!-- ─── SCROLL TOP ───────────────────────────────────────────── -->
     <button
       id="scrollTop"
       onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
@@ -2886,6 +2457,7 @@
         <path d="m18 15-6-6-6 6" />
       </svg>
     </button>
+
     <a
       href="https://wa.me/213662269449"
       target="_blank"
@@ -2904,282 +2476,414 @@
         />
       </svg>
     </a>
-    <script
-      data-cfasync="false"
-      src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"
-    ></script>
+
     <script>
       /* ══════════════════════════════════════════════════════
-         PRODUCT DATA — same structure as products.html
-         Add weight[] and flavors[] arrays to each product
+         CONFIG
       ══════════════════════════════════════════════════════ */
-      const allProducts = [
-        {
-          id: 1,
-          brand: "Optimum Nutrition",
-          name: "Gold Standard 100% Whey",
-          flavor: "Double Rich Chocolate",
-          priceNum: 6500,
-          price: "6 500",
-          oldPrice: "7 800",
-          save: "-17%",
-          badge: "hot",
-          rating: 4.9,
-          reviews: 512,
-          category: "protein",
-          weights: ["1 kg", "2 kg", "4.5 kg"],
-          flavors: [
-            "Double Rich Chocolate",
-            "Vanilla Ice Cream",
-            "Strawberry Banana",
-          ],
-        },
-        {
-          id: 2,
-          brand: "MyProtein",
-          name: "Impact Whey Protein",
-          flavor: "Chocolate Smooth",
-          priceNum: 4800,
-          price: "4 800",
-          oldPrice: null,
-          save: null,
-          badge: null,
-          rating: 4.8,
-          reviews: 876,
-          category: "protein",
-          weights: ["1 kg", "2.5 kg", "5 kg"],
-          flavors: ["Chocolate Smooth", "Vanilla", "Cookies & Cream"],
-        },
-        {
-          id: 3,
-          brand: "ByBens",
-          name: "Premium Whey Blend",
-          flavor: "Vanilla Cream",
-          priceNum: 5500,
-          price: "5 500",
-          oldPrice: null,
-          save: null,
-          badge: "new",
-          rating: 4.7,
-          reviews: 128,
-          category: "protein",
-          weights: ["1 kg", "2 kg"],
-          flavors: ["Vanilla Cream", "Chocolate Fudge"],
-        },
-        {
-          id: 4,
-          brand: "Scitec Nutrition",
-          name: "100% Whey Isolate",
-          flavor: "Strawberry",
-          priceNum: 6900,
-          price: "6 900",
-          oldPrice: "7 800",
-          save: "-12%",
-          badge: null,
-          rating: 4.6,
-          reviews: 245,
-          category: "protein",
-          weights: ["1 kg", "2 kg", "4 kg"],
-          flavors: ["Strawberry", "Chocolate", "Vanilla"],
-        },
-        {
-          id: 5,
-          brand: "ByBens",
-          name: "Pre-Workout Blast",
-          flavor: "Watermelon Rush",
-          priceNum: 3200,
-          price: "3 200",
-          oldPrice: "4 000",
-          save: "-20%",
-          badge: "sale",
-          rating: 4.5,
-          reviews: 99,
-          category: "preworkout",
-          weights: ["300 g"],
-          flavors: ["Watermelon Rush", "Blue Raspberry", "Fruit Punch"],
-        },
-        {
-          id: 6,
-          brand: "MyProtein",
-          name: "Creatine Monohydrate",
-          flavor: "Unflavoured",
-          priceNum: 2400,
-          price: "2 400",
-          oldPrice: null,
-          save: null,
-          badge: "new",
-          rating: 4.8,
-          reviews: 632,
-          category: "creatine",
-          weights: ["250 g", "500 g", "1 kg"],
-          flavors: ["Unflavoured"],
-        },
-        {
-          id: 7,
-          brand: "Optimum Nutrition",
-          name: "Serious Mass",
-          flavor: "Chocolate",
-          priceNum: 8900,
-          price: "8 900",
-          oldPrice: "10 500",
-          save: "-15%",
-          badge: "hot",
-          rating: 4.7,
-          reviews: 301,
-          category: "gainers",
-          weights: ["2.7 kg", "5.4 kg"],
-          flavors: ["Chocolate", "Vanilla", "Strawberry"],
-        },
-        {
-          id: 8,
-          brand: "ByBens",
-          name: "Omega-3 Fish Oil",
-          flavor: "1000mg Capsules",
-          priceNum: 1600,
-          price: "1 600",
-          oldPrice: null,
-          save: null,
-          badge: null,
-          rating: 4.6,
-          reviews: 188,
-          category: "vitamins",
-          weights: ["90 caps", "180 caps"],
-          flavors: ["1000mg Capsules"],
-        },
-        {
-          id: 9,
-          brand: "Scitec Nutrition",
-          name: "Amino 5600",
-          flavor: "Unflavoured Tablets",
-          priceNum: 3800,
-          price: "3 800",
-          oldPrice: "4 500",
-          save: "-16%",
-          badge: null,
-          rating: 4.4,
-          reviews: 77,
-          category: "protein",
-          weights: ["200 tabs", "500 tabs"],
-          flavors: ["Unflavoured Tablets"],
-        },
-        {
-          id: 10,
-          brand: "MyProtein",
-          name: "THE Pre-Workout",
-          flavor: "Blue Raspberry",
-          priceNum: 4200,
-          price: "4 200",
-          oldPrice: null,
-          save: null,
-          badge: "new",
-          rating: 4.6,
-          reviews: 143,
-          category: "preworkout",
-          weights: ["420 g"],
-          flavors: ["Blue Raspberry", "Watermelon", "Cherry Bomb"],
-        },
-        {
-          id: 11,
-          brand: "ByBens",
-          name: "Vitamin D3 + K2",
-          flavor: "2000IU Capsules",
-          priceNum: 1200,
-          price: "1 200",
-          oldPrice: null,
-          save: null,
-          badge: null,
-          rating: 4.7,
-          reviews: 209,
-          category: "vitamins",
-          weights: ["60 caps", "120 caps"],
-          flavors: ["2000IU Capsules"],
-        },
-        {
-          id: 12,
-          brand: "Optimum Nutrition",
-          name: "BCAA 1000 Caps",
-          flavor: "Unflavoured",
-          priceNum: 5100,
-          price: "5 100",
-          oldPrice: "6 000",
-          save: "-15%",
-          badge: "sale",
-          rating: 4.5,
-          reviews: 334,
-          category: "protein",
-          weights: ["200 caps", "400 caps"],
-          flavors: ["Unflavoured"],
-        },
-        {
-          id: 13,
-          brand: "ByBens",
-          name: "Shaker Pro 700ml",
-          flavor: "Red / Black",
-          priceNum: 900,
-          price: "900",
-          oldPrice: null,
-          save: null,
-          badge: null,
-          rating: 4.3,
-          reviews: 56,
-          category: "accessories",
-          weights: ["700 ml"],
-          flavors: ["Red / Black", "Blue / White", "Black / Black"],
-        },
-        {
-          id: 14,
-          brand: "Scitec Nutrition",
-          name: "Jumbo Mass Gainer",
-          flavor: "Chocolate Hazelnut",
-          priceNum: 9500,
-          price: "9 500",
-          oldPrice: "11 000",
-          save: "-14%",
-          badge: "hot",
-          rating: 4.6,
-          reviews: 198,
-          category: "gainers",
-          weights: ["3 kg", "6 kg"],
-          flavors: ["Chocolate Hazelnut", "Vanilla", "Strawberry"],
-        },
-        {
-          id: 15,
-          brand: "MyProtein",
-          name: "Zinc Magnesium ZMA",
-          flavor: "Capsules",
-          priceNum: 1800,
-          price: "1 800",
-          oldPrice: null,
-          save: null,
-          badge: "new",
-          rating: 4.5,
-          reviews: 88,
-          category: "vitamins",
-          weights: ["90 caps"],
-          flavors: ["Capsules"],
-        },
-        {
-          id: 16,
-          brand: "ByBens",
-          name: "Gym Grip Gloves",
-          flavor: "Black / M / L / XL",
-          priceNum: 1400,
-          price: "1 400",
-          oldPrice: null,
-          save: null,
-          badge: null,
-          rating: 4.4,
-          reviews: 42,
-          category: "accessories",
-          weights: [],
-          flavors: ["M", "L", "XL"],
-        },
-      ];
+      const SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
+
+      let _allCategories = [];
+      let _allSubCategories = [];
+      let selectedProduct = null;
+      let selectedVariantIndex = 0;
+      let selectedFlavor = "";
+      let selectedDelivery = "home";
+      let selectedQty = 1;
+
+      const DELIVERY_COST = { home: 500, office: 400 };
+      // Server-side promo codes (fetched from Sheets) are validated server-side;
+      // these are local fallbacks for demo purposes
+      const LOCAL_PROMO_CODES = { BYBENS10: 10, SPORT20: 20, WELCOME15: 15 };
+      let appliedDiscount = 0;
+
+      /* ── HELPERS ── */
+      /**
+       * Safely parse a value that might be:
+       *   - already an Array
+       *   - a JSON string like '[{"weight":"1kg","price":3500}]'
+       *   - a comma-separated plain string (old format)
+       *   - empty / null
+       */
+      function parseField(val) {
+        if (!val) return [];
+        if (Array.isArray(val)) return val;
+        const s = String(val).trim();
+        if (s === "" || s === "[]") return [];
+        // Try JSON first
+        if (s.startsWith("[")) {
+          try {
+            return JSON.parse(s);
+          } catch (e) {}
+        }
+        // Fallback: treat as comma-separated plain strings
+        return s
+          .split(",")
+          .map((v) => v.trim())
+          .filter(Boolean);
+      }
+
+      function getProductPrice(p, variantIndex) {
+        const idx = variantIndex != null ? variantIndex : 0;
+        const variants = parseField(p.variants);
+        const base =
+          variants.length > idx ? Number(variants[idx].price) || 0 : 0;
+        const disc = Number(p.discount) || 0;
+        return disc > 0 ? Math.round(base * (1 - disc / 100)) : base;
+      }
+
+      /* ── CATEGORY NAV — FIX: always wrap in .cat-item div ── */
+      function renderCatNav(cats, subs) {
+        const inner = document.getElementById("catNavInner");
+        const mobile = document.getElementById("mobileCatItems");
+        if (!inner || !mobile) return;
+
+        let dHTML = "",
+          mHTML = "";
+        cats.forEach((cat) => {
+          const catSubs = subs.filter(
+            (s) =>
+              Array.isArray(s.categoryIds) && s.categoryIds.includes(cat.id),
+          );
+
+          if (catSubs.length > 0) {
+            // With dropdown — wrapped in .cat-item for hover to work
+            dHTML += `<div class="cat-item">
+              <a href="products.html" class="cat-link">
+                ${cat.name}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+              </a>
+              <div class="dropdown">
+                ${catSubs.map((s) => `<a href="products.html?sub=${encodeURIComponent(s.name)}">${s.name}</a>`).join("")}
+              </div>
+            </div>`;
+            mHTML += `<div class="m-cat-item">
+              <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
+                ${cat.name} <span class="m-arrow">›</span>
+              </button>
+              <div class="m-sub">
+                ${catSubs.map((s) => `<a href="products.html?sub=${encodeURIComponent(s.name)}" class="m-sub-link">${s.name}</a>`).join("")}
+              </div>
+            </div>`;
+          } else {
+            // No sub-categories — still wrap in .cat-item for consistent hover underline
+            dHTML += `<div class="cat-item"><a href="products.html" class="cat-link">${cat.name}</a></div>`;
+            mHTML += `<a href="products.html" class="mobile-nav-link">${cat.name}</a>`;
+          }
+        });
+
+        inner.innerHTML = dHTML;
+        mobile.innerHTML = mHTML;
+      }
+
+      /* ── LOAD PRODUCT DATA ── */
+      async function loadProductData() {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const productId = params.get("id");
+
+          const [prodRes, catRes, subRes] = await Promise.all([
+            fetch(`${SCRIPT_URL}?action=getProducts`).then((r) => r.json()),
+            fetch(`${SCRIPT_URL}?action=getCategories`).then((r) => r.json()),
+            fetch(`${SCRIPT_URL}?action=getSubCategories`).then((r) =>
+              r.json(),
+            ),
+          ]);
+
+          if (catRes.success) _allCategories = catRes.categories;
+          if (subRes.success) _allSubCategories = subRes.subCategories;
+
+          renderCatNav(_allCategories, _allSubCategories);
+
+          if (prodRes.success) {
+            const products = prodRes.products;
+            const p =
+              (productId ? products.find((x) => x.id === productId) : null) ||
+              products[0];
+            if (p) {
+              selectedProduct = p;
+              renderProduct();
+              // FIX: updateSummary AFTER renderProduct sets selectedVariantIndex & selectedFlavor
+              updateSummary();
+            }
+          }
+        } catch (err) {
+          console.error("Failed to load product data:", err);
+        }
+      }
+
+      /* ── RENDER PRODUCT ──
+         FIX: Normalise variants/flavors with parseField() BEFORE reading them,
+         then set selectedVariantIndex=0 and selectedFlavor before updateSummary()
+      ── */
+      function renderProduct() {
+        const p = selectedProduct;
+
+        // Normalise all array fields
+        p.variants = parseField(p.variants);
+        p.flavors = parseField(p.flavors);
+        p.categoryIds = parseField(p.categoryIds);
+        p.subCategoryIds = parseField(p.subCategoryIds);
+
+        document.title = `${p.name} – ByBens`;
+        document.getElementById("breadcrumbName").textContent = p.name;
+        document.getElementById("productBrand").textContent = p.brand || "";
+        document.getElementById("productName").textContent = p.name;
+
+        // Image
+        const imgWrap = document.getElementById("productImgWrap");
+        if (p.imageUrl) {
+          imgWrap.innerHTML = "";
+          const img = document.createElement("img");
+          img.src = p.imageUrl;
+          img.alt = p.name;
+          img.style.cssText = "width:100%;height:100%;object-fit:cover;";
+          imgWrap.appendChild(img);
+        }
+
+        // Category tags
+        const catEl = document.getElementById("productCategories");
+        const tags = [];
+        if (p.categoryIds.length) {
+          p.categoryIds.forEach((cid) => {
+            const cat = _allCategories.find((c) => c.id === cid);
+            if (cat)
+              tags.push(`<span class="cat-tag primary">${cat.name}</span>`);
+          });
+        }
+        if (p.subCategoryIds.length) {
+          p.subCategoryIds.forEach((sid) => {
+            const sub = _allSubCategories.find((s) => s.id === sid);
+            if (sub) tags.push(`<span class="cat-tag">${sub.name}</span>`);
+          });
+        }
+        catEl.innerHTML = tags.join("");
+        catEl.style.display = tags.length ? "flex" : "none";
+
+        // Description
+        document.getElementById("productDescription").textContent =
+          p.description ||
+          `${p.name} by ${p.brand} — a premium sports nutrition product.`;
+
+        // ── VARIANTS (weight/size) pills ──
+        const weightGroup = document.getElementById("weightGroup");
+        const weightPills = document.getElementById("weightPills");
+        selectedVariantIndex = 0; // reset
+
+        if (p.variants && p.variants.length > 0) {
+          weightGroup.style.display = "";
+          weightPills.innerHTML = p.variants
+            .map((v, i) => {
+              // Support both {weight, unit} and plain string variants
+              let label;
+              if (typeof v === "object" && v !== null) {
+                label = v.weight
+                  ? `${v.weight}${v.unit || ""}`
+                  : v.label || v.name || `Option ${i + 1}`;
+              } else {
+                label = String(v);
+              }
+              return `<div class="variant-pill${i === 0 ? " active" : ""}" onclick="selectVariant(this,${i})">${label}</div>`;
+            })
+            .join("");
+        } else {
+          weightGroup.style.display = "none";
+        }
+
+        // ── FLAVORS ──
+        const flavorGroup = document.getElementById("flavorGroup");
+        const flavorPills = document.getElementById("flavorPills");
+
+        // Normalise flavors to plain strings
+        const flavorList = p.flavors
+          .map((f) =>
+            typeof f === "object" && f !== null
+              ? f.name || f.label || String(f)
+              : String(f),
+          )
+          .filter(Boolean);
+
+        if (flavorList.length > 0) {
+          flavorGroup.style.display = "";
+          selectedFlavor = flavorList[0];
+          document.getElementById("productFlavor").textContent = flavorList[0];
+          flavorPills.innerHTML = flavorList
+            .map(
+              (f, i) =>
+                `<div class="variant-pill${i === 0 ? " active" : ""}" onclick="selectFlavor(this,'${f.replace(/'/g, "\\'")}')">${f}</div>`,
+            )
+            .join("");
+        } else {
+          flavorGroup.style.display = "none";
+          selectedFlavor = "";
+          document.getElementById("productFlavor").textContent = "";
+        }
+
+        // ── PRICE ──
+        updatePriceDisplay();
+
+        // ── BADGE ──
+        const badgeEl = document.getElementById("productBadge");
+        const discount = Number(p.discount) || 0;
+        let badge = null;
+        if (discount > 0) badge = "sale";
+        else if (
+          p.createdAt &&
+          Date.now() - new Date(p.createdAt).getTime() < 30 * 24 * 3600 * 1000
+        )
+          badge = "new";
+        else if (Number(p.stock) > 0 && Number(p.stock) <= 5) badge = "hot";
+
+        if (badge) {
+          badgeEl.textContent = badge.toUpperCase();
+          badgeEl.className = `product-badge badge-${badge}`;
+          badgeEl.style.display = "";
+        } else {
+          badgeEl.style.display = "none";
+        }
+
+        // ── PROMO CODE field: show only if allowPromo is truthy ──
+        const allowPromo =
+          p.allowPromo === true ||
+          String(p.allowPromo).toUpperCase() === "TRUE";
+        document.getElementById("promoSection").style.display = allowPromo
+          ? ""
+          : "none";
+      }
+
+      /* ── Update just the price display (not summary) ── */
+      function updatePriceDisplay() {
+        const p = selectedProduct;
+        const variants = parseField(p.variants);
+        const v = variants[selectedVariantIndex];
+        const basePrice = v ? Number(v.price) || 0 : 0;
+        const discount = Number(p.discount) || 0;
+        const currentPrice =
+          discount > 0
+            ? Math.round(basePrice * (1 - discount / 100))
+            : basePrice;
+
+        document.getElementById("productPrice").textContent =
+          currentPrice.toLocaleString("fr-DZ") + " DA";
+
+        const oldPriceEl = document.getElementById("productOldPrice");
+        const saveEl = document.getElementById("productSave");
+        if (discount > 0 && basePrice > 0) {
+          oldPriceEl.textContent = basePrice.toLocaleString("fr-DZ") + " DA";
+          oldPriceEl.style.display = "";
+          saveEl.textContent = `-${discount}%`;
+          saveEl.style.display = "";
+        } else {
+          oldPriceEl.style.display = "none";
+          saveEl.style.display = "none";
+        }
+      }
+
+      function selectVariant(el, idx) {
+        selectedVariantIndex = idx;
+        document
+          .querySelectorAll("#weightPills .variant-pill")
+          .forEach((p) => p.classList.remove("active"));
+        el.classList.add("active");
+        updatePriceDisplay();
+        updateSummary();
+      }
+
+      function selectFlavor(el, f) {
+        selectedFlavor = f;
+        document
+          .querySelectorAll("#flavorPills .variant-pill")
+          .forEach((p) => p.classList.remove("active"));
+        el.classList.add("active");
+        document.getElementById("productFlavor").textContent = f;
+        updateSummary();
+      }
+
+      function changeQty(delta) {
+        selectedQty = Math.max(1, selectedQty + delta);
+        document.getElementById("qtyValue").textContent = selectedQty;
+        updateSummary();
+      }
+
+      /* ── DELIVERY ── */
+      function selectDelivery(type) {
+        selectedDelivery = type;
+        document
+          .getElementById("deliveryHome")
+          .classList.toggle("active", type === "home");
+        document
+          .getElementById("deliveryOffice")
+          .classList.toggle("active", type === "office");
+        updateSummary();
+      }
+
+      /* ── ORDER SUMMARY — FIX: guard against no product, read variants via parseField ── */
+      function updateSummary() {
+        const p = selectedProduct;
+        if (!p) return;
+
+        const variants = parseField(p.variants);
+        const v = variants[selectedVariantIndex];
+        const variantPrice = getProductPrice(p, selectedVariantIndex);
+
+        // Build readable label
+        let variantLabel = "";
+        if (v) {
+          if (typeof v === "object") {
+            variantLabel = v.weight ? ` (${v.weight}${v.unit || ""})` : "";
+          }
+        }
+
+        let name = p.name + variantLabel;
+        if (selectedFlavor) name += ` — ${selectedFlavor}`;
+
+        document.getElementById("summaryProduct").textContent = name;
+        document.getElementById("summaryPrice").textContent =
+          `${variantPrice.toLocaleString("fr-DZ")} DA × ${selectedQty}`;
+
+        const cost = DELIVERY_COST[selectedDelivery];
+        document.getElementById("summaryDelivery").textContent =
+          `+${cost} DA (${selectedDelivery === "home" ? "Home" : "Office"})`;
+
+        const subtotal = variantPrice * selectedQty;
+        const promoDiscount = Math.round(subtotal * (appliedDiscount / 100));
+        const total = subtotal + cost - promoDiscount;
+
+        document.getElementById("summaryTotal").textContent =
+          (appliedDiscount ? `(-${appliedDiscount}%) ` : "") +
+          total.toLocaleString("fr-DZ") +
+          " DA";
+      }
+
+      /* ── PROMO CODE ── */
+      function applyPromo() {
+        const code = document
+          .getElementById("promoCode")
+          .value.trim()
+          .toUpperCase();
+        const msgEl = document.getElementById("promoMsg");
+        if (!code) {
+          msgEl.style.color = "var(--red)";
+          msgEl.textContent = "Please enter a promo code.";
+          return;
+        }
+        if (LOCAL_PROMO_CODES[code]) {
+          appliedDiscount = LOCAL_PROMO_CODES[code];
+          msgEl.style.color = "#0a7c3e";
+          msgEl.textContent = `✓ Code applied! ${appliedDiscount}% off`;
+          updateSummary();
+        } else {
+          appliedDiscount = 0;
+          msgEl.style.color = "var(--red)";
+          msgEl.textContent = "✗ Invalid promo code.";
+          updateSummary();
+        }
+      }
 
       /* ══════════════════════════════════════════════════════
-         ALGERIA CITIES — loaded from JSON file
+         ALGERIA WILAYA / COMMUNE DATA
       ══════════════════════════════════════════════════════ */
-      // ── EMBEDDED WILAYA/COMMUNE DATA (all 58 wilayas, sorted 01→58) ──
       const WILAYAS = {
         "01": {
           name: "Adrar",
@@ -3208,7 +2912,7 @@
             "Abou El Hassane",
             "Ain Merane",
             "Benairia",
-            "Beni  Bouattab",
+            "Beni Bouattab",
             "Beni Haoua",
             "Beni Rached",
             "Boukadir",
@@ -3499,7 +3203,7 @@
             "Larbaa",
             "Meftah",
             "Mouzaia",
-            "Oued  Djer",
+            "Oued Djer",
             "Oued El Alleug",
             "Ouled Slama",
             "Ouled Yaich",
@@ -3554,7 +3258,7 @@
             "Sour El Ghozlane",
             "Taghzout",
             "Taguedite",
-            "Z'barbar (El Isseri )",
+            "Z'barbar",
           ],
         },
         11: {
@@ -4043,7 +3747,7 @@
             "Ain Kada",
             "Ain Thrid",
             "Ain Tindamine",
-            "Ain- Adden",
+            "Ain-Adden",
             "Amarnas",
             "Bedrabine El Mokrani",
             "Belarbi",
@@ -4063,7 +3767,7 @@
             "Marhoum",
             "Merine",
             "Mezaourou",
-            "Mostefa  Ben Brahim",
+            "Mostefa Ben Brahim",
             "Moulay Slissen",
             "Oued Sebaa",
             "Oued Sefioun",
@@ -4974,214 +4678,11 @@
         },
       };
 
-      let selectedProduct = null;
-      let selectedWeight = null;
-      let selectedFlavor = null;
-      let selectedDelivery = "home";
-      const DELIVERY_COST = { home: 500, office: 400 };
-      const PROMO_CODES = {
-        BYBENS10: 10,
-        SPORT20: 20,
-        WELCOME15: 15,
-      };
-      let appliedDiscount = 0;
-
       /* ══════════════════════════════════════════════════════
-         RENDER PRODUCT
-      ══════════════════════════════════════════════════════ */
-      function renderProduct() {
-        const p = selectedProduct;
-        document.title = `${p.name} – ByBens`;
-
-        document.getElementById("breadcrumbName").textContent = p.name;
-        document.getElementById("productBrand").textContent = p.brand;
-        document.getElementById("productName").textContent = p.name;
-        document.getElementById("productFlavor").textContent = p.flavor;
-        document.getElementById("productRatingVal").textContent = p.rating;
-        document.getElementById("productRatingCount").textContent =
-          `(${p.reviews} reviews)`;
-        document.getElementById("productStars").textContent = renderStars(
-          p.rating,
-        );
-        document.getElementById("productPrice").textContent = p.price + " DA";
-
-        // Description
-        const descriptions = {
-          1: "The Gold Standard in protein — 24g of high-quality whey protein per serving, with minimal fat and sugar. Fast-absorbing whey isolates as the primary ingredient, perfect for post-workout recovery and lean muscle growth.",
-          2: "MyProtein's best-seller for good reason: great macros, smooth mixability, and a wide range of flavors. 21g of protein per serving from quality whey concentrate — an everyday essential for any serious athlete.",
-          3: "ByBens signature blend combines whey concentrate and isolate for a sustained amino acid release. Crafted locally to meet Algerian athlete standards, with premium ingredients and unbeatable value.",
-          4: "Scitec's ultra-filtered isolate delivers fast-digesting protein with less lactose and fat. Ideal for those looking for a cleaner protein source with 25g per serving and exceptional purity.",
-          5: "A powerful pre-workout formula packed with caffeine, beta-alanine, and citrulline malate to amplify energy, focus, and endurance. Take 20 minutes before training for maximum pump and performance.",
-          6: "Pure creatine monohydrate — the most researched supplement in sports science. Supports ATP regeneration for explosive strength, power output, and muscle volume. Unflavoured and mixes clear in any liquid.",
-          7: "Over 1,250 calories and 50g of protein per serving. Serious Mass is the ultimate weight gainer for hard gainers who struggle to meet their caloric needs. Fortified with 25 vitamins and minerals.",
-          8: "High-potency Omega-3 fish oil with EPA and DHA to support heart health, reduce inflammation, joint mobility, and cognitive function. Enteric-coated to prevent fishy aftertaste.",
-          9: "A comprehensive amino acid complex with all essential EAAs and BCAAs in tablet form. Supports muscle protein synthesis, reduces breakdown during intense training, and accelerates recovery.",
-          10: "THE Pre-Workout by MyProtein delivers an advanced formula with 200mg caffeine, 3g beta-alanine, and 5g citrulline for skin-tearing pumps, laser focus, and relentless energy through your hardest sessions.",
-          11: "Vitamin D3 combined with K2 (MK-7) for superior absorption and cardiovascular safety. Essential for bone density, immune function, hormone balance, and year-round wellness — especially critical in North Africa.",
-          12: "1,000mg of pure BCAAs (2:1:1 ratio) per serving in convenient capsule form. Reduces muscle soreness, prevents catabolism during fasted training, and supports lean muscle maintenance.",
-          13: "ByBens Pro Shaker — 700ml capacity with a stainless-steel blender ball for lump-free mixing. BPA-free, leak-proof lid, and dishwasher safe. The perfect training companion for every session.",
-          14: "A high-calorie, high-protein mass gainer with complex carbohydrates from oats and maltodextrin. 628 calories and 36g protein per serving — designed to build serious size in the off-season.",
-          15: "Zinc, Magnesium, and Vitamin B6 in clinically-researched doses to support natural testosterone levels, deep sleep quality, muscle recovery, and immune function. Ideal to take before bed.",
-          16: "Full-palm grip gloves with padded leather palm protection and wrist support. Reduces callus formation, improves grip strength, and provides wrist stability for heavy lifts.",
-        };
-
-        const desc =
-          descriptions[p.id] ||
-          `${p.name} by ${p.brand} — a premium sports nutrition product designed to help you reach your fitness goals. High-quality ingredients, tested formulas.`;
-        document.getElementById("productDescription").textContent = desc;
-
-        const oldPriceEl = document.getElementById("productOldPrice");
-        const saveEl = document.getElementById("productSave");
-        if (p.oldPrice) {
-          oldPriceEl.textContent = p.oldPrice + " DA";
-          oldPriceEl.style.display = "";
-        } else {
-          oldPriceEl.style.display = "none";
-        }
-        if (p.save) {
-          saveEl.textContent = p.save;
-          saveEl.style.display = "";
-        } else {
-          saveEl.style.display = "none";
-        }
-
-        // Badge
-        const badgeEl = document.getElementById("productBadge");
-        if (p.badge) {
-          badgeEl.textContent = p.badge.toUpperCase();
-          badgeEl.className = `product-badge badge-${p.badge}`;
-          badgeEl.style.display = "";
-        } else {
-          badgeEl.style.display = "none";
-        }
-
-        // Weight pills
-        const weightGroup = document.getElementById("weightGroup");
-        const weightPills = document.getElementById("weightPills");
-        if (p.weights && p.weights.length > 0) {
-          weightGroup.style.display = "";
-          selectedWeight = p.weights[0];
-          weightPills.innerHTML = p.weights
-            .map(
-              (w, i) =>
-                `<div class="variant-pill ${i === 0 ? "active" : ""}" onclick="selectWeight(this,'${w}')">${w}</div>`,
-            )
-            .join("");
-        } else {
-          weightGroup.style.display = "none";
-        }
-
-        // Flavor pills
-        const flavorGroup = document.getElementById("flavorGroup");
-        const flavorPills = document.getElementById("flavorPills");
-        if (p.flavors && p.flavors.length > 1) {
-          flavorGroup.style.display = "";
-          selectedFlavor = p.flavors[0];
-          flavorPills.innerHTML = p.flavors
-            .map(
-              (f, i) =>
-                `<div class="variant-pill ${i === 0 ? "active" : ""}" onclick="selectFlavor(this,'${f}')">${f}</div>`,
-            )
-            .join("");
-        } else {
-          flavorGroup.style.display = "none";
-          selectedFlavor = p.flavor;
-        }
-      }
-
-      function renderStars(rating) {
-        return "★".repeat(Math.floor(rating)) + (rating % 1 >= 0.5 ? "½" : "");
-      }
-
-      function selectWeight(el, w) {
-        selectedWeight = w;
-        document
-          .querySelectorAll("#weightPills .variant-pill")
-          .forEach((p) => p.classList.remove("active"));
-        el.classList.add("active");
-        updateSummary();
-      }
-
-      function selectFlavor(el, f) {
-        selectedFlavor = f;
-        document
-          .querySelectorAll("#flavorPills .variant-pill")
-          .forEach((p) => p.classList.remove("active"));
-        el.classList.add("active");
-        document.getElementById("productFlavor").textContent = f;
-        updateSummary();
-      }
-
-      /* ══════════════════════════════════════════════════════
-         DELIVERY
-      ══════════════════════════════════════════════════════ */
-      function selectDelivery(type) {
-        selectedDelivery = type;
-        document
-          .getElementById("deliveryHome")
-          .classList.toggle("active", type === "home");
-        document
-          .getElementById("deliveryOffice")
-          .classList.toggle("active", type === "office");
-        updateSummary();
-      }
-
-      /* ══════════════════════════════════════════════════════
-         ORDER SUMMARY
-      ══════════════════════════════════════════════════════ */
-      function updateSummary() {
-        const p = selectedProduct;
-        if (!p) return;
-
-        let name = p.name;
-        if (selectedWeight) name += ` (${selectedWeight})`;
-        document.getElementById("summaryProduct").textContent = name;
-        document.getElementById("summaryPrice").textContent = p.price + " DA";
-
-        const cost = DELIVERY_COST[selectedDelivery];
-        document.getElementById("summaryDelivery").textContent =
-          `+${cost} DA (${selectedDelivery === "home" ? "Home" : "Office"})`;
-
-        const discount = Math.round(p.priceNum * (appliedDiscount / 100));
-        const total = p.priceNum + cost - discount;
-        document.getElementById("summaryTotal").textContent =
-          (appliedDiscount ? `(-${appliedDiscount}%) ` : "") +
-          total.toLocaleString("fr-DZ") +
-          " DA";
-      }
-
-      function applyPromo() {
-        const code = document
-          .getElementById("promoCode")
-          .value.trim()
-          .toUpperCase();
-        const msgEl = document.getElementById("promoMsg");
-
-        if (!code) {
-          msgEl.style.color = "var(--red)";
-          msgEl.textContent = "Please enter a promo code.";
-          return;
-        }
-        if (PROMO_CODES[code]) {
-          appliedDiscount = PROMO_CODES[code];
-          msgEl.style.color = "#0a7c3e";
-          msgEl.textContent = `✓ Code applied! ${appliedDiscount}% off`;
-          updateSummary();
-        } else {
-          appliedDiscount = 0;
-          msgEl.style.color = "var(--red)";
-          msgEl.textContent = "✗ Invalid promo code.";
-          updateSummary();
-        }
-      }
-
-      /* ══════════════════════════════════════════════════════
-         CUSTOM DROPDOWN
+         CUSTOM DROPDOWN (Wilaya / Commune)
       ══════════════════════════════════════════════════════ */
       let selectedWilayaCode = "";
       let selectedCommuneName = "";
-
-      // Track dropdown state
       const dropdownState = { wilaya: false, commune: false };
 
       function toggleCustomSelect(name) {
@@ -5189,14 +4690,12 @@
         const list = document.getElementById(name + "Dropdown");
         if (trigger.getAttribute("aria-disabled") === "true") return;
         const isOpen = !dropdownState[name];
-        // Close all
         closeAllDropdowns();
         if (isOpen) {
           dropdownState[name] = true;
           trigger.classList.add("open");
           trigger.setAttribute("aria-expanded", "true");
           list.classList.add("open");
-          // Focus search
           const searchInput = list.querySelector("input");
           if (searchInput) {
             searchInput.value = "";
@@ -5256,36 +4755,37 @@
 
       function selectWilayaOption(code, label) {
         selectedWilayaCode = code;
-        // Update trigger
-        const trigger = document.getElementById("wilayaTrigger");
         document.getElementById("wilayaLabel").textContent = label;
+        const trigger = document.getElementById("wilayaTrigger");
         trigger.classList.remove("placeholder", "error-field");
         document.getElementById("wilayaErr").textContent = "";
-        // Mark selected
         document
           .querySelectorAll("#wilayaOptions .dropdown-option")
           .forEach((o) => {
-            o.classList.toggle("selected", o.dataset.value === code);
-            o.querySelector(".check-icon").style.display =
-              o.dataset.value === code ? "block" : "none";
+            const sel = o.dataset.value === code;
+            o.classList.toggle("selected", sel);
+            o.querySelector(".check-icon").style.display = sel
+              ? "block"
+              : "none";
           });
         closeAllDropdowns();
-        // Populate commune
         populateCommune(code);
       }
 
       function selectCommuneOption(name) {
         selectedCommuneName = name;
-        const trigger = document.getElementById("communeTrigger");
         document.getElementById("communeLabel").textContent = name;
+        const trigger = document.getElementById("communeTrigger");
         trigger.classList.remove("placeholder", "error-field");
         document.getElementById("communeErr").textContent = "";
         document
           .querySelectorAll("#communeOptions .dropdown-option")
           .forEach((o) => {
-            o.classList.toggle("selected", o.dataset.value === name);
-            o.querySelector(".check-icon").style.display =
-              o.dataset.value === name ? "block" : "none";
+            const sel = o.dataset.value === name;
+            o.classList.toggle("selected", sel);
+            o.querySelector(".check-icon").style.display = sel
+              ? "block"
+              : "none";
           });
         closeAllDropdowns();
       }
@@ -5312,8 +4812,7 @@
         const optionsEl = document.getElementById("communeOptions");
         optionsEl.innerHTML = "";
         selectedCommuneName = "";
-        document.getElementById("communeLabel").textContent =
-          i18n[currentLang]["form.selectWilaya"] || "Select commune…";
+        document.getElementById("communeLabel").textContent = "Select commune…";
         trigger.classList.add("placeholder");
         trigger.removeAttribute("aria-disabled");
 
@@ -5329,26 +4828,8 @@
       }
 
       /* ══════════════════════════════════════════════════════
-         FORM VALIDATION & SUBMIT  (uses custom dropdowns)
+         FORM VALIDATION & SUBMIT
       ══════════════════════════════════════════════════════ */
-      function validateCustomField(triggerIdOrValue, errId, msg) {
-        const err = document.getElementById(errId);
-        if (!triggerIdOrValue) {
-          const trigger = document.getElementById(
-            errId.replace("Err", "Trigger"),
-          );
-          if (trigger) trigger.classList.add("error-field");
-          err.textContent = msg;
-          return false;
-        }
-        const trigger = document.getElementById(
-          errId.replace("Err", "Trigger"),
-        );
-        if (trigger) trigger.classList.remove("error-field");
-        err.textContent = "";
-        return true;
-      }
-
       function validateField(id, errId, msg) {
         const el = document.getElementById(id);
         const err = document.getElementById(errId);
@@ -5359,6 +4840,21 @@
           return false;
         }
         if (el) el.classList.remove("error");
+        err.textContent = "";
+        return true;
+      }
+
+      function validateCustomField(value, errId, msg) {
+        const err = document.getElementById(errId);
+        const trigger = document.getElementById(
+          errId.replace("Err", "Trigger"),
+        );
+        if (!value) {
+          if (trigger) trigger.classList.add("error-field");
+          err.textContent = msg;
+          return false;
+        }
+        if (trigger) trigger.classList.remove("error-field");
         err.textContent = "";
         return true;
       }
@@ -5390,7 +4886,6 @@
             "Please select a commune",
           ) && valid;
 
-        // Phone basic validation
         const phoneEl = document.getElementById("phone");
         if (phoneEl.value && !/^[0-9\s+\-]{9,14}$/.test(phoneEl.value.trim())) {
           phoneEl.classList.add("error");
@@ -5406,10 +4901,14 @@
 
         const p = selectedProduct;
         const cost = DELIVERY_COST[selectedDelivery];
-        const total = (p.priceNum + cost).toLocaleString("fr-DZ");
-        const name = document.getElementById("firstName").value.trim();
+        const variantPrice = getProductPrice(p, selectedVariantIndex);
+        const subtotal = variantPrice * selectedQty;
+        const promoDisc = Math.round(subtotal * (appliedDiscount / 100));
+        const total = (subtotal + cost - promoDisc).toLocaleString("fr-DZ");
+        const firstName = document.getElementById("firstName").value.trim();
+
         document.getElementById("successMsg").textContent =
-          `Thank you ${name}! Your order for ${p.name} — Total: ${total} DA. We'll call you shortly to confirm.`;
+          `Thank you ${firstName}! Your order for ${p.name} × ${selectedQty} — Total: ${total} DA. We'll call you shortly to confirm.`;
         document.getElementById("successOverlay").classList.add("show");
       }
 
@@ -5429,13 +4928,6 @@
           "detail.weight": "Weight",
           "detail.flavor": "Flavor",
           "detail.about": "About this product",
-          "detail.yourRating": "Rate this product",
-          "detail.tapToRate": "Tap to rate",
-          "detail.rated1": "Poor",
-          "detail.rated2": "Fair",
-          "detail.rated3": "Good",
-          "detail.rated4": "Very Good",
-          "detail.rated5": "Excellent!",
           "form.firstName": "First Name",
           "form.lastName": "Last Name",
           "form.phone": "Phone Number",
@@ -5483,13 +4975,6 @@
           "detail.weight": "Poids",
           "detail.flavor": "Saveur",
           "detail.about": "À propos du produit",
-          "detail.yourRating": "Évaluez ce produit",
-          "detail.tapToRate": "Appuyez pour évaluer",
-          "detail.rated1": "Mauvais",
-          "detail.rated2": "Passable",
-          "detail.rated3": "Bon",
-          "detail.rated4": "Très Bon",
-          "detail.rated5": "Excellent !",
           "form.firstName": "Prénom",
           "form.lastName": "Nom",
           "form.phone": "Numéro de téléphone",
@@ -5510,7 +4995,7 @@
           "form.total": "Total",
           "form.confirmOrder": "CONFIRMER LA COMMANDE",
           "footer.tagline":
-            "La boutique de nutrition sportive de référence en Algérie. Produits authentiques, livraison rapide.",
+            "La boutique de nutrition sportive de référence en Algérie.",
           "footer.shop": "Boutique",
           "footer.allProducts": "Tous les Produits",
           "footer.protein": "Protéine",
@@ -5537,13 +5022,6 @@
           "detail.weight": "الوزن",
           "detail.flavor": "النكهة",
           "detail.about": "عن هذا المنتج",
-          "detail.yourRating": "قيّم هذا المنتج",
-          "detail.tapToRate": "اضغط للتقييم",
-          "detail.rated1": "ضعيف",
-          "detail.rated2": "مقبول",
-          "detail.rated3": "جيد",
-          "detail.rated4": "جيد جداً",
-          "detail.rated5": "ممتاز!",
           "form.firstName": "الاسم الأول",
           "form.lastName": "اللقب",
           "form.phone": "رقم الهاتف",
@@ -5587,7 +5065,6 @@
       };
 
       let currentLang = "en";
-
       function switchLang(lang) {
         localStorage.setItem("bybens_lang", lang);
         currentLang = lang;
@@ -5602,19 +5079,14 @@
         document.querySelectorAll(".lang-btn").forEach((btn) => {
           btn.classList.toggle("active", btn.dataset.lang === lang);
         });
-        const wilayaTrigger = document.getElementById("wilayaTrigger");
-        if (wilayaTrigger && wilayaTrigger.classList.contains("placeholder")) {
+        const wt = document.getElementById("wilayaTrigger");
+        if (wt && wt.classList.contains("placeholder"))
           document.getElementById("wilayaLabel").textContent =
             t["form.selectWilaya"] || "Select wilaya…";
-        }
-        const communeTrigger = document.getElementById("communeTrigger");
-        if (
-          communeTrigger &&
-          communeTrigger.classList.contains("placeholder")
-        ) {
-          const isDisabled =
-            communeTrigger.getAttribute("aria-disabled") === "true";
-          document.getElementById("communeLabel").textContent = isDisabled
+        const ct = document.getElementById("communeTrigger");
+        if (ct && ct.classList.contains("placeholder")) {
+          const dis = ct.getAttribute("aria-disabled") === "true";
+          document.getElementById("communeLabel").textContent = dis
             ? t["form.selectWilayaFirst"] || "Select wilaya first"
             : t["form.selectWilaya"] || "Select commune…";
         }
@@ -5623,9 +5095,8 @@
       /* ══════════════════════════════════════════════════════
          UI HELPERS
       ══════════════════════════════════════════════════════ */
-      let cartCount = 3;
       function toggleCart() {
-        showToast(`Cart (${cartCount} items) — checkout coming soon!`);
+        showToast("Cart coming soon!");
       }
 
       function toggleMobileMenu() {
@@ -5646,19 +5117,14 @@
         if (!isOpen) item.classList.add("open");
       }
 
-      /* ══════════════════════════════════════════════════════
-         SEARCH
-      ══════════════════════════════════════════════════════ */
       function handleSearch() {
         const q = document.getElementById("searchInput").value.trim();
-        if (q) {
+        if (q)
           window.location.href = `products.html?q=${encodeURIComponent(q)}`;
-        }
       }
 
       function openMobileSearch() {
-        const overlay = document.getElementById("mobileSearchOverlay");
-        overlay.style.display = "flex";
+        document.getElementById("mobileSearchOverlay").style.display = "flex";
         document.body.style.overflow = "hidden";
         setTimeout(
           () => document.getElementById("mobileSearchInput").focus(),
@@ -5668,105 +5134,9 @@
       function closeMobileSearch() {
         document.getElementById("mobileSearchOverlay").style.display = "none";
         document.body.style.overflow = "";
-        document.getElementById("mobileSearchInput").value = "";
-        document.getElementById("mobileSearchResults").innerHTML =
-          '<p style="font-size:13px;color:var(--gray-400);text-align:center;margin-top:40px;">Start typing to search products…</p>';
-      }
-      function handleMobileSearch(query) {
-        const resultsEl = document.getElementById("mobileSearchResults");
-        if (!query.trim()) {
-          resultsEl.innerHTML =
-            '<p style="font-size:13px;color:var(--gray-400);text-align:center;margin-top:40px;">Start typing to search products…</p>';
-          return;
-        }
-        const matches = allProducts.filter(
-          (p) =>
-            p.name.toLowerCase().includes(query.toLowerCase()) ||
-            p.brand.toLowerCase().includes(query.toLowerCase()) ||
-            p.flavor.toLowerCase().includes(query.toLowerCase()),
-        );
-        if (!matches.length) {
-          resultsEl.innerHTML = `<p style="font-size:13px;color:var(--gray-400);text-align:center;margin-top:40px;">No results for "${query}"</p>`;
-          return;
-        }
-        resultsEl.innerHTML = matches
-          .map(
-            (p) => `
-          <div onclick="closeMobileSearch();window.location.href='product-detail.html?id=${p.id}'" style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--gray-100);cursor:pointer;">
-            <div style="width:48px;height:48px;background:var(--gray-50);border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1px solid var(--gray-100);">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>
-            </div>
-            <div style="flex:1;min-width:0;">
-              <p style="font-size:13px;color:var(--gray-400);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin:0 0 2px;">${p.brand}</p>
-              <p style="font-size:15px;font-weight:600;color:var(--black);margin:0 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</p>
-              <p style="font-size:12px;color:var(--gray-400);margin:0;">${p.flavor}</p>
-            </div>
-            <span style="font-family:var(--font-display);font-size:18px;color:var(--black);flex-shrink:0;direction:ltr;">${p.price} DA</span>
-          </div>`,
-          )
-          .join("");
       }
 
-      /* ══════════════════════════════════════════════════════
-         STAR RATING (user interaction)
-      ══════════════════════════════════════════════════════ */
-      let userRating = 0;
-      const ratingLabels = {
-        1: "Poor",
-        2: "Fair",
-        3: "Good",
-        4: "Very Good",
-        5: "Excellent!",
-      };
-
-      function initStarPicker() {
-        const picker = document.getElementById("starPicker");
-        if (!picker) return;
-        const stars = picker.querySelectorAll(".star");
-        const feedback = document.getElementById("starFeedback");
-
-        stars.forEach((star) => {
-          const val = parseInt(star.dataset.val);
-
-          star.addEventListener("mouseenter", () => {
-            stars.forEach((s) =>
-              s.classList.toggle("hovered", parseInt(s.dataset.val) <= val),
-            );
-            feedback.textContent =
-              i18n[currentLang][`detail.rated${val}`] ||
-              ratingLabels[val] ||
-              "";
-          });
-          star.addEventListener("mouseleave", () => {
-            stars.forEach((s) => s.classList.remove("hovered"));
-            feedback.textContent = userRating
-              ? i18n[currentLang][`detail.rated${userRating}`] ||
-                ratingLabels[userRating]
-              : i18n[currentLang]["detail.tapToRate"] || "Tap to rate";
-          });
-          star.addEventListener("click", () => {
-            userRating = val;
-            stars.forEach((s) =>
-              s.classList.toggle("active", parseInt(s.dataset.val) <= val),
-            );
-            feedback.textContent =
-              i18n[currentLang][`detail.rated${val}`] ||
-              ratingLabels[val] ||
-              "";
-            showToast(`Thanks for rating: ${val}/5 ⭐`);
-          });
-          star.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              star.click();
-            }
-          });
-        });
-      }
-
-      /* ══════════════════════════════════════════════════════
-         TOAST
-      ══════════════════════════════════════════════════════ */
+      /* ── TOAST ── */
       let toastTimer;
       function showToast(msg) {
         const toast = document.getElementById("toast");
@@ -5776,9 +5146,7 @@
         toastTimer = setTimeout(() => toast.classList.remove("show"), 3000);
       }
 
-      /* ══════════════════════════════════════════════════════
-         SCROLL
-      ══════════════════════════════════════════════════════ */
+      /* ── SCROLL ── */
       window.addEventListener(
         "scroll",
         () => {
@@ -5796,28 +5164,12 @@
          INIT
       ══════════════════════════════════════════════════════ */
       document.addEventListener("DOMContentLoaded", () => {
-        const params = new URLSearchParams(window.location.search);
-        const id = parseInt(params.get("id")) || 1;
-        selectedProduct =
-          allProducts.find((p) => p.id === id) || allProducts[0];
-
-        renderProduct();
         populateWilayas();
-        updateSummary();
-        initStarPicker();
+        loadProductData();
 
-        // Search enter key
-        const si = document.getElementById("searchInput");
-        if (si)
-          si.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") handleSearch();
-          });
-
-        // Footer year
         const fy = document.getElementById("footerYear");
         if (fy) fy.textContent = new Date().getFullYear();
 
-        // Restore saved language
         const savedLang = localStorage.getItem("bybens_lang") || "en";
         if (savedLang !== "en") switchLang(savedLang);
       });

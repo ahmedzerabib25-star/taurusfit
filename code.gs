@@ -1,579 +1,575 @@
 // ============================================================
-//  ByBens Admin Panel — Google Apps Script Backend
+// ByBens Admin Panel — Google Apps Script Backend
+// ============================================================
+// SETUP:
+// 1. Go to https://script.google.com → New Project
+// 2. Paste this ENTIRE code
+// 3. Run initSheets() once from the editor (Run → initSheets)
+// 4. Deploy → New Deployment → Web App
+//    - Execute as: Me
+//    - Who has access: Anyone
+// 5. Copy the Web App URL and paste it in the admin HTML
 // ============================================================
 
-// ── CONFIG ──────────────────────────────────────────────────
-var SPREADSHEET_ID = ""; // ← paste your sheet ID here after first run
+const SHEET_ID = "19G5rvx6bNxhU0sM638tF_hDXrP6v1vuSYOKVFrdDeHU"; // ← Paste your Google Sheet ID here
 
-var SHEET_CATEGORIES = "Categories";
-var SHEET_SUBCATEGORIES = "SubCategories";
-var SHEET_PRODUCTS = "Products";
-var SHEET_PROMOS = "PromoCodes";
-
-// ── ENTRY POINTS ────────────────────────────────────────────
-function doGet(e) {
-  return handleRequest(e);
-}
-function doPost(e) {
-  return handleRequest(e);
+function getSheet(name) {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  return ss.getSheetByName(name);
 }
 
-function handleRequest(e) {
-  try {
-    var params = e.parameter || {};
-    var body = {};
-    if (e.postData && e.postData.contents) {
-      try {
-        body = JSON.parse(e.postData.contents);
-      } catch (_) {}
+// ── INIT: Run this once to create all sheets ──
+function initSheets() {
+  const ss = SHEET_ID
+    ? SpreadsheetApp.openById(SHEET_ID)
+    : SpreadsheetApp.getActiveSpreadsheet();
+
+  const sheets = {
+    Settings: ["key", "value"],
+    Categories: ["id", "name", "description", "createdAt"],
+    SubCategories: ["id", "name", "categoryIds", "createdAt"],
+    Products: [
+      "id",
+      "name",
+      "brand",
+      "categoryIds",
+      "subCategoryIds",
+      "description",
+      "imageUrl",
+      "variants",
+      "flavors",
+      "stock",
+      "discount",
+      "allowPromo",
+      "promoCodeIds",
+      "status",
+      "createdAt",
+    ],
+    PromoCodes: [
+      "id",
+      "code",
+      "type",
+      "value",
+      "minOrder",
+      "maxUses",
+      "uses",
+      "expiry",
+      "status",
+      "createdAt",
+    ],
+  };
+
+  for (const [sheetName, headers] of Object.entries(sheets)) {
+    let sheet = ss.getSheetByName(sheetName);
+    if (!sheet) {
+      sheet = ss.insertSheet(sheetName);
     }
-
-    var action = params.action || body.action || "";
-    var result;
-
-    switch (action) {
-      case "init":
-        result = initSheets();
-        break;
-      case "getCategories":
-        result = getCategories();
-        break;
-      case "addCategory":
-        result = addCategory(body);
-        break;
-      case "deleteCategory":
-        result = deleteCategory(body);
-        break;
-      case "addSubCategory":
-        result = addSubCategory(body);
-        break;
-      case "deleteSubCategory":
-        result = deleteSubCategory(body);
-        break;
-      case "getProducts":
-        result = getProducts();
-        break;
-      case "addProduct":
-        result = addProduct(body);
-        break;
-      case "updateProduct":
-        result = updateProduct(body);
-        break;
-      case "deleteProduct":
-        result = deleteProduct(body);
-        break;
-      case "getPromos":
-        result = getPromos();
-        break;
-      case "addPromo":
-        result = addPromo(body);
-        break;
-      case "updatePromo":
-        result = updatePromo(body);
-        break;
-      case "deletePromo":
-        result = deletePromo(body);
-        break;
-      default:
-        result = { error: "Unknown action: " + action };
+    // Clear row 1 and set headers fresh
+    if (sheet.getLastColumn() > 0) {
+      sheet.getRange(1, 1, 1, sheet.getLastColumn()).clear();
     }
+    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+    sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold");
+    sheet.setFrozenRows(1);
+  }
 
-    return buildResponse(result);
-  } catch (err) {
-    return buildResponse({ error: err.message });
+  // Default admin credentials — only if Settings has no data rows
+  const settingsSheet = ss.getSheetByName("Settings");
+  const settingsData = settingsSheet.getDataRange().getValues();
+  if (settingsData.length <= 1) {
+    settingsSheet.appendRow(["admin_username", "admin"]);
+    settingsSheet.appendRow(["admin_password", "1234"]);
+    settingsSheet.appendRow(["admin_displayname", "Admin"]);
+  }
+
+  // Auto-resize columns
+  for (const sheetName of Object.keys(sheets)) {
+    const sheet = ss.getSheetByName(sheetName);
+    if (sheet.getLastColumn() > 0) {
+      sheet.autoResizeColumns(1, sheet.getLastColumn());
+    }
   }
 }
 
-function buildResponse(data) {
+// ══════════════════════════════════════════════════════════════
+// RESET SETTINGS — Run this to force-reset admin credentials
+// This clears the Settings sheet and writes fresh defaults
+// Run from the editor: Run → resetSettings
+// ══════════════════════════════════════════════════════════════
+function resetSettings() {
+  const ss = SHEET_ID
+    ? SpreadsheetApp.openById(SHEET_ID)
+    : SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName("Settings");
+  if (!sheet) {
+    Logger.log("Settings sheet not found! Run initSheets first.");
+    return;
+  }
+  // Clear everything
+  sheet.clear();
+  // Re-write headers
+  sheet.getRange(1, 1, 1, 2).setValues([["key", "value"]]);
+  sheet.getRange(1, 1, 1, 2).setFontWeight("bold");
+  sheet.setFrozenRows(1);
+  // Write default credentials as plain text strings
+  sheet.getRange(2, 1, 3, 2).setNumberFormat("@"); // Force text format
+  sheet.getRange(2, 1, 3, 2).setValues([
+    ["admin_username", "admin"],
+    ["admin_password", "1234"],
+    ["admin_displayname", "Admin"],
+  ]);
+  sheet.autoResizeColumns(1, 2);
+  Logger.log("Settings reset! Username: admin / Password: 1234");
+}
+
+// ── Response helper ──
+function jsonResponse(data) {
   return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(
     ContentService.MimeType.JSON,
   );
 }
 
-// ── SPREADSHEET HELPER ──────────────────────────────────────
-function getSpreadsheet() {
-  if (SPREADSHEET_ID && SPREADSHEET_ID !== "") {
-    return SpreadsheetApp.openById(SPREADSHEET_ID);
-  }
-  var ss = SpreadsheetApp.create("ByBens Database");
-  Logger.log("NEW SPREADSHEET ID: " + ss.getId());
-  Logger.log(
-    "Open it here: https://docs.google.com/spreadsheets/d/" + ss.getId(),
-  );
-  SPREADSHEET_ID = ss.getId();
-  return ss;
-}
-
-function getSheet(name) {
-  var ss = getSpreadsheet();
-  var sheet = ss.getSheetByName(name);
-  if (!sheet) {
-    sheet = ss.insertSheet(name);
-  }
-  return sheet;
-}
-
-// ── INIT SHEETS ─────────────────────────────────────────────
-function initSheets() {
-  setupCategoriesSheet();
-  setupSubCategoriesSheet();
-  setupProductsSheet();
-  setupPromosSheet();
-
-  var ss = getSpreadsheet();
-  var def = ss.getSheetByName("Sheet1");
-  if (def) ss.deleteSheet(def);
-
-  return {
-    success: true,
-    spreadsheetId: ss.getId(),
-    spreadsheetUrl: "https://docs.google.com/spreadsheets/d/" + ss.getId(),
-    message:
-      "All sheets initialized. Copy the spreadsheetId above into SPREADSHEET_ID.",
-  };
-}
-
-function setupCategoriesSheet() {
-  var s = getSheet(SHEET_CATEGORIES);
-  if (s.getLastRow() === 0) {
-    s.appendRow(["id", "name", "description", "createdAt"]);
-    formatHeader(s);
+// ── GET handler ──
+function doGet(e) {
+  try {
+    const action = e.parameter.action;
+    switch (action) {
+      case "login":
+        return handleLogin(e.parameter);
+      case "getCategories":
+        return handleGetCategories();
+      case "getSubCategories":
+        return handleGetSubCategories();
+      case "getProducts":
+        return handleGetProducts();
+      case "getPromos":
+        return handleGetPromos();
+      case "getSettings":
+        return handleGetSettings();
+      case "getDashboard":
+        return handleGetDashboard();
+      default:
+        return jsonResponse({ success: false, error: "Unknown action" });
+    }
+  } catch (err) {
+    return jsonResponse({ success: false, error: err.message });
   }
 }
 
-function setupSubCategoriesSheet() {
-  var s = getSheet(SHEET_SUBCATEGORIES);
-  if (s.getLastRow() === 0) {
-    s.appendRow(["id", "categoryId", "categoryName", "name", "createdAt"]);
-    formatHeader(s);
-  }
-}
-
-function setupProductsSheet() {
-  var s = getSheet(SHEET_PRODUCTS);
-  if (s.getLastRow() === 0) {
-    s.appendRow([
-      "id",
-      "name",
-      "brand",
-      "description",
-      "categories",
-      "imageUrl",
-      "variants",
-      "flavors",
-      "discount",
-      "allowPromo",
-      "status",
-      "createdAt",
-    ]);
-    formatHeader(s);
-  }
-}
-
-function setupPromosSheet() {
-  var s = getSheet(SHEET_PROMOS);
-  if (s.getLastRow() === 0) {
-    s.appendRow([
-      "id",
-      "code",
-      "type",
-      "value",
-      "expiryDate",
-      "status",
-      "createdAt",
-    ]);
-    formatHeader(s);
-  }
-}
-
-function formatHeader(sheet) {
-  var header = sheet.getRange(1, 1, 1, sheet.getLastColumn());
-  header.setBackground("#ad0000");
-  header.setFontColor("#ffffff");
-  header.setFontWeight("bold");
-  sheet.setFrozenRows(1);
-}
-
-// ── GENERATE ID ─────────────────────────────────────────────
-function generateId() {
-  return (
-    new Date().getTime().toString() +
-    Math.floor(Math.random() * 1000).toString()
-  );
-}
-
-// ── CATEGORIES ──────────────────────────────────────────────
-function getCategories() {
-  var catSheet = getSheet(SHEET_CATEGORIES);
-  var subSheet = getSheet(SHEET_SUBCATEGORIES);
-  var catData = catSheet.getDataRange().getValues();
-  var subData = subSheet.getDataRange().getValues();
-
-  if (catData.length <= 1) return { categories: [] };
-
-  var catHeaders = catData[0];
-  var subHeaders = subData[0];
-
-  var categories = catData.slice(1).map(function (row) {
-    var cat = rowToObj(row, catHeaders);
-    var subs = [];
-    if (subData.length > 1) {
-      subs = subData
-        .slice(1)
-        .filter(function (sr) {
-          return (
-            String(sr[subHeaders.indexOf("categoryId")]) === String(cat.id)
-          );
-        })
-        .map(function (sr) {
-          return rowToObj(sr, subHeaders);
+// ── POST handler ──
+function doPost(e) {
+  try {
+    const body = JSON.parse(e.postData.contents);
+    const action = body.action;
+    switch (action) {
+      case "addCategory":
+        return handleAddCategory(body);
+      case "deleteCategory":
+        return handleDeleteCategory(body);
+      case "addSubCategory":
+        return handleAddSubCategory(body);
+      case "deleteSubCategory":
+        return handleDeleteSubCategory(body);
+      case "addProduct":
+        return handleAddProduct(body);
+      case "updateProduct":
+        return handleUpdateProduct(body);
+      case "deleteProduct":
+        return handleDeleteProduct(body);
+      case "addPromo":
+        return handleAddPromo(body);
+      case "updatePromo":
+        return handleUpdatePromo(body);
+      case "deletePromo":
+        return handleDeletePromo(body);
+      case "updateSettings":
+        return handleUpdateSettings(body);
+      case "updateOrderStatus":
+        return handleUpdateOrderStatus(body);
+      default:
+        return jsonResponse({
+          success: false,
+          error: "Unknown action: " + action,
         });
     }
-    cat.subCategories = subs;
-    return cat;
-  });
-
-  return { categories: categories };
+  } catch (err) {
+    return jsonResponse({ success: false, error: err.message });
+  }
 }
 
-function addCategory(body) {
-  var name = (body.name || "").trim();
-  if (!name) return { error: "Category name is required" };
+// ════════════════════════════════════════════
+// AUTH — uses String() to avoid number vs string mismatch
+// ════════════════════════════════════════════
+function handleLogin(params) {
+  const sheet = getSheet("Settings");
+  const data = sheet.getDataRange().getValues();
+  const settings = {};
+  data.slice(1).forEach((r) => {
+    settings[String(r[0]).trim()] = String(r[1]).trim();
+  });
 
-  var sheet = getSheet(SHEET_CATEGORIES);
-  var id = generateId();
-  var now = new Date().toISOString();
+  const inputUser = String(params.username).trim();
+  const inputPass = String(params.password).trim();
+  const storedUser = settings["admin_username"] || "";
+  const storedPass = settings["admin_password"] || "";
 
-  sheet.appendRow([id, name, body.description || "", now]);
-
-  var addedSubs = [];
-  if (body.subCategories && Array.isArray(body.subCategories)) {
-    body.subCategories.forEach(function (subName) {
-      subName = (subName || "").trim();
-      if (subName) {
-        addedSubs.push(addSubCategoryDirect(id, name, subName));
-      }
+  if (inputUser === storedUser && inputPass === storedPass) {
+    return jsonResponse({
+      success: true,
+      displayName: settings["admin_displayname"] || storedUser,
     });
   }
-
-  return { success: true, id: id, name: name, subCategories: addedSubs };
+  return jsonResponse({ success: false, error: "Invalid credentials" });
 }
 
-function deleteCategory(body) {
-  var id = String(body.id || "");
-  var sheet = getSheet(SHEET_CATEGORIES);
-  var data = sheet.getDataRange().getValues();
+function handleGetSettings() {
+  const sheet = getSheet("Settings");
+  const data = sheet.getDataRange().getValues();
+  const settings = {};
+  data.slice(1).forEach((r) => {
+    settings[String(r[0]).trim()] = String(r[1]).trim();
+  });
+  return jsonResponse({ success: true, settings });
+}
 
-  for (var i = 1; i < data.length; i++) {
-    if (String(data[i][0]) === id) {
-      sheet.deleteRow(i + 1);
-      deleteSubCategoriesByCatId(id);
-      return { success: true };
+function handleUpdateSettings(body) {
+  const sheet = getSheet("Settings");
+  const data = sheet.getDataRange().getValues();
+
+  for (let i = 1; i < data.length; i++) {
+    const key = String(data[i][0]).trim();
+    if (body.updates[key] !== undefined) {
+      sheet.getRange(i + 1, 2).setNumberFormat("@"); // Force text
+      sheet.getRange(i + 1, 2).setValue(String(body.updates[key]));
     }
   }
-  return { error: "Category not found" };
+
+  const existingKeys = data.slice(1).map((r) => String(r[0]).trim());
+  for (const [key, value] of Object.entries(body.updates)) {
+    if (!existingKeys.includes(key)) {
+      const newRow = sheet.getLastRow() + 1;
+      sheet.getRange(newRow, 1, 1, 2).setNumberFormat("@");
+      sheet.getRange(newRow, 1, 1, 2).setValues([[key, String(value)]]);
+    }
+  }
+
+  return jsonResponse({ success: true });
 }
 
-// ── SUBCATEGORIES ────────────────────────────────────────────
-function addSubCategoryDirect(categoryId, categoryName, name) {
-  var sheet = getSheet(SHEET_SUBCATEGORIES);
-  var id = generateId();
-  var now = new Date().toISOString();
-  sheet.appendRow([id, categoryId, categoryName, name, now]);
-  return {
-    id: id,
-    categoryId: categoryId,
-    categoryName: categoryName,
-    name: name,
-  };
+// ════════════════════════════════════════════
+// CATEGORIES
+// ════════════════════════════════════════════
+function handleGetCategories() {
+  const sheet = getSheet("Categories");
+  const data = sheet.getDataRange().getValues();
+  const categories = data.slice(1).map((r) => ({
+    id: String(r[0]),
+    name: r[1],
+    description: r[2],
+    createdAt: r[3],
+  }));
+  return jsonResponse({ success: true, categories });
 }
 
-function addSubCategory(body) {
-  var categoryId = String(body.categoryId || "").trim();
-  var categoryName = (body.categoryName || "").trim();
-  var name = (body.name || "").trim();
+function handleAddCategory(body) {
+  const sheet = getSheet("Categories");
+  const id = Date.now().toString();
+  sheet.appendRow([
+    id,
+    body.name,
+    body.description || "",
+    new Date().toISOString(),
+  ]);
+  if (body.subCategories && body.subCategories.length > 0) {
+    const subSheet = getSheet("SubCategories");
+    body.subCategories.forEach(function (sub, idx) {
+      var subId = String(Date.now() + idx + 1);
+      subSheet.appendRow([subId, sub, id, new Date().toISOString()]);
+      Utilities.sleep(5);
+    });
+  }
+  return jsonResponse({ success: true, id: id });
+}
 
-  if (!categoryId) return { error: "categoryId is required" };
-  if (!name) return { error: "Sub-category name is required" };
-
-  if (!categoryName) {
-    var cats = getSheet(SHEET_CATEGORIES).getDataRange().getValues();
-    for (var i = 1; i < cats.length; i++) {
-      if (String(cats[i][0]) === categoryId) {
-        categoryName = cats[i][1];
-        break;
+function handleDeleteCategory(body) {
+  const sheet = getSheet("Categories");
+  const data = sheet.getDataRange().getValues();
+  for (let i = data.length - 1; i >= 1; i--) {
+    if (String(data[i][0]) === String(body.id)) {
+      sheet.deleteRow(i + 1);
+      break;
+    }
+  }
+  const subSheet = getSheet("SubCategories");
+  const subData = subSheet.getDataRange().getValues();
+  for (let i = subData.length - 1; i >= 1; i--) {
+    const catIds = String(subData[i][2]).split(",");
+    if (catIds.includes(String(body.id))) {
+      const remaining = catIds.filter((c) => c !== String(body.id));
+      if (remaining.length === 0) {
+        subSheet.deleteRow(i + 1);
+      } else {
+        subSheet.getRange(i + 1, 3).setValue(remaining.join(","));
       }
     }
   }
-
-  return {
-    success: true,
-    subCategory: addSubCategoryDirect(categoryId, categoryName, name),
-  };
+  return jsonResponse({ success: true });
 }
 
-function deleteSubCategory(body) {
-  var id = String(body.id || "");
-  var sheet = getSheet(SHEET_SUBCATEGORIES);
-  var data = sheet.getDataRange().getValues();
+// ════════════════════════════════════════════
+// SUB-CATEGORIES
+// ════════════════════════════════════════════
+function handleGetSubCategories() {
+  const sheet = getSheet("SubCategories");
+  const data = sheet.getDataRange().getValues();
+  const subs = data.slice(1).map((r) => ({
+    id: String(r[0]),
+    name: r[1],
+    categoryIds: String(r[2]).split(",").filter(Boolean),
+    createdAt: r[3],
+  }));
+  return jsonResponse({ success: true, subCategories: subs });
+}
 
-  for (var i = 1; i < data.length; i++) {
-    if (String(data[i][0]) === id) {
+function handleAddSubCategory(body) {
+  const sheet = getSheet("SubCategories");
+  const id = Date.now().toString();
+  const categoryIds = Array.isArray(body.categoryIds)
+    ? body.categoryIds.join(",")
+    : body.categoryIds;
+  sheet.appendRow([id, body.name, categoryIds, new Date().toISOString()]);
+  return jsonResponse({ success: true, id });
+}
+
+function handleDeleteSubCategory(body) {
+  const sheet = getSheet("SubCategories");
+  const data = sheet.getDataRange().getValues();
+  for (let i = data.length - 1; i >= 1; i--) {
+    if (String(data[i][0]) === String(body.id)) {
       sheet.deleteRow(i + 1);
-      return { success: true };
+      break;
     }
   }
-  return { error: "Sub-category not found" };
+  return jsonResponse({ success: true });
 }
 
-function deleteSubCategoriesByCatId(categoryId) {
-  var sheet = getSheet(SHEET_SUBCATEGORIES);
-  var data = sheet.getDataRange().getValues();
-  for (var i = data.length - 1; i >= 1; i--) {
-    if (String(data[i][1]) === categoryId) {
-      sheet.deleteRow(i + 1);
-    }
-  }
+// ════════════════════════════════════════════
+// PRODUCTS
+// ════════════════════════════════════════════
+// Columns: id(1) name(2) brand(3) categoryIds(4) subCategoryIds(5) description(6) imageUrl(7)
+//          variants(8) flavors(9) stock(10) discount(11) allowPromo(12) promoCodeIds(13) status(14) createdAt(15)
+
+function handleGetProducts() {
+  const sheet = getSheet("Products");
+  const data = sheet.getDataRange().getValues();
+  const products = data.slice(1).map((r) => ({
+    id: String(r[0]),
+    name: r[1],
+    brand: r[2],
+    categoryIds: String(r[3]).split(",").filter(Boolean),
+    subCategoryIds: String(r[4]).split(",").filter(Boolean),
+    description: r[5],
+    imageUrl: r[6],
+    variants: safeParseJSON(r[7], []),
+    flavors: safeParseJSON(r[8], []),
+    stock: Number(r[9]) || 0,
+    discount: Number(r[10]) || 0,
+    allowPromo: r[11] === true || r[11] === "true" || r[11] === "TRUE",
+    promoCodeIds: String(r[12] || "")
+      .split(",")
+      .filter(Boolean),
+    status: r[13] || "active",
+    createdAt: r[14],
+  }));
+  return jsonResponse({ success: true, products });
 }
 
-// ── PRODUCTS ─────────────────────────────────────────────────
-function getProducts() {
-  var sheet = getSheet(SHEET_PRODUCTS);
-  var data = sheet.getDataRange().getValues();
-  if (data.length <= 1) return { products: [] };
-
-  var headers = data[0];
-  var products = data.slice(1).map(function (row) {
-    var p = rowToObj(row, headers);
-    try {
-      p.categories = JSON.parse(p.categories || "[]");
-    } catch (_) {
-      p.categories = [];
-    }
-    try {
-      p.variants = JSON.parse(p.variants || "[]");
-    } catch (_) {
-      p.variants = [];
-    }
-    try {
-      p.flavors = JSON.parse(p.flavors || "[]");
-    } catch (_) {
-      p.flavors = [];
-    }
-    p.allowPromo =
-      p.allowPromo === true ||
-      p.allowPromo === "TRUE" ||
-      p.allowPromo === "true";
-    p.discount = Number(p.discount) || 0;
-    return p;
-  });
-
-  return { products: products };
-}
-
-function addProduct(body) {
-  var name = (body.name || "").trim();
-  if (!name) return { error: "Product name is required" };
-
-  var sheet = getSheet(SHEET_PRODUCTS);
-  var id = generateId();
-  var now = new Date().toISOString();
-
+function handleAddProduct(body) {
+  const sheet = getSheet("Products");
+  const id = Date.now().toString();
   sheet.appendRow([
     id,
-    name,
+    body.name,
     body.brand || "",
+    (body.categoryIds || []).join(","),
+    (body.subCategoryIds || []).join(","),
     body.description || "",
-    JSON.stringify(body.categories || []),
     body.imageUrl || "",
     JSON.stringify(body.variants || []),
     JSON.stringify(body.flavors || []),
-    body.discount || 0,
-    body.allowPromo ? "TRUE" : "FALSE",
+    Number(body.stock) || 0,
+    Number(body.discount) || 0,
+    body.allowPromo ? "true" : "false",
+    (body.promoCodeIds || []).join(","),
     body.status || "active",
-    now,
+    new Date().toISOString(),
   ]);
-
-  return { success: true, id: id, name: name };
+  return jsonResponse({ success: true, id });
 }
 
-function updateProduct(body) {
-  var id = String(body.id || "");
-  var sheet = getSheet(SHEET_PRODUCTS);
-  var data = sheet.getDataRange().getValues();
-  var headers = data[0];
-
-  for (var i = 1; i < data.length; i++) {
-    if (String(data[i][0]) === id) {
-      var row = i + 1;
-      setCell(
-        sheet,
-        row,
-        headers,
-        "name",
-        body.name || data[i][headers.indexOf("name")],
-      );
-      setCell(
-        sheet,
-        row,
-        headers,
-        "brand",
-        body.brand !== undefined
-          ? body.brand
-          : data[i][headers.indexOf("brand")],
-      );
-      setCell(
-        sheet,
-        row,
-        headers,
-        "description",
-        body.description !== undefined
-          ? body.description
-          : data[i][headers.indexOf("description")],
-      );
-      setCell(
-        sheet,
-        row,
-        headers,
-        "categories",
-        JSON.stringify(body.categories || []),
-      );
-      if (body.imageUrl)
-        setCell(sheet, row, headers, "imageUrl", body.imageUrl);
-      setCell(
-        sheet,
-        row,
-        headers,
-        "variants",
-        JSON.stringify(body.variants || []),
-      );
-      setCell(
-        sheet,
-        row,
-        headers,
-        "flavors",
-        JSON.stringify(body.flavors || []),
-      );
-      setCell(sheet, row, headers, "discount", body.discount || 0);
-      setCell(
-        sheet,
-        row,
-        headers,
-        "allowPromo",
-        body.allowPromo ? "TRUE" : "FALSE",
-      );
-      setCell(sheet, row, headers, "status", body.status || "active");
-      return { success: true };
+function handleUpdateProduct(body) {
+  const sheet = getSheet("Products");
+  const data = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][0]) === String(body.id)) {
+      const row = i + 1;
+      sheet.getRange(row, 2).setValue(body.name);
+      sheet.getRange(row, 3).setValue(body.brand || "");
+      sheet.getRange(row, 4).setValue((body.categoryIds || []).join(","));
+      sheet.getRange(row, 5).setValue((body.subCategoryIds || []).join(","));
+      sheet.getRange(row, 6).setValue(body.description || "");
+      sheet.getRange(row, 7).setValue(body.imageUrl || "");
+      sheet.getRange(row, 8).setValue(JSON.stringify(body.variants || []));
+      sheet.getRange(row, 9).setValue(JSON.stringify(body.flavors || []));
+      sheet.getRange(row, 10).setValue(Number(body.stock) || 0);
+      sheet.getRange(row, 11).setValue(Number(body.discount) || 0);
+      sheet.getRange(row, 12).setValue(body.allowPromo ? "true" : "false");
+      sheet.getRange(row, 13).setValue((body.promoCodeIds || []).join(","));
+      sheet.getRange(row, 14).setValue(body.status || "active");
+      break;
     }
   }
-  return { error: "Product not found" };
+  return jsonResponse({ success: true });
 }
 
-function deleteProduct(body) {
-  var id = String(body.id || "");
-  var sheet = getSheet(SHEET_PRODUCTS);
-  var data = sheet.getDataRange().getValues();
-
-  for (var i = 1; i < data.length; i++) {
-    if (String(data[i][0]) === id) {
+function handleDeleteProduct(body) {
+  const sheet = getSheet("Products");
+  const data = sheet.getDataRange().getValues();
+  for (let i = data.length - 1; i >= 1; i--) {
+    if (String(data[i][0]) === String(body.id)) {
       sheet.deleteRow(i + 1);
-      return { success: true };
+      break;
     }
   }
-  return { error: "Product not found" };
+  return jsonResponse({ success: true });
 }
 
-// ── PROMO CODES ──────────────────────────────────────────────
-function getPromos() {
-  var sheet = getSheet(SHEET_PROMOS);
-  var data = sheet.getDataRange().getValues();
-  if (data.length <= 1) return { promos: [] };
-
-  var headers = data[0];
-  return {
-    promos: data.slice(1).map(function (row) {
-      return rowToObj(row, headers);
-    }),
-  };
+// ════════════════════════════════════════════
+// PROMO CODES
+// ════════════════════════════════════════════
+function handleGetPromos() {
+  const sheet = getSheet("PromoCodes");
+  const data = sheet.getDataRange().getValues();
+  const promos = data.slice(1).map((r) => ({
+    id: String(r[0]),
+    code: r[1],
+    type: r[2],
+    value: Number(r[3]) || 0,
+    minOrder: Number(r[4]) || 0,
+    maxUses: r[5] ? Number(r[5]) : null,
+    uses: Number(r[6]) || 0,
+    expiry: r[7] ? formatDate(r[7]) : "",
+    status: r[8] || "active",
+    createdAt: r[9],
+  }));
+  return jsonResponse({ success: true, promos });
 }
 
-function addPromo(body) {
-  var code = (body.code || "").trim().toUpperCase();
-  if (!code) return { error: "Promo code is required" };
-
-  var sheet = getSheet(SHEET_PROMOS);
-  var data = sheet.getDataRange().getValues();
-  var headers = data.length > 0 ? data[0] : [];
-
-  for (var i = 1; i < data.length; i++) {
-    if (String(data[i][headers.indexOf("code")]).toUpperCase() === code) {
-      return { error: "Promo code already exists" };
-    }
-  }
-
-  var id = generateId();
-  var now = new Date().toISOString();
-
+function handleAddPromo(body) {
+  const sheet = getSheet("PromoCodes");
+  const id = Date.now().toString();
   sheet.appendRow([
     id,
-    code,
-    body.type || "percent",
-    body.value || 0,
-    body.expiryDate || "",
+    body.code.toUpperCase(),
+    body.type,
+    body.type === "free_delivery" ? 0 : Number(body.value) || 0,
+    Number(body.minOrder) || 0,
+    body.maxUses || "",
+    0,
+    body.expiry || "",
     body.status || "active",
-    now,
+    new Date().toISOString(),
   ]);
-
-  return { success: true, id: id, code: code };
+  return jsonResponse({ success: true, id });
 }
 
-function updatePromo(body) {
-  var id = String(body.id || "");
-  var sheet = getSheet(SHEET_PROMOS);
-  var data = sheet.getDataRange().getValues();
-  var headers = data[0];
-
-  for (var i = 1; i < data.length; i++) {
-    if (String(data[i][0]) === id) {
-      var row = i + 1;
-      if (body.code)
-        setCell(sheet, row, headers, "code", body.code.toUpperCase());
-      if (body.type) setCell(sheet, row, headers, "type", body.type);
-      if (body.value !== undefined)
-        setCell(sheet, row, headers, "value", body.value);
-      if (body.expiryDate !== undefined)
-        setCell(sheet, row, headers, "expiryDate", body.expiryDate);
-      if (body.status) setCell(sheet, row, headers, "status", body.status);
-      return { success: true };
+function handleUpdatePromo(body) {
+  const sheet = getSheet("PromoCodes");
+  const data = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][0]) === String(body.id)) {
+      const row = i + 1;
+      sheet.getRange(row, 2).setValue(body.code.toUpperCase());
+      sheet.getRange(row, 3).setValue(body.type);
+      sheet
+        .getRange(row, 4)
+        .setValue(body.type === "free_delivery" ? 0 : Number(body.value) || 0);
+      sheet.getRange(row, 5).setValue(Number(body.minOrder) || 0);
+      sheet.getRange(row, 6).setValue(body.maxUses || "");
+      sheet.getRange(row, 8).setValue(body.expiry || "");
+      sheet.getRange(row, 9).setValue(body.status || "active");
+      break;
     }
   }
-  return { error: "Promo not found" };
+  return jsonResponse({ success: true });
 }
 
-function deletePromo(body) {
-  var id = String(body.id || "");
-  var sheet = getSheet(SHEET_PROMOS);
-  var data = sheet.getDataRange().getValues();
-
-  for (var i = 1; i < data.length; i++) {
-    if (String(data[i][0]) === id) {
+function handleDeletePromo(body) {
+  const sheet = getSheet("PromoCodes");
+  const data = sheet.getDataRange().getValues();
+  for (let i = data.length - 1; i >= 1; i--) {
+    if (String(data[i][0]) === String(body.id)) {
       sheet.deleteRow(i + 1);
-      return { success: true };
+      break;
     }
   }
-  return { error: "Promo not found" };
+  return jsonResponse({ success: true });
 }
 
-// ── UTILITIES ─────────────────────────────────────────────────
-function rowToObj(row, headers) {
-  var obj = {};
-  headers.forEach(function (h, i) {
-    obj[h] = row[i];
+// ════════════════════════════════════════════
+// DASHBOARD
+// ════════════════════════════════════════════
+function handleGetDashboard() {
+  const productsSheet = getSheet("Products");
+  const promosSheet = getSheet("PromoCodes");
+  const totalProducts = Math.max(0, productsSheet.getLastRow() - 1);
+  const promoData = promosSheet.getDataRange().getValues();
+  const activePromos = promoData
+    .slice(1)
+    .filter((r) => r[8] === "active").length;
+  return jsonResponse({
+    success: true,
+    stats: { totalProducts, activePromos },
   });
-  return obj;
 }
 
-function setCell(sheet, row, headers, colName, value) {
-  var colIdx = headers.indexOf(colName);
-  if (colIdx >= 0) sheet.getRange(row, colIdx + 1).setValue(value);
+// ════════════════════════════════════════════
+// ORDERS (status update only)
+// ════════════════════════════════════════════
+function handleUpdateOrderStatus(body) {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  let sheet = ss.getSheetByName("Orders");
+  if (!sheet)
+    return jsonResponse({ success: false, error: "Orders sheet not found" });
+  const data = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][0]) === String(body.id)) {
+      const statusCol = data[0].indexOf("status");
+      if (statusCol >= 0)
+        sheet.getRange(i + 1, statusCol + 1).setValue(body.status);
+      break;
+    }
+  }
+  return jsonResponse({ success: true });
+}
+
+// ════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════
+function safeParseJSON(str, fallback) {
+  try {
+    if (!str) return fallback;
+    return JSON.parse(str);
+  } catch (e) {
+    return fallback;
+  }
+}
+
+function formatDate(d) {
+  try {
+    if (d instanceof Date) return d.toISOString().split("T")[0];
+    return String(d);
+  } catch (e) {
+    return String(d);
+  }
 }

@@ -1700,19 +1700,7 @@
 
           <!-- Right nav (no search bar here — products page has its own toolbar search) -->
           <div class="nav-right">
-            <a href="index.html" class="nav-link" data-i18n="nav.home">Home</a>
-            <a
-              href="products.html"
-              class="nav-link active"
-              data-i18n="nav.products"
-              >Products</a
-            >
-            <a
-              href="index.html#contact"
-              class="nav-link"
-              data-i18n="nav.contact"
-              >Contact</a
-            >
+            <a href="products.html" class="nav-link active">Supplements</a>
 
             <div
               class="lang-switch"
@@ -1778,183 +1766,19 @@
       <!-- Category Nav -->
       <div class="cat-nav" aria-label="Product categories">
         <div class="container">
-          <div class="cat-nav-inner">
-            <div class="cat-item">
-              <a href="#" class="cat-link"
-                >Protein
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="m6 9 6 6 6-6" /></svg
-              ></a>
-              <div class="dropdown">
-                <a href="#">Protein Powder</a><a href="#">Protein Drinks</a>
-                <a href="#">Whey Protein</a><a href="#">Casein Protein</a>
-                <a href="#">Plant-Based Protein</a>
-              </div>
-            </div>
-            <div class="cat-item">
-              <a href="#" class="cat-link"
-                >Mass Gainers
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="m6 9 6 6 6-6" /></svg
-              ></a>
-              <div class="dropdown">
-                <a href="#">Weight Gainers</a><a href="#">Serious Mass</a
-                ><a href="#">Hard Gainers</a>
-              </div>
-            </div>
-            <div class="cat-item">
-              <a href="#" class="cat-link"
-                >Pre-Workout
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="m6 9 6 6 6-6" /></svg
-              ></a>
-              <div class="dropdown">
-                <a href="#">Pre-Workout Powders</a
-                ><a href="#">Caffeine Boosters</a> <a href="#">Nitric Oxide</a
-                ><a href="#">BCAA Pre-Workout</a>
-              </div>
-            </div>
-            <div class="cat-item">
-              <a href="#" class="cat-link"
-                >Vitamins
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="m6 9 6 6 6-6" /></svg
-              ></a>
-              <div class="dropdown">
-                <a href="#">Multivitamins</a><a href="#">Vitamin D3</a>
-                <a href="#">Omega-3</a><a href="#">Zinc &amp; Magnesium</a>
-              </div>
-            </div>
-            <div class="cat-item">
-              <a href="#" class="cat-link"
-                >Creatine
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="m6 9 6 6 6-6" /></svg
-              ></a>
-              <div class="dropdown">
-                <a href="#">Creatine Monohydrate</a><a href="#">Creatine HCL</a
-                ><a href="#">Micronized Creatine</a>
-              </div>
-            </div>
-            <div class="cat-item">
-              <a href="#" class="cat-link"
-                >Accessories
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="m6 9 6 6 6-6" /></svg
-              ></a>
-              <div class="dropdown">
-                <a href="#">Shaker Bottles</a><a href="#">Gym Gloves</a
-                ><a href="#">Resistance Bands</a>
-              </div>
-            </div>
-            <a href="#" class="cat-link">🔥 Hot Deals</a>
-            <a href="#" class="cat-link">New Arrivals</a>
-          </div>
+          <div class="cat-nav-inner" id="catNavInner"><!-- populated by loadData() --></div>
         </div>
       </div>
     </header>
 
     <!-- Mobile Menu — no search bar, categories always in English -->
     <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
-      <a
-        href="index.html"
-        class="m-link"
-        data-i18n="nav.home"
-        onclick="toggleMobileMenu()"
-        >Home</a
-      >
       <a href="products.html" class="m-link active" onclick="toggleMobileMenu()"
-        >Products</a
+        >Supplements</a
       >
 
-      <div class="m-cat-item">
-        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
-          Protein <span class="m-arrow">›</span>
-        </button>
-        <div class="m-sub">
-          <a href="#" class="m-sub-link">Protein Powder</a>
-          <a href="#" class="m-sub-link">Protein Drinks</a>
-          <a href="#" class="m-sub-link">Whey Protein</a>
-          <a href="#" class="m-sub-link">Casein Protein</a>
-        </div>
-      </div>
-      <div class="m-cat-item">
-        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
-          Mass Gainers <span class="m-arrow">›</span>
-        </button>
-        <div class="m-sub">
-          <a href="#" class="m-sub-link">Weight Gainers</a>
-          <a href="#" class="m-sub-link">Serious Mass</a>
-          <a href="#" class="m-sub-link">Hard Gainers</a>
-        </div>
-      </div>
-      <div class="m-cat-item">
-        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
-          Pre-Workout <span class="m-arrow">›</span>
-        </button>
-        <div class="m-sub">
-          <a href="#" class="m-sub-link">Pre-Workout Powders</a>
-          <a href="#" class="m-sub-link">Caffeine Boosters</a>
-          <a href="#" class="m-sub-link">BCAA</a>
-        </div>
-      </div>
-      <div class="m-cat-item">
-        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
-          Vitamins <span class="m-arrow">›</span>
-        </button>
-        <div class="m-sub">
-          <a href="#" class="m-sub-link">Multivitamins</a>
-          <a href="#" class="m-sub-link">Vitamin D3</a>
-          <a href="#" class="m-sub-link">Omega-3</a>
-        </div>
-      </div>
-      <div class="m-cat-item">
-        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
-          Creatine <span class="m-arrow">›</span>
-        </button>
-        <div class="m-sub">
-          <a href="#" class="m-sub-link">Creatine Monohydrate</a>
-          <a href="#" class="m-sub-link">Creatine HCL</a>
-        </div>
-      </div>
+      <div id="mobileCatItems"><!-- populated by loadData() --></div>
 
-      <a
-        href="index.html#contact"
-        class="m-link"
-        data-i18n="nav.contact"
-        onclick="toggleMobileMenu()"
-        >Contact</a
-      >
 
       <div class="mobile-lang">
         <button
@@ -2342,250 +2166,110 @@
       }
 
       /* ══════════════════════════════════════════════════════════════
-   DATA
+   DATA — loaded from Google Sheets via Apps Script
 ══════════════════════════════════════════════════════════════ */
-      const allProducts = [
-        {
-          id: 1,
-          brand: "MyProtein",
-          name: "Impact Whey Protein",
-          flavor: "Chocolate Smooth",
-          priceNum: 4800,
-          price: "4 800",
-          oldPrice: "6 200",
-          save: "-23%",
-          badge: "sale",
-          rating: 4.8,
-          reviews: 412,
-          category: "protein",
-          isNew: false,
-        },
-        {
-          id: 2,
-          brand: "Optimum Nutrition",
-          name: "Gold Standard Whey",
-          flavor: "Double Rich Chocolate",
-          priceNum: 7200,
-          price: "7 200",
-          oldPrice: "8 500",
-          save: "-15%",
-          badge: "hot",
-          rating: 4.9,
-          reviews: 856,
-          category: "protein",
-          isNew: false,
-        },
-        {
-          id: 3,
-          brand: "ByBens",
-          name: "Mass Gainer 3KG",
-          flavor: "Vanilla Cream",
-          priceNum: 5500,
-          price: "5 500",
-          oldPrice: null,
-          save: null,
-          badge: "new",
-          rating: 4.7,
-          reviews: 128,
-          category: "gainers",
-          isNew: true,
-        },
-        {
-          id: 4,
-          brand: "Scitec Nutrition",
-          name: "100% Whey Isolate",
-          flavor: "Strawberry",
-          priceNum: 6900,
-          price: "6 900",
-          oldPrice: "7 800",
-          save: "-12%",
-          badge: null,
-          rating: 4.6,
-          reviews: 245,
-          category: "protein",
-          isNew: false,
-        },
-        {
-          id: 5,
-          brand: "ByBens",
-          name: "Pre-Workout Blast",
-          flavor: "Watermelon Rush",
-          priceNum: 3200,
-          price: "3 200",
-          oldPrice: "4 000",
-          save: "-20%",
-          badge: "sale",
-          rating: 4.5,
-          reviews: 99,
-          category: "preworkout",
-          isNew: false,
-        },
-        {
-          id: 6,
-          brand: "MyProtein",
-          name: "Creatine Monohydrate",
-          flavor: "Unflavoured",
-          priceNum: 2400,
-          price: "2 400",
-          oldPrice: null,
-          save: null,
-          badge: "new",
-          rating: 4.8,
-          reviews: 632,
-          category: "creatine",
-          isNew: true,
-        },
-        {
-          id: 7,
-          brand: "Optimum Nutrition",
-          name: "Serious Mass",
-          flavor: "Chocolate",
-          priceNum: 8900,
-          price: "8 900",
-          oldPrice: "10 500",
-          save: "-15%",
-          badge: "hot",
-          rating: 4.7,
-          reviews: 301,
-          category: "gainers",
-          isNew: false,
-        },
-        {
-          id: 8,
-          brand: "ByBens",
-          name: "Omega-3 Fish Oil",
-          flavor: "1000mg Capsules",
-          priceNum: 1600,
-          price: "1 600",
-          oldPrice: null,
-          save: null,
-          badge: null,
-          rating: 4.6,
-          reviews: 188,
-          category: "vitamins",
-          isNew: false,
-        },
-        {
-          id: 9,
-          brand: "Scitec Nutrition",
-          name: "Amino 5600",
-          flavor: "Unflavoured Tablets",
-          priceNum: 3800,
-          price: "3 800",
-          oldPrice: "4 500",
-          save: "-16%",
-          badge: null,
-          rating: 4.4,
-          reviews: 77,
-          category: "protein",
-          isNew: false,
-        },
-        {
-          id: 10,
-          brand: "MyProtein",
-          name: "THE Pre-Workout",
-          flavor: "Blue Raspberry",
-          priceNum: 4200,
-          price: "4 200",
-          oldPrice: null,
-          save: null,
-          badge: "new",
-          rating: 4.6,
-          reviews: 143,
-          category: "preworkout",
-          isNew: true,
-        },
-        {
-          id: 11,
-          brand: "ByBens",
-          name: "Vitamin D3 + K2",
-          flavor: "2000IU Capsules",
-          priceNum: 1200,
-          price: "1 200",
-          oldPrice: null,
-          save: null,
-          badge: null,
-          rating: 4.7,
-          reviews: 209,
-          category: "vitamins",
-          isNew: false,
-        },
-        {
-          id: 12,
-          brand: "Optimum Nutrition",
-          name: "BCAA 1000 Caps",
-          flavor: "Unflavoured",
-          priceNum: 5100,
-          price: "5 100",
-          oldPrice: "6 000",
-          save: "-15%",
-          badge: "sale",
-          rating: 4.5,
-          reviews: 334,
-          category: "protein",
-          isNew: false,
-        },
-        {
-          id: 13,
-          brand: "ByBens",
-          name: "Shaker Pro 700ml",
-          flavor: "Red / Black",
-          priceNum: 900,
-          price: "900",
-          oldPrice: null,
-          save: null,
-          badge: null,
-          rating: 4.3,
-          reviews: 56,
-          category: "accessories",
-          isNew: false,
-        },
-        {
-          id: 14,
-          brand: "Scitec Nutrition",
-          name: "Jumbo Mass Gainer",
-          flavor: "Chocolate Hazelnut",
-          priceNum: 9500,
-          price: "9 500",
-          oldPrice: "11 000",
-          save: "-14%",
-          badge: "hot",
-          rating: 4.6,
-          reviews: 198,
-          category: "gainers",
-          isNew: false,
-        },
-        {
-          id: 15,
-          brand: "MyProtein",
-          name: "Zinc Magnesium ZMA",
-          flavor: "Capsules",
-          priceNum: 1800,
-          price: "1 800",
-          oldPrice: null,
-          save: null,
-          badge: "new",
-          rating: 4.5,
-          reviews: 88,
-          category: "vitamins",
-          isNew: true,
-        },
-        {
-          id: 16,
-          brand: "ByBens",
-          name: "Gym Grip Gloves",
-          flavor: "Black / M / L / XL",
-          priceNum: 1400,
-          price: "1 400",
-          oldPrice: null,
-          save: null,
-          badge: null,
-          rating: 4.4,
-          reviews: 42,
-          category: "accessories",
-          isNew: false,
-        },
-      ];
+      const SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
+
+      let allProducts = [];
+      let categoryOptions = [];
+      let subCategoryOptions = [];
+      let brandOptions = [];
+      let allCategories = [];
+      let allSubCategories = [];
+
+      function getProductPrice(p) {
+        const base = p.variants && p.variants.length > 0 ? p.variants[0].price : 0;
+        const disc = p.discount || 0;
+        return disc > 0 ? Math.round(base * (1 - disc / 100)) : base;
+      }
+
+      function renderCatNav(cats, subs) {
+        const catNavInner = document.getElementById("catNavInner");
+        const mobileCatItems = document.getElementById("mobileCatItems");
+        if (!catNavInner || !mobileCatItems) return;
+
+        let desktopHTML = "";
+        let mobileHTML = "";
+
+        cats.forEach((cat) => {
+          const catSubs = subs.filter(
+            (s) => Array.isArray(s.categoryIds) && s.categoryIds.includes(cat.id)
+          );
+          if (catSubs.length > 0) {
+            desktopHTML += `
+              <div class="cat-item">
+                <a href="#" class="cat-link">${cat.name}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+                </a>
+                <div class="dropdown">
+                  ${catSubs.map((s) => `<a href="#">${s.name}</a>`).join("")}
+                </div>
+              </div>`;
+            mobileHTML += `
+              <div class="m-cat-item">
+                <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
+                  ${cat.name} <span class="m-arrow">›</span>
+                </button>
+                <div class="m-sub">
+                  ${catSubs.map((s) => `<a href="#" class="m-sub-link">${s.name}</a>`).join("")}
+                </div>
+              </div>`;
+          } else {
+            desktopHTML += `<a href="#" class="cat-link">${cat.name}</a>`;
+            mobileHTML += `<a href="products.html?cat=${cat.id}" class="m-link" onclick="toggleMobileMenu()">${cat.name}</a>`;
+          }
+        });
+
+        catNavInner.innerHTML = desktopHTML;
+        mobileCatItems.innerHTML = mobileHTML;
+      }
+
+      async function loadData() {
+        try {
+          const [prodRes, catRes, subRes] = await Promise.all([
+            fetch(`${SCRIPT_URL}?action=getProducts`).then((r) => r.json()),
+            fetch(`${SCRIPT_URL}?action=getCategories`).then((r) => r.json()),
+            fetch(`${SCRIPT_URL}?action=getSubCategories`).then((r) => r.json()),
+          ]);
+
+          if (prodRes.success) {
+            allProducts = prodRes.products.filter((p) => p.status === "active");
+          }
+
+          if (catRes.success) {
+            allCategories = catRes.categories;
+            categoryOptions = allCategories.map((cat) => ({
+              value: cat.id,
+              label: cat.name,
+              count: allProducts.filter((p) => (p.categoryIds || []).includes(cat.id)).length,
+            })).filter((opt) => opt.count > 0);
+          }
+
+          if (subRes.success) {
+            allSubCategories = subRes.subCategories;
+            subCategoryOptions = allSubCategories.map((sub) => ({
+              value: sub.id,
+              label: sub.name,
+              categoryIds: sub.categoryIds || [],
+              count: allProducts.filter((p) => (p.subCategoryIds || []).includes(sub.id)).length,
+            })).filter((opt) => opt.count > 0);
+          }
+
+          brandOptions = [...new Set(allProducts.map((p) => p.brand).filter(Boolean))].map((b) => ({
+            value: b,
+            label: b,
+            count: allProducts.filter((p) => p.brand === b).length,
+          }));
+
+          renderCatNav(allCategories, allSubCategories);
+          renderSidebars();
+          renderProducts();
+          renderChips();
+        } catch (err) {
+          console.error("Failed to load data:", err);
+        }
+      }
 
       /* ══════════════════════════════════════════════════════════════
    STATE
@@ -2593,9 +2277,8 @@
       let state = {
         search: "",
         categories: [],
+        subCategories: [],
         brands: [],
-        badges: [],
-        rating: 0,
         priceMin: "",
         priceMax: "",
         sort: "default",
@@ -2603,49 +2286,6 @@
         page: 1,
         perPage: 12,
       };
-
-      /* ══════════════════════════════════════════════════════════════
-   FILTER DEFINITIONS
-══════════════════════════════════════════════════════════════ */
-      const categoryOptions = [
-        {
-          value: "protein",
-          label: "Protein",
-          count: allProducts.filter((p) => p.category === "protein").length,
-        },
-        {
-          value: "gainers",
-          label: "Mass Gainers",
-          count: allProducts.filter((p) => p.category === "gainers").length,
-        },
-        {
-          value: "preworkout",
-          label: "Pre-Workout",
-          count: allProducts.filter((p) => p.category === "preworkout").length,
-        },
-        {
-          value: "vitamins",
-          label: "Vitamins",
-          count: allProducts.filter((p) => p.category === "vitamins").length,
-        },
-        {
-          value: "creatine",
-          label: "Creatine",
-          count: allProducts.filter((p) => p.category === "creatine").length,
-        },
-        {
-          value: "accessories",
-          label: "Accessories",
-          count: allProducts.filter((p) => p.category === "accessories").length,
-        },
-      ];
-      const brandOptions = [...new Set(allProducts.map((p) => p.brand))].map(
-        (b) => ({
-          value: b,
-          label: b,
-          count: allProducts.filter((p) => p.brand === b).length,
-        }),
-      );
 
       /* ══════════════════════════════════════════════════════════════
    BUILD SIDEBAR HTML
@@ -2678,6 +2318,34 @@
               .join("")}
           </div>
         </div>
+
+        <!-- Subcategory -->
+        ${subCategoryOptions.length > 0 ? `
+        <div class="filter-section open">
+          <div class="filter-header" onclick="toggleFilterSection(this)">
+            <div class="filter-title-wrap">
+              <h4>Subcategory</h4>
+              ${state.subCategories.length ? `<span class="filter-badge">${state.subCategories.length}</span>` : ""}
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="filter-body">
+            ${subCategoryOptions
+              .map(
+                (opt) => `
+              <div class="filter-option ${state.subCategories.includes(opt.value) ? "checked" : ""}" onclick="toggleFilter('subCategories','${opt.value}',this)">
+                <label>
+                  <div class="custom-checkbox">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  ${opt.label}
+                </label>
+                <span class="option-count">${opt.count}</span>
+              </div>`,
+              )
+              .join("")}
+          </div>
+        </div>` : ""}
 
         <!-- Brand -->
         <div class="filter-section open">
@@ -2725,58 +2393,6 @@
           </div>
         </div>
 
-        <!-- Rating -->
-        <div class="filter-section open">
-          <div class="filter-header" onclick="toggleFilterSection(this)">
-            <div class="filter-title-wrap">
-              <h4>Min Rating</h4>
-              ${state.rating ? `<span class="filter-badge">${state.rating}+</span>` : ""}
-            </div>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
-          </div>
-          <div class="filter-body">
-            ${[4.5, 4, 3.5, 0]
-              .map(
-                (r) => `
-              <div class="rating-option ${state.rating === r ? "selected" : ""}" onclick="setRating(${r})">
-                <span class="rating-stars">${"★".repeat(Math.floor(r))}${r % 1 ? "½" : ""}</span>
-                <span>${r > 0 ? r + "+ stars" : "All ratings"}</span>
-              </div>`,
-              )
-              .join("")}
-          </div>
-        </div>
-
-        <!-- Availability -->
-        <div class="filter-section open">
-          <div class="filter-header" onclick="toggleFilterSection(this)">
-            <div class="filter-title-wrap">
-              <h4>Availability</h4>
-              ${state.badges.length ? `<span class="filter-badge">${state.badges.length}</span>` : ""}
-            </div>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
-          </div>
-          <div class="filter-body">
-            ${[
-              { v: "sale", l: "On Sale" },
-              { v: "new", l: "New Arrivals" },
-              { v: "hot", l: "Hot Items" },
-            ]
-              .map(
-                (opt) => `
-              <div class="filter-option ${state.badges.includes(opt.v) ? "checked" : ""}" onclick="toggleFilter('badges','${opt.v}',this)">
-                <label>
-                  <div class="custom-checkbox">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                  </div>
-                  ${opt.l}
-                </label>
-              </div>`,
-              )
-              .join("")}
-          </div>
-        </div>
-
         <div class="reset-filters">
           <button class="reset-btn" onclick="resetFilters()">Reset All Filters</button>
         </div>`;
@@ -2798,34 +2414,34 @@
           list = list.filter(
             (p) =>
               p.name.toLowerCase().includes(q) ||
-              p.brand.toLowerCase().includes(q) ||
-              p.flavor.toLowerCase().includes(q),
+              (p.brand || "").toLowerCase().includes(q) ||
+              (p.description || "").toLowerCase().includes(q) ||
+              (p.flavors || []).some((f) => f.name.toLowerCase().includes(q)),
           );
         if (state.categories.length)
-          list = list.filter((p) => state.categories.includes(p.category));
+          list = list.filter((p) =>
+            (p.categoryIds || []).some((id) => state.categories.includes(id)),
+          );
+        if (state.subCategories.length)
+          list = list.filter((p) =>
+            (p.subCategoryIds || []).some((id) => state.subCategories.includes(id)),
+          );
         if (state.brands.length)
           list = list.filter((p) => state.brands.includes(p.brand));
-        if (state.badges.length)
-          list = list.filter((p) => state.badges.includes(p.badge));
-        if (state.rating > 0)
-          list = list.filter((p) => p.rating >= state.rating);
         if (state.priceMin !== "")
-          list = list.filter((p) => p.priceNum >= Number(state.priceMin));
+          list = list.filter((p) => getProductPrice(p) >= Number(state.priceMin));
         if (state.priceMax !== "")
-          list = list.filter((p) => p.priceNum <= Number(state.priceMax));
+          list = list.filter((p) => getProductPrice(p) <= Number(state.priceMax));
 
         switch (state.sort) {
           case "price-asc":
-            list.sort((a, b) => a.priceNum - b.priceNum);
+            list.sort((a, b) => getProductPrice(a) - getProductPrice(b));
             break;
           case "price-desc":
-            list.sort((a, b) => b.priceNum - a.priceNum);
-            break;
-          case "rating":
-            list.sort((a, b) => b.rating - a.rating);
+            list.sort((a, b) => getProductPrice(b) - getProductPrice(a));
             break;
           case "newest":
-            list.sort((a, b) => b.isNew - a.isNew);
+            list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             break;
           case "name":
             list.sort((a, b) => a.name.localeCompare(b.name));
@@ -2837,9 +2453,8 @@
       function countActiveFilters() {
         return (
           state.categories.length +
+          state.subCategories.length +
           state.brands.length +
-          state.badges.length +
-          (state.rating > 0 ? 1 : 0) +
           (state.priceMin || state.priceMax ? 1 : 0)
         );
       }
@@ -2882,35 +2497,45 @@
         }
 
         grid.innerHTML = page
-          .map(
-            (p, i) => `
+          .map((p, i) => {
+            const basePrice = p.variants && p.variants.length > 0 ? p.variants[0].price : 0;
+            const discount = p.discount || 0;
+            const currentPrice = getProductPrice(p);
+            const oldPrice = discount > 0 ? basePrice : null;
+            const saveLabel = discount > 0 ? `-${discount}%` : null;
+
+            let badge = null;
+            if (discount > 0) badge = "sale";
+            else if (p.createdAt && Date.now() - new Date(p.createdAt).getTime() < 30 * 24 * 3600 * 1000) badge = "new";
+            else if (p.stock > 0 && p.stock <= 5) badge = "hot";
+
+            const flavorLabel = p.flavors && p.flavors.length > 0 ? p.flavors[0].name : "";
+            const imgEl = p.imageUrl
+              ? `<img src="${p.imageUrl}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" />`
+              : `<svg class="placeholder-icon" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
+
+            return `
         <article class="product-card" style="animation-delay:${i * 0.05}s">
           <div class="product-img">
-            ${p.badge ? `<span class="product-badge badge-${p.badge}">${p.badge.toUpperCase()}</span>` : ""}
+            ${badge ? `<span class="product-badge badge-${badge}">${badge.toUpperCase()}</span>` : ""}
             <button class="wishlist-btn" aria-label="Wishlist" onclick="toggleWishlist(this)">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
               </svg>
             </button>
-            <svg class="placeholder-icon" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-              <rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/>
-            </svg>
+            ${imgEl}
           </div>
           <div class="product-info">
-            <span class="product-brand">${p.brand}</span>
+            <span class="product-brand">${p.brand || ""}</span>
             <h3 class="product-name">${p.name}</h3>
-            <span class="product-flavor">${p.flavor}</span>
-            <div class="product-rating">
-              <span class="stars">${renderStars(p.rating)}</span>
-              <span class="rating-count">(${p.reviews})</span>
-            </div>
+            ${flavorLabel ? `<span class="product-flavor">${flavorLabel}</span>` : ""}
             <div class="product-pricing">
-              <span class="price">${p.price} DA</span>
-              ${p.oldPrice ? `<span class="price-old">${p.oldPrice} DA</span>` : ""}
-              ${p.save ? `<span class="price-save">${p.save}</span>` : ""}
+              ${currentPrice > 0 ? `<span class="price">${currentPrice.toLocaleString()} DA</span>` : ""}
+              ${oldPrice ? `<span class="price-old">${oldPrice.toLocaleString()} DA</span>` : ""}
+              ${saveLabel ? `<span class="price-save">${saveLabel}</span>` : ""}
             </div>
             <div class="product-actions">
-              <button class="btn-cart" onclick="addToCart('${p.name}')">
+              <button class="btn-cart" onclick="addToCart('${p.name.replace(/'/g, "\\'")}')">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
                   <line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
@@ -2925,8 +2550,8 @@
               </button>
             </div>
           </div>
-        </article>`,
-          )
+        </article>`;
+          })
           .join("");
 
         renderPagination(total);
@@ -2992,6 +2617,15 @@
             },
           }),
         );
+        state.subCategories.forEach((v) =>
+          chips.push({
+            label: subCategoryOptions.find((o) => o.value === v)?.label || v,
+            remove: () => {
+              state.subCategories = state.subCategories.filter((x) => x !== v);
+              refresh();
+            },
+          }),
+        );
         state.brands.forEach((v) =>
           chips.push({
             label: v,
@@ -3001,23 +2635,6 @@
             },
           }),
         );
-        state.badges.forEach((v) =>
-          chips.push({
-            label: v === "sale" ? "On Sale" : v === "new" ? "New" : "Hot",
-            remove: () => {
-              state.badges = state.badges.filter((x) => x !== v);
-              refresh();
-            },
-          }),
-        );
-        if (state.rating > 0)
-          chips.push({
-            label: `${state.rating}+ Stars`,
-            remove: () => {
-              state.rating = 0;
-              refresh();
-            },
-          });
         if (state.priceMin || state.priceMax)
           chips.push({
             label: `${state.priceMin || "0"} – ${state.priceMax || "∞"} DA`,
@@ -3066,11 +2683,6 @@
         refresh();
       }
 
-      function setRating(r) {
-        state.rating = r;
-        refresh();
-      }
-
       function applyPrice() {
         const minEl = document.getElementById("priceMin");
         const maxEl = document.getElementById("priceMax");
@@ -3081,9 +2693,8 @@
 
       function resetFilters() {
         state.categories = [];
+        state.subCategories = [];
         state.brands = [];
-        state.badges = [];
-        state.rating = 0;
         state.priceMin = "";
         state.priceMax = "";
         state.search = "";
@@ -3218,9 +2829,14 @@
    INIT
 ══════════════════════════════════════════════════════════════ */
       document.addEventListener("DOMContentLoaded", () => {
-        renderSidebars();
-        renderProducts();
-        renderChips();
+        const params = new URLSearchParams(window.location.search);
+        const searchParam = params.get("search");
+        if (searchParam) {
+          state.search = searchParam;
+          const input = document.getElementById("productSearch");
+          if (input) input.value = searchParam;
+        }
+        loadData();
         const savedLang = localStorage.getItem("bybens_lang") || "en";
         if (savedLang !== "en") switchLang(savedLang);
       });

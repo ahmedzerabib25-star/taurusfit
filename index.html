@@ -266,6 +266,49 @@
         color: var(--red);
         background: var(--red-light);
       }
+      .search-dropdown {
+        display: none;
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        right: 0;
+        background: var(--white);
+        border: 1.5px solid var(--gray-200);
+        border-radius: 10px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+        z-index: 2000;
+        max-height: 360px;
+        overflow-y: auto;
+        padding: 6px 0;
+      }
+      .search-dropdown.open { display: block; }
+      .search-drop-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        cursor: pointer;
+        transition: background var(--transition);
+      }
+      .search-drop-item:hover { background: var(--gray-50); }
+      .search-drop-thumb {
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        background: var(--gray-50);
+        border: 1px solid var(--gray-100);
+        flex-shrink: 0;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .search-drop-thumb img { width:100%; height:100%; object-fit:cover; }
+      .search-drop-info { flex:1; min-width:0; }
+      .search-drop-brand { font-size:11px; color:var(--gray-400); font-weight:600; letter-spacing:1px; text-transform:uppercase; margin:0 0 1px; }
+      .search-drop-name { font-size:14px; font-weight:600; color:var(--black); margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+      .search-drop-price { font-family:var(--font-display); font-size:16px; color:var(--black); flex-shrink:0; direction:ltr; }
+      .search-drop-empty { padding:16px 14px; font-size:13px; color:var(--gray-400); text-align:center; }
 
       /* Right Nav */
       .nav-right {
@@ -1916,11 +1959,12 @@
               placeholder="Search supplements, proteins, vitamins…"
               aria-label="Search products"
               autocomplete="off"
+              oninput="handleSearch(this.value)"
             />
             <button
               class="search-btn"
               aria-label="Submit search"
-              onclick="handleSearch()"
+              onclick="handleSearch(document.getElementById('searchInput').value)"
             >
               <svg
                 width="18"
@@ -1936,6 +1980,7 @@
                 <path d="m21 21-4.35-4.35" />
               </svg>
             </button>
+            <div class="search-dropdown" id="searchDropdown"></div>
           </div>
 
           <!-- Search icon (mobile only) -->
@@ -1974,13 +2019,7 @@
 
           <!-- Right -->
           <div class="nav-right">
-            <a href="#" class="nav-link active" data-i18n="nav.home">Home</a>
-            <a href="products.html" class="nav-link" data-i18n="nav.products"
-              >Products</a
-            >
-            <a href="#contact" class="nav-link" data-i18n="nav.contact"
-              >Contact</a
-            >
+            <a href="products.html" class="nav-link">Supplements</a>
 
             <div
               class="lang-switch"
@@ -2048,122 +2087,8 @@
       <!-- Category Nav -->
       <div class="cat-nav" aria-label="Product categories">
         <div class="container">
-          <div class="cat-nav-inner">
-            <div class="cat-item">
-              <a href="#" class="cat-link">
-                Protein
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </a>
-              <div class="dropdown" role="menu">
-                <a href="#" role="menuitem">Protein Powder</a>
-                <a href="#" role="menuitem">Protein Drinks</a>
-                <a href="#" role="menuitem">Whey Protein</a>
-                <a href="#" role="menuitem">Casein Protein</a>
-                <a href="#" role="menuitem">Plant-Based Protein</a>
-              </div>
-            </div>
-            <div class="cat-item">
-              <a href="#" class="cat-link">
-                Mass Gainers
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </a>
-              <div class="dropdown" role="menu">
-                <a href="#" role="menuitem">Weight Gainers</a>
-                <a href="#" role="menuitem">Serious Mass</a>
-                <a href="#" role="menuitem">Hard Gainers</a>
-              </div>
-            </div>
-            <div class="cat-item">
-              <a href="#" class="cat-link">
-                Pre-Workout
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </a>
-              <div class="dropdown" role="menu">
-                <a href="#" role="menuitem">Pre-Workout Powders</a>
-                <a href="#" role="menuitem">Caffeine Boosters</a>
-                <a href="#" role="menuitem">Nitric Oxide</a>
-                <a href="#" role="menuitem">BCAA Pre-Workout</a>
-              </div>
-            </div>
-            <div class="cat-item">
-              <a href="#" class="cat-link">
-                Vitamins
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </a>
-              <div class="dropdown" role="menu">
-                <a href="#" role="menuitem">Multivitamins</a>
-                <a href="#" role="menuitem">Vitamin D3</a>
-                <a href="#" role="menuitem">Omega-3 Fish Oil</a>
-                <a href="#" role="menuitem">Zinc &amp; Magnesium</a>
-              </div>
-            </div>
-            <div class="cat-item">
-              <a href="#" class="cat-link">
-                Creatine
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </a>
-              <div class="dropdown" role="menu">
-                <a href="#" role="menuitem">Creatine Monohydrate</a>
-                <a href="#" role="menuitem">Creatine HCL</a>
-                <a href="#" role="menuitem">Micronized Creatine</a>
-              </div>
-            </div>
-            <div class="cat-item">
-              <a href="#" class="cat-link">
-                Accessories
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </a>
-              <div class="dropdown" role="menu">
-                <a href="#" role="menuitem">Shaker Bottles</a>
-                <a href="#" role="menuitem">Gym Gloves</a>
-                <a href="#" role="menuitem">Resistance Bands</a>
-                <a href="#" role="menuitem">Weight Belts</a>
-              </div>
-            </div>
-            <a href="#" class="cat-link">🔥 Hot Deals</a>
-            <a href="#" class="cat-link">New Arrivals</a>
+          <div class="cat-nav-inner" id="catNavInner">
+            <!-- populated by loadCategories() -->
           </div>
         </div>
       </div>
@@ -2173,85 +2098,14 @@
     <!-- FIX: Removed the mobile search bar from inside the sidebar -->
     <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
       <a
-        href="#"
+        href="products.html"
         class="m-link"
-        data-i18n="nav.home"
         onclick="toggleMobileMenu()"
-        >Home</a
-      >
-      <a
-        href="#products"
-        class="m-link"
-        data-i18n="nav.products"
-        onclick="toggleMobileMenu()"
-        >Products</a
+        >Supplements</a
       >
       <!-- Categories and subcategories are always in English, never translated -->
-      <div class="m-cat-item">
-        <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
-          Protein <span class="m-arrow">›</span>
-        </button>
-        <div class="m-sub">
-          <a href="#" class="m-sub-link">Protein Powder</a>
-          <a href="#" class="m-sub-link">Protein Drinks</a>
-          <a href="#" class="m-sub-link">Whey Protein</a>
-          <a href="#" class="m-sub-link">Casein Protein</a>
-          <a href="#" class="m-sub-link">Plant-Based Protein</a>
-        </div>
-      </div>
-
-      <div class="m-cat-item">
-        <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
-          Mass Gainers <span class="m-arrow">›</span>
-        </button>
-        <div class="m-sub">
-          <a href="#" class="m-sub-link">Weight Gainers</a>
-          <a href="#" class="m-sub-link">Serious Mass</a>
-          <a href="#" class="m-sub-link">Hard Gainers</a>
-        </div>
-      </div>
-
-      <div class="m-cat-item">
-        <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
-          Pre-Workout <span class="m-arrow">›</span>
-        </button>
-        <div class="m-sub">
-          <a href="#" class="m-sub-link">Pre-Workout Powders</a>
-          <a href="#" class="m-sub-link">Caffeine Boosters</a>
-          <a href="#" class="m-sub-link">Nitric Oxide</a>
-          <a href="#" class="m-sub-link">BCAA Pre-Workout</a>
-        </div>
-      </div>
-
-      <div class="m-cat-item">
-        <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
-          Vitamins <span class="m-arrow">›</span>
-        </button>
-        <div class="m-sub">
-          <a href="#" class="m-sub-link">Multivitamins</a>
-          <a href="#" class="m-sub-link">Vitamin D3</a>
-          <a href="#" class="m-sub-link">Omega-3 Fish Oil</a>
-          <a href="#" class="m-sub-link">Zinc &amp; Magnesium</a>
-        </div>
-      </div>
-
-      <div class="m-cat-item">
-        <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
-          Creatine <span class="m-arrow">›</span>
-        </button>
-        <div class="m-sub">
-          <a href="#" class="m-sub-link">Creatine Monohydrate</a>
-          <a href="#" class="m-sub-link">Creatine HCL</a>
-          <a href="#" class="m-sub-link">Micronized Creatine</a>
-        </div>
-      </div>
-      <a
-        href="#contact"
-        class="m-link"
-        data-i18n="nav.contact"
-        onclick="toggleMobileMenu()"
-        >Contact</a
-      >
+      <!-- populated by loadCategories() -->
+      <div id="mobileCatItems"></div>
       <div class="mobile-lang">
         <button
           class="lang-btn active"
@@ -2303,17 +2157,17 @@
           </div>
           <div class="hero-stats animate-up delay-4">
             <div class="stat-item">
-              <span class="stat-num">5K<em>+</em></span>
+              <span class="stat-num" data-count="5000" data-suffix="+">0+</span>
               <span class="stat-label" data-i18n="hero.stat1"
                 >Happy Customers</span
               >
             </div>
             <div class="stat-item">
-              <span class="stat-num">200<em>+</em></span>
+              <span class="stat-num" data-count="200" data-suffix="+">0+</span>
               <span class="stat-label" data-i18n="hero.stat2">Products</span>
             </div>
             <div class="stat-item">
-              <span class="stat-num">69<em>W</em></span>
+              <span class="stat-num" data-count="69" data-suffix="W">0W</span>
               <span class="stat-label" data-i18n="hero.stat3">Delivery</span>
             </div>
           </div>
@@ -2957,110 +2811,22 @@
         },
       };
 
+      const SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
+
       let currentLang = "en";
       let cartCount = 3;
 
       /* ─────────────────────────────────────────────────────────────
-   PRODUCTS DATA
+   PRODUCTS DATA — loaded from Google Sheets via Apps Script
 ───────────────────────────────────────────────────────────── */
-      const products = [
-        {
-          id: 1,
-          brand: "MyProtein",
-          name: "Impact Whey Protein",
-          flavor: "Chocolate Smooth",
-          price: "4 800",
-          oldPrice: "6 200",
-          save: "-23%",
-          badge: "sale",
-          rating: 4.8,
-          reviews: 412,
-        },
-        {
-          id: 2,
-          brand: "Optimum Nutrition",
-          name: "Gold Standard Whey",
-          flavor: "Double Rich Chocolate",
-          price: "7 200",
-          oldPrice: "8 500",
-          save: "-15%",
-          badge: "hot",
-          rating: 4.9,
-          reviews: 856,
-        },
-        {
-          id: 3,
-          brand: "ByBens",
-          name: "Mass Gainer 3KG",
-          flavor: "Vanilla Cream",
-          price: "5 500",
-          oldPrice: null,
-          save: null,
-          badge: "new",
-          rating: 4.7,
-          reviews: 128,
-        },
-        {
-          id: 4,
-          brand: "Scitec Nutrition",
-          name: "100% Whey Isolate",
-          flavor: "Strawberry",
-          price: "6 900",
-          oldPrice: "7 800",
-          save: "-12%",
-          badge: null,
-          rating: 4.6,
-          reviews: 245,
-        },
-        {
-          id: 5,
-          brand: "ByBens",
-          name: "Pre-Workout Blast",
-          flavor: "Watermelon Rush",
-          price: "3 200",
-          oldPrice: "4 000",
-          save: "-20%",
-          badge: "sale",
-          rating: 4.5,
-          reviews: 99,
-        },
-        {
-          id: 6,
-          brand: "MyProtein",
-          name: "Creatine Monohydrate",
-          flavor: "Unflavoured",
-          price: "2 400",
-          oldPrice: null,
-          save: null,
-          badge: "new",
-          rating: 4.8,
-          reviews: 632,
-        },
-        {
-          id: 7,
-          brand: "Optimum Nutrition",
-          name: "Serious Mass",
-          flavor: "Chocolate",
-          price: "8 900",
-          oldPrice: "10 500",
-          save: "-15%",
-          badge: "hot",
-          rating: 4.7,
-          reviews: 301,
-        },
-        {
-          id: 8,
-          brand: "ByBens",
-          name: "Omega-3 Fish Oil",
-          flavor: "1000mg Capsules",
-          price: "1 600",
-          oldPrice: null,
-          save: null,
-          badge: null,
-          rating: 4.6,
-          reviews: 188,
-        },
-      ];
+      let products = [];
+
+      function getProductPrice(p) {
+        const base = p.variants && p.variants.length > 0 ? p.variants[0].price : 0;
+        const disc = p.discount || 0;
+        return disc > 0 ? Math.round(base * (1 - disc / 100)) : base;
+      }
 
       function renderStars(rating) {
         const full = Math.floor(rating);
@@ -3073,32 +2839,56 @@
       function renderProducts(lang) {
         const grid = document.getElementById("productGrid");
         const t = i18n[lang];
+
+        if (products.length === 0) {
+          grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:var(--g400);padding:2rem;">No products available.</p>`;
+          return;
+        }
+
         grid.innerHTML = products
-          .map(
-            (p) => `
+          .map((p) => {
+            // Pricing
+            const baseVariant = p.variants && p.variants.length > 0 ? p.variants[0] : null;
+            const basePrice = baseVariant ? baseVariant.price : 0;
+            const discount = p.discount || 0;
+            const currentPrice = discount > 0 ? Math.round(basePrice * (1 - discount / 100)) : basePrice;
+            const oldPrice = discount > 0 ? basePrice : null;
+            const saveLabel = discount > 0 ? `-${discount}%` : null;
+
+            // Badge: sale > new (within 30 days) > hot (low stock)
+            let badge = null;
+            if (discount > 0) badge = "sale";
+            else if (p.createdAt && Date.now() - new Date(p.createdAt).getTime() < 30 * 24 * 3600 * 1000) badge = "new";
+            else if (p.stock > 0 && p.stock <= 5) badge = "hot";
+
+            // Flavor label
+            const flavorLabel = p.flavors && p.flavors.length > 0 ? p.flavors[0].name : "";
+
+            // Image
+            const imgEl = p.imageUrl
+              ? `<img src="${p.imageUrl}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" />`
+              : `<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
+
+            return `
     <article class="product-card">
       <div class="product-img">
-        ${p.badge ? `<span class="product-badge badge-${p.badge}">${p.badge === "sale" ? "SALE" : p.badge === "new" ? "NEW" : "HOT"}</span>` : ""}
+        ${badge ? `<span class="product-badge badge-${badge}">${badge === "sale" ? "SALE" : badge === "new" ? "NEW" : "HOT"}</span>` : ""}
         <button class="wishlist-btn" aria-label="Add to wishlist" onclick="toggleWishlist(this)">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </button>
-        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>
+        ${imgEl}
       </div>
       <div class="product-info">
-        <span class="product-brand">${p.brand}</span>
+        <span class="product-brand">${p.brand || ""}</span>
         <h3 class="product-name">${p.name}</h3>
-        <span class="product-flavor">${p.flavor}</span>
-        <div class="product-rating">
-          <span class="stars">${renderStars(p.rating)}</span>
-          <span class="rating-count">(${p.reviews})</span>
-        </div>
+        ${flavorLabel ? `<span class="product-flavor">${flavorLabel}</span>` : ""}
         <div class="product-pricing">
-          <span class="price">${p.price} DA</span>
-          ${p.oldPrice ? `<span class="price-old">${p.oldPrice} DA</span>` : ""}
-          ${p.save ? `<span class="price-save">${p.save}</span>` : ""}
+          ${currentPrice > 0 ? `<span class="price">${currentPrice.toLocaleString()} DA</span>` : ""}
+          ${oldPrice ? `<span class="price-old">${oldPrice.toLocaleString()} DA</span>` : ""}
+          ${saveLabel ? `<span class="price-save">${saveLabel}</span>` : ""}
         </div>
         <div class="product-actions">
-          <button class="btn-cart" onclick="addToCart('${p.name}')">
+          <button class="btn-cart" onclick="addToCart('${p.name.replace(/'/g, "\\'")}')">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
             <span>${t["btn.addcart"]}</span>
           </button>
@@ -3108,9 +2898,8 @@
           </button>
         </div>
       </div>
-    </article>
-  `,
-          )
+    </article>`;
+          })
           .join("");
       }
 
@@ -3198,15 +2987,61 @@
       /* ─────────────────────────────────────────────────────────────
    SEARCH
 ───────────────────────────────────────────────────────────── */
-      function handleSearch() {
-        const q = document.getElementById("searchInput").value.trim();
-        if (q) showToast(`Searching for "${q}"…`);
+      function handleSearch(query) {
+        const dropdown = document.getElementById("searchDropdown");
+        const q = (query || "").trim().toLowerCase();
+        if (!q) { dropdown.classList.remove("open"); dropdown.innerHTML = ""; return; }
+
+        const matches = products
+          .filter((p) =>
+            p.name.toLowerCase().includes(q) ||
+            (p.brand || "").toLowerCase().includes(q) ||
+            (p.flavors || []).some((f) => f.name.toLowerCase().includes(q))
+          )
+          .slice(0, 8);
+
+        if (!matches.length) {
+          dropdown.innerHTML = `<div class="search-drop-empty">No results for "${query}"</div>`;
+          dropdown.classList.add("open");
+          return;
+        }
+
+        dropdown.innerHTML = matches.map((p) => {
+          const price = getProductPrice(p);
+          const flavorLabel = p.flavors && p.flavors.length > 0 ? p.flavors[0].name : "";
+          const thumb = p.imageUrl
+            ? `<img src="${p.imageUrl}" alt="${p.name}" />`
+            : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
+          return `
+            <div class="search-drop-item" onclick="closeSearchDropdown(); window.location.href='products.html?search=${encodeURIComponent(p.name)}'">
+              <div class="search-drop-thumb">${thumb}</div>
+              <div class="search-drop-info">
+                <p class="search-drop-brand">${p.brand || ""}</p>
+                <p class="search-drop-name">${p.name}</p>
+                ${flavorLabel ? `<p style="font-size:11px;color:var(--gray-400);margin:0;">${flavorLabel}</p>` : ""}
+              </div>
+              <span class="search-drop-price">${price} DA</span>
+            </div>`;
+        }).join("");
+        dropdown.classList.add("open");
       }
-      document
-        .getElementById("searchInput")
-        .addEventListener("keydown", (e) => {
-          if (e.key === "Enter") handleSearch();
-        });
+
+      function closeSearchDropdown() {
+        const dropdown = document.getElementById("searchDropdown");
+        dropdown.classList.remove("open");
+        dropdown.innerHTML = "";
+        document.getElementById("searchInput").value = "";
+      }
+
+      document.getElementById("searchInput").addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeSearchDropdown();
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!document.getElementById("desktopSearch").contains(e.target)) {
+          document.getElementById("searchDropdown").classList.remove("open");
+        }
+      });
 
       /* ─────────────────────────────────────────────────────────────
    CONTACT FORM
@@ -3230,6 +3065,44 @@
       }
 
       /* ─────────────────────────────────────────────────────────────
+   STAT COUNTER ANIMATION
+───────────────────────────────────────────────────────────── */
+      function animateCounter(el) {
+        const target = parseInt(el.dataset.count, 10);
+        const suffix = el.dataset.suffix || "";
+        const duration = 1200;
+        const start = performance.now();
+
+        function step(now) {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease out cubic
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.round(eased * target);
+          el.innerHTML = `${current}${suffix}`;
+          if (progress < 1) requestAnimationFrame(step);
+        }
+
+        requestAnimationFrame(step);
+      }
+
+      const statObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              animateCounter(entry.target);
+              statObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.5 },
+      );
+
+      document.querySelectorAll(".stat-num[data-count]").forEach((el) => {
+        statObserver.observe(el);
+      });
+
+      /* ─────────────────────────────────────────────────────────────
    SCROLL EFFECTS
 ───────────────────────────────────────────────────────────── */
       window.addEventListener(
@@ -3245,15 +3118,93 @@
       );
 
       /* ─────────────────────────────────────────────────────────────
+   PRODUCTS — fetch from Google Sheets via Apps Script (max 10)
+───────────────────────────────────────────────────────────── */
+      async function loadProducts() {
+        try {
+          const res = await fetch(`${SCRIPT_URL}?action=getProducts`).then((r) => r.json());
+          if (!res.success) return;
+          // Only active products, max 10
+          products = res.products
+            .filter((p) => p.status === "active")
+            .slice(0, 10);
+          renderProducts(currentLang);
+        } catch (err) {
+          console.error("Failed to load products:", err);
+        }
+      }
+
+      /* ─────────────────────────────────────────────────────────────
+   CATEGORIES — fetch from Google Sheets via Apps Script
+───────────────────────────────────────────────────────────── */
+      async function loadCategories() {
+        try {
+          const [catRes, subRes] = await Promise.all([
+            fetch(`${SCRIPT_URL}?action=getCategories`).then((r) => r.json()),
+            fetch(`${SCRIPT_URL}?action=getSubCategories`).then((r) => r.json()),
+          ]);
+
+          if (!catRes.success || !subRes.success) return;
+
+          const categories = catRes.categories;
+          const subCategories = subRes.subCategories;
+
+          const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>`;
+
+          // ── Desktop cat-nav ──
+          const desktopInner = document.getElementById("catNavInner");
+          desktopInner.innerHTML = categories
+            .map((cat) => {
+              const subs = subCategories.filter((s) =>
+                s.categoryIds.includes(cat.id),
+              );
+              if (subs.length === 0) {
+                return `<a href="#" class="cat-link">${cat.name}</a>`;
+              }
+              return `
+                <div class="cat-item">
+                  <a href="#" class="cat-link">${cat.name} ${chevron}</a>
+                  <div class="dropdown" role="menu">
+                    ${subs.map((s) => `<a href="#" role="menuitem">${s.name}</a>`).join("")}
+                  </div>
+                </div>`;
+            })
+            .join("");
+
+          // ── Mobile menu categories ──
+          const mobileContainer = document.getElementById("mobileCatItems");
+          mobileContainer.innerHTML = categories
+            .map((cat) => {
+              const subs = subCategories.filter((s) =>
+                s.categoryIds.includes(cat.id),
+              );
+              if (subs.length === 0) {
+                return `<a href="#" class="m-link">${cat.name}</a>`;
+              }
+              return `
+                <div class="m-cat-item">
+                  <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
+                    ${cat.name} <span class="m-arrow">›</span>
+                  </button>
+                  <div class="m-sub">
+                    ${subs.map((s) => `<a href="#" class="m-sub-link">${s.name}</a>`).join("")}
+                  </div>
+                </div>`;
+            })
+            .join("");
+        } catch (err) {
+          console.error("Failed to load categories:", err);
+        }
+      }
+
+      /* ─────────────────────────────────────────────────────────────
    INIT
 ───────────────────────────────────────────────────────────── */
       document.addEventListener("DOMContentLoaded", () => {
+        loadCategories();
+        loadProducts();
         const savedLang = localStorage.getItem("bybens_lang") || "en";
-        if (savedLang !== "en") {
-          switchLang(savedLang);
-        } else {
-          renderProducts(currentLang);
-        }
+        if (savedLang !== "en") switchLang(savedLang);
       });
 
       function toggleMobileCat(btn) {
@@ -3293,11 +3244,12 @@
             '<p style="font-size:13px; color:var(--gray-400); text-align:center; margin-top:40px;">Start typing to search products…</p>';
           return;
         }
+        const q = query.toLowerCase();
         const matches = products.filter(
           (p) =>
-            p.name.toLowerCase().includes(query.toLowerCase()) ||
-            p.brand.toLowerCase().includes(query.toLowerCase()) ||
-            p.flavor.toLowerCase().includes(query.toLowerCase()),
+            p.name.toLowerCase().includes(q) ||
+            (p.brand || "").toLowerCase().includes(q) ||
+            (p.flavors || []).some((f) => f.name.toLowerCase().includes(q)),
         );
         if (!matches.length) {
           resultsEl.innerHTML = `<p style="font-size:13px; color:var(--gray-400); text-align:center; margin-top:40px;">No results for "${query}"</p>`;
@@ -3305,19 +3257,25 @@
         }
         resultsEl.innerHTML = matches
           .map(
-            (p) => `
-    <div onclick="closeMobileSearch(); addToCart('${p.name}')" style="display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--gray-100); cursor:pointer;">
-      <div style="width:48px; height:48px; background:var(--gray-50); border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:1px solid var(--gray-100);">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>
+            (p) => {
+              const price = getProductPrice(p);
+              const flavorLabel = p.flavors && p.flavors.length > 0 ? p.flavors[0].name : "";
+              const imgEl = p.imageUrl
+                ? `<img src="${p.imageUrl}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" />`
+                : `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
+              return `
+    <div onclick="window.location.href='products.html?search=${encodeURIComponent(p.name)}'" style="display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--gray-100); cursor:pointer;">
+      <div style="width:48px; height:48px; background:var(--gray-50); border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:1px solid var(--gray-100); overflow:hidden;">
+        ${imgEl}
       </div>
       <div style="flex:1; min-width:0;">
-        <p style="font-size:13px; color:var(--gray-400); font-weight:600; letter-spacing:1px; text-transform:uppercase; margin:0 0 2px;">${p.brand}</p>
+        <p style="font-size:13px; color:var(--gray-400); font-weight:600; letter-spacing:1px; text-transform:uppercase; margin:0 0 2px;">${p.brand || ""}</p>
         <p style="font-size:15px; font-weight:600; color:var(--black); margin:0 0 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</p>
-        <p style="font-size:12px; color:var(--gray-400); margin:0;">${p.flavor}</p>
+        <p style="font-size:12px; color:var(--gray-400); margin:0;">${flavorLabel}</p>
       </div>
-      <span style="font-family:var(--font-display); font-size:18px; color:var(--black); flex-shrink:0; direction:ltr;">${p.price} DA</span>
-    </div>
-  `,
+      <span style="font-family:var(--font-display); font-size:18px; color:var(--black); flex-shrink:0; direction:ltr;">${price} DA</span>
+    </div>`;
+            },
           )
           .join("");
       }
