@@ -30,6 +30,7 @@
         --font-display: "Bebas Neue", sans-serif;
         --font-body: "DM Sans", sans-serif;
         --nav-h: 64px;
+        --cat-h: 44px;
         --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
         --shadow-sm:
           0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -369,6 +370,178 @@
       .mobile-nav-link:hover {
         background: var(--gray-50);
         color: var(--black);
+      }
+
+      /* ─── CATEGORY NAV ──────────────────────────────────────────── */
+      .cat-nav {
+        background: var(--white);
+        border-bottom: 1px solid var(--gray-100);
+        position: relative;
+        z-index: 999;
+      }
+      .cat-nav-inner {
+        display: flex;
+        align-items: center;
+        height: var(--cat-h);
+        gap: 2px;
+        overflow: visible;
+      }
+      .cat-item {
+        position: relative;
+      }
+      .cat-link {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 0 14px;
+        height: var(--cat-h);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--gray-600);
+        white-space: nowrap;
+        transition: color var(--transition);
+        position: relative;
+      }
+      .cat-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        right: 50%;
+        height: 2px;
+        background: var(--red);
+        transition:
+          left var(--transition),
+          right var(--transition);
+      }
+      .cat-item:hover .cat-link,
+      .cat-link:hover {
+        color: var(--red);
+      }
+      .cat-item:hover .cat-link::after {
+        left: 14px;
+        right: 14px;
+      }
+      .cat-link svg {
+        width: 12px;
+        height: 12px;
+        transition: transform var(--transition);
+      }
+      .cat-item:hover .cat-link svg {
+        transform: rotate(180deg);
+      }
+      .dropdown {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        background: var(--white);
+        border: 1px solid var(--gray-100);
+        border-radius: 10px;
+        box-shadow: var(--shadow-lg);
+        min-width: 200px;
+        padding: 8px;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(-6px);
+        transition:
+          opacity var(--transition),
+          transform var(--transition),
+          visibility var(--transition);
+        z-index: 1001;
+      }
+      .cat-item:hover .dropdown {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+        transform: translateY(0);
+      }
+      .dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--gray-600);
+        border-radius: 7px;
+        transition:
+          background var(--transition),
+          color var(--transition),
+          padding-left var(--transition);
+      }
+      .dropdown a:hover {
+        background: var(--red-light);
+        color: var(--red);
+        padding-left: 18px;
+      }
+      .dropdown a::before {
+        content: "→";
+        font-size: 11px;
+        opacity: 0;
+        transition: opacity var(--transition);
+      }
+      .dropdown a:hover::before {
+        opacity: 1;
+      }
+
+      /* ─── MOBILE CATEGORY ITEMS ──────────────────────────────── */
+      .m-cat-item {
+        border-bottom: 1px solid var(--gray-100);
+      }
+      .m-cat-toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--black);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: var(--font-body);
+        transition: color var(--transition);
+      }
+      .m-cat-toggle:hover {
+        color: var(--red);
+      }
+      .m-arrow {
+        font-size: 18px;
+        transition: transform 0.25s ease;
+        display: inline-block;
+        color: var(--gray-400);
+      }
+      .m-cat-item.open .m-arrow {
+        transform: rotate(90deg);
+        color: var(--red);
+      }
+      .m-cat-item.open .m-cat-toggle {
+        color: var(--red);
+      }
+      .m-sub {
+        display: none;
+        flex-direction: column;
+        padding: 0 0 12px 16px;
+        gap: 2px;
+      }
+      .m-cat-item.open .m-sub {
+        display: flex;
+      }
+      .m-sub-link {
+        padding: 9px 12px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--gray-600);
+        border-radius: 7px;
+        transition:
+          background var(--transition),
+          color var(--transition);
+      }
+      .m-sub-link:hover {
+        background: var(--red-light);
+        color: var(--red);
       }
 
       /* ─── BREADCRUMB ───────────────────────────────────────────── */
@@ -1213,6 +1386,9 @@
         .nav-link {
           display: none;
         }
+        .cat-nav {
+          display: none;
+        }
       }
       @media (max-width: 600px) {
         .hamburger {
@@ -1753,6 +1929,128 @@
       </div>
     </header>
 
+    <!-- Category Nav -->
+    <div class="cat-nav" aria-label="Product categories">
+      <div class="container">
+        <div class="cat-nav-inner">
+          <div class="cat-item">
+            <a href="products.html" class="cat-link"
+              >Protein
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </a>
+            <div class="dropdown">
+              <a href="products.html">Protein Powder</a>
+              <a href="products.html">Protein Drinks</a>
+              <a href="products.html">Whey Protein</a>
+              <a href="products.html">Casein Protein</a>
+              <a href="products.html">Plant-Based Protein</a>
+            </div>
+          </div>
+          <div class="cat-item">
+            <a href="products.html" class="cat-link"
+              >Mass Gainers
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </a>
+            <div class="dropdown">
+              <a href="products.html">Weight Gainers</a>
+              <a href="products.html">Serious Mass</a>
+              <a href="products.html">Hard Gainers</a>
+            </div>
+          </div>
+          <div class="cat-item">
+            <a href="products.html" class="cat-link"
+              >Pre-Workout
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </a>
+            <div class="dropdown">
+              <a href="products.html">Pre-Workout Powders</a>
+              <a href="products.html">Caffeine Boosters</a>
+              <a href="products.html">Nitric Oxide</a>
+              <a href="products.html">BCAA Pre-Workout</a>
+            </div>
+          </div>
+          <div class="cat-item">
+            <a href="products.html" class="cat-link"
+              >Vitamins
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </a>
+            <div class="dropdown">
+              <a href="products.html">Multivitamins</a>
+              <a href="products.html">Vitamin D3</a>
+              <a href="products.html">Omega-3</a>
+              <a href="products.html">Zinc &amp; Magnesium</a>
+            </div>
+          </div>
+          <div class="cat-item">
+            <a href="products.html" class="cat-link"
+              >Creatine
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </a>
+            <div class="dropdown">
+              <a href="products.html">Creatine Monohydrate</a>
+              <a href="products.html">Creatine HCL</a>
+              <a href="products.html">Micronized Creatine</a>
+            </div>
+          </div>
+          <div class="cat-item">
+            <a href="products.html" class="cat-link"
+              >Accessories
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </a>
+            <div class="dropdown">
+              <a href="products.html">Shaker Bottles</a>
+              <a href="products.html">Gym Gloves</a>
+              <a href="products.html">Resistance Bands</a>
+            </div>
+          </div>
+          <a href="products.html" class="cat-link">🔥 Hot Deals</a>
+          <a href="products.html" class="cat-link">New Arrivals</a>
+        </div>
+      </div>
+    </div>
+
     <!-- Mobile search overlay -->
     <div
       id="mobileSearchOverlay"
@@ -1858,6 +2156,67 @@
           data-i18n="nav.contact"
           >Contact</a
         >
+      </div>
+
+      <div class="m-cat-item">
+        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
+          Protein <span class="m-arrow">›</span>
+        </button>
+        <div class="m-sub">
+          <a href="products.html" class="m-sub-link">Protein Powder</a>
+          <a href="products.html" class="m-sub-link">Protein Drinks</a>
+          <a href="products.html" class="m-sub-link">Whey Protein</a>
+          <a href="products.html" class="m-sub-link">Casein Protein</a>
+        </div>
+      </div>
+      <div class="m-cat-item">
+        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
+          Mass Gainers <span class="m-arrow">›</span>
+        </button>
+        <div class="m-sub">
+          <a href="products.html" class="m-sub-link">Weight Gainers</a>
+          <a href="products.html" class="m-sub-link">Serious Mass</a>
+          <a href="products.html" class="m-sub-link">Hard Gainers</a>
+        </div>
+      </div>
+      <div class="m-cat-item">
+        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
+          Pre-Workout <span class="m-arrow">›</span>
+        </button>
+        <div class="m-sub">
+          <a href="products.html" class="m-sub-link">Pre-Workout Powders</a>
+          <a href="products.html" class="m-sub-link">Caffeine Boosters</a>
+          <a href="products.html" class="m-sub-link">BCAA</a>
+        </div>
+      </div>
+      <div class="m-cat-item">
+        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
+          Vitamins <span class="m-arrow">›</span>
+        </button>
+        <div class="m-sub">
+          <a href="products.html" class="m-sub-link">Multivitamins</a>
+          <a href="products.html" class="m-sub-link">Vitamin D3</a>
+          <a href="products.html" class="m-sub-link">Omega-3</a>
+        </div>
+      </div>
+      <div class="m-cat-item">
+        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
+          Creatine <span class="m-arrow">›</span>
+        </button>
+        <div class="m-sub">
+          <a href="products.html" class="m-sub-link">Creatine Monohydrate</a>
+          <a href="products.html" class="m-sub-link">Creatine HCL</a>
+        </div>
+      </div>
+      <div class="m-cat-item">
+        <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
+          Accessories <span class="m-arrow">›</span>
+        </button>
+        <div class="m-sub">
+          <a href="products.html" class="m-sub-link">Shaker Bottles</a>
+          <a href="products.html" class="m-sub-link">Gym Gloves</a>
+          <a href="products.html" class="m-sub-link">Resistance Bands</a>
+        </div>
       </div>
     </div>
 
@@ -5276,6 +5635,15 @@
         btn.classList.toggle("open", isOpen);
         btn.setAttribute("aria-expanded", isOpen);
         document.body.style.overflow = isOpen ? "hidden" : "";
+      }
+
+      function toggleMobileCat(btn) {
+        const item = btn.closest(".m-cat-item");
+        const isOpen = item.classList.contains("open");
+        document
+          .querySelectorAll(".m-cat-item.open")
+          .forEach((el) => el.classList.remove("open"));
+        if (!isOpen) item.classList.add("open");
       }
 
       /* ══════════════════════════════════════════════════════
