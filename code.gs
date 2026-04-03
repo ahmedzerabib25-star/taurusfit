@@ -58,6 +58,7 @@ function initSheets() {
       "createdAt",
     ],
     DeliveryPrices: ["id", "wilaya", "homePrice", "officePrice", "createdAt"],
+    Bundle: ["bundleId"],
   };
 
   for (const [sheetName, headers] of Object.entries(sheets)) {
@@ -147,6 +148,8 @@ function doGet(e) {
         return handleGetPromos();
       case "getDeliveryPrices":
         return handleGetDeliveryPrices();
+      case "getBundle":
+        return handleGetBundle();
       case "getSettings":
         return handleGetSettings();
       case "getDashboard":
@@ -191,6 +194,8 @@ function doPost(e) {
         return handleUpdateDeliveryPrice(body);
       case "deleteDeliveryPrice":
         return handleDeleteDeliveryPrice(body);
+      case "saveBundle":
+        return handleSaveBundle(body);
       case "updateSettings":
         return handleUpdateSettings(body);
       case "updateOrderStatus":
@@ -576,6 +581,38 @@ function handleDeleteDeliveryPrice(body) {
     if (String(data[i][0]) === String(body.id)) {
       sheet.deleteRow(i + 1);
       break;
+    }
+  }
+  return jsonResponse({ success: true });
+}
+
+// ════════════════════════════════════════════
+// BUNDLE
+// ════════════════════════════════════════════
+function handleGetBundle() {
+  const sheet = getSheet("Bundle");
+  if (!sheet) return jsonResponse({ success: true, bundleId: "" });
+  const data = sheet.getDataRange().getValues();
+  const bundleId = data.length > 1 ? String(data[1][0] || "").trim() : "";
+  return jsonResponse({ success: true, bundleId: bundleId });
+}
+
+function handleSaveBundle(body) {
+  const sheet = getSheet("Bundle");
+  if (!sheet)
+    return jsonResponse({
+      success: false,
+      error: "Bundle sheet not found. Run initSheets first.",
+    });
+  const id = body.bundleId ? String(body.bundleId).trim() : "";
+  // Keep header, overwrite row 2
+  if (sheet.getLastRow() < 2) {
+    sheet.appendRow([id]);
+  } else {
+    sheet.getRange(2, 1).setValue(id);
+    // Clear any extra rows just in case
+    if (sheet.getLastRow() > 2) {
+      sheet.getRange(3, 1, sheet.getLastRow() - 2, 1).clear();
     }
   }
   return jsonResponse({ success: true });

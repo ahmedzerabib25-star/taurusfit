@@ -1477,6 +1477,80 @@
           font-size: 20px;
         }
       }
+
+      /* ─── BUNDLE ───────────────────────────────── */
+      .bundle-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 11px 14px;
+        border-radius: 10px;
+        border: 2px solid var(--g200);
+        cursor: pointer;
+        transition: all var(--tr);
+        user-select: none;
+        background: var(--g50);
+      }
+      .bundle-item:hover {
+        border-color: var(--red);
+        background: var(--red-light);
+      }
+      .bundle-item.selected {
+        border-color: var(--red);
+        background: var(--red-light);
+      }
+      .bundle-item-thumb {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        background: var(--g100);
+        flex-shrink: 0;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .bundle-item-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .bundle-item-info {
+        flex: 1;
+        overflow: hidden;
+      }
+      .bundle-item-name {
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .bundle-item-brand {
+        font-size: 11px;
+        color: var(--g400);
+        margin-top: 2px;
+      }
+      .bundle-radio {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid var(--g200);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all var(--tr);
+        background: #fff;
+      }
+      .bundle-item.selected .bundle-radio {
+        background: var(--red);
+        border-color: var(--red);
+      }
+      .bundle-item.selected .bundle-radio::after {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #fff;
+      }
     </style>
   </head>
   <body>
@@ -1569,6 +1643,20 @@
               <circle cx="5.5" cy="18.5" r="2.5" />
               <circle cx="18.5" cy="18.5" r="2.5" /></svg
             ><span>Delivery Prices</span>
+          </div>
+          <div class="sb-link" onclick="showPage('bundle', this)">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+              />
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+              <line x1="12" y1="22.08" x2="12" y2="12" /></svg
+            ><span>Bundle</span>
           </div>
           <div class="sb-section-label">Admin</div>
           <div class="sb-link" onclick="showPage('settings', this)">
@@ -1859,6 +1947,92 @@
               </thead>
               <tbody id="delivery-tbody"></tbody>
             </table>
+          </div>
+        </div>
+
+        <!-- BUNDLE -->
+        <div class="page" id="page-bundle">
+          <div class="sec-header">
+            <div class="sec-title">Bundle</div>
+          </div>
+          <div class="settings-card" style="max-width: 680px">
+            <div class="settings-card-title">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                />
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                <line x1="12" y1="22.08" x2="12" y2="12" />
+              </svg>
+              Select Bundle Product
+            </div>
+            <p style="font-size: 13px; color: var(--g600); margin-bottom: 18px">
+              Choose <strong>one product</strong> to feature as the bundle on
+              your store.
+            </p>
+            <input
+              class="search-box"
+              id="bundle-search"
+              type="text"
+              placeholder="Search products…"
+              oninput="filterBundleProducts(this.value)"
+              style="width: 100%; max-width: 100%; margin-bottom: 14px"
+            />
+            <div
+              id="bundle-product-list"
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                max-height: 460px;
+                overflow-y: auto;
+                padding-right: 2px;
+              "
+            ></div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 20px;
+                padding-top: 16px;
+                border-top: 1px solid var(--g100);
+                flex-wrap: wrap;
+                gap: 10px;
+              "
+            >
+              <div
+                style="font-size: 13px; color: var(--g600)"
+                id="bundle-selected-label"
+              >
+                No product selected
+              </div>
+              <div style="display: flex; gap: 8px">
+                <button class="btn-secondary" onclick="clearBundle()">
+                  Clear
+                </button>
+                <button class="btn-primary" onclick="saveBundle()">
+                  <svg
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                  Save Bundle
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -2506,6 +2680,7 @@
             loadPromos(),
             loadDeliveryPrices(),
             loadSettings(),
+            loadBundle(),
           ]);
           updateDashboard();
         } catch (e) {
@@ -2592,6 +2767,7 @@
         categories: "Categories",
         promos: "Promo Codes",
         delivery: "Delivery Prices",
+        bundle: "Bundle",
         settings: "Settings",
       };
       function showPage(name, el) {
@@ -3384,6 +3560,99 @@
 
       function cap(s) {
         return s ? s[0].toUpperCase() + s.slice(1) : s;
+      }
+
+      // ════════════════════════════════════════════
+      // BUNDLE — single product select
+      // ════════════════════════════════════════════
+      let bundleSelectedId = null;
+
+      function renderBundleList(filter = "") {
+        const list = document.getElementById("bundle-product-list");
+        if (!list) return;
+        const q = filter.toLowerCase();
+        const filtered = products.filter(
+          (p) =>
+            !q ||
+            p.name.toLowerCase().includes(q) ||
+            (p.brand || "").toLowerCase().includes(q),
+        );
+        if (!filtered.length) {
+          list.innerHTML = `<div style="text-align:center;color:var(--g400);padding:32px 0;font-size:13px;">${
+            products.length
+              ? "No products match your search."
+              : "No products yet. Add some first."
+          }</div>`;
+          return;
+        }
+        list.innerHTML = filtered
+          .map((p) => {
+            const sel = bundleSelectedId === p.id;
+            const imgHtml = p.imageUrl
+              ? `<img src="${p.imageUrl}" alt="" />`
+              : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>`;
+            const safeName = p.name.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+            return `<div class="bundle-item${sel ? " selected" : ""}" onclick="selectBundleItem('${p.id}','${safeName}')">
+            <div class="bundle-item-thumb">${imgHtml}</div>
+            <div class="bundle-item-info">
+              <div class="bundle-item-name">${p.name}</div>
+              <div class="bundle-item-brand">${p.brand || "No brand"}</div>
+            </div>
+            <div class="bundle-radio"></div>
+          </div>`;
+          })
+          .join("");
+      }
+
+      function selectBundleItem(id, name) {
+        bundleSelectedId = id;
+        document.getElementById("bundle-selected-label").innerHTML =
+          `Selected: <strong>${name}</strong>`;
+        renderBundleList(document.getElementById("bundle-search")?.value || "");
+      }
+
+      function filterBundleProducts(q) {
+        renderBundleList(q);
+      }
+
+      function clearBundle() {
+        bundleSelectedId = null;
+        document.getElementById("bundle-selected-label").textContent =
+          "No product selected";
+        renderBundleList(document.getElementById("bundle-search")?.value || "");
+      }
+
+      async function loadBundle() {
+        try {
+          const r = await apiGet("getBundle");
+          if (r.success && r.bundleId) {
+            bundleSelectedId = r.bundleId;
+            const p = products.find((x) => x.id === r.bundleId);
+            const lbl = document.getElementById("bundle-selected-label");
+            if (lbl)
+              lbl.innerHTML = p
+                ? `Selected: <strong>${p.name}</strong>`
+                : `Selected: <strong>${r.bundleId}</strong>`;
+          }
+        } catch (e) {
+          /* silent */
+        }
+        renderBundleList();
+      }
+
+      async function saveBundle() {
+        showLoading("Saving bundle…");
+        try {
+          const r = await apiPost({
+            action: "saveBundle",
+            bundleId: bundleSelectedId || "",
+          });
+          if (r.success) showToast("Bundle saved!");
+          else showToast("Error: " + (r.error || "Unknown"), "error");
+        } catch (e) {
+          showToast("Error: " + e.message, "error");
+        }
+        hideLoading();
       }
     </script>
   </body>

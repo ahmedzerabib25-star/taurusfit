@@ -2461,7 +2461,7 @@
               Get our most popular Whey Protein bundle at 30% off. Limited stock
               — order now and fuel your next workout.
             </p>
-            <a href="#" class="btn-primary">
+            <a href="#" class="btn-primary" id="bundleBannerLink">
               <span data-i18n="banner.cta">Grab the Deal</span>
               <svg
                 width="16"
@@ -2476,7 +2476,7 @@
             </a>
           </div>
           <div class="banner-right">
-            <img src="./images/bundle.png" />
+            <img id="bundleBannerImg" style="display:none;" />
           </div>
         </div>
       </section>
@@ -3308,6 +3308,33 @@
       }
 
       /* ─────────────────────────────────────────────────────────────
+   BUNDLE BANNER — fetch assigned bundle product and update banner
+───────────────────────────────────────────────────────────── */
+      async function loadBundle() {
+        try {
+          const [bundleRes, prodRes] = await Promise.all([
+            fetch(`${SCRIPT_URL}?action=getBundle`).then((r) => r.json()),
+            fetch(`${SCRIPT_URL}?action=getProducts`).then((r) => r.json()),
+          ]);
+          if (!bundleRes.success || !bundleRes.bundleId) return;
+          if (!prodRes.success) return;
+          const product = prodRes.products.find(
+            (p) => p.id === bundleRes.bundleId && p.status === "active",
+          );
+          if (!product) return;
+          const img = document.getElementById("bundleBannerImg");
+          const link = document.getElementById("bundleBannerLink");
+          if (img && product.imageUrl) {
+            img.src = product.imageUrl;
+            img.style.display = "";
+          }
+          if (link) link.href = `product-detail.html?id=${product.id}`;
+        } catch (err) {
+          console.error("Failed to load bundle:", err);
+        }
+      }
+
+      /* ─────────────────────────────────────────────────────────────
    CATEGORIES — fetch from Google Sheets via Apps Script
 ───────────────────────────────────────────────────────────── */
       async function loadCategories() {
@@ -3386,6 +3413,7 @@
         cartUpdateBadge();
         loadCategories();
         loadProducts();
+        loadBundle();
         const savedLang = localStorage.getItem("bybens_lang") || "en";
         if (savedLang !== "en") switchLang(savedLang);
       });
