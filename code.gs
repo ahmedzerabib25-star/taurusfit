@@ -57,6 +57,7 @@ function initSheets() {
       "status",
       "createdAt",
     ],
+    DeliveryPrices: ["id", "wilaya", "homePrice", "officePrice", "createdAt"],
   };
 
   for (const [sheetName, headers] of Object.entries(sheets)) {
@@ -144,6 +145,8 @@ function doGet(e) {
         return handleGetProducts();
       case "getPromos":
         return handleGetPromos();
+      case "getDeliveryPrices":
+        return handleGetDeliveryPrices();
       case "getSettings":
         return handleGetSettings();
       case "getDashboard":
@@ -182,6 +185,12 @@ function doPost(e) {
         return handleUpdatePromo(body);
       case "deletePromo":
         return handleDeletePromo(body);
+      case "addDeliveryPrice":
+        return handleAddDeliveryPrice(body);
+      case "updateDeliveryPrice":
+        return handleUpdateDeliveryPrice(body);
+      case "deleteDeliveryPrice":
+        return handleDeleteDeliveryPrice(body);
       case "updateSettings":
         return handleUpdateSettings(body);
       case "updateOrderStatus":
@@ -506,6 +515,62 @@ function handleUpdatePromo(body) {
 
 function handleDeletePromo(body) {
   const sheet = getSheet("PromoCodes");
+  const data = sheet.getDataRange().getValues();
+  for (let i = data.length - 1; i >= 1; i--) {
+    if (String(data[i][0]) === String(body.id)) {
+      sheet.deleteRow(i + 1);
+      break;
+    }
+  }
+  return jsonResponse({ success: true });
+}
+
+// ════════════════════════════════════════════
+// DELIVERY PRICES
+// ════════════════════════════════════════════
+function handleGetDeliveryPrices() {
+  const sheet = getSheet("DeliveryPrices");
+  const data = sheet.getDataRange().getValues();
+  const deliveryPrices = data.slice(1).map((r) => ({
+    id: String(r[0]),
+    wilaya: r[1],
+    homePrice: Number(r[2]) || 0,
+    officePrice: Number(r[3]) || 0,
+    createdAt: r[4],
+  }));
+  return jsonResponse({ success: true, deliveryPrices });
+}
+
+function handleAddDeliveryPrice(body) {
+  const sheet = getSheet("DeliveryPrices");
+  const id = Date.now().toString();
+  sheet.appendRow([
+    id,
+    body.wilaya,
+    Number(body.homePrice) || 0,
+    Number(body.officePrice) || 0,
+    new Date().toISOString(),
+  ]);
+  return jsonResponse({ success: true, id });
+}
+
+function handleUpdateDeliveryPrice(body) {
+  const sheet = getSheet("DeliveryPrices");
+  const data = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][0]) === String(body.id)) {
+      const row = i + 1;
+      sheet.getRange(row, 2).setValue(body.wilaya);
+      sheet.getRange(row, 3).setValue(Number(body.homePrice) || 0);
+      sheet.getRange(row, 4).setValue(Number(body.officePrice) || 0);
+      break;
+    }
+  }
+  return jsonResponse({ success: true });
+}
+
+function handleDeleteDeliveryPrice(body) {
+  const sheet = getSheet("DeliveryPrices");
   const data = sheet.getDataRange().getValues();
   for (let i = data.length - 1; i >= 1; i--) {
     if (String(data[i][0]) === String(body.id)) {

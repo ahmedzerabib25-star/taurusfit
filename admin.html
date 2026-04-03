@@ -1557,6 +1557,19 @@
               /></svg
             ><span>Promo Codes</span>
           </div>
+          <div class="sb-link" onclick="showPage('delivery', this)">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="1" y="3" width="15" height="13" rx="2" />
+              <path d="M16 8h4l3 5v4h-7V8z" />
+              <circle cx="5.5" cy="18.5" r="2.5" />
+              <circle cx="18.5" cy="18.5" r="2.5" /></svg
+            ><span>Delivery Prices</span>
+          </div>
           <div class="sb-section-label">Admin</div>
           <div class="sb-link" onclick="showPage('settings', this)">
             <svg
@@ -1803,6 +1816,48 @@
                 </tr>
               </thead>
               <tbody id="promos-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- DELIVERY PRICES -->
+        <div class="page" id="page-delivery">
+          <div class="sec-header">
+            <div class="sec-title">Delivery Prices</div>
+            <button class="btn-primary" onclick="openDeliveryModal()">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" /></svg
+              >Add Wilaya
+            </button>
+          </div>
+          <div class="table-wrap">
+            <div class="table-toolbar">
+              <input
+                class="search-box"
+                type="text"
+                placeholder="Search wilaya…"
+                oninput="filterDelivery(this.value)"
+              />
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Wilaya</th>
+                  <th>Home Delivery (DA)</th>
+                  <th>Office / Desk (DA)</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="delivery-tbody"></tbody>
             </table>
           </div>
         </div>
@@ -2276,6 +2331,66 @@
       </div>
     </div>
 
+    <!-- DELIVERY PRICE MODAL -->
+    <div class="modal-overlay" id="delivery-modal">
+      <div class="modal" style="max-width: 480px">
+        <div class="modal-header">
+          <div class="modal-title" id="delivery-modal-title">Add Wilaya</div>
+          <button class="modal-close" onclick="closeModal('delivery-modal')">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group" style="margin-bottom: 16px">
+            <label>Wilaya Name *</label>
+            <input
+              type="text"
+              class="form-control"
+              id="delivery-wilaya"
+              placeholder="e.g. Alger, Blida, Oran…"
+            />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Home Delivery Price (DA) *</label>
+              <input
+                type="number"
+                class="form-control"
+                id="delivery-home"
+                placeholder="e.g. 500"
+                min="0"
+              />
+            </div>
+            <div class="form-group">
+              <label>Office / Desk Price (DA) *</label>
+              <input
+                type="number"
+                class="form-control"
+                id="delivery-office"
+                placeholder="e.g. 350"
+                min="0"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="closeModal('delivery-modal')">
+            Cancel</button
+          ><button class="btn-primary" onclick="saveDelivery()">Save</button>
+        </div>
+      </div>
+    </div>
+
     <!-- CONFIRM -->
     <div class="confirm-overlay" id="confirm-overlay">
       <div class="confirm-box">
@@ -2339,11 +2454,13 @@
       let sidebarCollapsed = false;
       let editingProductId = null;
       let editingPromoId = null;
+      let editingDeliveryId = null;
       let currentImageUrl = "";
       let categories = [],
         subCategories = [],
         products = [],
         promos = [],
+        deliveryPrices = [],
         settings = {};
 
       // ════════════════════════════════════════════
@@ -2387,6 +2504,7 @@
             loadSubCategories(),
             loadProducts(),
             loadPromos(),
+            loadDeliveryPrices(),
             loadSettings(),
           ]);
           updateDashboard();
@@ -2419,6 +2537,13 @@
         if (r.success) {
           promos = r.promos;
           renderPromos();
+        }
+      }
+      async function loadDeliveryPrices() {
+        const r = await apiGet("getDeliveryPrices");
+        if (r.success) {
+          deliveryPrices = r.deliveryPrices;
+          renderDelivery();
         }
       }
       async function loadSettings() {
@@ -2466,6 +2591,7 @@
         products: "Products",
         categories: "Categories",
         promos: "Promo Codes",
+        delivery: "Delivery Prices",
         settings: "Settings",
       };
       function showPage(name, el) {
@@ -3097,6 +3223,7 @@
           cat: "This category and its sub-categories will be removed.",
           subcat: "This sub-category will be removed.",
           promo: "This promo code will be deleted.",
+          delivery: "This delivery price will be permanently deleted.",
         };
         document.getElementById("confirm-msg").textContent =
           msgs[type] || "This action cannot be undone.";
@@ -3109,6 +3236,7 @@
             else if (type === "cat") action = "deleteCategory";
             else if (type === "subcat") action = "deleteSubCategory";
             else if (type === "promo") action = "deletePromo";
+            else if (type === "delivery") action = "deleteDeliveryPrice";
             const r = await apiPost({ action, id });
             if (r.success) {
               showToast(
@@ -3119,6 +3247,7 @@
                 await loadCategories();
                 await loadSubCategories();
               } else if (type === "promo") await loadPromos();
+              else if (type === "delivery") await loadDeliveryPrices();
               updateDashboard();
             } else showToast("Error: " + (r.error || "Unknown"), "error");
           } catch (e) {
@@ -3156,6 +3285,103 @@
         clearTimeout(toastTimer);
         toastTimer = setTimeout(() => t.classList.remove("show"), 3000);
       }
+      // ════════════════════════════════════════════
+      // DELIVERY PRICES
+      // ════════════════════════════════════════════
+      function filterDelivery(q = "") {
+        renderDelivery(q.toLowerCase());
+      }
+
+      function renderDelivery(filter = "") {
+        const tbody = document.getElementById("delivery-tbody");
+        const filtered = deliveryPrices.filter(
+          (d) => !filter || d.wilaya.toLowerCase().includes(filter),
+        );
+        if (!filtered.length) {
+          tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><p>No delivery prices added yet</p></div></td></tr>`;
+          return;
+        }
+        tbody.innerHTML = filtered
+          .map(
+            (d, idx) => `<tr>
+          <td style="color:var(--g400);font-size:12px">${idx + 1}</td>
+          <td><strong>${d.wilaya}</strong></td>
+          <td>${Number(d.homePrice).toLocaleString()} DA</td>
+          <td>${Number(d.officePrice).toLocaleString()} DA</td>
+          <td><div class="action-group">
+            <button class="act-btn act-edit" onclick="editDelivery('${d.id}')">Edit</button>
+            <button class="act-btn act-delete" onclick="confirmDelete('delivery','${d.id}')">Delete</button>
+          </div></td>
+        </tr>`,
+          )
+          .join("");
+      }
+
+      function openDeliveryModal(id = null) {
+        editingDeliveryId = id;
+        document.getElementById("delivery-modal-title").textContent = id
+          ? "Edit Wilaya"
+          : "Add Wilaya";
+        if (id) {
+          const d = deliveryPrices.find((x) => x.id === id);
+          if (d) {
+            document.getElementById("delivery-wilaya").value = d.wilaya;
+            document.getElementById("delivery-home").value = d.homePrice;
+            document.getElementById("delivery-office").value = d.officePrice;
+          }
+        } else {
+          document.getElementById("delivery-wilaya").value = "";
+          document.getElementById("delivery-home").value = "";
+          document.getElementById("delivery-office").value = "";
+        }
+        openModal("delivery-modal");
+      }
+
+      function editDelivery(id) {
+        openDeliveryModal(id);
+      }
+
+      async function saveDelivery() {
+        const wilaya = document.getElementById("delivery-wilaya").value.trim();
+        const homePrice = parseFloat(
+          document.getElementById("delivery-home").value,
+        );
+        const officePrice = parseFloat(
+          document.getElementById("delivery-office").value,
+        );
+        if (!wilaya) {
+          showToast("Wilaya name required", "error");
+          return;
+        }
+        if (isNaN(homePrice) || isNaN(officePrice)) {
+          showToast("Both prices are required", "error");
+          return;
+        }
+        const payload = {
+          wilaya,
+          homePrice,
+          officePrice,
+        };
+        showLoading("Saving…");
+        try {
+          payload.action = editingDeliveryId
+            ? "updateDeliveryPrice"
+            : "addDeliveryPrice";
+          if (editingDeliveryId) payload.id = editingDeliveryId;
+          const r = await apiPost(payload);
+          if (r.success) {
+            showToast(
+              editingDeliveryId ? "Delivery price updated!" : "Wilaya added!",
+            );
+            closeModal("delivery-modal");
+            await loadDeliveryPrices();
+          } else showToast("Error: " + (r.error || "Unknown"), "error");
+        } catch (e) {
+          showToast("Error: " + e.message, "error");
+        }
+        hideLoading();
+      }
+
       function cap(s) {
         return s ? s[0].toUpperCase() + s.slice(1) : s;
       }

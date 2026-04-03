@@ -3054,7 +3054,7 @@
         const items = cartGet(); items.splice(idx, 1);
         cartSave(items); cartUpdateBadge(); _renderCartDrawer();
       }
-      function cartCheckout() { showToast("Checkout coming soon!"); }
+      function cartCheckout() { window.location.href = "checkout.html"; }
 
       /* ── WISHLIST ── */
       function toggleWishlist(btn) {
