@@ -2339,18 +2339,12 @@
             allSubCategories = subRes.subCategories;
             subCategoryOptions = allSubCategories.map((sub) => {
               const parsedCatIds = parseIds(sub.categoryIds);
-              // Count products explicitly assigned to this subcategory
-              const directCount = allProducts.filter((p) => p.subCategoryIds.includes(sub.id)).length;
-              // Fallback count: products in any parent category of this subcategory
-              const parentCount = allProducts.filter((p) =>
-                parsedCatIds.some((cid) => p.categoryIds.includes(cid))
-              ).length;
+              const count = allProducts.filter((p) => p.subCategoryIds.includes(sub.id)).length;
               return {
                 value: sub.id,
                 label: sub.name,
                 categoryIds: parsedCatIds,
-                count: directCount || parentCount,
-                hasDirect: directCount > 0,
+                count,
               };
             }).filter((opt) => opt.count > 0);
           }
@@ -2549,11 +2543,7 @@
         if (state.subCategories.length)
           list = list.filter((p) =>
             state.subCategories.some((subId) => {
-              // Prefer explicit subCategoryIds match
-              if (p.subCategoryIds.includes(subId)) return true;
-              // Fallback: match if product is in any parent category of this subcategory
-              const subOpt = subCategoryOptions.find((o) => o.value === subId);
-              return subOpt && subOpt.categoryIds.some((cid) => p.categoryIds.includes(cid));
+              return p.subCategoryIds.includes(subId);
             })
           );
         if (state.brands.length)
