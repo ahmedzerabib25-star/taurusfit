@@ -541,6 +541,24 @@
       .order-summary-total-label { font-size: 14px; font-weight: 700; color: var(--black); }
       .order-summary-total-price { font-family: var(--font-display); font-size: 28px; letter-spacing: 1px; color: var(--red); direction: ltr; }
 
+      /* Promo code */
+      .promo-wrap { margin-top: 14px; }
+      .btn-apply-promo {
+        flex-shrink: 0;
+        padding: 0 16px;
+        height: 42px;
+        background: var(--black);
+        color: var(--white);
+        border: none;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        cursor: pointer;
+        transition: background var(--transition);
+      }
+      .btn-apply-promo:hover { background: var(--red); }
+
       /* Submit */
       .btn-order {
         width: 100%;
@@ -766,6 +784,20 @@
         transition: transform 0.2s ease, box-shadow 0.2s ease;
       }
       .wa-btn:hover { animation: none; transform: scale(1.12); box-shadow: 0 8px 28px rgba(37,211,102,0.6); }
+
+      /* ─── YOU MAY ALSO LIKE ───────────────────────────────────── */
+      .also-like-section { padding: 64px 0 0; }
+      .also-like-title { font-size: 22px; font-weight: 800; color: var(--black); margin-bottom: 28px; }
+      .also-like-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+      @media (max-width: 1024px) { .also-like-grid { grid-template-columns: repeat(3, 1fr); } }
+      @media (max-width: 640px)  { .also-like-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
+      .also-card { background: var(--white); border: 1px solid var(--gray-100); border-radius: 14px; overflow: hidden; cursor: pointer; transition: box-shadow var(--transition), transform var(--transition); display: flex; flex-direction: column; }
+      .also-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,.1); transform: translateY(-4px); }
+      .also-card-img { aspect-ratio: 4/3; background: linear-gradient(145deg,#f0f0f0,#fafafa); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+      .also-card-img img { width: 100%; height: 100%; object-fit: contain; }
+      .also-card-body { padding: 12px 14px 16px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+      .also-card-name { font-size: 14px; font-weight: 700; color: var(--black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .also-card-price { font-size: 15px; font-weight: 800; color: var(--red); }
 
       /* ─── FOOTER ───────────────────────────────────────────────── */
       .site-footer { background: var(--black); color: var(--gray-400); padding: 56px 0 0; margin-top: 80px; }
@@ -1302,7 +1334,7 @@
                       <span class="delivery-option-name" data-i18n="form.homeDelivery">🏠 Home Delivery</span>
                       <div class="delivery-option-check"><div class="delivery-option-dot"></div></div>
                     </div>
-                    <div class="delivery-option-price">+500 DA</div>
+                    <div class="delivery-option-price">—</div>
                     <div class="delivery-option-desc" data-i18n="form.deliveredDoor">Delivered to your door</div>
                   </div>
                   <div class="delivery-option" id="deliveryOffice" onclick="selectDelivery('office')">
@@ -1311,7 +1343,7 @@
                       <span class="delivery-option-name" data-i18n="form.officePick">📦 Office Pickup</span>
                       <div class="delivery-option-check"><div class="delivery-option-dot"></div></div>
                     </div>
-                    <div class="delivery-option-price">+400 DA</div>
+                    <div class="delivery-option-price">—</div>
                     <div class="delivery-option-desc" data-i18n="form.pickupOffice">Pickup at nearest office</div>
                   </div>
                 </div>
@@ -1331,10 +1363,26 @@
                   <span class="order-summary-label" data-i18n="form.delivery">Delivery</span>
                   <span class="order-summary-val" id="summaryDelivery">+500 DA (Home)</span>
                 </div>
+                <div class="order-summary-row" id="summaryDiscountRow" style="display:none;">
+                  <span class="order-summary-label" id="summaryDiscountLabel">Discount</span>
+                  <span class="order-summary-val" id="summaryDiscountVal" style="color:var(--green,#0a7c3e)"></span>
+                </div>
                 <div class="order-summary-total">
                   <span class="order-summary-total-label" data-i18n="form.total">Total</span>
                   <span class="order-summary-total-price" id="summaryTotal">0 DA</span>
                 </div>
+              </div>
+
+              <!-- Promo Code -->
+              <div class="promo-wrap">
+                <div style="display:flex;gap:8px;">
+                  <input type="text" id="promoCode" class="form-control" placeholder="Promo code…"
+                    style="text-transform:uppercase;flex:1;"
+                    oninput="this.value=this.value.toUpperCase()"
+                    onkeydown="if(event.key==='Enter'){applyPromo();event.preventDefault();}" />
+                  <button onclick="applyPromo()" class="btn-apply-promo">APPLY</button>
+                </div>
+                <span id="promoMsg" style="font-size:12px;margin-top:4px;display:block;"></span>
               </div>
 
               <button class="btn-order" onclick="submitOrder()">
@@ -1348,6 +1396,14 @@
         </section>
       </div>
     </main>
+
+    <!-- ─── YOU MAY ALSO LIKE ──────────────────────────────────── -->
+    <section class="also-like-section">
+      <div class="container">
+        <h2 class="also-like-title" data-i18n="section.alsoLike">You May Also Like</h2>
+        <div class="also-like-grid" id="alsoLikeGrid"></div>
+      </div>
+    </section>
 
     <!-- ─── FOOTER ─────────────────────────────────────────────── -->
     <footer class="site-footer" role="contentinfo">
@@ -1486,7 +1542,30 @@
       ══════════════════════════════════════════════════════ */
       const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
       const CART_KEY = "bybens_cart";
-      const DELIVERY_COST = { home: 500, office: 400 };
+      let _deliveryPrices = [];
+      let _allPromos = [];
+      let appliedPromo = null;
+
+      function getDeliveryCost() {
+        if (selectedWilayaCode && _deliveryPrices.length) {
+          const wilayaName = WILAYAS[selectedWilayaCode]
+            ? WILAYAS[selectedWilayaCode].name.trim().toLowerCase()
+            : "";
+          const code = selectedWilayaCode.replace(/^0+/, "");
+          const row = _deliveryPrices.find((d) => {
+            const stored = d.wilaya.trim().toLowerCase();
+            return (
+              stored === wilayaName ||
+              stored === code ||
+              stored === selectedWilayaCode ||
+              stored.includes(wilayaName) ||
+              wilayaName.includes(stored)
+            );
+          });
+          if (row) return { home: row.homePrice, office: row.officePrice };
+        }
+        return { home: 0, office: 0 };
+      }
 
       let selectedDelivery = "home";
       let selectedWilayaCode = "";
@@ -1606,8 +1685,10 @@
         const totalEl = document.getElementById("summaryTotal");
 
         const subtotal = items.reduce((s, i) => s + i.unitPrice * i.qty, 0);
-        const deliveryCost = DELIVERY_COST[selectedDelivery];
-        const total = subtotal + deliveryCost;
+        const deliveryCost = getDeliveryCost()[selectedDelivery];
+        const { discount, freeDelivery } = getPromoDiscount(items, deliveryCost);
+        const deliveryCharge = selectedWilayaCode ? (freeDelivery ? 0 : deliveryCost) : 0;
+        const total = subtotal + deliveryCharge - discount;
 
         if (summaryList) {
           if (!items.length) {
@@ -1622,8 +1703,115 @@
         }
 
         if (subtotalEl) subtotalEl.textContent = subtotal.toLocaleString("fr-DZ") + " DA";
-        if (deliveryEl) deliveryEl.textContent = `+${deliveryCost} DA (${selectedDelivery === "home" ? "Home" : "Office"})`;
+
+        if (deliveryEl) {
+          if (freeDelivery) deliveryEl.textContent = "FREE 🎉";
+          else deliveryEl.textContent = selectedWilayaCode
+            ? `+${deliveryCost.toLocaleString("fr-DZ")} DA (${selectedDelivery === "home" ? "Home" : "Office"})`
+            : "Select wilaya";
+        }
+
+        const discountRow = document.getElementById("summaryDiscountRow");
+        const discountVal = document.getElementById("summaryDiscountVal");
+        const discountLabel = document.getElementById("summaryDiscountLabel");
+        if (discountRow) {
+          if (appliedPromo && discount > 0) {
+            discountRow.style.display = "";
+            if (appliedPromo.type === "percent") discountLabel.textContent = `Promo (${appliedPromo.value}% off)`;
+            else if (appliedPromo.type === "fixed") discountLabel.textContent = "Promo discount";
+            discountVal.textContent = `−${discount.toLocaleString("fr-DZ")} DA`;
+          } else {
+            discountRow.style.display = "none";
+          }
+        }
+
         if (totalEl) totalEl.textContent = total.toLocaleString("fr-DZ") + " DA";
+      }
+
+      /* ══════════════════════════════════════════════════════
+         PROMO CODE
+      ══════════════════════════════════════════════════════ */
+      function applyPromo() {
+        const code = document.getElementById("promoCode").value.trim().toUpperCase();
+        const msgEl = document.getElementById("promoMsg");
+        if (!code) {
+          msgEl.style.color = "var(--red)";
+          msgEl.textContent = "Please enter a promo code.";
+          return;
+        }
+
+        const promo = _allPromos.find(pr => pr.code.toUpperCase() === code);
+        if (!promo) {
+          appliedPromo = null; msgEl.style.color = "var(--red)";
+          msgEl.textContent = "✗ Invalid promo code.";
+          updateOrderSummary(); return;
+        }
+        if (promo.status !== "active") {
+          appliedPromo = null; msgEl.style.color = "var(--red)";
+          msgEl.textContent = "✗ This promo code is no longer active.";
+          updateOrderSummary(); return;
+        }
+        if (promo.expiry) {
+          const exp = new Date(promo.expiry); exp.setHours(23,59,59,999);
+          if (exp < new Date()) {
+            appliedPromo = null; msgEl.style.color = "var(--red)";
+            msgEl.textContent = "✗ This promo code has expired.";
+            updateOrderSummary(); return;
+          }
+        }
+        if (promo.maxUses && promo.uses >= promo.maxUses) {
+          appliedPromo = null; msgEl.style.color = "var(--red)";
+          msgEl.textContent = "✗ This promo code has reached its usage limit.";
+          updateOrderSummary(); return;
+        }
+
+        const items = cartGet();
+        const eligibleSubtotal = getEligibleSubtotal(items, promo);
+        if (eligibleSubtotal === 0) {
+          appliedPromo = null; msgEl.style.color = "var(--red)";
+          msgEl.textContent = "✗ This code is not valid for any product in your cart.";
+          updateOrderSummary(); return;
+        }
+
+        const fullSubtotal = items.reduce((s, i) => s + i.unitPrice * i.qty, 0);
+        if (promo.minOrder && fullSubtotal < promo.minOrder) {
+          appliedPromo = null; msgEl.style.color = "var(--red)";
+          msgEl.textContent = `✗ Minimum order of ${promo.minOrder.toLocaleString("fr-DZ")} DA required.`;
+          updateOrderSummary(); return;
+        }
+
+        appliedPromo = promo;
+        msgEl.style.color = "#0a7c3e";
+        if (promo.type === "percent") msgEl.textContent = `✓ Code applied! ${promo.value}% off eligible items`;
+        else if (promo.type === "fixed") msgEl.textContent = `✓ Code applied! −${promo.value.toLocaleString("fr-DZ")} DA`;
+        else if (promo.type === "free_delivery") msgEl.textContent = "✓ Code applied! Free delivery";
+        updateOrderSummary();
+      }
+
+      // Returns the subtotal of cart items that are eligible for this promo
+      function getEligibleSubtotal(items, promo) {
+        return items.reduce((s, item) => {
+          const product = _allProducts.find(p => p.id === item.productId);
+          if (!product) return s;
+          const allowPromo = product.allowPromo === true || String(product.allowPromo).toUpperCase() === "TRUE";
+          if (!allowPromo) return s;
+          if (product.promoCodeIds && product.promoCodeIds.length > 0) {
+            if (!product.promoCodeIds.includes(promo.id)) return s;
+          }
+          return s + item.unitPrice * item.qty;
+        }, 0);
+      }
+
+      function getPromoDiscount(items, deliveryCost) {
+        if (!appliedPromo) return { discount: 0, freeDelivery: false };
+        const eligible = getEligibleSubtotal(items, appliedPromo);
+        if (appliedPromo.type === "percent")
+          return { discount: Math.round(eligible * (appliedPromo.value / 100)), freeDelivery: false };
+        if (appliedPromo.type === "fixed")
+          return { discount: Math.min(appliedPromo.value, eligible), freeDelivery: false };
+        if (appliedPromo.type === "free_delivery")
+          return { discount: deliveryCost, freeDelivery: true };
+        return { discount: 0, freeDelivery: false };
       }
 
       /* ══════════════════════════════════════════════════════
@@ -1744,19 +1932,53 @@
       ══════════════════════════════════════════════════════ */
       async function loadData() {
         try {
-          const [catRes, subRes, prodRes] = await Promise.all([
+          const [catRes, subRes, prodRes, deliveryRes, promoRes] = await Promise.all([
             fetch(`${SCRIPT_URL}?action=getCategories`).then(r => r.json()),
             fetch(`${SCRIPT_URL}?action=getSubCategories`).then(r => r.json()),
             fetch(`${SCRIPT_URL}?action=getProducts`).then(r => r.json()),
+            fetch(`${SCRIPT_URL}?action=getDeliveryPrices`).then(r => r.json()),
+            fetch(`${SCRIPT_URL}?action=getPromos`).then(r => r.json()),
           ]);
           if (catRes.success) _allCategories = catRes.categories;
           if (subRes.success) _allSubCategories = subRes.subCategories;
+          if (deliveryRes.success) _deliveryPrices = deliveryRes.deliveryPrices;
           if (prodRes.success) _allProducts = prodRes.products;
+          if (promoRes.success) _allPromos = promoRes.promos;
           renderCatNav(_allCategories, _allSubCategories);
+          renderAlsoLike();
         } catch (err) {
           console.error("Failed to load data:", err);
         }
         populateWilayas();
+      }
+
+      function renderAlsoLike() {
+        const grid = document.getElementById("alsoLikeGrid");
+        if (!grid || !_allProducts.length) return;
+        const cartIds = cartGet().map(i => i.id);
+        const others = _allProducts.filter(p => p.status !== "inactive");
+        const picked = others
+          .map(p => ({ p, sort: Math.random() }))
+          .sort((a, b) => a.sort - b.sort)
+          .slice(0, 4)
+          .map(x => x.p);
+
+        grid.innerHTML = picked.map(p => {
+          const price = p.variants && p.variants.length
+            ? (typeof p.variants[0] === "object" ? p.variants[0].price : 0)
+            : 0;
+          const img = p.imageUrl
+            ? `<img src="${p.imageUrl}" alt="${p.name}" />`
+            : `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
+          return `
+            <div class="also-card" onclick="window.location.href='product-detail.html?id=${p.id}'">
+              <div class="also-card-img">${img}</div>
+              <div class="also-card-body">
+                <div class="also-card-name">${p.name}</div>
+                <div class="also-card-price">${price ? price.toLocaleString("fr-DZ") + " DA" : ""}</div>
+              </div>
+            </div>`;
+        }).join("");
       }
 
             const WILAYAS = {
@@ -3629,6 +3851,18 @@
         });
         closeAllDropdowns();
         populateCommune(code);
+        updateDeliveryPriceDisplay();
+        updateOrderSummary();
+      }
+
+      function updateDeliveryPriceDisplay() {
+        const costs = getDeliveryCost();
+        const homePriceEl = document.querySelector("#deliveryHome .delivery-option-price");
+        const officePriceEl = document.querySelector("#deliveryOffice .delivery-option-price");
+        if (homePriceEl)
+          homePriceEl.textContent = selectedWilayaCode ? `+${costs.home.toLocaleString("fr-DZ")} DA` : "—";
+        if (officePriceEl)
+          officePriceEl.textContent = selectedWilayaCode ? `+${costs.office.toLocaleString("fr-DZ")} DA` : "—";
       }
 
       function selectCommuneOption(name) {
@@ -3742,9 +3976,10 @@
         const phone = document.getElementById("phone").value.trim();
         const wilayaData = WILAYAS[selectedWilayaCode];
         const wilayaName = wilayaData ? wilayaData.name : selectedWilayaCode;
-        const deliveryCost = DELIVERY_COST[selectedDelivery];
+        const deliveryCost = getDeliveryCost()[selectedDelivery];
         const subtotal = items.reduce((s, i) => s + i.unitPrice * i.qty, 0);
-        const total = subtotal + deliveryCost;
+        const { discount, freeDelivery } = getPromoDiscount(items, deliveryCost);
+        const total = subtotal + (freeDelivery ? 0 : deliveryCost) - discount;
 
         const payload = {
           action: "submitCartOrder",
@@ -3754,7 +3989,9 @@
           wilaya: `${selectedWilayaCode} - ${wilayaName}`,
           commune: selectedCommuneName,
           deliveryType: selectedDelivery,
-          deliveryCost,
+          deliveryCost: freeDelivery ? 0 : deliveryCost,
+          promoCode: appliedPromo ? appliedPromo.code : "",
+          promoDiscount: discount,
           items: items.map(i => ({
             name: i.name,
             flavor: i.flavor || "",
@@ -3930,6 +4167,7 @@
           "breadcrumb.home": "Home",
           "breadcrumb.cart": "Cart",
           "breadcrumb.checkout": "Checkout",
+          "section.alsoLike": "You May Also Like",
           "footer.tagline": "Algeria's premier sports nutrition store. Authentic products, fast delivery, and expert support to fuel your performance.",
           "footer.shop": "Shop",
           "footer.allProducts": "All Products",
@@ -3977,6 +4215,7 @@
           "breadcrumb.home": "Accueil",
           "breadcrumb.cart": "Panier",
           "breadcrumb.checkout": "Commande",
+          "section.alsoLike": "Vous Aimerez Aussi",
           "footer.tagline": "La boutique de nutrition sportive de référence en Algérie.",
           "footer.shop": "Boutique",
           "footer.allProducts": "Tous les Produits",
@@ -4024,6 +4263,7 @@
           "breadcrumb.home": "الرئيسية",
           "breadcrumb.cart": "السلة",
           "breadcrumb.checkout": "الدفع",
+          "section.alsoLike": "قد يعجبك أيضاً",
           "footer.tagline": "المتجر الأول للتغذية الرياضية في الجزائر. منتجات أصيلة، توصيل سريع.",
           "footer.shop": "المتجر",
           "footer.allProducts": "جميع المنتجات",

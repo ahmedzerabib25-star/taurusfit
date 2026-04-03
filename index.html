@@ -2589,14 +2589,7 @@
           <!-- Categories -->
           <div class="footer-col">
             <h4 data-i18n="footer.categories">Categories</h4>
-            <ul>
-              <li><a href="#">Protein</a></li>
-              <li><a href="#">Mass Gainers</a></li>
-              <li><a href="#">Pre-Workout</a></li>
-              <li><a href="#">Vitamins</a></li>
-              <li><a href="#">Creatine</a></li>
-              <li><a href="#">Accessories</a></li>
-            </ul>
+            <ul id="footerCategoryList"></ul>
           </div>
 
           <!-- Contact Form -->
@@ -3064,7 +3057,7 @@
 
             // Image
             const imgEl = p.imageUrl
-              ? `<img src="${p.imageUrl}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" />`
+              ? `<img src="${p.imageUrl}" alt="${p.name}" style="width:100%;height:100%;object-fit:contain;" loading="lazy" />`
               : `<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
 
             return `
@@ -3350,6 +3343,15 @@
                 </div>`;
             })
             .join("");
+
+          // ── Footer categories (max 6) ──
+          const footerList = document.getElementById("footerCategoryList");
+          if (footerList) {
+            footerList.innerHTML = categories
+              .slice(0, 6)
+              .map((cat) => `<li><a href="products.html?cat=${encodeURIComponent(cat.id)}">${cat.name}</a></li>`)
+              .join("");
+          }
 
           // ── Mobile menu categories ──
           const mobileContainer = document.getElementById("mobileCatItems");

@@ -1479,6 +1479,40 @@
         box-shadow: 0 8px 28px rgba(37, 211, 102, 0.6);
       }
 
+      /* ─── YOU MAY ALSO LIKE ───────────────────────────────────── */
+      .also-like-section { padding: 64px 0 0; }
+      .also-like-title { font-size: 22px; font-weight: 800; color: var(--black); margin-bottom: 28px; }
+      .also-like-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+      @media (max-width: 1024px) { .also-like-grid { grid-template-columns: repeat(3, 1fr); } }
+      @media (max-width: 640px)  { .also-like-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
+      .also-card {
+        background: var(--white);
+        border: 1px solid var(--gray-100);
+        border-radius: 14px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: box-shadow var(--transition), transform var(--transition);
+        display: flex;
+        flex-direction: column;
+      }
+      .also-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+      .also-card-img {
+        aspect-ratio: 4/3;
+        background: linear-gradient(145deg, #f0f0f0, #fafafa);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .also-card-img img { width: 100%; height: 100%; object-fit: contain; }
+      .also-card-body { padding: 12px 14px 16px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+      .also-card-name { font-size: 14px; font-weight: 700; color: var(--black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .also-card-price { font-size: 15px; font-weight: 800; color: var(--red); }
+
       /* ─── FOOTER ───────────────────────────────────────────────── */
       .site-footer {
         background: var(--black);
@@ -2208,7 +2242,7 @@
                         <div class="delivery-option-dot"></div>
                       </div>
                     </div>
-                    <div class="delivery-option-price">+500 DA</div>
+                    <div class="delivery-option-price">—</div>
                     <div
                       class="delivery-option-desc"
                       data-i18n="form.deliveredDoor"
@@ -2232,7 +2266,7 @@
                         <div class="delivery-option-dot"></div>
                       </div>
                     </div>
-                    <div class="delivery-option-price">+400 DA</div>
+                    <div class="delivery-option-price">—</div>
                     <div
                       class="delivery-option-desc"
                       data-i18n="form.pickupOffice"
@@ -2338,6 +2372,14 @@
         </section>
       </div>
     </main>
+
+    <!-- ─── YOU MAY ALSO LIKE ──────────────────────────────────── -->
+    <section class="also-like-section">
+      <div class="container">
+        <h2 class="also-like-title" data-i18n="section.alsoLike">You May Also Like</h2>
+        <div class="also-like-grid" id="alsoLikeGrid"></div>
+      </div>
+    </section>
 
     <!-- ─── FOOTER ─────────────────────────────────────────────── -->
     <footer class="site-footer" role="contentinfo">
@@ -2578,17 +2620,35 @@
       let _allCategories = [];
       let _allSubCategories = [];
       let _allProducts = [];
+      let _deliveryPrices = [];
       let selectedProduct = null;
       let selectedVariantIndex = 0;
       let selectedFlavor = "";
       let selectedDelivery = "home";
       let selectedQty = 1;
 
-      const DELIVERY_COST = { home: 500, office: 400 };
-      // Server-side promo codes (fetched from Sheets) are validated server-side;
-      // these are local fallbacks for demo purposes
-      const LOCAL_PROMO_CODES = { BYBENS10: 10, SPORT20: 20, WELCOME15: 15 };
-      let appliedDiscount = 0;
+      function getDeliveryCost() {
+        if (selectedWilayaCode && _deliveryPrices.length) {
+          const wilayaName = WILAYAS[selectedWilayaCode]
+            ? WILAYAS[selectedWilayaCode].name.trim().toLowerCase()
+            : "";
+          const code = selectedWilayaCode.replace(/^0+/, ""); // "01" → "1"
+          const row = _deliveryPrices.find((d) => {
+            const stored = d.wilaya.trim().toLowerCase();
+            return (
+              stored === wilayaName ||
+              stored === code ||
+              stored === selectedWilayaCode ||
+              stored.includes(wilayaName) ||
+              wilayaName.includes(stored)
+            );
+          });
+          if (row) return { home: row.homePrice, office: row.officePrice };
+        }
+        return { home: 0, office: 0 };
+      }
+      let _allPromos = [];
+      let appliedPromo = null; // the validated promo object
 
       /* ── HELPERS ── */
       /**
@@ -2675,16 +2735,22 @@
           const params = new URLSearchParams(window.location.search);
           const productId = params.get("id");
 
-          const [prodRes, catRes, subRes] = await Promise.all([
+          const [prodRes, catRes, subRes, deliveryRes, promoRes] = await Promise.all([
             fetch(`${SCRIPT_URL}?action=getProducts`).then((r) => r.json()),
             fetch(`${SCRIPT_URL}?action=getCategories`).then((r) => r.json()),
             fetch(`${SCRIPT_URL}?action=getSubCategories`).then((r) =>
               r.json(),
             ),
+            fetch(`${SCRIPT_URL}?action=getDeliveryPrices`).then((r) =>
+              r.json(),
+            ),
+            fetch(`${SCRIPT_URL}?action=getPromos`).then((r) => r.json()),
           ]);
 
           if (catRes.success) _allCategories = catRes.categories;
           if (subRes.success) _allSubCategories = subRes.subCategories;
+          if (deliveryRes.success) _deliveryPrices = deliveryRes.deliveryPrices;
+          if (promoRes.success) _allPromos = promoRes.promos;
 
           renderCatNav(_allCategories, _allSubCategories);
 
@@ -2700,10 +2766,42 @@
               // FIX: updateSummary AFTER renderProduct sets selectedVariantIndex & selectedFlavor
               updateSummary();
             }
+            renderAlsoLike();
           }
         } catch (err) {
           console.error("Failed to load product data:", err);
         }
+      }
+
+      function renderAlsoLike() {
+        const grid = document.getElementById("alsoLikeGrid");
+        if (!grid || !_allProducts.length) return;
+        const others = _allProducts.filter(
+          (p) => p.status !== "inactive" && (!selectedProduct || p.id !== selectedProduct.id),
+        );
+        // shuffle and take 4
+        const picked = others
+          .map((p) => ({ p, sort: Math.random() }))
+          .sort((a, b) => a.sort - b.sort)
+          .slice(0, 4)
+          .map((x) => x.p);
+
+        grid.innerHTML = picked.map((p) => {
+          const price = p.variants && p.variants.length
+            ? (typeof p.variants[0] === "object" ? p.variants[0].price : 0)
+            : 0;
+          const img = p.imageUrl
+            ? `<img src="${p.imageUrl}" alt="${p.name}" />`
+            : `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
+          return `
+            <div class="also-card" onclick="window.location.href='product-detail.html?id=${p.id}'">
+              <div class="also-card-img">${img}</div>
+              <div class="also-card-body">
+                <div class="also-card-name">${p.name}</div>
+                <div class="also-card-price">${price ? price.toLocaleString("fr-DZ") + " DA" : ""}</div>
+              </div>
+            </div>`;
+        }).join("");
       }
 
       /* ── RENDER PRODUCT ──
@@ -2938,43 +3036,127 @@
         document.getElementById("summaryPrice").textContent =
           `${variantPrice.toLocaleString("fr-DZ")} DA × ${selectedQty}`;
 
-        const cost = DELIVERY_COST[selectedDelivery];
+        const deliveryCosts = getDeliveryCost();
+        const cost = deliveryCosts[selectedDelivery];
         document.getElementById("summaryDelivery").textContent =
-          `+${cost} DA (${selectedDelivery === "home" ? "Home" : "Office"})`;
+          selectedWilayaCode
+            ? `+${cost.toLocaleString("fr-DZ")} DA (${selectedDelivery === "home" ? "Home" : "Office"})`
+            : "Select wilaya";
 
         const subtotal = variantPrice * selectedQty;
-        const promoDiscount = Math.round(subtotal * (appliedDiscount / 100));
-        const total = subtotal + cost - promoDiscount;
+        const { discount, freeDelivery } = getPromoDiscount(subtotal, cost);
+        const deliveryCharge = selectedWilayaCode ? (freeDelivery ? 0 : cost) : 0;
+        const total = subtotal + deliveryCharge - discount;
 
+        if (freeDelivery) {
+          document.getElementById("summaryDelivery").textContent = "FREE 🎉";
+        }
+
+        let promoLabel = "";
+        if (appliedPromo) {
+          if (appliedPromo.type === "percent") promoLabel = `(-${appliedPromo.value}%) `;
+          else if (appliedPromo.type === "fixed") promoLabel = `(-${appliedPromo.value.toLocaleString("fr-DZ")} DA) `;
+        }
         document.getElementById("summaryTotal").textContent =
-          (appliedDiscount ? `(-${appliedDiscount}%) ` : "") +
-          total.toLocaleString("fr-DZ") +
-          " DA";
+          promoLabel + total.toLocaleString("fr-DZ") + " DA";
       }
 
       /* ── PROMO CODE ── */
       function applyPromo() {
-        const code = document
-          .getElementById("promoCode")
-          .value.trim()
-          .toUpperCase();
+        const code = document.getElementById("promoCode").value.trim().toUpperCase();
         const msgEl = document.getElementById("promoMsg");
         if (!code) {
           msgEl.style.color = "var(--red)";
           msgEl.textContent = "Please enter a promo code.";
           return;
         }
-        if (LOCAL_PROMO_CODES[code]) {
-          appliedDiscount = LOCAL_PROMO_CODES[code];
-          msgEl.style.color = "#0a7c3e";
-          msgEl.textContent = `✓ Code applied! ${appliedDiscount}% off`;
-          updateSummary();
-        } else {
-          appliedDiscount = 0;
+
+        const promo = _allPromos.find((pr) => pr.code.toUpperCase() === code);
+
+        if (!promo) {
+          appliedPromo = null;
           msgEl.style.color = "var(--red)";
           msgEl.textContent = "✗ Invalid promo code.";
           updateSummary();
+          return;
         }
+
+        // Status check
+        if (promo.status !== "active") {
+          appliedPromo = null;
+          msgEl.style.color = "var(--red)";
+          msgEl.textContent = "✗ This promo code is no longer active.";
+          updateSummary();
+          return;
+        }
+
+        // Expiry check
+        if (promo.expiry) {
+          const expiry = new Date(promo.expiry);
+          expiry.setHours(23, 59, 59, 999);
+          if (expiry < new Date()) {
+            appliedPromo = null;
+            msgEl.style.color = "var(--red)";
+            msgEl.textContent = "✗ This promo code has expired.";
+            updateSummary();
+            return;
+          }
+        }
+
+        // Max uses check
+        if (promo.maxUses && promo.uses >= promo.maxUses) {
+          appliedPromo = null;
+          msgEl.style.color = "var(--red)";
+          msgEl.textContent = "✗ This promo code has reached its usage limit.";
+          updateSummary();
+          return;
+        }
+
+        // Product link check — if the product has specific promoCodeIds, the code must be in that list
+        const p = selectedProduct;
+        if (p && p.promoCodeIds && p.promoCodeIds.length > 0) {
+          if (!p.promoCodeIds.includes(promo.id)) {
+            appliedPromo = null;
+            msgEl.style.color = "var(--red)";
+            msgEl.textContent = "✗ This code is not valid for this product.";
+            updateSummary();
+            return;
+          }
+        }
+
+        // Min order check
+        const variantPrice = getProductPrice(p, selectedVariantIndex);
+        const subtotal = variantPrice * selectedQty;
+        if (promo.minOrder && subtotal < promo.minOrder) {
+          appliedPromo = null;
+          msgEl.style.color = "var(--red)";
+          msgEl.textContent = `✗ Minimum order of ${promo.minOrder.toLocaleString("fr-DZ")} DA required.`;
+          updateSummary();
+          return;
+        }
+
+        // All checks passed
+        appliedPromo = promo;
+        msgEl.style.color = "#0a7c3e";
+        if (promo.type === "percent") {
+          msgEl.textContent = `✓ Code applied! ${promo.value}% off`;
+        } else if (promo.type === "fixed") {
+          msgEl.textContent = `✓ Code applied! −${promo.value.toLocaleString("fr-DZ")} DA`;
+        } else if (promo.type === "free_delivery") {
+          msgEl.textContent = "✓ Code applied! Free delivery";
+        }
+        updateSummary();
+      }
+
+      function getPromoDiscount(subtotal, deliveryCost) {
+        if (!appliedPromo) return { discount: 0, freeDelivery: false };
+        if (appliedPromo.type === "percent")
+          return { discount: Math.round(subtotal * (appliedPromo.value / 100)), freeDelivery: false };
+        if (appliedPromo.type === "fixed")
+          return { discount: Math.min(appliedPromo.value, subtotal), freeDelivery: false };
+        if (appliedPromo.type === "free_delivery")
+          return { discount: deliveryCost, freeDelivery: true };
+        return { discount: 0, freeDelivery: false };
       }
 
       /* ══════════════════════════════════════════════════════
@@ -4870,6 +5052,22 @@
           });
         closeAllDropdowns();
         populateCommune(code);
+        updateDeliveryPriceDisplay();
+        updateSummary();
+      }
+
+      function updateDeliveryPriceDisplay() {
+        const costs = getDeliveryCost();
+        const homePriceEl = document.querySelector("#deliveryHome .delivery-option-price");
+        const officePriceEl = document.querySelector("#deliveryOffice .delivery-option-price");
+        if (homePriceEl)
+          homePriceEl.textContent = selectedWilayaCode
+            ? `+${costs.home.toLocaleString("fr-DZ")} DA`
+            : "—";
+        if (officePriceEl)
+          officePriceEl.textContent = selectedWilayaCode
+            ? `+${costs.office.toLocaleString("fr-DZ")} DA`
+            : "—";
       }
 
       function selectCommuneOption(name) {
@@ -5000,11 +5198,12 @@
         }
 
         const p = selectedProduct;
-        const cost = DELIVERY_COST[selectedDelivery];
+        const cost = getDeliveryCost()[selectedDelivery];
         const variantPrice = getProductPrice(p, selectedVariantIndex);
         const subtotal = variantPrice * selectedQty;
-        const promoDisc = Math.round(subtotal * (appliedDiscount / 100));
-        const total = (subtotal + cost - promoDisc).toLocaleString("fr-DZ");
+        const { discount, freeDelivery } = getPromoDiscount(subtotal, cost);
+        const deliveryCharge = freeDelivery ? 0 : cost;
+        const total = (subtotal + deliveryCharge - discount).toLocaleString("fr-DZ");
         const firstName = document.getElementById("firstName").value.trim();
 
         document.getElementById("successMsg").textContent =
@@ -5047,6 +5246,7 @@
           "form.delivery": "Delivery",
           "form.total": "Total",
           "form.confirmOrder": "CONFIRM ORDER",
+          "section.alsoLike": "You May Also Like",
           "footer.tagline":
             "Algeria's premier sports nutrition store. Authentic products, fast delivery, and expert support to fuel your performance.",
           "footer.shop": "Shop",
@@ -5094,6 +5294,7 @@
           "form.delivery": "Livraison",
           "form.total": "Total",
           "form.confirmOrder": "CONFIRMER LA COMMANDE",
+          "section.alsoLike": "Vous Aimerez Aussi",
           "footer.tagline":
             "La boutique de nutrition sportive de référence en Algérie.",
           "footer.shop": "Boutique",
@@ -5141,6 +5342,7 @@
           "form.delivery": "التوصيل",
           "form.total": "المجموع",
           "form.confirmOrder": "تأكيد الطلب",
+          "section.alsoLike": "قد يعجبك أيضاً",
           "footer.tagline":
             "المتجر الأول للتغذية الرياضية في الجزائر. منتجات أصيلة، توصيل سريع.",
           "footer.shop": "المتجر",

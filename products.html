@@ -2641,7 +2641,7 @@
 
             const flavorLabel = p.flavors && p.flavors.length > 0 ? p.flavors[0].name : "";
             const imgEl = p.imageUrl
-              ? `<img src="${p.imageUrl}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" />`
+              ? `<img src="${p.imageUrl}" alt="${p.name}" style="width:100%;height:100%;object-fit:contain;" loading="lazy" />`
               : `<svg class="placeholder-icon" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
 
             return `
