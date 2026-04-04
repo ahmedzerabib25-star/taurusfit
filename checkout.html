@@ -1540,6 +1540,11 @@
         font-weight: 800;
         color: var(--red);
       }
+      .also-card-actions { display: flex; gap: 8px; margin-top: 10px; }
+      .also-btn-cart { flex: 1; height: 34px; background: var(--gray-100); color: var(--black); border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; transition: background var(--transition); }
+      .also-btn-cart:hover { background: var(--gray-200); }
+      .also-btn-buy { flex: 1; height: 34px; background: var(--red); color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; transition: background var(--transition); }
+      .also-btn-buy:hover { background: var(--red-hover); }
 
       /* ─── FOOTER ───────────────────────────────────────────────── */
       .site-footer {
@@ -3657,15 +3662,48 @@
               ? `<img src="${p.imageUrl}" alt="${p.name}" />`
               : `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
             return `
-            <div class="also-card" onclick="window.location.href='product-detail.html?id=${p.id}'">
+            <div class="also-card" onclick="window.location.href='product-detail.html?id=${p.id}'" style="cursor:pointer">
               <div class="also-card-img">${img}</div>
               <div class="also-card-body">
                 <div class="also-card-name">${p.name}</div>
                 <div class="also-card-price">${price ? price.toLocaleString("fr-DZ") + " DA" : ""}</div>
+                <div class="also-card-actions">
+                  <button class="also-btn-cart" onclick="event.stopPropagation();alsoLikeAddToCart('${p.id}')">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    Add to Cart
+                  </button>
+                  <button class="also-btn-buy" onclick="event.stopPropagation();window.location.href='product-detail.html?id=${p.id}'">
+                    Buy Now
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+                  </button>
+                </div>
               </div>
             </div>`;
           })
           .join("");
+      }
+
+      function alsoLikeAddToCart(productId) {
+        const p = _allProducts.find(x => x.id === productId);
+        if (!p) return;
+        const variants = typeof p.variants === "string" ? JSON.parse(p.variants) : (p.variants || []);
+        const v = variants[0];
+        const basePrice = v && typeof v === "object" ? v.price : 0;
+        const unitPrice = p.discount ? Math.round(basePrice * (1 - p.discount / 100)) : basePrice;
+        const variantLabel = v && typeof v === "object" && v.weight ? `${v.weight}${v.unit || ""}` : "";
+        const key = `${p.id}__0__`;
+        const items = cartGet();
+        const existing = items.find(i => i.key === key);
+        if (existing) {
+          existing.qty += 1;
+        } else {
+          items.push({ key, id: p.id, name: p.name, variant: variantLabel, flavor: "", unitPrice, qty: 1, imageUrl: p.imageUrl || "" });
+        }
+        cartSave(items);
+        cartUpdateBadge();
+        renderCheckoutItems();
+        if (!_cartOpen) toggleCart();
+        else _renderCartDrawer();
       }
 
       const WILAYAS = {

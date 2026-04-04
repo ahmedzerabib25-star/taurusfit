@@ -58,7 +58,7 @@ function initSheets() {
       "createdAt",
     ],
     DeliveryPrices: ["id", "wilaya", "homePrice", "officePrice", "createdAt"],
-    Bundle: ["bundleId", "description"],
+    Bundle: ["bundleId", "descriptionAr", "descriptionFr", "descriptionEn"],
     Orders: [
       "id",
       "source",
@@ -358,7 +358,12 @@ function handleUpdateCategory(body) {
       } else if (sub.name) {
         // new sub — append it
         var newId = String(Date.now() + idx + 1);
-        subSheet.appendRow([newId, sub.name, body.id, new Date().toISOString()]);
+        subSheet.appendRow([
+          newId,
+          sub.name,
+          body.id,
+          new Date().toISOString(),
+        ]);
         Utilities.sleep(5);
       }
     });
@@ -664,11 +669,29 @@ function handleDeleteDeliveryPrice(body) {
 // ════════════════════════════════════════════
 function handleGetBundle() {
   const sheet = getSheet("Bundle");
-  if (!sheet) return jsonResponse({ success: true, bundleId: "", bundleDescription: "" });
+  if (!sheet)
+    return jsonResponse({
+      success: true,
+      bundleId: "",
+      bundleDescriptionAr: "",
+      bundleDescriptionFr: "",
+      bundleDescriptionEn: "",
+    });
   const data = sheet.getDataRange().getValues();
   const bundleId = data.length > 1 ? String(data[1][0] || "").trim() : "";
-  const bundleDescription = data.length > 1 ? String(data[1][1] || "").trim() : "";
-  return jsonResponse({ success: true, bundleId, bundleDescription });
+  const bundleDescriptionAr =
+    data.length > 1 ? String(data[1][1] || "").trim() : "";
+  const bundleDescriptionFr =
+    data.length > 1 ? String(data[1][2] || "").trim() : "";
+  const bundleDescriptionEn =
+    data.length > 1 ? String(data[1][3] || "").trim() : "";
+  return jsonResponse({
+    success: true,
+    bundleId,
+    bundleDescriptionAr,
+    bundleDescriptionFr,
+    bundleDescriptionEn,
+  });
 }
 
 function handleSaveBundle(body) {
@@ -679,14 +702,24 @@ function handleSaveBundle(body) {
       error: "Bundle sheet not found. Run initSheets first.",
     });
   const id = body.bundleId ? String(body.bundleId).trim() : "";
-  const description = body.bundleDescription ? String(body.bundleDescription).trim() : "";
+  const descAr = body.bundleDescriptionAr
+    ? String(body.bundleDescriptionAr).trim()
+    : "";
+  const descFr = body.bundleDescriptionFr
+    ? String(body.bundleDescriptionFr).trim()
+    : "";
+  const descEn = body.bundleDescriptionEn
+    ? String(body.bundleDescriptionEn).trim()
+    : "";
   if (sheet.getLastRow() < 2) {
-    sheet.appendRow([id, description]);
+    sheet.appendRow([id, descAr, descFr, descEn]);
   } else {
     sheet.getRange(2, 1).setValue(id);
-    sheet.getRange(2, 2).setValue(description);
+    sheet.getRange(2, 2).setValue(descAr);
+    sheet.getRange(2, 3).setValue(descFr);
+    sheet.getRange(2, 4).setValue(descEn);
     if (sheet.getLastRow() > 2) {
-      sheet.getRange(3, 1, sheet.getLastRow() - 2, 2).clear();
+      sheet.getRange(3, 1, sheet.getLastRow() - 2, 4).clear();
     }
   }
   return jsonResponse({ success: true });
@@ -723,16 +756,30 @@ function handleSubmitOrder(body) {
   if (!sheet) {
     sheet = ss.insertSheet("Orders");
     const hdrs = [
-      "id", "source", "firstName", "lastName", "phone", "wilaya", "commune",
-      "deliveryType", "deliveryCost", "promoCode", "promoDiscount", "items",
-      "subtotal", "total", "status", "createdAt",
+      "id",
+      "source",
+      "firstName",
+      "lastName",
+      "phone",
+      "wilaya",
+      "commune",
+      "deliveryType",
+      "deliveryCost",
+      "promoCode",
+      "promoDiscount",
+      "items",
+      "subtotal",
+      "total",
+      "status",
+      "createdAt",
     ];
     sheet.getRange(1, 1, 1, hdrs.length).setValues([hdrs]);
     sheet.getRange(1, 1, 1, hdrs.length).setFontWeight("bold");
     sheet.setFrozenRows(1);
   }
   const id = Date.now().toString();
-  const source = body.action === "submitCartOrder" ? "checkout" : "product-detail";
+  const source =
+    body.action === "submitCartOrder" ? "checkout" : "product-detail";
   sheet.appendRow([
     id,
     source,
