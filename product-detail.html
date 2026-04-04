@@ -125,13 +125,17 @@
         }
       }
       @keyframes marqueeTick {
-        from {
-          transform: translateX(0);
-        }
-        to {
-          transform: translateX(-50%);
-        }
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
       }
+      @keyframes lightning {
+        0%,100% { opacity: 1; text-shadow: 0 0 8px #fff, 0 0 20px #fff; }
+        10%      { opacity: 0.15; text-shadow: none; }
+        20%      { opacity: 1; text-shadow: 0 0 12px #fff, 0 0 30px #ffffffaa; }
+        30%      { opacity: 0.15; text-shadow: none; }
+        40%,90%  { opacity: 1; text-shadow: 0 0 8px #fff, 0 0 20px #fff; }
+      }
+      .marquee-item { animation: lightning 6s ease-in-out infinite; }
       @keyframes slideIn {
         from {
           opacity: 0;
@@ -155,11 +159,9 @@
       .marquee-track {
         display: flex;
         align-items: center;
+        justify-content: center;
         white-space: nowrap;
-        animation: marqueeTick 28s linear infinite;
-      }
-      .marquee-track:hover {
-        animation-play-state: paused;
+        width: 100%;
       }
       .marquee-item {
         display: inline-flex;
@@ -1576,6 +1578,29 @@
       .also-btn-buy { flex: 1; height: 34px; background: var(--red); color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; transition: background var(--transition); }
       .also-btn-buy:hover { background: var(--red-hover); }
 
+      /* ══ ADD-TO-CART MODAL ══ */
+      .atc-overlay{position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:9000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .22s,visibility .22s;}
+      .atc-overlay.open{opacity:1;visibility:visible;}
+      .atc-modal{background:#fff;border-radius:16px;padding:28px 24px 24px;width:90%;max-width:420px;position:relative;transform:translateY(20px);transition:transform .22s;max-height:90vh;overflow-y:auto;}
+      .atc-overlay.open .atc-modal{transform:translateY(0);}
+      .atc-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;background:var(--gray-100);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--black);transition:background .2s;}
+      .atc-close:hover{background:var(--gray-200);}
+      .atc-modal-img{width:100%;height:180px;background:var(--gray-50);border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:16px;}
+      .atc-modal-img img{width:100%;height:100%;object-fit:cover;}
+      .atc-modal-name{font-size:17px;font-weight:700;color:var(--black);margin-bottom:4px;}
+      .atc-modal-price{font-size:20px;font-weight:800;color:var(--red);margin-bottom:18px;font-family:var(--font-display);}
+      .atc-section{margin-bottom:16px;}
+      .atc-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--gray-400);margin-bottom:8px;}
+      .atc-options{display:flex;flex-wrap:wrap;gap:8px;}
+      .atc-option{padding:7px 14px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;background:#fff;color:var(--black);}
+      .atc-option:hover{border-color:var(--black);}
+      .atc-option.active{border-color:var(--red);background:var(--red-light);color:var(--red);}
+      .atc-qty-row{display:flex;align-items:center;gap:12px;}
+      .atc-qty-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid var(--gray-200);background:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s;line-height:1;}
+      .atc-qty-btn:hover{border-color:var(--black);}
+      .atc-qty-val{font-size:18px;font-weight:700;min-width:28px;text-align:center;}
+      .atc-confirm-btn{width:100%;padding:14px;background:var(--red);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;margin-top:20px;}
+      .atc-confirm-btn:hover{background:var(--red-hover);}
       /* ─── FOOTER ───────────────────────────────────────────────── */
       .site-footer {
         background: var(--black);
@@ -1778,22 +1803,7 @@
     <!-- ─── MARQUEE ─────────────────────────────────────────────── -->
     <div class="marquee-bar">
       <div class="marquee-track">
-        <span class="marquee-item">🚚 Free delivery over 5 000 DA</span>
-        <span class="marquee-item marquee-sep">✦</span>
-        <span class="marquee-item">💪 100% Authentic Products</span>
-        <span class="marquee-item marquee-sep">✦</span>
-        <span class="marquee-item">⚡ Same-day dispatch in Algiers</span>
-        <span class="marquee-item marquee-sep">✦</span>
-        <span class="marquee-item">🔒 Secure checkout</span>
-        <span class="marquee-item marquee-sep">✦</span>
-        <span class="marquee-item">🚚 Free delivery over 5 000 DA</span>
-        <span class="marquee-item marquee-sep">✦</span>
-        <span class="marquee-item">💪 100% Authentic Products</span>
-        <span class="marquee-item marquee-sep">✦</span>
-        <span class="marquee-item">⚡ Same-day dispatch in Algiers</span>
-        <span class="marquee-item marquee-sep">✦</span>
-        <span class="marquee-item">🔒 Secure checkout</span>
-        <span class="marquee-item marquee-sep">✦</span>
+        <span class="marquee-item">🚚 Free delivery over 15 000 DA</span>
       </div>
     </div>
 
@@ -2465,6 +2475,33 @@
       </div>
     </section>
 
+    <!-- ══ ADD-TO-CART MODAL ══ -->
+    <div class="atc-overlay" id="atcOverlay" onclick="if(event.target===this)closeAddToCartModal()">
+      <div class="atc-modal">
+        <button class="atc-close" onclick="closeAddToCartModal()">&#x2715;</button>
+        <div class="atc-modal-img" id="atcImg"></div>
+        <div class="atc-modal-name" id="atcName"></div>
+        <div class="atc-modal-price" id="atcPrice"></div>
+        <div class="atc-section" id="atcFlavorSection">
+          <div class="atc-label">Flavor</div>
+          <div class="atc-options" id="atcFlavorOptions"></div>
+        </div>
+        <div class="atc-section" id="atcWeightSection">
+          <div class="atc-label">Size / Weight</div>
+          <div class="atc-options" id="atcWeightOptions"></div>
+        </div>
+        <div class="atc-section">
+          <div class="atc-label">Quantity</div>
+          <div class="atc-qty-row">
+            <button class="atc-qty-btn" onclick="atcChangeQty(-1)">&#8722;</button>
+            <span class="atc-qty-val" id="atcQtyVal">1</span>
+            <button class="atc-qty-btn" onclick="atcChangeQty(1)">+</button>
+          </div>
+        </div>
+        <button class="atc-confirm-btn" onclick="confirmAddToCart()">Add to Cart</button>
+      </div>
+    </div>
+
     <!-- ─── FOOTER ─────────────────────────────────────────────── -->
     <footer class="site-footer" role="contentinfo">
       <div class="container">
@@ -2483,7 +2520,7 @@
               delivery, and expert support to fuel your performance.
             </p>
             <div class="footer-social">
-              <a href="#" aria-label="Facebook"
+              <a href="https://www.facebook.com/bens.supplements?rdid=xz8wUzpQtBJiEMM9&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18TWJRV3hc%2F#" aria-label="Facebook" target="_blank" rel="noopener"
                 ><svg
                   width="16"
                   height="16"
@@ -2903,7 +2940,7 @@
                 <div class="also-card-name">${p.name}</div>
                 <div class="also-card-price">${price ? price.toLocaleString("fr-DZ") + " DA" : ""}</div>
                 <div class="also-card-actions">
-                  <button class="also-btn-cart" onclick="event.stopPropagation();alsoLikeAddToCart('${p.id}')">
+                  <button class="also-btn-cart" onclick="event.stopPropagation();openAddToCartModal('${p.id}')">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                     Add to Cart
                   </button>
@@ -5648,25 +5685,69 @@
         else _renderCartDrawer();
       }
 
-      function alsoLikeAddToCart(productId) {
-        const p = _allProducts.find(x => x.id === productId);
-        if (!p) return;
+      /* ── ADD-TO-CART MODAL (also-like) ── */
+      let _atcProduct = null, _atcQty = 1, _atcFlavor = "", _atcVariantIdx = 0;
+      function openAddToCartModal(productId) {
+        const p = _allProducts.find(x => x.id === productId); if (!p) return;
+        _atcProduct = p; _atcQty = 1; _atcFlavor = ""; _atcVariantIdx = 0;
+        document.getElementById("atcImg").innerHTML = p.imageUrl
+          ? `<img src="${p.imageUrl}" alt="${p.name}">`
+          : `<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
+        document.getElementById("atcName").textContent = p.name;
+        _atcRefreshPrice();
+        const flavors = parseField(p.flavors).map(f => typeof f === "object" ? (f.name || f.label || "") : String(f)).filter(Boolean);
+        const flavorSec = document.getElementById("atcFlavorSection");
+        if (flavors.length) {
+          _atcFlavor = flavors[0];
+          document.getElementById("atcFlavorOptions").innerHTML = flavors.map((f, i) =>
+            `<button class="atc-option${i===0?" active":""}" onclick="atcPickFlavor(this,'${f.replace(/'/g,"\\'")}')">${f}</button>`).join("");
+          flavorSec.style.display = "";
+        } else { flavorSec.style.display = "none"; }
         const variants = parseField(p.variants);
-        const v = variants[0];
-        const unitPrice = v && typeof v === "object" ? (p.discount ? Math.round(v.price * (1 - p.discount / 100)) : v.price) : 0;
-        let variantLabel = v && typeof v === "object" && v.weight ? `${v.weight}${v.unit || ""}` : "";
-        const key = `${p.id}__0__`;
+        const weightSec = document.getElementById("atcWeightSection");
+        if (variants.length) {
+          document.getElementById("atcWeightOptions").innerHTML = variants.map((v, i) => {
+            const lbl = typeof v === "object" ? (v.weight ? `${v.weight}${v.unit||""}` : v.label || v.name || `Option ${i+1}`) : String(v);
+            return `<button class="atc-option${i===0?" active":""}" onclick="atcPickVariant(this,${i})">${lbl}</button>`;
+          }).join("");
+          weightSec.style.display = "";
+        } else { weightSec.style.display = "none"; }
+        document.getElementById("atcQtyVal").textContent = 1;
+        document.getElementById("atcOverlay").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+      function _atcRefreshPrice() {
+        const p = _atcProduct; if (!p) return;
+        const v = parseField(p.variants)[_atcVariantIdx];
+        const base = v && typeof v === "object" ? (v.price || 0) : 0;
+        const disc = p.discount || 0;
+        const final = disc > 0 ? Math.round(base * (1 - disc/100)) : base;
+        document.getElementById("atcPrice").textContent = final > 0 ? `${final.toLocaleString()} DA` : "";
+      }
+      function atcPickFlavor(btn, f) {
+        document.querySelectorAll("#atcFlavorOptions .atc-option").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active"); _atcFlavor = f;
+      }
+      function atcPickVariant(btn, idx) {
+        document.querySelectorAll("#atcWeightOptions .atc-option").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active"); _atcVariantIdx = idx; _atcRefreshPrice();
+      }
+      function atcChangeQty(d) { _atcQty = Math.max(1, _atcQty + d); document.getElementById("atcQtyVal").textContent = _atcQty; }
+      function closeAddToCartModal() { document.getElementById("atcOverlay").classList.remove("open"); document.body.style.overflow = ""; }
+      function confirmAddToCart() {
+        const p = _atcProduct; if (!p) return;
+        const variants = parseField(p.variants);
+        const v = variants[_atcVariantIdx];
+        const base = v && typeof v === "object" ? (v.price || 0) : 0;
+        const disc = p.discount || 0;
+        const unitPrice = disc > 0 ? Math.round(base * (1 - disc/100)) : base;
+        const variantLabel = v ? (typeof v === "object" ? (v.weight ? `${v.weight}${v.unit||""}` : v.label || v.name || "") : String(v)) : "";
         const items = cartGet();
-        const existing = items.find(i => i.key === key);
-        if (existing) {
-          existing.qty += 1;
-        } else {
-          items.push({ key, id: p.id, name: p.name, variant: variantLabel, flavor: "", unitPrice, qty: 1, imageUrl: p.imageUrl || "" });
-        }
-        cartSave(items);
-        cartUpdateBadge();
-        if (!_cartOpen) toggleCart();
-        else _renderCartDrawer();
+        const existing = items.find(i => i.productId === p.id && i.flavor === _atcFlavor && i.variant === variantLabel);
+        if (existing) { existing.qty += _atcQty; }
+        else { items.push({ productId: p.id, name: p.name, imageUrl: p.imageUrl || "", unitPrice, qty: _atcQty, flavor: _atcFlavor, variant: variantLabel }); }
+        cartSave(items); cartUpdateBadge(); closeAddToCartModal();
+        if (!_cartOpen) toggleCart(); else _renderCartDrawer();
       }
 
       function toggleMobileMenu() {

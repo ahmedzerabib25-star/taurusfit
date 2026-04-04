@@ -216,13 +216,17 @@
         }
       }
       @keyframes marqueeTick {
-        from {
-          transform: translateX(0);
-        }
-        to {
-          transform: translateX(-50%);
-        }
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
       }
+      @keyframes lightning {
+        0%,100% { opacity: 1; text-shadow: 0 0 8px #fff, 0 0 20px #fff; }
+        10%      { opacity: 0.15; text-shadow: none; }
+        20%      { opacity: 1; text-shadow: 0 0 12px #fff, 0 0 30px #ffffffaa; }
+        30%      { opacity: 0.15; text-shadow: none; }
+        40%,90%  { opacity: 1; text-shadow: 0 0 8px #fff, 0 0 20px #fff; }
+      }
+      .marquee-item { animation: lightning 6s ease-in-out infinite; }
       @keyframes shimmer {
         0% {
           background-position: -600px 0;
@@ -270,11 +274,9 @@
       .marquee-track {
         display: flex;
         align-items: center;
+        justify-content: center;
         white-space: nowrap;
-        animation: marqueeTick 28s linear infinite;
-      }
-      .marquee-track:hover {
-        animation-play-state: paused;
+        width: 100%;
       }
       .marquee-item {
         display: inline-flex;
@@ -2171,45 +2173,7 @@
     <!-- ═══ MARQUEE ══════════════════════════════════════════════ -->
     <div class="marquee-bar">
       <div class="marquee-track">
-        <span class="marquee-item"
-          >🚚 Livraison Gratuite dès 5000 DA
-          <span class="marquee-sep">|</span></span
-        >
-        <span class="marquee-item"
-          >💪 Qualité Certifiée &amp; Authentique
-          <span class="marquee-sep">|</span></span
-        >
-        <span class="marquee-item"
-          >⚡ Paiement à la Livraison Disponible
-          <span class="marquee-sep">|</span></span
-        >
-        <span class="marquee-item"
-          >🇩🇿 Livraison partout en Algérie
-          <span class="marquee-sep">|</span></span
-        >
-        <span class="marquee-item"
-          >🎁 Promo – Jusqu'à -30% <span class="marquee-sep">|</span></span
-        >
-        <!-- duplicate for seamless loop -->
-        <span class="marquee-item"
-          >🚚 Livraison Gratuite dès 5000 DA
-          <span class="marquee-sep">|</span></span
-        >
-        <span class="marquee-item"
-          >💪 Qualité Certifiée &amp; Authentique
-          <span class="marquee-sep">|</span></span
-        >
-        <span class="marquee-item"
-          >⚡ Paiement à la Livraison Disponible
-          <span class="marquee-sep">|</span></span
-        >
-        <span class="marquee-item"
-          >🇩🇿 Livraison partout en Algérie
-          <span class="marquee-sep">|</span></span
-        >
-        <span class="marquee-item"
-          >🎁 Promo – Jusqu'à -30% <span class="marquee-sep">|</span></span
-        >
+        <span class="marquee-item">🚚 Free delivery over 15 000 DA</span>
       </div>
     </div>
 
@@ -2517,7 +2481,7 @@
             delivered to your door.
           </p>
           <div class="social-links">
-            <a href="#" class="social-link" aria-label="Facebook">f</a>
+            <a href="https://www.facebook.com/bens.supplements?rdid=xz8wUzpQtBJiEMM9&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18TWJRV3hc%2F#" class="social-link" aria-label="Facebook" target="_blank" rel="noopener">f</a>
             <a href="#" class="social-link" aria-label="Instagram">
               <svg
                 width="15"

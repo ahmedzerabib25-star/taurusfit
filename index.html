@@ -151,13 +151,17 @@
         }
       }
       @keyframes marqueeTick {
-        from {
-          transform: translateX(0);
-        }
-        to {
-          transform: translateX(-50%);
-        }
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
       }
+      @keyframes lightning {
+        0%,100% { opacity: 1; text-shadow: 0 0 8px #fff, 0 0 20px #fff; }
+        10%      { opacity: 0.15; text-shadow: none; }
+        20%      { opacity: 1; text-shadow: 0 0 12px #fff, 0 0 30px #ffffffaa; }
+        30%      { opacity: 0.15; text-shadow: none; }
+        40%,90%  { opacity: 1; text-shadow: 0 0 8px #fff, 0 0 20px #fff; }
+      }
+      .marquee-item { animation: lightning 6s ease-in-out infinite; }
 
       .animate-up {
         animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -645,11 +649,9 @@
       .marquee-track {
         display: flex;
         align-items: center;
+        justify-content: center;
         white-space: nowrap;
-        animation: marqueeTick 28s linear infinite;
-      }
-      .marquee-track:hover {
-        animation-play-state: paused;
+        width: 100%;
       }
       .marquee-item {
         display: inline-flex;
@@ -2017,47 +2019,7 @@
     <!-- ═══ MARQUEE BANNER ════════════════════════════════════════ -->
     <div class="marquee-bar" role="marquee" aria-label="Promotions">
       <div class="marquee-track">
-        <span class="marquee-item"
-          >🚚 Livraison Gratuite dès 15000 DA
-          <span class="marquee-sep">|</span></span
-        >
-        <span class="marquee-item"
-          >💪 Qualité Certifiée &amp; Authentique
-          <span class="marquee-sep">|</span></span
-        >
-        <span class="marquee-item"
-          >⚡ Paiement à la Livraison Disponible
-          <span class="marquee-sep">|</span></span
-        >
-        <span class="marquee-item"
-          >🇩🇿 Livraison partout en Algérie
-          <span class="marquee-sep">|</span></span
-        >
-        <span class="marquee-item"
-          >🎁 Promo Ramadan – Jusqu'à -30%
-          <span class="marquee-sep">|</span></span
-        >
-        <!-- Duplicate for seamless loop -->
-        <span class="marquee-item"
-          >🚚 Livraison Gratuite dès 15000 DA
-          <span class="marquee-sep">|</span></span
-        >
-        <span class="marquee-item"
-          >💪 Qualité Certifiée &amp; Authentique
-          <span class="marquee-sep">|</span></span
-        >
-        <span class="marquee-item"
-          >⚡ Paiement à la Livraison Disponible
-          <span class="marquee-sep">|</span></span
-        >
-        <span class="marquee-item"
-          >🇩🇿 Livraison partout en Algérie
-          <span class="marquee-sep">|</span></span
-        >
-        <span class="marquee-item"
-          >🎁 Promo Ramadan – Jusqu'à -30%
-          <span class="marquee-sep">|</span></span
-        >
+        <span class="marquee-item">🚚 Free delivery over 15 000 DA</span>
       </div>
     </div>
 
@@ -2382,12 +2344,9 @@
               <div>
                 <strong
                   style="display: block; font-size: 14px; color: var(--black)"
-                  data-i18n="trust.nationwide"
-                  >Nationwide</strong
+                  >All 69 Wilayas</strong
                 >
-                <span style="font-size: 12px" data-i18n="trust.nationwide.sub"
-                  >All 69 Wilayas</span
-                >
+                <span style="font-size: 12px">with Imir logistics</span>
               </div>
             </div>
             <div class="trust-item">
@@ -2593,7 +2552,7 @@
               bring world-class supplements directly to your door.
             </p>
             <div class="social-links">
-              <a href="#" class="social-link" aria-label="Facebook">f</a>
+              <a href="https://www.facebook.com/bens.supplements?rdid=xz8wUzpQtBJiEMM9&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18TWJRV3hc%2F#" class="social-link" aria-label="Facebook" target="_blank" rel="noopener">f</a>
               <a
                 href="https://www.instagram.com/bens.supplements?igsh=MTlpaGRnOGxsazBvbA%3D%3D"
                 class="social-link"
