@@ -2513,7 +2513,7 @@
             <h2 class="banner-title" data-i18n-html="banner.title">
               RAMP UP YOUR<em>PERFORMANCE</em>
             </h2>
-            <p class="banner-desc" data-i18n="banner.desc">
+            <p class="banner-desc" id="bundleBannerDesc" data-i18n="banner.desc">
               Get our most popular Whey Protein bundle at 30% off. Limited stock
               — order now and fuel your next workout.
             </p>
@@ -3429,6 +3429,11 @@
             img.style.display = "";
           }
           if (link) link.href = `product-detail.html?id=${product.id}`;
+          const desc = document.getElementById("bundleBannerDesc");
+          if (desc && bundleRes.bundleDescription) {
+            desc.textContent = bundleRes.bundleDescription;
+            desc.removeAttribute("data-i18n");
+          }
         } catch (err) {
           console.error("Failed to load bundle:", err);
         }

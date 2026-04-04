@@ -58,7 +58,7 @@ function initSheets() {
       "createdAt",
     ],
     DeliveryPrices: ["id", "wilaya", "homePrice", "officePrice", "createdAt"],
-    Bundle: ["bundleId"],
+    Bundle: ["bundleId", "description"],
     Orders: [
       "id",
       "source",
@@ -190,10 +190,14 @@ function doPost(e) {
     switch (action) {
       case "addCategory":
         return handleAddCategory(body);
+      case "updateCategory":
+        return handleUpdateCategory(body);
       case "deleteCategory":
         return handleDeleteCategory(body);
       case "addSubCategory":
         return handleAddSubCategory(body);
+      case "updateSubCategory":
+        return handleUpdateSubCategory(body);
       case "deleteSubCategory":
         return handleDeleteSubCategory(body);
       case "addProduct":
@@ -328,6 +332,40 @@ function handleAddCategory(body) {
   return jsonResponse({ success: true, id: id });
 }
 
+function handleUpdateCategory(body) {
+  const sheet = getSheet("Categories");
+  const data = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][0]) === String(body.id)) {
+      sheet.getRange(i + 1, 2).setValue(body.name);
+      sheet.getRange(i + 1, 3).setValue(body.description || "");
+      break;
+    }
+  }
+  // Handle subcategory renames/additions passed from the edit modal
+  if (Array.isArray(body.subCategories)) {
+    const subSheet = getSheet("SubCategories");
+    const subData = subSheet.getDataRange().getValues();
+    body.subCategories.forEach(function (sub, idx) {
+      if (sub.id) {
+        // existing sub — rename it
+        for (let i = 1; i < subData.length; i++) {
+          if (String(subData[i][0]) === String(sub.id)) {
+            subSheet.getRange(i + 1, 2).setValue(sub.name);
+            break;
+          }
+        }
+      } else if (sub.name) {
+        // new sub — append it
+        var newId = String(Date.now() + idx + 1);
+        subSheet.appendRow([newId, sub.name, body.id, new Date().toISOString()]);
+        Utilities.sleep(5);
+      }
+    });
+  }
+  return jsonResponse({ success: true });
+}
+
 function handleDeleteCategory(body) {
   const sheet = getSheet("Categories");
   const data = sheet.getDataRange().getValues();
@@ -376,6 +414,18 @@ function handleAddSubCategory(body) {
     : body.categoryIds;
   sheet.appendRow([id, body.name, categoryIds, new Date().toISOString()]);
   return jsonResponse({ success: true, id });
+}
+
+function handleUpdateSubCategory(body) {
+  const sheet = getSheet("SubCategories");
+  const data = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][0]) === String(body.id)) {
+      sheet.getRange(i + 1, 2).setValue(body.name);
+      break;
+    }
+  }
+  return jsonResponse({ success: true });
 }
 
 function handleDeleteSubCategory(body) {
@@ -614,10 +664,11 @@ function handleDeleteDeliveryPrice(body) {
 // ════════════════════════════════════════════
 function handleGetBundle() {
   const sheet = getSheet("Bundle");
-  if (!sheet) return jsonResponse({ success: true, bundleId: "" });
+  if (!sheet) return jsonResponse({ success: true, bundleId: "", bundleDescription: "" });
   const data = sheet.getDataRange().getValues();
   const bundleId = data.length > 1 ? String(data[1][0] || "").trim() : "";
-  return jsonResponse({ success: true, bundleId: bundleId });
+  const bundleDescription = data.length > 1 ? String(data[1][1] || "").trim() : "";
+  return jsonResponse({ success: true, bundleId, bundleDescription });
 }
 
 function handleSaveBundle(body) {
@@ -628,14 +679,14 @@ function handleSaveBundle(body) {
       error: "Bundle sheet not found. Run initSheets first.",
     });
   const id = body.bundleId ? String(body.bundleId).trim() : "";
-  // Keep header, overwrite row 2
+  const description = body.bundleDescription ? String(body.bundleDescription).trim() : "";
   if (sheet.getLastRow() < 2) {
-    sheet.appendRow([id]);
+    sheet.appendRow([id, description]);
   } else {
     sheet.getRange(2, 1).setValue(id);
-    // Clear any extra rows just in case
+    sheet.getRange(2, 2).setValue(description);
     if (sheet.getLastRow() > 2) {
-      sheet.getRange(3, 1, sheet.getLastRow() - 2, 1).clear();
+      sheet.getRange(3, 1, sheet.getLastRow() - 2, 2).clear();
     }
   }
   return jsonResponse({ success: true });

@@ -318,6 +318,41 @@
         letter-spacing: 1.5px;
         flex: 1;
       }
+      .tb-live {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        color: var(--g400);
+        white-space: nowrap;
+      }
+      .tb-live-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #22c55e;
+        animation: livePulse 2s ease-in-out infinite;
+        flex-shrink: 0;
+      }
+      @keyframes livePulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(0.8); }
+      }
+      .sb-nav-badge {
+        margin-left: auto;
+        background: #dc2626;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        min-width: 18px;
+        height: 18px;
+        border-radius: 9px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 0 5px;
+        line-height: 1;
+      }
       .tb-actions {
         display: flex;
         align-items: center;
@@ -358,6 +393,131 @@
       .tb-logout:hover {
         background: var(--red);
         color: #fff;
+      }
+
+      /* ── Notification Bell ── */
+      .notif-wrap {
+        position: relative;
+      }
+      .notif-btn {
+        position: relative;
+      }
+      .notif-badge {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        background: #dc2626;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        min-width: 17px;
+        height: 17px;
+        border-radius: 9px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+        line-height: 1;
+        pointer-events: none;
+        border: 2px solid #fff;
+      }
+      .notif-panel {
+        display: none;
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        width: 320px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: var(--sh-lg);
+        border: 1px solid var(--g100);
+        z-index: 500;
+        overflow: hidden;
+      }
+      .notif-panel.open {
+        display: block;
+        animation: fadeUp 0.2s both;
+      }
+      .notif-panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--g100);
+      }
+      .notif-panel-header span {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--black);
+      }
+      .notif-clear-btn {
+        font-size: 11px;
+        color: var(--g400);
+        font-weight: 500;
+        cursor: pointer;
+        transition: color var(--tr);
+      }
+      .notif-clear-btn:hover {
+        color: var(--red);
+      }
+      .notif-list {
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .notif-empty {
+        padding: 28px 16px;
+        text-align: center;
+        font-size: 13px;
+        color: var(--g400);
+      }
+      .notif-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--g50);
+        transition: background var(--tr);
+        cursor: pointer;
+      }
+      .notif-item:last-child {
+        border-bottom: none;
+      }
+      .notif-item:hover {
+        background: var(--g50);
+      }
+      .notif-item-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background: var(--orange-l);
+        color: var(--orange);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .notif-item-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .notif-item-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--black);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .notif-item-meta {
+        font-size: 11px;
+        color: var(--g400);
+        margin-top: 2px;
+      }
+      .notif-item-total {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--green);
+        flex-shrink: 0;
       }
 
       .page {
@@ -1081,6 +1241,10 @@
         font-size: 14px;
         font-weight: 600;
         flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .cat-count {
         font-size: 11px;
@@ -1843,6 +2007,7 @@
     </style>
   </head>
   <body>
+    <audio id="notif-sound" src="images/notification.mp3" preload="auto"></audio>
     <div class="loading-overlay" id="loading-overlay">
       <div class="spinner"></div>
       <div class="loading-text" id="loading-text">Loading…</div>
@@ -1958,7 +2123,7 @@
               <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
               <rect x="9" y="3" width="6" height="4" rx="1"/>
               <path d="M9 12h6M9 16h4"/></svg
-            ><span>Orders</span>
+            ><span>Orders</span><span class="sb-nav-badge" id="orders-nav-badge"></span>
           </div>
           <div class="sb-section-label">Admin</div>
           <div class="sb-link" onclick="showPage('settings', this)">
@@ -2023,7 +2188,29 @@
             </svg>
           </button>
           <div class="tb-title" id="page-title">Dashboard</div>
+          <div class="tb-live">
+            <div class="tb-live-dot"></div>
+            <span id="last-updated">Live</span>
+          </div>
           <div class="tb-actions">
+            <div class="notif-wrap">
+              <button class="tb-icon-btn notif-btn" id="notif-btn" onclick="toggleNotifications()" title="New Orders">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                <span class="notif-badge" id="notif-badge">0</span>
+              </button>
+              <div class="notif-panel" id="notif-panel">
+                <div class="notif-panel-header">
+                  <span>New Orders</span>
+                  <button class="notif-clear-btn" onclick="clearNotifications()">Clear all</button>
+                </div>
+                <div class="notif-list" id="notif-list">
+                  <div class="notif-empty">No new orders</div>
+                </div>
+              </div>
+            </div>
             <button class="tb-logout" onclick="doLogout()">
               <svg
                 width="14"
@@ -2328,6 +2515,16 @@
               Choose <strong>one product</strong> to feature as the bundle on
               your store.
             </p>
+            <div class="form-group" style="margin-bottom:16px">
+              <label>Bundle Description</label>
+              <textarea
+                id="bundle-description"
+                class="form-control"
+                rows="3"
+                placeholder="e.g. Get our most popular Whey Protein bundle at 30% off. Limited stock — order now!"
+                style="resize:vertical;min-height:72px"
+              ></textarea>
+            </div>
             <input
               class="search-box"
               id="bundle-search"
@@ -2766,7 +2963,7 @@
     <div class="modal-overlay" id="cat-modal">
       <div class="modal" style="max-width: 540px">
         <div class="modal-header">
-          <div class="modal-title">Add Category</div>
+          <div class="modal-title" id="cat-modal-title">Add Category</div>
           <button class="modal-close" onclick="closeModal('cat-modal')">
             <svg
               width="18"
@@ -2824,6 +3021,28 @@
           ><button class="btn-primary" onclick="saveCat()">
             Save Category
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBCATEGORY EDIT MODAL -->
+    <div class="modal-overlay" id="subcat-edit-modal">
+      <div class="modal" style="max-width: 400px">
+        <div class="modal-header">
+          <div class="modal-title">Edit Sub-Category</div>
+          <button class="modal-close" onclick="closeModal('subcat-edit-modal')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Sub-Category Name *</label>
+            <input type="text" class="form-control" id="subcat-name-input" placeholder="Sub-category name" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="closeModal('subcat-edit-modal')">Cancel</button>
+          <button class="btn-primary" onclick="saveSubCat()">Save Changes</button>
         </div>
       </div>
     </div>
@@ -3047,6 +3266,11 @@
       let editingProductId = null;
       let editingPromoId = null;
       let editingDeliveryId = null;
+      let editingCatId = null;
+      let editingSubCatId = null;
+      let knownOrderIds = new Set();
+      let newOrderBadgeCount = 0;
+      let pendingNotifications = [];
       let currentImageUrl = "";
       let categories = [],
         subCategories = [],
@@ -3083,6 +3307,136 @@
       }
 
       // ════════════════════════════════════════════
+      // REAL-TIME POLLING (silent — no spinner)
+      // ════════════════════════════════════════════
+      function updateLastUpdated() {
+        const el = document.getElementById("last-updated");
+        if (el) el.textContent = "Updated " + new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      }
+
+      function playNotificationSound() {
+        try {
+          const audio = document.getElementById("notif-sound");
+          if (audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
+        } catch(e) {}
+      }
+
+      function showNewOrderAlert(newOrders) {
+        const list = Array.isArray(newOrders) ? newOrders : [];
+        const count = list.length || (typeof newOrders === "number" ? newOrders : 0);
+        showToast(`${count} new order${count > 1 ? "s" : ""} received!`, "success");
+        playNotificationSound();
+        newOrderBadgeCount += count;
+        const badge = document.getElementById("orders-nav-badge");
+        if (badge) {
+          badge.textContent = newOrderBadgeCount;
+          badge.style.display = "flex";
+        }
+        if (list.length > 0) {
+          pendingNotifications = [...list, ...pendingNotifications].slice(0, 5);
+          renderNotificationPanel();
+        }
+        const bellBadge = document.getElementById("notif-badge");
+        if (bellBadge) {
+          bellBadge.textContent = pendingNotifications.length;
+          bellBadge.style.display = "flex";
+        }
+      }
+
+      function renderNotificationPanel() {
+        const list = document.getElementById("notif-list");
+        if (!list) return;
+        if (pendingNotifications.length === 0) {
+          list.innerHTML = '<div class="notif-empty">No new orders</div>';
+          return;
+        }
+        list.innerHTML = pendingNotifications.map(o => {
+          const name = ((o.firstName || "") + " " + (o.lastName || "")).trim() || "Unknown";
+          const time = o.createdAt ? new Date(o.createdAt).toLocaleTimeString("en-GB", {hour:"2-digit",minute:"2-digit"}) : "";
+          const total = o.total ? o.total.toLocaleString() + " DA" : "";
+          return `<div class="notif-item" onclick="navigateToOrder('${o.id}')">
+            <div class="notif-item-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            </div>
+            <div class="notif-item-body">
+              <div class="notif-item-name">${name}</div>
+              <div class="notif-item-meta">${o.wilaya || ""}${time ? " · " + time : ""}</div>
+            </div>
+            ${total ? `<div class="notif-item-total">${total}</div>` : ""}
+          </div>`;
+        }).join("");
+      }
+
+      function toggleNotifications() {
+        const panel = document.getElementById("notif-panel");
+        if (!panel) return;
+        panel.classList.toggle("open");
+        if (panel.classList.contains("open")) renderNotificationPanel();
+      }
+
+      function clearNotifications() {
+        pendingNotifications = [];
+        renderNotificationPanel();
+        const bellBadge = document.getElementById("notif-badge");
+        if (bellBadge) bellBadge.style.display = "none";
+        const panel = document.getElementById("notif-panel");
+        if (panel) panel.classList.remove("open");
+      }
+
+      function navigateToOrder(orderId) {
+        clearNotifications();
+        showPage("orders");
+      }
+
+      document.addEventListener("click", function(e) {
+        const wrap = document.querySelector(".notif-wrap");
+        if (wrap && !wrap.contains(e.target)) {
+          const panel = document.getElementById("notif-panel");
+          if (panel) panel.classList.remove("open");
+        }
+      });
+
+      function clearOrdersBadge() {
+        newOrderBadgeCount = 0;
+        const badge = document.getElementById("orders-nav-badge");
+        if (badge) badge.style.display = "none";
+      }
+
+      async function silentPollOrders() {
+        try {
+          const r = await apiGet("getOrders");
+          if (!r.success) return;
+          const fetched = r.orders || [];
+          // detect new order IDs
+          const newOnes = fetched.filter(o => o.id && !knownOrderIds.has(o.id));
+          if (newOnes.length > 0 && knownOrderIds.size > 0) {
+            showNewOrderAlert(newOnes);
+          }
+          fetched.forEach(o => { if (o.id) knownOrderIds.add(o.id); });
+          orders = fetched;
+          renderOrders();
+          updateDashboard();
+          updateLastUpdated();
+        } catch (e) { /* silent */ }
+      }
+
+      async function silentPollProducts() {
+        try {
+          const [rProd, rPromo] = await Promise.all([
+            apiGet("getProducts"),
+            apiGet("getPromos"),
+          ]);
+          if (rProd.success) { products = rProd.products; renderProducts(); }
+          if (rPromo.success) { promos = rPromo.promos; renderPromos(); }
+        } catch (e) { /* silent */ }
+      }
+
+      function startPolling() {
+        setInterval(silentPollOrders, 15000);
+        setInterval(silentPollProducts, 30000);
+      }
+
+      // ════════════════════════════════════════════
       // INIT
       // ════════════════════════════════════════════
       document.addEventListener("DOMContentLoaded", async () => {
@@ -3103,6 +3457,10 @@
             loadOrders(),
           ]);
           updateDashboard();
+          // seed known IDs so first poll doesn't false-alarm
+          orders.forEach(o => { if (o.id) knownOrderIds.add(o.id); });
+          updateLastUpdated();
+          startPolling();
         } catch (e) {
           showToast("Failed to load: " + e.message, "error");
         }
@@ -3313,6 +3671,7 @@
         if (el) el.classList.add("active");
         document.getElementById("page-title").textContent =
           pageNames[name] || name;
+        if (name === "orders") clearOrdersBadge();
         if (window.innerWidth < 768) closeSidebar();
       }
       function doLogout() {
@@ -3677,22 +4036,39 @@
         tree.innerHTML = categories
           .map((c) => {
             const subs = subCategories.filter((s) =>
-              s.categoryIds.includes(c.id),
+              s.categoryIds && s.categoryIds.includes(c.id),
             );
-            return `<div class="cat-node"><div class="cat-row" onclick="toggleCat(this)"><div class="cat-expand"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div><div class="cat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div><div class="cat-name">${c.name}</div>${c.description ? `<span style="font-size:11px;color:var(--g400)">${c.description}</span>` : ""}<span class="cat-count">${subs.length} sub${subs.length !== 1 ? "s" : ""}</span><div class="action-group" onclick="event.stopPropagation()"><button class="act-btn act-delete" onclick="confirmDelete('cat','${c.id}')">Delete</button></div></div><div class="sub-cats">${subs.map((s) => `<div class="sub-node"><div class="sub-icon"></div><div class="sub-name">${s.name}</div><div class="sub-actions"><button class="act-btn act-delete" onclick="confirmDelete('subcat','${s.id}')">×</button></div></div>`).join("")}</div></div>`;
+            return `<div class="cat-node"><div class="cat-row" id="cat-row-${c.id}" onclick="toggleCat('${c.id}',event)"><div class="cat-expand" id="cat-exp-${c.id}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div><div class="cat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div><div class="cat-name">${c.name}</div>${c.description ? `<span style="font-size:11px;color:var(--g400);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.description}</span>` : ""}${subs.length > 0 ? `<span class="cat-count">${subs.length} sub${subs.length !== 1 ? "s" : ""}</span>` : ""}<div class="action-group"><button class="act-btn act-edit" onclick="editCat('${c.id}');event.stopPropagation()">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('cat','${c.id}');event.stopPropagation()">Delete</button></div></div><div class="sub-cats" id="sub-cats-${c.id}">${subs.map((s) => `<div class="sub-node"><div class="sub-icon"></div><div class="sub-name">${s.name}</div><div class="sub-actions"><button class="act-btn act-edit" onclick="editSubCat('${s.id}')">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('subcat','${s.id}')">Delete</button></div></div>`).join("")}</div></div>`;
           })
           .join("");
       }
-      function toggleCat(row) {
-        const exp = row.querySelector(".cat-expand");
-        const sub = row.nextElementSibling;
+      function toggleCat(catId, e) {
+        if (e && e.target.closest("button")) return;
+        const sub = document.getElementById("sub-cats-" + catId);
+        const exp = document.getElementById("cat-exp-" + catId);
+        if (!sub || !exp) return;
         const isOpen = sub.classList.toggle("open");
         exp.classList.toggle("open", isOpen);
       }
       function openCatModal() {
+        editingCatId = null;
+        document.getElementById("cat-modal-title").textContent = "Add Category";
         document.getElementById("cat-name").value = "";
         document.getElementById("cat-desc").value = "";
         document.getElementById("sub-items-list").innerHTML = "";
+        openModal("cat-modal");
+      }
+      function editCat(id) {
+        const cat = categories.find((c) => c.id === id);
+        if (!cat) return;
+        editingCatId = id;
+        document.getElementById("cat-modal-title").textContent = "Edit Category";
+        document.getElementById("cat-name").value = cat.name || "";
+        document.getElementById("cat-desc").value = cat.description || "";
+        const subs = subCategories.filter((s) => s.categoryIds && s.categoryIds.includes(id));
+        document.getElementById("sub-items-list").innerHTML = subs
+          .map((s) => `<div class="sub-item-row"><input type="text" class="form-control" style="flex:1" value="${s.name.replace(/"/g,'&quot;')}" data-sub-id="${s.id}" /><button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button></div>`)
+          .join("");
         openModal("cat-modal");
       }
       function addSubItem() {
@@ -3704,28 +4080,45 @@
       }
       async function saveCat() {
         const name = document.getElementById("cat-name").value.trim();
-        if (!name) {
-          showToast("Name required", "error");
-          return;
-        }
-        const subs = Array.from(
-          document.querySelectorAll("#sub-items-list .sub-item-row input"),
-        )
-          .map((i) => i.value.trim())
-          .filter(Boolean);
-        showLoading("Saving category…");
+        if (!name) { showToast("Name required", "error"); return; }
+        const subRows = Array.from(document.querySelectorAll("#sub-items-list .sub-item-row input"));
+        const subs = subRows.map((i) => ({ id: i.dataset.subId || "", name: i.value.trim() })).filter((s) => s.name);
+        showLoading(editingCatId ? "Updating category…" : "Saving category…");
         try {
-          const r = await apiPost({
-            action: "addCategory",
-            name,
-            description: document.getElementById("cat-desc").value.trim(),
-            subCategories: subs,
-          });
+          const payload = editingCatId
+            ? { action: "updateCategory", id: editingCatId, name, description: document.getElementById("cat-desc").value.trim(), subCategories: subs }
+            : { action: "addCategory", name, description: document.getElementById("cat-desc").value.trim(), subCategories: subs.map((s) => s.name) };
+          const r = await apiPost(payload);
           if (r.success) {
-            showToast("Category saved!");
+            showToast(editingCatId ? "Category updated!" : "Category saved!");
             closeModal("cat-modal");
+            editingCatId = null;
             await Promise.all([loadCategories(), loadSubCategories()]);
             updateDashboard();
+          } else showToast("Error: " + (r.error || "Unknown"), "error");
+        } catch (e) {
+          showToast("Error: " + e.message, "error");
+        }
+        hideLoading();
+      }
+      function editSubCat(id) {
+        const sub = subCategories.find((s) => s.id === id);
+        if (!sub) return;
+        editingSubCatId = id;
+        document.getElementById("subcat-name-input").value = sub.name || "";
+        openModal("subcat-edit-modal");
+      }
+      async function saveSubCat() {
+        const name = document.getElementById("subcat-name-input").value.trim();
+        if (!name) { showToast("Name required", "error"); return; }
+        showLoading("Updating sub-category…");
+        try {
+          const r = await apiPost({ action: "updateSubCategory", id: editingSubCatId, name });
+          if (r.success) {
+            showToast("Sub-category updated!");
+            closeModal("subcat-edit-modal");
+            editingSubCatId = null;
+            await Promise.all([loadCategories(), loadSubCategories()]);
           } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {
           showToast("Error: " + e.message, "error");
@@ -4165,6 +4558,10 @@
                 ? `Selected: <strong>${p.name}</strong>`
                 : `Selected: <strong>${r.bundleId}</strong>`;
           }
+          if (r.success && r.bundleDescription) {
+            const desc = document.getElementById("bundle-description");
+            if (desc) desc.value = r.bundleDescription;
+          }
         } catch (e) {
           /* silent */
         }
@@ -4174,9 +4571,11 @@
       async function saveBundle() {
         showLoading("Saving bundle…");
         try {
+          const desc = document.getElementById("bundle-description");
           const r = await apiPost({
             action: "saveBundle",
             bundleId: bundleSelectedId || "",
+            bundleDescription: desc ? desc.value.trim() : "",
           });
           if (r.success) showToast("Bundle saved!");
           else showToast("Error: " + (r.error || "Unknown"), "error");
