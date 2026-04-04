@@ -46,9 +46,10 @@
       #pageLoader{position:fixed;inset:0;background:#0a0a0a;display:flex;align-items:center;justify-content:center;z-index:99999;transition:opacity .5s ease,visibility .5s ease}
       #pageLoader.hidden{opacity:0;visibility:hidden;pointer-events:none}
       .loader-inner{display:flex;flex-direction:column;align-items:center;gap:24px}
-      .loader-brand{font-family:"Bebas Neue",sans-serif;font-size:clamp(3rem,10vw,5rem);letter-spacing:.06em;line-height:1}
-      .lb-by{color:#fff;display:inline-block;opacity:0;transform:translateY(28px);animation:ldrUp .5s cubic-bezier(.4,0,.2,1) .1s forwards}
-      .lb-bens{color:#ad0000;display:inline-block;opacity:0;transform:translateY(28px);animation:ldrUp .5s cubic-bezier(.4,0,.2,1) .35s forwards}
+      .loader-brand{font-family:"Bebas Neue",sans-serif;font-size:clamp(3rem,10vw,5rem);letter-spacing:.06em;line-height:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px}
+      .lb-supplements{font-family:"Bebas Neue",sans-serif;font-size:clamp(1rem,3.5vw,1.6rem);letter-spacing:.25em;color:#fff;opacity:0;transform:translateY(28px);animation:ldrUp .5s cubic-bezier(.4,0,.2,1) .1s forwards}
+      .lb-by{color:#fff;display:inline-block;opacity:0;transform:translateY(28px);animation:ldrUp .5s cubic-bezier(.4,0,.2,1) .45s forwards}
+      .lb-bens{color:#ad0000;display:inline-block;opacity:0;transform:translateY(28px);animation:ldrUp .5s cubic-bezier(.4,0,.2,1) .6s forwards}
       @keyframes ldrUp{to{opacity:1;transform:translateY(0)}}
       .loader-bar{width:120px;height:2px;background:rgba(255,255,255,.12);border-radius:2px;overflow:hidden;opacity:0;animation:ldrBarIn .3s ease .6s forwards}
       @keyframes ldrBarIn{to{opacity:1}}
@@ -340,14 +341,22 @@
         border-radius: 6px;
         transition:
           color var(--transition),
-          background var(--transition);
+          background var(--transition),
+          transform var(--transition);
       }
       .nav-link:hover {
         color: var(--black);
         background: var(--gray-50);
+        transform: translateY(-1px);
       }
       .nav-link.active {
         color: var(--red);
+        border: 1.5px solid var(--red);
+        background: var(--red-light);
+      }
+      .nav-link.active:hover {
+        background: rgba(173,0,0,0.13);
+        transform: translateY(-1px);
       }
 
       /* Language Switcher */
@@ -612,6 +621,10 @@
         border-bottom: 1px solid var(--gray-100);
       }
       .mobile-menu .m-link:hover {
+        color: var(--red);
+        transform: translateX(3px);
+      }
+      .mobile-menu .m-link.active {
         color: var(--red);
       }
       .mobile-lang {
@@ -1846,6 +1859,28 @@
       .atc-qty-val{font-size:18px;font-weight:700;min-width:28px;text-align:center;}
       .atc-confirm-btn{width:100%;padding:14px;background:var(--red);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;margin-top:20px;}
       .atc-confirm-btn:hover{background:var(--red-hover);}
+      /* ══ ABOUT MODAL ══ */
+      .about-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9500;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s;}
+      .about-overlay.open{opacity:1;visibility:visible;}
+      .about-modal{background:#fff;border-radius:20px;width:100%;max-width:540px;position:relative;transform:translateY(28px);transition:transform .3s cubic-bezier(.4,0,.2,1);max-height:90vh;overflow-y:auto;overflow-x:hidden;}
+      .about-overlay.open .about-modal{transform:translateY(0);}
+      .about-close{position:absolute;top:14px;right:14px;z-index:2;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;transition:background .2s;line-height:1;}
+      .about-close:hover{background:rgba(255,255,255,.28);}
+      [dir="rtl"] .about-close{right:auto;left:14px;}
+      .about-header{background:linear-gradient(135deg,#0a0a0a 0%,#1a1a1a 100%);padding:38px 28px 30px;border-radius:20px 20px 0 0;text-align:center;position:relative;}
+      .about-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--red);}
+      .about-brand{font-family:"Bebas Neue",sans-serif;font-size:3.2rem;letter-spacing:.08em;color:#fff;line-height:1;}
+      .about-brand span{color:var(--red);}
+      .about-sub{font-family:"Bebas Neue",sans-serif;font-size:.95rem;letter-spacing:.3em;color:rgba(255,255,255,.45);margin-top:6px;text-transform:uppercase;}
+      .about-body{padding:22px 22px 6px;}
+      .about-card{display:flex;gap:16px;align-items:flex-start;padding:18px;border-radius:14px;background:var(--gray-50);border:1px solid var(--gray-100);margin-bottom:12px;transition:border-color .2s;}
+      .about-card:hover{border-color:var(--gray-200);}
+      .about-card-icon{width:46px;height:46px;min-width:46px;background:var(--red-light);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--red);}
+      .about-card-text h4{font-size:13px;font-weight:700;color:var(--black);margin-bottom:5px;text-transform:uppercase;letter-spacing:.6px;}
+      .about-card-text p{font-size:13.5px;color:var(--gray-600);line-height:1.65;margin:0;}
+      .about-cta-wrap{padding:6px 22px 24px;}
+      .about-cta{display:block;width:100%;padding:14px;background:var(--red);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;transition:background .2s,transform .15s;font-family:var(--font-body);letter-spacing:.3px;}
+      .about-cta:hover{background:var(--red-hover);transform:translateY(-1px);}
       /* ══ CART DRAWER ══ */
       .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:8000;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s;}
       .cart-overlay.open{opacity:1;visibility:visible;}
@@ -1885,7 +1920,7 @@
     <!-- PAGE LOADER -->
     <div id="pageLoader">
       <div class="loader-inner">
-        <div class="loader-brand"><span class="lb-by">By</span><span class="lb-bens"> Ben's</span></div>
+        <div class="loader-brand"><span class="lb-supplements">Supplements</span><div><span class="lb-by">By</span><span class="lb-bens"> Ben's</span></div></div>
         <div class="loader-bar"><div class="loader-bar-fill"></div></div>
       </div>
     </div>
@@ -2122,7 +2157,7 @@
 
           <!-- Right -->
           <div class="nav-right">
-            <a href="products.html" class="nav-link">Supplements</a>
+            <a href="products.html" class="nav-link active">Supplements</a>
 
             <div
               class="lang-switch"
@@ -2193,7 +2228,7 @@
     <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
       <a
         href="products.html"
-        class="m-link"
+        class="m-link active"
         onclick="toggleMobileMenu()"
         >Supplements</a
       >
@@ -2248,7 +2283,7 @@
                 <path d="m9 18 6-6-6-6" />
               </svg>
             </a>
-            <a href="#" class="btn-outline" data-i18n="hero.cta2">Learn More</a>
+            <a href="#" class="btn-outline" data-i18n="hero.cta2" onclick="openAboutModal();return false;">Learn More</a>
           </div>
           <div class="hero-stats animate-up delay-4">
             <div class="stat-item">
@@ -2791,6 +2826,13 @@
           "form.send": "Send Message",
           "btn.addcart": "Add to Cart",
           "btn.buynow": "Buy Now",
+          "about.who.title": "Who We Are",
+          "about.who.text": "ByBen's is Algeria's #1 supplements store, built by athletes for athletes. We are passionate about sports nutrition and committed to delivering authentic, premium products at honest prices straight to your door.",
+          "about.offer.title": "What We Offer",
+          "about.offer.text": "Whey protein, creatine, pre-workouts, mass gainers, vitamins, and more — all 100% authentic, sourced directly from trusted international brands. Free delivery on orders over 15,000 DA, covering all 58 wilayas.",
+          "about.order.title": "How to Order",
+          "about.order.text": "Browse our products, choose your flavor and size, add to cart or click Buy Now. Fill in your name, phone, and delivery address — then confirm. We'll take care of the rest. Cash on delivery, no account needed.",
+          "about.cta": "Shop Now",
           "toast.added": "Added to cart!",
           "toast.sent": "Message sent! We'll reply soon.",
         },
@@ -2842,6 +2884,13 @@
           "form.send": "Envoyer",
           "btn.addcart": "Ajouter",
           "btn.buynow": "Acheter",
+          "about.who.title": "Qui Sommes-Nous",
+          "about.who.text": "ByBen's est la boutique de suppléments n°1 en Algérie, créée par des sportifs pour des sportifs. Nous sommes passionnés par la nutrition sportive et nous nous engageons à vous livrer des produits authentiques et premium à des prix honnêtes.",
+          "about.offer.title": "Ce Que Nous Offrons",
+          "about.offer.text": "Whey protéine, créatine, pré-entraînements, gainers, vitamines et bien plus — 100% authentiques, sourcés directement auprès de marques internationales de confiance. Livraison gratuite dès 15 000 DA, partout en Algérie.",
+          "about.order.title": "Comment Commander",
+          "about.order.text": "Parcourez nos produits, choisissez votre goût et votre taille, ajoutez au panier ou cliquez sur Acheter. Renseignez votre nom, téléphone et adresse, puis confirmez. Paiement à la livraison, aucun compte requis.",
+          "about.cta": "Commander Maintenant",
           "toast.added": "Ajouté au panier!",
           "toast.sent": "Message envoyé!",
         },
@@ -2894,6 +2943,13 @@
           "form.send": "إرسال",
           "btn.addcart": "أضف للسلة",
           "btn.buynow": "اشتر الآن",
+          "about.who.title": "من نحن",
+          "about.who.text": "ByBen's هو متجر المكملات الرياضية الأول في الجزائر، أسسه رياضيون لرياضيين. نحن شغوفون بالتغذية الرياضية وملتزمون بتوصيل منتجات أصيلة وعالية الجودة بأسعار عادلة مباشرة إلى بابك.",
+          "about.offer.title": "ماذا نقدّم",
+          "about.offer.text": "بروتين واي، كرياتين، منتجات ما قبل التمرين، مكملات الكتلة العضلية، فيتامينات والمزيد — جميعها 100% أصيلة، مصدرها مباشرة من علامات تجارية عالمية موثوقة. توصيل مجاني للطلبات فوق 15,000 دج في 58 ولاية.",
+          "about.order.title": "كيف تطلب",
+          "about.order.text": "تصفّح منتجاتنا، اختر نكهتك وحجمك، أضف إلى السلة أو اضغط اشتر الآن. أدخل اسمك ورقم هاتفك وعنوان التوصيل ثم أكّد الطلب. نحن نتكفل بالباقي. الدفع عند الاستلام، لا حاجة لحساب.",
+          "about.cta": "تسوّق الآن",
           "toast.added": "تمت الإضافة للسلة!",
           "toast.sent": "تم إرسال رسالتك!",
         },
@@ -2983,6 +3039,8 @@
       }
       function atcChangeQty(d) { _atcQty = Math.max(1, _atcQty + d); document.getElementById("atcQtyVal").textContent = _atcQty; }
       function closeAddToCartModal() { document.getElementById("atcOverlay").classList.remove("open"); document.body.style.overflow = ""; }
+      function openAboutModal() { document.getElementById("aboutOverlay").classList.add("open"); document.body.style.overflow = "hidden"; }
+      function closeAboutModal() { document.getElementById("aboutOverlay").classList.remove("open"); document.body.style.overflow = ""; }
       function confirmAddToCart() {
         const p = _atcProduct; if (!p) return;
         const variants = Array.isArray(p.variants) ? p.variants : [];
@@ -3558,6 +3616,49 @@
           </div>
         </div>
         <button class="atc-confirm-btn" onclick="confirmAddToCart()">Add to Cart</button>
+      </div>
+    </div>
+
+    <!-- ══ ABOUT MODAL ══ -->
+    <div class="about-overlay" id="aboutOverlay" onclick="if(event.target===this)closeAboutModal()">
+      <div class="about-modal" role="dialog" aria-modal="true">
+        <button class="about-close" onclick="closeAboutModal()" aria-label="Close">&#x2715;</button>
+        <div class="about-header">
+          <div class="about-brand">BY<span>BEN'S</span></div>
+          <div class="about-sub">Supplements</div>
+        </div>
+        <div class="about-body">
+          <div class="about-card">
+            <div class="about-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="about-card-text">
+              <h4 data-i18n="about.who.title">Who We Are</h4>
+              <p data-i18n="about.who.text">ByBen's is Algeria's #1 supplements store, built by athletes for athletes. We are passionate about sports nutrition and committed to delivering authentic, premium products at honest prices straight to your door.</p>
+            </div>
+          </div>
+          <div class="about-card">
+            <div class="about-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+            <div class="about-card-text">
+              <h4 data-i18n="about.offer.title">What We Offer</h4>
+              <p data-i18n="about.offer.text">Whey protein, creatine, pre-workouts, mass gainers, vitamins, and more — all 100% authentic, sourced directly from trusted international brands. Free delivery on orders over 15,000 DA, covering all 58 wilayas.</p>
+            </div>
+          </div>
+          <div class="about-card">
+            <div class="about-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            </div>
+            <div class="about-card-text">
+              <h4 data-i18n="about.order.title">How to Order</h4>
+              <p data-i18n="about.order.text">Browse our products, choose your flavor and size, add to cart or click Buy Now. Fill in your name, phone, and delivery address — then confirm. We'll take care of the rest. Cash on delivery, no account needed.</p>
+            </div>
+          </div>
+        </div>
+        <div class="about-cta-wrap">
+          <a href="products.html" class="about-cta" data-i18n="about.cta">Shop Now</a>
+        </div>
       </div>
     </div>
 

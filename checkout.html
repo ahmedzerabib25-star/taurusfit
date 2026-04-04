@@ -70,20 +70,34 @@
         font-size: clamp(3rem, 10vw, 5rem);
         letter-spacing: 0.06em;
         line-height: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 4px;
+      }
+      .lb-supplements {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(1rem, 3.5vw, 1.6rem);
+        letter-spacing: 0.25em;
+        color: #fff;
+        opacity: 0;
+        transform: translateY(28px);
+        animation: ldrUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
       }
       .lb-by {
         color: #fff;
         display: inline-block;
         opacity: 0;
         transform: translateY(28px);
-        animation: ldrUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+        animation: ldrUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.45s forwards;
       }
       .lb-bens {
         color: #ad0000;
         display: inline-block;
         opacity: 0;
         transform: translateY(28px);
-        animation: ldrUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.35s forwards;
+        animation: ldrUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards;
       }
       @keyframes ldrUp {
         to {
@@ -441,14 +455,22 @@
         border-radius: 6px;
         transition:
           color var(--transition),
-          background var(--transition);
+          background var(--transition),
+          transform var(--transition);
       }
       .nav-link:hover {
         color: var(--black);
         background: var(--gray-50);
+        transform: translateY(-1px);
       }
       .nav-link.active {
         color: var(--red);
+        border: 1.5px solid var(--red);
+        background: var(--red-light);
+      }
+      .nav-link.active:hover {
+        background: rgba(173,0,0,0.13);
+        transform: translateY(-1px);
       }
 
       /* Lang */
@@ -715,6 +737,14 @@
       .mobile-nav-link:hover {
         background: var(--gray-50);
         color: var(--black);
+        transform: translateX(3px);
+      }
+      .mobile-nav-link.active {
+        color: var(--red);
+        background: var(--red-light);
+      }
+      .mobile-nav-link.active:hover {
+        background: rgba(173,0,0,0.13);
       }
       .m-cat-item {
         border-bottom: 1px solid var(--gray-100);
@@ -1678,6 +1708,28 @@
         color: var(--gray-400);
         margin-bottom: 8px;
       }
+      .checkout-item-selects {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+      }
+      .checkout-item-select {
+        font-family: var(--font-body);
+        font-size: 12px;
+        color: var(--black);
+        background: var(--gray-50);
+        border: 1.5px solid var(--gray-200);
+        border-radius: 6px;
+        padding: 4px 8px;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.15s;
+        max-width: 130px;
+      }
+      .checkout-item-select:focus {
+        border-color: var(--black);
+      }
 
       .checkout-item-bot {
         display: flex;
@@ -2086,7 +2138,8 @@
     <div id="pageLoader">
       <div class="loader-inner">
         <div class="loader-brand">
-          <span class="lb-by">By</span><span class="lb-bens"> Ben's</span>
+          <span class="lb-supplements">Supplements</span>
+          <div><span class="lb-by">By</span><span class="lb-bens"> Ben's</span></div>
         </div>
         <div class="loader-bar"><div class="loader-bar-fill"></div></div>
       </div>
@@ -2151,24 +2204,8 @@
             <img
               src="images/logo.png"
               alt="ByBens Logo"
-              style="
-                height: auto;
-                width: auto;
-                max-width: 140px;
-                object-fit: contain;
-              "
-              onerror="
-                this.style.display = 'none';
-                this.nextElementSibling.style.display = 'flex';
-              "
+              style="height: 44px; width: auto; object-fit: contain;"
             />
-            <span
-              class="logo-fallback"
-              style="display: none; align-items: center; gap: 10px"
-            >
-              <span class="logo-mark"><span>BB</span></span>
-              <span class="logo-text">By<em>Bens</em></span>
-            </span>
           </a>
 
           <div class="search-wrap" role="search" id="desktopSearch">
@@ -2237,7 +2274,7 @@
           </button>
 
           <div class="nav-right">
-            <a href="products.html" class="nav-link">Supplements</a>
+            <a href="products.html" class="nav-link active">Supplements</a>
             <div
               class="lang-switch"
               role="group"
@@ -2393,7 +2430,7 @@
     <!-- Mobile menu -->
     <div class="mobile-menu" id="mobileMenu">
       <div class="mobile-nav-links">
-        <a class="mobile-nav-link" href="products.html">Supplements</a>
+        <a class="mobile-nav-link active" href="products.html">Supplements</a>
       </div>
       <div id="mobileCatItems"></div>
       <div
@@ -2496,6 +2533,10 @@
                 </svg>
                 <span data-i18n="form.deliveryDetails">Delivery Details</span>
               </div>
+
+              <!-- honeypot: hidden from real users, bots fill it -->
+              <input type="text" id="hp_website" name="website" autocomplete="off" tabindex="-1"
+                style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;" aria-hidden="true">
 
               <div class="form-row">
                 <div class="form-group">
@@ -2805,13 +2846,8 @@
       <div class="container">
         <div class="footer-grid">
           <div class="footer-brand">
-            <a
-              href="index.html"
-              class="logo"
-              style="margin-bottom: 16px; display: inline-flex"
-            >
-              <span class="logo-mark"><span>BB</span></span>
-              <span class="logo-text" style="color: #fff">By<em>Bens</em></span>
+            <a href="index.html" class="logo" style="margin-bottom: 16px; display: inline-flex">
+              <img src="images/logo.png" alt="ByBens Logo" style="height: 70px; width: auto; object-fit: contain;" />
             </a>
             <p data-i18n="footer.tagline">
               Algeria's premier sports nutrition store. Authentic products, fast
@@ -3033,6 +3069,8 @@
       const SCRIPT_URL =
         "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
 
+      const PAGE_LOAD_TIME = Date.now(); // used for bot timing check
+
       const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
       function cachedFetch(action) {
         const key = `bybens_cache_${action}`;
@@ -3152,7 +3190,32 @@
             </div>
             <div class="checkout-item-info">
               <div class="checkout-item-name">${item.name}</div>
-              <div class="checkout-item-meta">${[item.flavor, item.variant].filter(Boolean).join(" · ")}</div>
+              ${(()=>{
+                const product = _allProducts.find(p => p.productId === item.productId || p.id === item.productId);
+                const flavors = product ? parseField(product.flavors) : [];
+                const variants = product ? parseField(product.variants) : [];
+                const flavorNames = flavors.map(f => typeof f === 'object' ? (f.name || '') : String(f)).filter(Boolean);
+                const variantLabels = variants.map(v => typeof v === 'object' ? (v.weight ? `${v.weight}${v.unit||''}` : v.label || v.name || '') : String(v)).filter(Boolean);
+                let html = '';
+                if (flavorNames.length > 1 || variantLabels.length > 1) {
+                  html += '<div class="checkout-item-selects">';
+                  if (flavorNames.length > 1) {
+                    html += `<select class="checkout-item-select" onchange="checkoutChangeFlavor(${idx}, this.value)">`;
+                    flavorNames.forEach(f => { html += `<option value="${f}" ${item.flavor===f?'selected':''}>${f}</option>`; });
+                    html += '</select>';
+                  }
+                  if (variantLabels.length > 1) {
+                    html += `<select class="checkout-item-select" onchange="checkoutChangeVariant(${idx}, this.selectedIndex)">`;
+                    variantLabels.forEach((v,i) => { html += `<option value="${i}" ${item.variant===v?'selected':''}>${v}</option>`; });
+                    html += '</select>';
+                  }
+                  html += '</div>';
+                } else {
+                  const metaParts = [item.flavor, item.variant].filter(Boolean);
+                  if (metaParts.length) html = `<div class="checkout-item-meta">${metaParts.join(' · ')}</div>`;
+                }
+                return html;
+              })()}
               <div class="checkout-item-bot">
                 <div class="qty-stepper">
                   <button class="qty-btn" onclick="checkoutChangeQty(${idx}, -1)">&#8722;</button>
@@ -3199,6 +3262,30 @@
         items.splice(idx, 1);
         cartSave(items);
         cartUpdateBadge();
+        renderCheckoutItems();
+      }
+
+      function checkoutChangeFlavor(idx, flavorName) {
+        const items = cartGet();
+        if (!items[idx]) return;
+        items[idx].flavor = flavorName;
+        cartSave(items);
+        renderCheckoutItems();
+      }
+
+      function checkoutChangeVariant(idx, variantIndex) {
+        const items = cartGet();
+        if (!items[idx]) return;
+        const product = _allProducts.find(p => p.id === items[idx].productId);
+        if (!product) return;
+        const variants = parseField(product.variants);
+        const v = variants[variantIndex];
+        if (!v) return;
+        const base = typeof v === 'object' ? (Number(v.price) || 0) : 0;
+        const disc = Number(product.discount) || 0;
+        items[idx].unitPrice = disc > 0 ? Math.round(base * (1 - disc / 100)) : base;
+        items[idx].variant = typeof v === 'object' ? (v.weight ? `${v.weight}${v.unit||''}` : v.label || v.name || '') : String(v);
+        cartSave(items);
         renderCheckoutItems();
       }
 
@@ -3538,6 +3625,7 @@
           if (prodRes.success) _allProducts = prodRes.products;
           if (promoRes.success) _allPromos = promoRes.promos;
           renderCatNav(_allCategories, _allSubCategories);
+          renderCheckoutItems();
           renderAlsoLike();
         } catch (err) {
           console.error("Failed to load data:", err);
@@ -5575,6 +5663,13 @@
       }
 
       function submitOrder() {
+        // Bot checks
+        if (document.getElementById("hp_website").value !== "") return;
+        if (Date.now() - PAGE_LOAD_TIME < 4000) {
+          showToast("Please review your order before submitting.");
+          return;
+        }
+
         let valid = true;
         valid =
           validateField(
@@ -5602,10 +5697,10 @@
           ) && valid;
 
         const phoneEl = document.getElementById("phone");
-        if (phoneEl.value && !/^[0-9\s+\-]{9,14}$/.test(phoneEl.value.trim())) {
+        if (phoneEl.value && !/^(05|06|07)[0-9]{8}$/.test(phoneEl.value.trim().replace(/\s/g, ""))) {
           phoneEl.classList.add("error");
           document.getElementById("phoneErr").textContent =
-            "Enter a valid phone number";
+            "Enter a valid Algerian phone number (05x, 06x or 07x)";
           valid = false;
         }
 
