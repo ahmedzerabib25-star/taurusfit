@@ -59,6 +59,24 @@ function initSheets() {
     ],
     DeliveryPrices: ["id", "wilaya", "homePrice", "officePrice", "createdAt"],
     Bundle: ["bundleId"],
+    Orders: [
+      "id",
+      "source",
+      "firstName",
+      "lastName",
+      "phone",
+      "wilaya",
+      "commune",
+      "deliveryType",
+      "deliveryCost",
+      "promoCode",
+      "promoDiscount",
+      "items",
+      "subtotal",
+      "total",
+      "status",
+      "createdAt",
+    ],
   };
 
   for (const [sheetName, headers] of Object.entries(sheets)) {
@@ -154,6 +172,8 @@ function doGet(e) {
         return handleGetSettings();
       case "getDashboard":
         return handleGetDashboard();
+      case "getOrders":
+        return handleGetOrders();
       default:
         return jsonResponse({ success: false, error: "Unknown action" });
     }
@@ -198,6 +218,9 @@ function doPost(e) {
         return handleSaveBundle(body);
       case "updateSettings":
         return handleUpdateSettings(body);
+      case "submitCartOrder":
+      case "submitProductOrder":
+        return handleSubmitOrder(body);
       case "updateOrderStatus":
         return handleUpdateOrderStatus(body);
       default:
@@ -624,20 +647,91 @@ function handleSaveBundle(body) {
 function handleGetDashboard() {
   const productsSheet = getSheet("Products");
   const promosSheet = getSheet("PromoCodes");
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const ordersSheet = ss.getSheetByName("Orders");
   const totalProducts = Math.max(0, productsSheet.getLastRow() - 1);
   const promoData = promosSheet.getDataRange().getValues();
   const activePromos = promoData
     .slice(1)
     .filter((r) => r[8] === "active").length;
+  const totalOrders = ordersSheet
+    ? Math.max(0, ordersSheet.getLastRow() - 1)
+    : 0;
   return jsonResponse({
     success: true,
-    stats: { totalProducts, activePromos },
+    stats: { totalProducts, activePromos, totalOrders },
   });
 }
 
 // ════════════════════════════════════════════
-// ORDERS (status update only)
+// ORDERS
 // ════════════════════════════════════════════
+function handleSubmitOrder(body) {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  let sheet = ss.getSheetByName("Orders");
+  if (!sheet) {
+    sheet = ss.insertSheet("Orders");
+    const hdrs = [
+      "id", "source", "firstName", "lastName", "phone", "wilaya", "commune",
+      "deliveryType", "deliveryCost", "promoCode", "promoDiscount", "items",
+      "subtotal", "total", "status", "createdAt",
+    ];
+    sheet.getRange(1, 1, 1, hdrs.length).setValues([hdrs]);
+    sheet.getRange(1, 1, 1, hdrs.length).setFontWeight("bold");
+    sheet.setFrozenRows(1);
+  }
+  const id = Date.now().toString();
+  const source = body.action === "submitCartOrder" ? "checkout" : "product-detail";
+  sheet.appendRow([
+    id,
+    source,
+    body.firstName || "",
+    body.lastName || "",
+    body.phone || "",
+    body.wilaya || "",
+    body.commune || "",
+    body.deliveryType || "",
+    Number(body.deliveryCost) || 0,
+    body.promoCode || "",
+    Number(body.promoDiscount) || 0,
+    JSON.stringify(body.items || []),
+    Number(body.subtotal) || 0,
+    Number(body.total) || 0,
+    "waiting",
+    new Date().toISOString(),
+  ]);
+  return jsonResponse({ success: true, id });
+}
+
+function handleGetOrders() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const sheet = ss.getSheetByName("Orders");
+  if (!sheet) return jsonResponse({ success: true, orders: [] });
+  const data = sheet.getDataRange().getValues();
+  if (data.length <= 1) return jsonResponse({ success: true, orders: [] });
+  const orders = data.slice(1).map(function (r) {
+    return {
+      id: String(r[0] || ""),
+      source: String(r[1] || ""),
+      firstName: String(r[2] || ""),
+      lastName: String(r[3] || ""),
+      phone: String(r[4] || ""),
+      wilaya: String(r[5] || ""),
+      commune: String(r[6] || ""),
+      deliveryType: String(r[7] || ""),
+      deliveryCost: Number(r[8]) || 0,
+      promoCode: String(r[9] || ""),
+      promoDiscount: Number(r[10]) || 0,
+      items: safeParseJSON(r[11], []),
+      subtotal: Number(r[12]) || 0,
+      total: Number(r[13]) || 0,
+      status: String(r[14] || "waiting"),
+      createdAt: r[15] ? String(r[15]) : "",
+    };
+  });
+  return jsonResponse({ success: true, orders });
+}
+
 function handleUpdateOrderStatus(body) {
   const ss = SpreadsheetApp.openById(SHEET_ID);
   let sheet = ss.getSheetByName("Orders");

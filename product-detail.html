@@ -5203,8 +5203,46 @@
         const subtotal = variantPrice * selectedQty;
         const { discount, freeDelivery } = getPromoDiscount(subtotal, cost);
         const deliveryCharge = freeDelivery ? 0 : cost;
-        const total = (subtotal + deliveryCharge - discount).toLocaleString("fr-DZ");
+        const totalNum = subtotal + deliveryCharge - discount;
+        const total = totalNum.toLocaleString("fr-DZ");
         const firstName = document.getElementById("firstName").value.trim();
+        const lastName = document.getElementById("lastName").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const wilayaData = WILAYAS[selectedWilayaCode];
+        const wilayaName = wilayaData ? wilayaData.name : selectedWilayaCode;
+        const variants = parseField(p.variants);
+        const v = variants[selectedVariantIndex];
+        const variantStr = v
+          ? v.weight
+            ? `${v.weight}${v.unit || ""}`
+            : v.label || v.name || ""
+          : "";
+
+        fetch(SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            action: "submitProductOrder",
+            firstName,
+            lastName,
+            phone,
+            wilaya: selectedWilayaCode ? `${selectedWilayaCode} - ${wilayaName}` : "",
+            commune: selectedCommuneName,
+            deliveryType: selectedDelivery,
+            deliveryCost: deliveryCharge,
+            promoCode: appliedPromo ? appliedPromo.code : "",
+            promoDiscount: discount,
+            items: [{
+              name: p.name,
+              flavor: selectedFlavor || "",
+              variant: variantStr,
+              qty: selectedQty,
+              unitPrice: variantPrice,
+              lineTotal: variantPrice * selectedQty,
+            }],
+            subtotal,
+            total: totalNum,
+          }),
+        }).catch(() => {});
 
         document.getElementById("successMsg").textContent =
           `Thank you ${firstName}! Your order for ${p.name} × ${selectedQty} — Total: ${total} DA. We'll call you shortly to confirm.`;
