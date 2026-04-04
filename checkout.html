@@ -32,15 +32,106 @@
         --nav-h: 64px;
         --cat-h: 44px;
         --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-        --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
-        --shadow-md: 0 4px 16px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.06);
-        --shadow-lg: 0 12px 40px rgba(0,0,0,0.14), 0 4px 12px rgba(0,0,0,0.08);
+        --shadow-sm:
+          0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+        --shadow-md:
+          0 4px 16px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.06);
+        --shadow-lg:
+          0 12px 40px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(0, 0, 0, 0.08);
         --shadow-red: 0 4px 20px rgba(173, 0, 0, 0.3);
       }
 
+      /* ─── PAGE LOADER ─────────────────────────────────────────── */
+      #pageLoader {
+        position: fixed;
+        inset: 0;
+        background: #0a0a0a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        transition:
+          opacity 0.5s ease,
+          visibility 0.5s ease;
+      }
+      #pageLoader.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .loader-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+      .loader-brand {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(3rem, 10vw, 5rem);
+        letter-spacing: 0.06em;
+        line-height: 1;
+      }
+      .lb-by {
+        color: #fff;
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(28px);
+        animation: ldrUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+      }
+      .lb-bens {
+        color: #ad0000;
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(28px);
+        animation: ldrUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.35s forwards;
+      }
+      @keyframes ldrUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .loader-bar {
+        width: 120px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 2px;
+        overflow: hidden;
+        opacity: 0;
+        animation: ldrBarIn 0.3s ease 0.6s forwards;
+      }
+      @keyframes ldrBarIn {
+        to {
+          opacity: 1;
+        }
+      }
+      .loader-bar-fill {
+        height: 100%;
+        width: 40%;
+        background: #ad0000;
+        border-radius: 2px;
+        animation: ldrSweep 1.2s ease-in-out 0.6s infinite;
+      }
+      @keyframes ldrSweep {
+        0% {
+          transform: translateX(-250%);
+        }
+        100% {
+          transform: translateX(450%);
+        }
+      }
+
       /* ─── RESET ────────────────────────────────────────────────── */
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-      html { scroll-behavior: smooth; }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
       body {
         font-family: var(--font-body);
         color: var(--black);
@@ -48,31 +139,74 @@
         -webkit-font-smoothing: antialiased;
         overflow-x: hidden;
       }
-      img { display: block; max-width: 100%; }
-      a { text-decoration: none; color: inherit; }
-      button { cursor: pointer; border: none; background: none; font-family: inherit; }
-      ul { list-style: none; }
-      input, select, textarea { font-family: inherit; }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      button {
+        cursor: pointer;
+        border: none;
+        background: none;
+        font-family: inherit;
+      }
+      ul {
+        list-style: none;
+      }
+      input,
+      select,
+      textarea {
+        font-family: inherit;
+      }
 
       /* ─── UTILITY ──────────────────────────────────────────────── */
-      .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+      .container {
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
 
       /* ─── ANIMATIONS ───────────────────────────────────────────── */
       @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
       @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.15); }
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.15);
+        }
       }
       @keyframes marqueeTick {
-        from { transform: translateX(0); }
-        to { transform: translateX(-50%); }
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
       }
       @keyframes slideIn {
-        from { opacity: 0; transform: translateX(30px); }
-        to { opacity: 1; transform: translateX(0); }
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
       }
 
       /* ─── MARQUEE ──────────────────────────────────────────────── */
@@ -90,7 +224,9 @@
         white-space: nowrap;
         animation: marqueeTick 28s linear infinite;
       }
-      .marquee-track:hover { animation-play-state: paused; }
+      .marquee-track:hover {
+        animation-play-state: paused;
+      }
       .marquee-item {
         display: inline-flex;
         align-items: center;
@@ -101,7 +237,9 @@
         padding: 0 32px;
         text-transform: uppercase;
       }
-      .marquee-sep { opacity: 0.5; }
+      .marquee-sep {
+        opacity: 0.5;
+      }
 
       /* ─── HEADER ───────────────────────────────────────────────── */
       #site-header {
@@ -112,7 +250,9 @@
         border-bottom: 1px solid var(--gray-100);
         transition: box-shadow var(--transition);
       }
-      #site-header.scrolled { box-shadow: var(--shadow-md); }
+      #site-header.scrolled {
+        box-shadow: var(--shadow-md);
+      }
       .top-nav {
         height: var(--nav-h);
         display: flex;
@@ -135,12 +275,31 @@
         align-items: center;
         justify-content: center;
       }
-      .logo-mark span { font-family: var(--font-display); color: var(--white); font-size: 18px; letter-spacing: 1px; }
-      .logo-text { font-family: var(--font-display); font-size: 26px; letter-spacing: 2px; color: var(--black); line-height: 1; }
-      .logo-text em { color: var(--red); font-style: normal; }
+      .logo-mark span {
+        font-family: var(--font-display);
+        color: var(--white);
+        font-size: 18px;
+        letter-spacing: 1px;
+      }
+      .logo-text {
+        font-family: var(--font-display);
+        font-size: 26px;
+        letter-spacing: 2px;
+        color: var(--black);
+        line-height: 1;
+      }
+      .logo-text em {
+        color: var(--red);
+        font-style: normal;
+      }
 
       /* Search */
-      .search-wrap { flex: 1; max-width: 480px; margin: 0 auto; position: relative; }
+      .search-wrap {
+        flex: 1;
+        max-width: 480px;
+        margin: 0 auto;
+        position: relative;
+      }
       .search-wrap input {
         width: 100%;
         height: 40px;
@@ -150,11 +309,20 @@
         font-size: 14px;
         color: var(--black);
         background: var(--gray-50);
-        transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+        transition:
+          border-color var(--transition),
+          box-shadow var(--transition),
+          background var(--transition);
         outline: none;
       }
-      .search-wrap input::placeholder { color: var(--gray-400); }
-      .search-wrap input:focus { border-color: var(--red); background: var(--white); box-shadow: 0 0 0 3px rgba(173,0,0,0.1); }
+      .search-wrap input::placeholder {
+        color: var(--gray-400);
+      }
+      .search-wrap input:focus {
+        border-color: var(--red);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(173, 0, 0, 0.1);
+      }
       .search-btn {
         position: absolute;
         right: 2px;
@@ -167,24 +335,32 @@
         justify-content: center;
         border-radius: 6px;
         color: var(--gray-400);
-        transition: color var(--transition), background var(--transition);
+        transition:
+          color var(--transition),
+          background var(--transition);
       }
-      .search-btn:hover { color: var(--red); background: var(--red-light); }
+      .search-btn:hover {
+        color: var(--red);
+        background: var(--red-light);
+      }
       .search-dropdown {
         display: none;
         position: absolute;
         top: calc(100% + 6px);
-        left: 0; right: 0;
+        left: 0;
+        right: 0;
         background: var(--white);
         border: 1.5px solid var(--gray-200);
         border-radius: 10px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
         z-index: 2000;
         max-height: 360px;
         overflow-y: auto;
         padding: 6px 0;
       }
-      .search-dropdown.open { display: block; }
+      .search-dropdown.open {
+        display: block;
+      }
       .search-drop-item {
         display: flex;
         align-items: center;
@@ -193,25 +369,68 @@
         cursor: pointer;
         transition: background var(--transition);
       }
-      .search-drop-item:hover { background: var(--gray-50); }
+      .search-drop-item:hover {
+        background: var(--gray-50);
+      }
       .search-drop-thumb {
-        width: 42px; height: 42px;
+        width: 42px;
+        height: 42px;
         border-radius: 8px;
         background: var(--gray-50);
         border: 1px solid var(--gray-100);
         flex-shrink: 0;
         overflow: hidden;
-        display: flex; align-items: center; justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-      .search-drop-thumb img { width:100%; height:100%; object-fit:cover; }
-      .search-drop-info { flex:1; min-width:0; }
-      .search-drop-brand { font-size:11px; color:var(--gray-400); font-weight:600; letter-spacing:1px; text-transform:uppercase; margin:0 0 1px; }
-      .search-drop-name { font-size:14px; font-weight:600; color:var(--black); margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-      .search-drop-price { font-family:var(--font-display); font-size:16px; color:var(--black); flex-shrink:0; direction:ltr; }
-      .search-drop-empty { padding:16px 14px; font-size:13px; color:var(--gray-400); text-align:center; }
+      .search-drop-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .search-drop-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .search-drop-brand {
+        font-size: 11px;
+        color: var(--gray-400);
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin: 0 0 1px;
+      }
+      .search-drop-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--black);
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .search-drop-price {
+        font-family: var(--font-display);
+        font-size: 16px;
+        color: var(--black);
+        flex-shrink: 0;
+        direction: ltr;
+      }
+      .search-drop-empty {
+        padding: 16px 14px;
+        font-size: 13px;
+        color: var(--gray-400);
+        text-align: center;
+      }
 
       /* Nav right */
-      .nav-right { flex-shrink: 0; display: flex; align-items: center; gap: 4px; }
+      .nav-right {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
       .nav-link {
         display: flex;
         align-items: center;
@@ -220,13 +439,25 @@
         font-weight: 500;
         color: var(--gray-600);
         border-radius: 6px;
-        transition: color var(--transition), background var(--transition);
+        transition:
+          color var(--transition),
+          background var(--transition);
       }
-      .nav-link:hover { color: var(--black); background: var(--gray-50); }
-      .nav-link.active { color: var(--red); }
+      .nav-link:hover {
+        color: var(--black);
+        background: var(--gray-50);
+      }
+      .nav-link.active {
+        color: var(--red);
+      }
 
       /* Lang */
-      .lang-switch { display: flex; align-items: center; gap: 2px; margin-left: 4px; }
+      .lang-switch {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        margin-left: 4px;
+      }
       .lang-btn {
         font-size: 11px;
         font-weight: 700;
@@ -234,56 +465,89 @@
         padding: 4px 8px;
         border-radius: 5px;
         color: var(--gray-400);
-        transition: color var(--transition), background var(--transition);
+        transition:
+          color var(--transition),
+          background var(--transition);
       }
-      .lang-btn:hover { color: var(--black); }
-      .lang-btn.active { background: var(--red); color: var(--white); }
+      .lang-btn:hover {
+        color: var(--black);
+      }
+      .lang-btn.active {
+        background: var(--red);
+        color: var(--white);
+      }
 
       /* Cart btn */
       .cart-btn {
         position: relative;
-        width: 40px; height: 40px;
-        display: flex; align-items: center; justify-content: center;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         margin-left: 8px;
         border-radius: 8px;
         color: var(--black);
-        transition: background var(--transition), color var(--transition);
+        transition:
+          background var(--transition),
+          color var(--transition);
       }
-      .cart-btn:hover { background: var(--gray-50); color: var(--red); }
+      .cart-btn:hover {
+        background: var(--gray-50);
+        color: var(--red);
+      }
       .cart-badge {
         position: absolute;
-        top: 4px; right: 4px;
-        width: 18px; height: 18px;
+        top: 4px;
+        right: 4px;
+        width: 18px;
+        height: 18px;
         background: var(--red);
         color: #fff;
         font-size: 10px;
         font-weight: 700;
         border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         animation: pulse 2s ease-in-out infinite;
       }
 
       /* Hamburger */
       .hamburger {
         display: none;
-        width: 40px; height: 40px;
+        width: 40px;
+        height: 40px;
         flex-direction: column;
-        align-items: center; justify-content: center;
+        align-items: center;
+        justify-content: center;
         gap: 5px;
         border-radius: 8px;
         transition: background var(--transition);
       }
-      .hamburger:hover { background: var(--gray-50); }
+      .hamburger:hover {
+        background: var(--gray-50);
+      }
       .hamburger span {
         display: block;
-        width: 22px; height: 2px;
+        width: 22px;
+        height: 2px;
         background: var(--black);
         border-radius: 2px;
-        transition: transform var(--transition), opacity var(--transition);
+        transition:
+          transform var(--transition),
+          opacity var(--transition);
       }
-      .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-      .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-      .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+      .hamburger.open span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+      .hamburger.open span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      .hamburger.open span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
 
       /* ─── CATEGORY NAV ──────────────────────────────────────────── */
       .cat-nav {
@@ -300,7 +564,9 @@
         gap: 2px;
         overflow: visible;
       }
-      .cat-item { position: relative; }
+      .cat-item {
+        position: relative;
+      }
       .cat-link {
         display: flex;
         align-items: center;
@@ -318,15 +584,29 @@
         content: "";
         position: absolute;
         bottom: 0;
-        left: 50%; right: 50%;
+        left: 50%;
+        right: 50%;
         height: 2px;
         background: var(--red);
-        transition: left var(--transition), right var(--transition);
+        transition:
+          left var(--transition),
+          right var(--transition);
       }
-      .cat-item:hover .cat-link { color: var(--red); }
-      .cat-item:hover .cat-link::after { left: 14px; right: 14px; }
-      .cat-link svg { width: 12px; height: 12px; transition: transform var(--transition); }
-      .cat-item:hover .cat-link svg { transform: rotate(180deg); }
+      .cat-item:hover .cat-link {
+        color: var(--red);
+      }
+      .cat-item:hover .cat-link::after {
+        left: 14px;
+        right: 14px;
+      }
+      .cat-link svg {
+        width: 12px;
+        height: 12px;
+        transition: transform var(--transition);
+      }
+      .cat-item:hover .cat-link svg {
+        transform: rotate(180deg);
+      }
 
       /* dropdown */
       .dropdown {
@@ -343,10 +623,18 @@
         visibility: hidden;
         pointer-events: none;
         transform: translateY(-6px);
-        transition: opacity var(--transition), transform var(--transition), visibility var(--transition);
+        transition:
+          opacity var(--transition),
+          transform var(--transition),
+          visibility var(--transition);
         z-index: 1001;
       }
-      .cat-item:hover .dropdown { opacity: 1; visibility: visible; pointer-events: all; transform: translateY(0); }
+      .cat-item:hover .dropdown {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+        transform: translateY(0);
+      }
       .dropdown a {
         display: flex;
         align-items: center;
@@ -356,31 +644,61 @@
         font-weight: 500;
         color: var(--gray-600);
         border-radius: 7px;
-        transition: background var(--transition), color var(--transition), padding-left var(--transition);
+        transition:
+          background var(--transition),
+          color var(--transition),
+          padding-left var(--transition);
       }
-      .dropdown a:hover { background: var(--red-light); color: var(--red); padding-left: 18px; }
-      .dropdown a::before { content: "→"; font-size: 11px; opacity: 0; transition: opacity var(--transition); }
-      .dropdown a:hover::before { opacity: 1; }
+      .dropdown a:hover {
+        background: var(--red-light);
+        color: var(--red);
+        padding-left: 18px;
+      }
+      .dropdown a::before {
+        content: "→";
+        font-size: 11px;
+        opacity: 0;
+        transition: opacity var(--transition);
+      }
+      .dropdown a:hover::before {
+        opacity: 1;
+      }
 
       /* ─── MOBILE ────────────────────────────────────────────────── */
       .mobile-menu {
         display: flex;
         flex-direction: column;
         position: fixed;
-        left: 0; top: 0; bottom: 0;
+        left: 0;
+        top: 0;
+        bottom: 0;
         width: min(300px, 85vw);
         background: var(--white);
         z-index: 1100;
         padding: 24px;
         overflow-y: auto;
         transform: translateX(-100%);
-        transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-        box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
       }
-      .mobile-menu.open { transform: translateX(0); }
-      .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1099; }
-      .mobile-overlay.open { display: block; }
-      .mobile-nav-links { display: flex; flex-direction: column; gap: 2px; }
+      .mobile-menu.open {
+        transform: translateX(0);
+      }
+      .mobile-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 1099;
+      }
+      .mobile-overlay.open {
+        display: block;
+      }
+      .mobile-nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
       .mobile-nav-link {
         display: flex;
         align-items: center;
@@ -390,10 +708,17 @@
         font-size: 15px;
         font-weight: 500;
         color: var(--gray-800);
-        transition: background var(--transition), color var(--transition);
+        transition:
+          background var(--transition),
+          color var(--transition);
       }
-      .mobile-nav-link:hover { background: var(--gray-50); color: var(--black); }
-      .m-cat-item { border-bottom: 1px solid var(--gray-100); }
+      .mobile-nav-link:hover {
+        background: var(--gray-50);
+        color: var(--black);
+      }
+      .m-cat-item {
+        border-bottom: 1px solid var(--gray-100);
+      }
       .m-cat-toggle {
         width: 100%;
         display: flex;
@@ -409,21 +734,45 @@
         font-family: var(--font-body);
         transition: color var(--transition);
       }
-      .m-cat-toggle:hover { color: var(--red); }
-      .m-arrow { font-size: 18px; transition: transform 0.25s ease; display: inline-block; color: var(--gray-400); }
-      .m-cat-item.open .m-arrow { transform: rotate(90deg); color: var(--red); }
-      .m-cat-item.open .m-cat-toggle { color: var(--red); }
-      .m-sub { display: none; flex-direction: column; padding: 0 0 12px 16px; gap: 2px; }
-      .m-cat-item.open .m-sub { display: flex; }
+      .m-cat-toggle:hover {
+        color: var(--red);
+      }
+      .m-arrow {
+        font-size: 18px;
+        transition: transform 0.25s ease;
+        display: inline-block;
+        color: var(--gray-400);
+      }
+      .m-cat-item.open .m-arrow {
+        transform: rotate(90deg);
+        color: var(--red);
+      }
+      .m-cat-item.open .m-cat-toggle {
+        color: var(--red);
+      }
+      .m-sub {
+        display: none;
+        flex-direction: column;
+        padding: 0 0 12px 16px;
+        gap: 2px;
+      }
+      .m-cat-item.open .m-sub {
+        display: flex;
+      }
       .m-sub-link {
         padding: 9px 12px;
         font-size: 14px;
         font-weight: 500;
         color: var(--gray-600);
         border-radius: 7px;
-        transition: background var(--transition), color var(--transition);
+        transition:
+          background var(--transition),
+          color var(--transition);
       }
-      .m-sub-link:hover { background: var(--red-light); color: var(--red); }
+      .m-sub-link:hover {
+        background: var(--red-light);
+        color: var(--red);
+      }
 
       /* ─── BREADCRUMB ───────────────────────────────────────────── */
       .breadcrumb {
@@ -434,10 +783,20 @@
         font-size: 13px;
         color: var(--gray-400);
       }
-      .breadcrumb a { color: var(--gray-400); transition: color var(--transition); }
-      .breadcrumb a:hover { color: var(--red); }
-      .breadcrumb .sep { font-size: 10px; }
-      .breadcrumb .current { color: var(--gray-800); font-weight: 500; }
+      .breadcrumb a {
+        color: var(--gray-400);
+        transition: color var(--transition);
+      }
+      .breadcrumb a:hover {
+        color: var(--red);
+      }
+      .breadcrumb .sep {
+        font-size: 10px;
+      }
+      .breadcrumb .current {
+        color: var(--gray-800);
+        font-weight: 500;
+      }
 
       /* ─── FORM ─────────────────────────────────────────────────── */
       .form-row {
@@ -446,8 +805,14 @@
         gap: 14px;
         margin-bottom: 14px;
       }
-      .form-row.single { grid-template-columns: 1fr; }
-      .form-group { display: flex; flex-direction: column; gap: 6px; }
+      .form-row.single {
+        grid-template-columns: 1fr;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
       .form-group label {
         font-size: 12px;
         font-weight: 700;
@@ -455,7 +820,8 @@
         text-transform: uppercase;
         color: var(--gray-600);
       }
-      .form-group input, .form-group select {
+      .form-group input,
+      .form-group select {
         height: 44px;
         padding: 0 14px;
         border: 1.5px solid var(--gray-200);
@@ -463,22 +829,39 @@
         font-size: 14px;
         color: var(--black);
         background: var(--gray-50);
-        transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+        transition:
+          border-color var(--transition),
+          box-shadow var(--transition),
+          background var(--transition);
         outline: none;
         appearance: none;
         -webkit-appearance: none;
       }
-      .form-group input:focus, .form-group select:focus {
+      .form-group input:focus,
+      .form-group select:focus {
         border-color: var(--red);
         background: var(--white);
-        box-shadow: 0 0 0 3px rgba(173,0,0,0.1);
+        box-shadow: 0 0 0 3px rgba(173, 0, 0, 0.1);
       }
-      .form-group input::placeholder { color: var(--gray-400); }
-      .form-group input.error, .form-group select.error { border-color: var(--red); }
-      .form-group .error-msg { font-size: 11px; color: var(--red); margin-top: 2px; }
+      .form-group input::placeholder {
+        color: var(--gray-400);
+      }
+      .form-group input.error,
+      .form-group select.error {
+        border-color: var(--red);
+      }
+      .form-group .error-msg {
+        font-size: 11px;
+        color: var(--red);
+        margin-top: 2px;
+      }
 
       /* Delivery options */
-      .delivery-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .delivery-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
       .delivery-option {
         border: 1.5px solid var(--gray-200);
         border-radius: 10px;
@@ -487,23 +870,62 @@
         transition: all var(--transition);
         position: relative;
       }
-      .delivery-option:hover { border-color: var(--red); background: var(--red-light); }
-      .delivery-option.active { border-color: var(--red); background: var(--red-light); }
-      .delivery-option input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
-      .delivery-option-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
-      .delivery-option-name { font-size: 13px; font-weight: 700; color: var(--black); }
+      .delivery-option:hover {
+        border-color: var(--red);
+        background: var(--red-light);
+      }
+      .delivery-option.active {
+        border-color: var(--red);
+        background: var(--red-light);
+      }
+      .delivery-option input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .delivery-option-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 4px;
+      }
+      .delivery-option-name {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--black);
+      }
       .delivery-option-check {
-        width: 18px; height: 18px;
+        width: 18px;
+        height: 18px;
         border-radius: 50%;
         border: 2px solid var(--gray-200);
-        display: flex; align-items: center; justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         transition: all var(--transition);
         flex-shrink: 0;
       }
-      .delivery-option.active .delivery-option-check { border-color: var(--red); background: var(--red); }
-      .delivery-option-dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; }
-      .delivery-option-price { font-size: 14px; font-weight: 700; color: var(--red); direction: ltr; }
-      .delivery-option-desc { font-size: 12px; color: var(--gray-400); }
+      .delivery-option.active .delivery-option-check {
+        border-color: var(--red);
+        background: var(--red);
+      }
+      .delivery-option-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #fff;
+      }
+      .delivery-option-price {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--red);
+        direction: ltr;
+      }
+      .delivery-option-desc {
+        font-size: 12px;
+        color: var(--gray-400);
+      }
 
       /* Order summary */
       .order-summary {
@@ -527,9 +949,19 @@
         align-items: center;
         padding: 8px 0;
       }
-      .order-summary-row + .order-summary-row { border-top: 1px solid var(--gray-100); }
-      .order-summary-label { font-size: 13px; color: var(--gray-600); }
-      .order-summary-val { font-size: 13px; font-weight: 600; color: var(--black); direction: ltr; }
+      .order-summary-row + .order-summary-row {
+        border-top: 1px solid var(--gray-100);
+      }
+      .order-summary-label {
+        font-size: 13px;
+        color: var(--gray-600);
+      }
+      .order-summary-val {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--black);
+        direction: ltr;
+      }
       .order-summary-total {
         display: flex;
         justify-content: space-between;
@@ -538,8 +970,18 @@
         margin-top: 8px;
         border-top: 2px solid var(--gray-200);
       }
-      .order-summary-total-label { font-size: 14px; font-weight: 700; color: var(--black); }
-      .order-summary-total-price { font-family: var(--font-display); font-size: 28px; letter-spacing: 1px; color: var(--red); direction: ltr; }
+      .order-summary-total-label {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--black);
+      }
+      .order-summary-total-price {
+        font-family: var(--font-display);
+        font-size: 28px;
+        letter-spacing: 1px;
+        color: var(--red);
+        direction: ltr;
+      }
 
       /* Promo code */
       .promo-wrap {
@@ -560,7 +1002,10 @@
         color: var(--gray-600);
         margin-bottom: 10px;
       }
-      .promo-label svg { color: var(--red); flex-shrink: 0; }
+      .promo-label svg {
+        color: var(--red);
+        flex-shrink: 0;
+      }
       .promo-input-row {
         display: flex;
         gap: 8px;
@@ -592,7 +1037,9 @@
         color: var(--black);
         font-family: var(--font-display);
         outline: none;
-        transition: border-color 0.2s, box-shadow 0.2s;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
       }
       .promo-input-wrap input::placeholder {
         color: var(--gray-400);
@@ -602,7 +1049,7 @@
       }
       .promo-input-wrap input:focus {
         border-color: var(--red);
-        box-shadow: 0 0 0 3px rgba(173,0,0,0.1);
+        box-shadow: 0 0 0 3px rgba(173, 0, 0, 0.1);
         background: var(--white);
       }
       .btn-apply-promo {
@@ -617,11 +1064,17 @@
         font-weight: 700;
         letter-spacing: 1px;
         cursor: pointer;
-        transition: background 0.2s, transform 0.1s;
+        transition:
+          background 0.2s,
+          transform 0.1s;
         white-space: nowrap;
       }
-      .btn-apply-promo:hover { background: var(--red); }
-      .btn-apply-promo:active { transform: scale(0.97); }
+      .btn-apply-promo:hover {
+        background: var(--red);
+      }
+      .btn-apply-promo:active {
+        transform: scale(0.97);
+      }
       .promo-msg {
         font-size: 12px;
         margin-top: 8px;
@@ -644,14 +1097,25 @@
         align-items: center;
         justify-content: center;
         gap: 10px;
-        transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
+        transition:
+          background var(--transition),
+          box-shadow var(--transition),
+          transform var(--transition);
         box-shadow: var(--shadow-red);
       }
-      .btn-order:hover { background: var(--red-hover); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(173,0,0,0.4); }
-      .btn-order:active { transform: translateY(0); }
+      .btn-order:hover {
+        background: var(--red-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 24px rgba(173, 0, 0, 0.4);
+      }
+      .btn-order:active {
+        transform: translateY(0);
+      }
 
       /* ─── CUSTOM DROPDOWN ──────────────────────────────────────── */
-      .custom-select-wrap { position: relative; }
+      .custom-select-wrap {
+        position: relative;
+      }
       .custom-select-trigger {
         display: flex;
         align-items: center;
@@ -664,35 +1128,57 @@
         color: var(--gray-800);
         background: var(--gray-50);
         cursor: pointer;
-        transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+        transition:
+          border-color var(--transition),
+          box-shadow var(--transition),
+          background var(--transition);
         user-select: none;
       }
-      .custom-select-trigger:focus, .custom-select-trigger.open {
+      .custom-select-trigger:focus,
+      .custom-select-trigger.open {
         border-color: var(--red);
         background: var(--white);
-        box-shadow: 0 0 0 3px rgba(173,0,0,0.1);
+        box-shadow: 0 0 0 3px rgba(173, 0, 0, 0.1);
         outline: none;
       }
-      .custom-select-trigger.placeholder { color: var(--gray-400); }
+      .custom-select-trigger.placeholder {
+        color: var(--gray-400);
+      }
       .custom-select-trigger .caret {
-        width: 16px; height: 16px;
+        width: 16px;
+        height: 16px;
         flex-shrink: 0;
         color: var(--gray-400);
         transition: transform 0.2s ease;
       }
-      .custom-select-trigger.open .caret { transform: rotate(180deg); }
-      .custom-select-trigger.error-field { border-color: var(--red); }
-      .custom-select-trigger[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+      .custom-select-trigger.open .caret {
+        transform: rotate(180deg);
+      }
+      .custom-select-trigger.error-field {
+        border-color: var(--red);
+      }
+      .custom-select-trigger[aria-disabled="true"] {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
 
       @keyframes dropdownOpen {
-        from { opacity: 0; transform: translateY(-6px) scale(0.98); }
-        to { opacity: 1; transform: translateY(0) scale(1); }
+        from {
+          opacity: 0;
+          transform: translateY(-6px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
       }
       .custom-dropdown-list {
         display: none;
         position: absolute;
         top: calc(100% + 4px);
-        left: 0; right: 0;
+        left: 0;
+        right: 0;
         z-index: 500;
         background: var(--white);
         border: 1.5px solid var(--gray-100);
@@ -702,11 +1188,18 @@
         overflow-y: auto;
         scrollbar-width: thin;
         scrollbar-color: var(--gray-200) transparent;
-        animation: dropdownOpen 0.18s cubic-bezier(0.22,1,0.36,1) both;
+        animation: dropdownOpen 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
       }
-      .custom-dropdown-list.open { display: block; }
-      .custom-dropdown-list::-webkit-scrollbar { width: 5px; }
-      .custom-dropdown-list::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
+      .custom-dropdown-list.open {
+        display: block;
+      }
+      .custom-dropdown-list::-webkit-scrollbar {
+        width: 5px;
+      }
+      .custom-dropdown-list::-webkit-scrollbar-thumb {
+        background: var(--gray-200);
+        border-radius: 4px;
+      }
       .dropdown-option {
         display: flex;
         align-items: center;
@@ -715,14 +1208,30 @@
         font-size: 14px;
         color: var(--gray-800);
         cursor: pointer;
-        transition: background var(--transition), color var(--transition);
+        transition:
+          background var(--transition),
+          color var(--transition);
         border-bottom: 1px solid var(--gray-50);
       }
-      .dropdown-option:last-child { border-bottom: none; }
-      .dropdown-option:hover { background: var(--red-light); color: var(--red); }
-      .dropdown-option.selected { background: var(--red-light); color: var(--red); font-weight: 600; }
-      .dropdown-option .check-icon { display: none; }
-      .dropdown-option.selected .check-icon { display: block; color: var(--red); }
+      .dropdown-option:last-child {
+        border-bottom: none;
+      }
+      .dropdown-option:hover {
+        background: var(--red-light);
+        color: var(--red);
+      }
+      .dropdown-option.selected {
+        background: var(--red-light);
+        color: var(--red);
+        font-weight: 600;
+      }
+      .dropdown-option .check-icon {
+        display: none;
+      }
+      .dropdown-option.selected .check-icon {
+        display: block;
+        color: var(--red);
+      }
       .dropdown-search {
         padding: 10px 12px 6px;
         border-bottom: 1px solid var(--gray-100);
@@ -743,8 +1252,15 @@
         background: var(--gray-50);
         color: var(--black);
       }
-      .dropdown-search input:focus { border-color: var(--red); }
-      .dropdown-empty { padding: 16px; font-size: 13px; color: var(--gray-400); text-align: center; }
+      .dropdown-search input:focus {
+        border-color: var(--red);
+      }
+      .dropdown-empty {
+        padding: 16px;
+        font-size: 13px;
+        color: var(--gray-400);
+        text-align: center;
+      }
 
       /* ─── SUCCESS OVERLAY ──────────────────────────────────────── */
       .success-overlay {
@@ -752,12 +1268,14 @@
         position: fixed;
         inset: 0;
         z-index: 2000;
-        background: rgba(0,0,0,0.5);
+        background: rgba(0, 0, 0, 0.5);
         backdrop-filter: blur(4px);
         align-items: center;
         justify-content: center;
       }
-      .success-overlay.show { display: flex; }
+      .success-overlay.show {
+        display: flex;
+      }
       .success-card {
         background: var(--white);
         border-radius: 20px;
@@ -766,18 +1284,33 @@
         max-width: 420px;
         width: 90%;
         box-shadow: var(--shadow-lg);
-        animation: fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both;
+        animation: fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
       }
       .success-icon {
-        width: 72px; height: 72px;
+        width: 72px;
+        height: 72px;
         background: #d1fae5;
         border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         margin: 0 auto 20px;
       }
-      .success-icon svg { color: #0a7c3e; }
-      .success-title { font-family: var(--font-display); font-size: 32px; letter-spacing: 2px; margin-bottom: 8px; }
-      .success-msg { font-size: 14px; color: var(--gray-600); line-height: 1.6; margin-bottom: 28px; }
+      .success-icon svg {
+        color: #0a7c3e;
+      }
+      .success-title {
+        font-family: var(--font-display);
+        font-size: 32px;
+        letter-spacing: 2px;
+        margin-bottom: 8px;
+      }
+      .success-msg {
+        font-size: 14px;
+        color: var(--gray-600);
+        line-height: 1.6;
+        margin-bottom: 28px;
+      }
       .success-close {
         display: inline-flex;
         align-items: center;
@@ -790,7 +1323,10 @@
         font-weight: 700;
         transition: background var(--transition);
       }
-      .success-close:hover { background: var(--red-hover); cursor: pointer; }
+      .success-close:hover {
+        background: var(--red-hover);
+        cursor: pointer;
+      }
 
       /* ─── TOAST ────────────────────────────────────────────────── */
       .toast {
@@ -810,98 +1346,268 @@
         z-index: 3000;
         white-space: nowrap;
       }
-      .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
 
       /* ─── SCROLL TOP ───────────────────────────────────────────── */
       #scrollTop {
         position: fixed;
-        bottom: 28px; right: 28px;
+        bottom: 28px;
+        right: 28px;
         z-index: 999;
-        width: 42px; height: 42px;
+        width: 42px;
+        height: 42px;
         background: var(--black);
         color: #fff;
         border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         opacity: 0;
         transform: translateY(12px);
         pointer-events: none;
-        transition: opacity 0.3s, transform 0.3s;
+        transition:
+          opacity 0.3s,
+          transform 0.3s;
         box-shadow: var(--shadow-md);
       }
-      #scrollTop.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
-      #scrollTop:hover { background: var(--red); }
+      #scrollTop.visible {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: all;
+      }
+      #scrollTop:hover {
+        background: var(--red);
+      }
 
       /* ─── WHATSAPP ──────────────────────────────────────────────── */
       @keyframes wa-float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
       }
       @keyframes wa-pulse {
-        0% { box-shadow: 0 4px 16px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0.5); }
-        70% { box-shadow: 0 4px 16px rgba(37,211,102,0.4), 0 0 0 14px rgba(37,211,102,0); }
-        100% { box-shadow: 0 4px 16px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0); }
+        0% {
+          box-shadow:
+            0 4px 16px rgba(37, 211, 102, 0.4),
+            0 0 0 0 rgba(37, 211, 102, 0.5);
+        }
+        70% {
+          box-shadow:
+            0 4px 16px rgba(37, 211, 102, 0.4),
+            0 0 0 14px rgba(37, 211, 102, 0);
+        }
+        100% {
+          box-shadow:
+            0 4px 16px rgba(37, 211, 102, 0.4),
+            0 0 0 0 rgba(37, 211, 102, 0);
+        }
       }
       .wa-btn {
         position: fixed;
-        bottom: 24px; right: 24px;
-        width: 58px; height: 58px;
+        bottom: 24px;
+        right: 24px;
+        width: 58px;
+        height: 58px;
         background: #25d366;
         border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         text-decoration: none;
         z-index: 9999;
-        animation: wa-float 2.4s ease-in-out infinite, wa-pulse 2.4s ease-in-out infinite;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        animation:
+          wa-float 2.4s ease-in-out infinite,
+          wa-pulse 2.4s ease-in-out infinite;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
       }
-      .wa-btn:hover { animation: none; transform: scale(1.12); box-shadow: 0 8px 28px rgba(37,211,102,0.6); }
+      .wa-btn:hover {
+        animation: none;
+        transform: scale(1.12);
+        box-shadow: 0 8px 28px rgba(37, 211, 102, 0.6);
+      }
 
       /* ─── YOU MAY ALSO LIKE ───────────────────────────────────── */
-      .also-like-section { padding: 64px 0 0; }
-      .also-like-title { font-size: 22px; font-weight: 800; color: var(--black); margin-bottom: 28px; }
-      .also-like-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-      @media (max-width: 1024px) { .also-like-grid { grid-template-columns: repeat(3, 1fr); } }
-      @media (max-width: 640px)  { .also-like-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
-      .also-card { background: var(--white); border: 1px solid var(--gray-100); border-radius: 14px; overflow: hidden; cursor: pointer; transition: box-shadow var(--transition), transform var(--transition); display: flex; flex-direction: column; }
-      .also-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,.1); transform: translateY(-4px); }
-      .also-card-img { aspect-ratio: 4/3; background: linear-gradient(145deg,#f0f0f0,#fafafa); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-      .also-card-img img { width: 100%; height: 100%; object-fit: contain; }
-      .also-card-body { padding: 12px 14px 16px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
-      .also-card-name { font-size: 14px; font-weight: 700; color: var(--black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .also-card-price { font-size: 15px; font-weight: 800; color: var(--red); }
+      .also-like-section {
+        padding: 64px 0 0;
+      }
+      .also-like-title {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--black);
+        margin-bottom: 28px;
+      }
+      .also-like-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+      @media (max-width: 1024px) {
+        .also-like-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media (max-width: 640px) {
+        .also-like-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+        }
+      }
+      .also-card {
+        background: var(--white);
+        border: 1px solid var(--gray-100);
+        border-radius: 14px;
+        overflow: hidden;
+        cursor: pointer;
+        transition:
+          box-shadow var(--transition),
+          transform var(--transition);
+        display: flex;
+        flex-direction: column;
+      }
+      .also-card:hover {
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transform: translateY(-4px);
+      }
+      .also-card-img {
+        aspect-ratio: 4/3;
+        background: linear-gradient(145deg, #f0f0f0, #fafafa);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .also-card-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .also-card-body {
+        padding: 12px 14px 16px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .also-card-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--black);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .also-card-price {
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--red);
+      }
 
       /* ─── FOOTER ───────────────────────────────────────────────── */
-      .site-footer { background: var(--black); color: var(--gray-400); padding: 56px 0 0; margin-top: 80px; }
+      .site-footer {
+        background: var(--black);
+        color: var(--gray-400);
+        padding: 56px 0 0;
+        margin-top: 80px;
+      }
       .footer-grid {
         display: grid;
         grid-template-columns: 2fr 1fr 1fr 1.2fr;
         gap: 40px;
         padding-bottom: 48px;
-        border-bottom: 1px solid rgba(255,255,255,0.07);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
       }
-      .footer-brand p { font-size: 13px; line-height: 1.7; max-width: 260px; color: #6b6b6b; }
-      .footer-social { display: flex; gap: 10px; margin-top: 20px; }
+      .footer-brand p {
+        font-size: 13px;
+        line-height: 1.7;
+        max-width: 260px;
+        color: #6b6b6b;
+      }
+      .footer-social {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
       .footer-social a {
-        width: 36px; height: 36px;
+        width: 36px;
+        height: 36px;
         border-radius: 8px;
-        background: rgba(255,255,255,0.06);
-        display: flex; align-items: center; justify-content: center;
+        background: rgba(255, 255, 255, 0.06);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         color: var(--gray-400);
-        transition: background var(--transition), color var(--transition);
+        transition:
+          background var(--transition),
+          color var(--transition);
         text-decoration: none;
       }
-      .footer-social a:hover { background: var(--red); color: var(--white); }
-      .footer-col-title { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--white); margin-bottom: 16px; }
-      .footer-links { display: flex; flex-direction: column; gap: 10px; }
-      .footer-links a { font-size: 13px; color: #6b6b6b; transition: color var(--transition); }
-      .footer-links a:hover { color: var(--white); }
-      .footer-contact-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #6b6b6b; margin-bottom: 12px; }
-      .footer-contact-item svg { flex-shrink: 0; margin-top: 1px; color: var(--red); }
-      .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; font-size: 12px; color: #444; }
-      .footer-bottom a { color: #555; transition: color var(--transition); }
-      .footer-bottom a:hover { color: var(--white); }
+      .footer-social a:hover {
+        background: var(--red);
+        color: var(--white);
+      }
+      .footer-col-title {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: var(--white);
+        margin-bottom: 16px;
+      }
+      .footer-links {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .footer-links a {
+        font-size: 13px;
+        color: #6b6b6b;
+        transition: color var(--transition);
+      }
+      .footer-links a:hover {
+        color: var(--white);
+      }
+      .footer-contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 13px;
+        color: #6b6b6b;
+        margin-bottom: 12px;
+      }
+      .footer-contact-item svg {
+        flex-shrink: 0;
+        margin-top: 1px;
+        color: var(--red);
+      }
+      .footer-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 0;
+        font-size: 12px;
+        color: #444;
+      }
+      .footer-bottom a {
+        color: #555;
+        transition: color var(--transition);
+      }
+      .footer-bottom a:hover {
+        color: var(--white);
+      }
 
       /* ─── CHECKOUT SPECIFIC ────────────────────────────────────── */
-      .checkout-section { padding: 24px 0 60px; }
+      .checkout-section {
+        padding: 24px 0 60px;
+      }
 
       .checkout-grid {
         display: grid;
@@ -933,19 +1639,31 @@
         padding: 14px 0;
         border-bottom: 1px solid var(--gray-100);
       }
-      .checkout-item:last-child { border-bottom: none; }
+      .checkout-item:last-child {
+        border-bottom: none;
+      }
 
       .checkout-item-img {
-        width: 64px; height: 64px;
+        width: 64px;
+        height: 64px;
         border-radius: 8px;
         overflow: hidden;
         flex-shrink: 0;
         background: var(--gray-100);
-        display: flex; align-items: center; justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-      .checkout-item-img img { width: 100%; height: 100%; object-fit: cover; }
+      .checkout-item-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
 
-      .checkout-item-info { flex: 1; min-width: 0; }
+      .checkout-item-info {
+        flex: 1;
+        min-width: 0;
+      }
       .checkout-item-name {
         font-size: 14px;
         font-weight: 700;
@@ -955,11 +1673,26 @@
         text-overflow: ellipsis;
         margin-bottom: 2px;
       }
-      .checkout-item-meta { font-size: 12px; color: var(--gray-400); margin-bottom: 8px; }
+      .checkout-item-meta {
+        font-size: 12px;
+        color: var(--gray-400);
+        margin-bottom: 8px;
+      }
 
-      .checkout-item-bot { display: flex; align-items: center; gap: 8px; }
+      .checkout-item-bot {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
 
-      .checkout-item-price { margin-left: auto; font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--black); white-space: nowrap; }
+      .checkout-item-price {
+        margin-left: auto;
+        font-family: var(--font-display);
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--black);
+        white-space: nowrap;
+      }
 
       .checkout-item-del {
         background: none;
@@ -970,7 +1703,9 @@
         transition: color 0.15s;
         flex-shrink: 0;
       }
-      .checkout-item-del:hover { color: var(--red); }
+      .checkout-item-del:hover {
+        color: var(--red);
+      }
 
       /* Inline qty stepper in checkout items */
       .qty-stepper {
@@ -982,17 +1717,25 @@
         overflow: hidden;
       }
       .qty-btn {
-        width: 32px; height: 32px;
+        width: 32px;
+        height: 32px;
         font-size: 18px;
         font-weight: 400;
         color: var(--gray-600);
         background: var(--gray-50);
         border: none;
         cursor: pointer;
-        transition: background var(--transition), color var(--transition);
-        display: flex; align-items: center; justify-content: center;
+        transition:
+          background var(--transition),
+          color var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-      .qty-btn:hover { background: var(--red-light); color: var(--red); }
+      .qty-btn:hover {
+        background: var(--red-light);
+        color: var(--red);
+      }
       .qty-value {
         min-width: 36px;
         text-align: center;
@@ -1022,8 +1765,15 @@
         padding: 40px 20px;
         color: var(--gray-400);
       }
-      .checkout-empty-state svg { margin: 0 auto 12px; opacity: 0.3; }
-      .checkout-empty-state p { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+      .checkout-empty-state svg {
+        margin: 0 auto 12px;
+        opacity: 0.3;
+      }
+      .checkout-empty-state p {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 16px;
+      }
       .checkout-empty-state a {
         display: inline-block;
         padding: 10px 24px;
@@ -1034,7 +1784,9 @@
         font-weight: 700;
         transition: background var(--transition);
       }
-      .checkout-empty-state a:hover { background: var(--red-hover); }
+      .checkout-empty-state a:hover {
+        background: var(--red-hover);
+      }
 
       /* Right: form panel */
       .checkout-form-panel {
@@ -1053,67 +1805,313 @@
         align-items: center;
         gap: 10px;
       }
-      .order-form-title svg { color: var(--red); }
+      .order-form-title svg {
+        color: var(--red);
+      }
 
       /* ── CART DRAWER ── */
-      .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 8000; opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s; }
-      .cart-overlay.open { opacity: 1; visibility: visible; }
-      .cart-drawer { position: fixed; top: 0; right: 0; width: 380px; max-width: 100vw; height: 100%; background: #fff; z-index: 8100; display: flex; flex-direction: column; transform: translateX(100%); transition: transform .28s cubic-bezier(.4,0,.2,1); box-shadow: -8px 0 40px rgba(0,0,0,.12); }
-      .cart-drawer.open { transform: translateX(0); }
-      .cart-drawer-hd { display: flex; align-items: center; justify-content: space-between; padding: 20px 20px 16px; border-bottom: 1px solid var(--gray-100); flex-shrink: 0; }
-      .cart-drawer-title { font-size: 18px; font-weight: 800; color: var(--black); }
-      .cart-drawer-x { width: 34px; height: 34px; border-radius: 50%; background: var(--gray-100); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: background .2s; }
-      .cart-drawer-x:hover { background: var(--gray-200); }
-      .cart-drawer-body { flex: 1; overflow-y: auto; padding: 0 20px; }
-      .cart-empty-state { text-align: center; padding: 60px 20px; color: var(--gray-400); }
-      .cart-empty-state svg { margin-bottom: 14px; opacity: .3; }
-      .cart-empty-state p { font-size: 15px; font-weight: 600; }
-      .cart-row { display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--gray-100); }
-      .cart-row-img { width: 64px; height: 64px; border-radius: 8px; background: var(--gray-50); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-      .cart-row-img img { width: 100%; height: 100%; object-fit: cover; }
-      .cart-row-info { flex: 1; min-width: 0; }
-      .cart-row-name { font-size: 14px; font-weight: 700; color: var(--black); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .cart-row-meta { font-size: 12px; color: var(--gray-400); margin-bottom: 8px; }
-      .cart-row-bot { display: flex; align-items: center; gap: 8px; }
-      .ciq { display: flex; align-items: center; gap: 6px; }
-      .ciq-btn { width: 26px; height: 26px; border-radius: 6px; border: 1.5px solid var(--gray-200); background: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .15s; line-height: 1; }
-      .ciq-btn:hover { border-color: var(--black); }
-      .ciq-val { font-size: 14px; font-weight: 700; min-width: 20px; text-align: center; }
-      .cart-row-price { margin-left: auto; font-size: 15px; font-weight: 800; color: var(--black); font-family: var(--font-display); white-space: nowrap; }
-      .cart-row-del { background: none; border: none; cursor: pointer; color: var(--gray-400); padding: 2px; transition: color .15s; flex-shrink: 0; }
-      .cart-row-del:hover { color: var(--red); }
-      .cart-drawer-ft { padding: 16px 20px 20px; border-top: 1px solid var(--gray-100); flex-shrink: 0; }
-      .cart-total { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
-      .cart-total-lbl { font-size: 13px; color: var(--gray-400); font-weight: 600; text-transform: uppercase; letter-spacing: .6px; }
-      .cart-total-num { font-size: 22px; font-weight: 800; color: var(--black); font-family: var(--font-display); }
-      .cart-checkout { width: 100%; padding: 15px; background: var(--red); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .2s; }
-      .cart-checkout:hover { background: var(--red-hover); }
+      .cart-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 8000;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.25s,
+          visibility 0.25s;
+      }
+      .cart-overlay.open {
+        opacity: 1;
+        visibility: visible;
+      }
+      .cart-drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 380px;
+        max-width: 100vw;
+        height: 100%;
+        background: #fff;
+        z-index: 8100;
+        display: flex;
+        flex-direction: column;
+        transform: translateX(100%);
+        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -8px 0 40px rgba(0, 0, 0, 0.12);
+      }
+      .cart-drawer.open {
+        transform: translateX(0);
+      }
+      .cart-drawer-hd {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 20px 16px;
+        border-bottom: 1px solid var(--gray-100);
+        flex-shrink: 0;
+      }
+      .cart-drawer-title {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--black);
+      }
+      .cart-drawer-x {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: var(--gray-100);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        transition: background 0.2s;
+      }
+      .cart-drawer-x:hover {
+        background: var(--gray-200);
+      }
+      .cart-drawer-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 0 20px;
+      }
+      .cart-empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--gray-400);
+      }
+      .cart-empty-state svg {
+        margin-bottom: 14px;
+        opacity: 0.3;
+      }
+      .cart-empty-state p {
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .cart-row {
+        display: flex;
+        gap: 12px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--gray-100);
+      }
+      .cart-row-img {
+        width: 64px;
+        height: 64px;
+        border-radius: 8px;
+        background: var(--gray-50);
+        overflow: hidden;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cart-row-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .cart-row-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .cart-row-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--black);
+        margin-bottom: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .cart-row-meta {
+        font-size: 12px;
+        color: var(--gray-400);
+        margin-bottom: 8px;
+      }
+      .cart-row-bot {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .ciq {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .ciq-btn {
+        width: 26px;
+        height: 26px;
+        border-radius: 6px;
+        border: 1.5px solid var(--gray-200);
+        background: #fff;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.15s;
+        line-height: 1;
+      }
+      .ciq-btn:hover {
+        border-color: var(--black);
+      }
+      .ciq-val {
+        font-size: 14px;
+        font-weight: 700;
+        min-width: 20px;
+        text-align: center;
+      }
+      .cart-row-price {
+        margin-left: auto;
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--black);
+        font-family: var(--font-display);
+        white-space: nowrap;
+      }
+      .cart-row-del {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--gray-400);
+        padding: 2px;
+        transition: color 0.15s;
+        flex-shrink: 0;
+      }
+      .cart-row-del:hover {
+        color: var(--red);
+      }
+      .cart-drawer-ft {
+        padding: 16px 20px 20px;
+        border-top: 1px solid var(--gray-100);
+        flex-shrink: 0;
+      }
+      .cart-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 14px;
+      }
+      .cart-total-lbl {
+        font-size: 13px;
+        color: var(--gray-400);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+      }
+      .cart-total-num {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--black);
+        font-family: var(--font-display);
+      }
+      .cart-checkout {
+        width: 100%;
+        padding: 15px;
+        background: var(--red);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .cart-checkout:hover {
+        background: var(--red-hover);
+      }
 
       /* ─── RESPONSIVE ───────────────────────────────────────────── */
       @media (max-width: 900px) {
-        .checkout-grid { grid-template-columns: 1fr; gap: 32px; }
-        .checkout-form-panel { position: static; }
-        .form-row { grid-template-columns: 1fr; }
-        .footer-grid { grid-template-columns: 1fr 1fr; }
+        .checkout-grid {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+        .checkout-form-panel {
+          position: static;
+        }
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+        }
       }
       @media (max-width: 768px) {
-        #desktopSearch { display: none !important; }
-        #mobileSearchBtn { display: flex !important; }
-        .nav-link { display: none; }
-        .cat-nav { display: none; }
+        #desktopSearch {
+          display: none !important;
+        }
+        #mobileSearchBtn {
+          display: flex !important;
+        }
+        .nav-link {
+          display: none;
+        }
+        .cat-nav {
+          display: none;
+        }
       }
       @media (max-width: 600px) {
-        .hamburger { display: flex; }
-        .logo { margin-left: auto; }
-        .lang-switch { display: none; }
-        .cart-btn { margin-left: 0; }
-        .delivery-options { grid-template-columns: 1fr; }
-        .footer-grid { grid-template-columns: 1fr; gap: 28px; }
-        .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+        .hamburger {
+          display: flex;
+        }
+        .logo {
+          margin-left: auto;
+        }
+        .lang-switch {
+          display: none;
+        }
+        .cart-btn {
+          margin-left: 0;
+        }
+        .delivery-options {
+          grid-template-columns: 1fr;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr;
+          gap: 28px;
+        }
+        .footer-bottom {
+          flex-direction: column;
+          gap: 8px;
+          text-align: center;
+        }
       }
     </style>
   </head>
   <body>
+    <!-- PAGE LOADER -->
+    <div id="pageLoader">
+      <div class="loader-inner">
+        <div class="loader-brand">
+          <span class="lb-by">By</span><span class="lb-bens"> Ben's</span>
+        </div>
+        <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var n = [
+            "getProducts",
+            "getCategories",
+            "getSubCategories",
+            "getDeliveryPrices",
+            "getPromos",
+          ],
+          T = 6e5,
+          ok = n.every(function (a) {
+            try {
+              var c = JSON.parse(localStorage.getItem("bybens_cache_" + a));
+              return c && Date.now() - c.ts < T;
+            } catch (e) {
+              return false;
+            }
+          });
+        if (ok) document.getElementById("pageLoader").style.display = "none";
+      })();
+    </script>
     <!-- ─── MARQUEE ─────────────────────────────────────────────── -->
     <div class="marquee-bar">
       <div class="marquee-track">
@@ -1153,10 +2151,21 @@
             <img
               src="images/logo.png"
               alt="ByBens Logo"
-              style="height: auto; width: auto; max-width: 140px; object-fit: contain;"
-              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              style="
+                height: auto;
+                width: auto;
+                max-width: 140px;
+                object-fit: contain;
+              "
+              onerror="
+                this.style.display = 'none';
+                this.nextElementSibling.style.display = 'flex';
+              "
             />
-            <span class="logo-fallback" style="display: none; align-items: center; gap: 10px">
+            <span
+              class="logo-fallback"
+              style="display: none; align-items: center; gap: 10px"
+            >
               <span class="logo-mark"><span>BB</span></span>
               <span class="logo-text">By<em>Bens</em></span>
             </span>
@@ -1174,9 +2183,20 @@
             <button
               class="search-btn"
               aria-label="Submit search"
-              onclick="handleSearch(document.getElementById('searchInput').value)"
+              onclick="
+                handleSearch(document.getElementById('searchInput').value)
+              "
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <circle cx="11" cy="11" r="8" />
                 <path d="m21 21-4.35-4.35" />
               </svg>
@@ -1188,9 +2208,29 @@
             id="mobileSearchBtn"
             onclick="openMobileSearch()"
             aria-label="Search"
-            style="display: none; width: 40px; height: 40px; align-items: center; justify-content: center; border-radius: 8px; color: var(--black); background: none; border: none; cursor: pointer;"
+            style="
+              display: none;
+              width: 40px;
+              height: 40px;
+              align-items: center;
+              justify-content: center;
+              border-radius: 8px;
+              color: var(--black);
+              background: none;
+              border: none;
+              cursor: pointer;
+            "
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.35-4.35" />
             </svg>
@@ -1198,18 +2238,55 @@
 
           <div class="nav-right">
             <a href="products.html" class="nav-link">Supplements</a>
-            <div class="lang-switch" role="group" aria-label="Language switcher">
-              <button class="lang-btn active" data-lang="en" onclick="switchLang('en')">EN</button>
-              <button class="lang-btn" data-lang="fr" onclick="switchLang('fr')">FR</button>
-              <button class="lang-btn" data-lang="ar" onclick="switchLang('ar')">AR</button>
+            <div
+              class="lang-switch"
+              role="group"
+              aria-label="Language switcher"
+            >
+              <button
+                class="lang-btn active"
+                data-lang="en"
+                onclick="switchLang('en')"
+              >
+                EN
+              </button>
+              <button
+                class="lang-btn"
+                data-lang="fr"
+                onclick="switchLang('fr')"
+              >
+                FR
+              </button>
+              <button
+                class="lang-btn"
+                data-lang="ar"
+                onclick="switchLang('ar')"
+              >
+                AR
+              </button>
             </div>
-            <button class="cart-btn" aria-label="Shopping cart" onclick="toggleCart()">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <button
+              class="cart-btn"
+              aria-label="Shopping cart"
+              onclick="toggleCart()"
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
                 <line x1="3" y1="6" x2="21" y2="6" />
                 <path d="M16 10a4 4 0 0 1-8 0" />
               </svg>
-              <span class="cart-badge" id="cartBadge" style="display:none">0</span>
+              <span class="cart-badge" id="cartBadge" style="display: none"
+                >0</span
+              >
             </button>
           </div>
         </nav>
@@ -1226,32 +2303,88 @@
     <!-- Mobile search overlay -->
     <div
       id="mobileSearchOverlay"
-      style="display: none; position: fixed; inset: 0; background: var(--white); z-index: 9998; flex-direction: column; padding: 20px 24px;"
+      style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: var(--white);
+        z-index: 9998;
+        flex-direction: column;
+        padding: 20px 24px;
+      "
     >
-      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 24px;
+        "
+      >
         <div style="position: relative; flex: 1">
           <input
             type="search"
             id="mobileSearchInput"
             placeholder="Search supplements, proteins…"
-            style="width: 100%; height: 48px; padding: 0 48px 0 16px; border: 1.5px solid var(--gray-200); border-radius: 10px; font-size: 16px; background: var(--gray-50); outline: none; font-family: var(--font-body);"
+            style="
+              width: 100%;
+              height: 48px;
+              padding: 0 48px 0 16px;
+              border: 1.5px solid var(--gray-200);
+              border-radius: 10px;
+              font-size: 16px;
+              background: var(--gray-50);
+              outline: none;
+              font-family: var(--font-body);
+            "
             oninput="handleSearch(this.value)"
           />
-          <svg style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--gray-400);" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg
+            style="
+              position: absolute;
+              right: 14px;
+              top: 50%;
+              transform: translateY(-50%);
+              color: var(--gray-400);
+            "
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.35-4.35" />
           </svg>
         </div>
         <button
           onclick="closeMobileSearch()"
-          style="flex-shrink: 0; font-size: 15px; font-weight: 600; color: var(--red); background: none; border: none; cursor: pointer; font-family: var(--font-body); padding: 8px 4px;"
+          style="
+            flex-shrink: 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--red);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+            padding: 8px 4px;
+          "
           data-i18n="search.cancel"
         >
           Cancel
         </button>
       </div>
       <div id="mobileSearchResults" style="flex: 1; overflow-y: auto">
-        <p style="font-size: 13px; color: var(--gray-400); text-align: center; margin-top: 40px;">
+        <p
+          style="
+            font-size: 13px;
+            color: var(--gray-400);
+            text-align: center;
+            margin-top: 40px;
+          "
+        >
           Start typing to search products…
         </p>
       </div>
@@ -1263,16 +2396,64 @@
         <a class="mobile-nav-link" href="products.html">Supplements</a>
       </div>
       <div id="mobileCatItems"></div>
-      <div style="margin-top: 24px; border-top: 1px solid var(--gray-100); padding-top: 20px;">
-        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gray-400); margin-bottom: 12px;">Language</div>
-        <div style="display: flex; gap: 8px;">
-          <button class="lang-btn active" data-lang="en" onclick="switchLang('en'); toggleMobileMenu()">EN</button>
-          <button class="lang-btn" data-lang="fr" onclick="switchLang('fr'); toggleMobileMenu()">FR</button>
-          <button class="lang-btn" data-lang="ar" onclick="switchLang('ar'); toggleMobileMenu()">AR</button>
+      <div
+        style="
+          margin-top: 24px;
+          border-top: 1px solid var(--gray-100);
+          padding-top: 20px;
+        "
+      >
+        <div
+          style="
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gray-400);
+            margin-bottom: 12px;
+          "
+        >
+          Language
+        </div>
+        <div style="display: flex; gap: 8px">
+          <button
+            class="lang-btn active"
+            data-lang="en"
+            onclick="
+              switchLang('en');
+              toggleMobileMenu();
+            "
+          >
+            EN
+          </button>
+          <button
+            class="lang-btn"
+            data-lang="fr"
+            onclick="
+              switchLang('fr');
+              toggleMobileMenu();
+            "
+          >
+            FR
+          </button>
+          <button
+            class="lang-btn"
+            data-lang="ar"
+            onclick="
+              switchLang('ar');
+              toggleMobileMenu();
+            "
+          >
+            AR
+          </button>
         </div>
       </div>
     </div>
-    <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+    <div
+      class="mobile-overlay"
+      id="mobileOverlay"
+      onclick="toggleMobileMenu()"
+    ></div>
 
     <!-- ─── MAIN ─────────────────────────────────────────────────── -->
     <main>
@@ -1287,10 +2468,11 @@
 
         <section class="checkout-section">
           <div class="checkout-grid">
-
             <!-- LEFT: Cart Items -->
             <div class="checkout-items-panel">
-              <div class="checkout-panel-title" data-i18n="checkout.yourOrder">Your Order</div>
+              <div class="checkout-panel-title" data-i18n="checkout.yourOrder">
+                Your Order
+              </div>
               <div id="checkoutItemsList">
                 <!-- populated by renderCheckoutItems() -->
               </div>
@@ -1299,21 +2481,34 @@
             <!-- RIGHT: Delivery Form -->
             <div class="checkout-form-panel">
               <div class="order-form-title">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
-                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                  />
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
                 </svg>
                 <span data-i18n="form.deliveryDetails">Delivery Details</span>
               </div>
 
               <div class="form-row">
                 <div class="form-group">
-                  <label for="firstName" data-i18n="form.firstName">First Name</label>
+                  <label for="firstName" data-i18n="form.firstName"
+                    >First Name</label
+                  >
                   <input type="text" id="firstName" placeholder="Ahmed" />
                   <span class="error-msg" id="firstNameErr"></span>
                 </div>
                 <div class="form-group">
-                  <label for="lastName" data-i18n="form.lastName">Last Name</label>
+                  <label for="lastName" data-i18n="form.lastName"
+                    >Last Name</label
+                  >
                   <input type="text" id="lastName" placeholder="Zerabib" />
                   <span class="error-msg" id="lastNameErr"></span>
                 </div>
@@ -1341,12 +2536,24 @@
                       onclick="toggleCustomSelect('wilaya')"
                       onkeydown="handleDropdownKey(event, 'wilaya')"
                     >
-                      <span id="wilayaLabel" data-i18n="form.selectWilaya">Select wilaya…</span>
-                      <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <span id="wilayaLabel" data-i18n="form.selectWilaya"
+                        >Select wilaya…</span
+                      >
+                      <svg
+                        class="caret"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                      >
                         <path d="m6 9 6 6 6-6" />
                       </svg>
                     </div>
-                    <div class="custom-dropdown-list" id="wilayaDropdown" role="listbox">
+                    <div
+                      class="custom-dropdown-list"
+                      id="wilayaDropdown"
+                      role="listbox"
+                    >
                       <div class="dropdown-search">
                         <input
                           type="text"
@@ -1374,12 +2581,24 @@
                       onclick="toggleCustomSelect('commune')"
                       onkeydown="handleDropdownKey(event, 'commune')"
                     >
-                      <span id="communeLabel" data-i18n="form.selectWilayaFirst">Select wilaya first</span>
-                      <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <span id="communeLabel" data-i18n="form.selectWilayaFirst"
+                        >Select wilaya first</span
+                      >
+                      <svg
+                        class="caret"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                      >
                         <path d="m6 9 6 6 6-6" />
                       </svg>
                     </div>
-                    <div class="custom-dropdown-list" id="communeDropdown" role="listbox">
+                    <div
+                      class="custom-dropdown-list"
+                      id="communeDropdown"
+                      role="listbox"
+                    >
                       <div class="dropdown-search">
                         <input
                           type="text"
@@ -1398,71 +2617,169 @@
               <div class="form-group" style="margin-bottom: 14px">
                 <label data-i18n="form.deliveryType">Delivery Type</label>
                 <div class="delivery-options">
-                  <div class="delivery-option active" id="deliveryHome" onclick="selectDelivery('home')">
+                  <div
+                    class="delivery-option active"
+                    id="deliveryHome"
+                    onclick="selectDelivery('home')"
+                  >
                     <input type="radio" name="delivery" value="home" checked />
                     <div class="delivery-option-top">
-                      <span class="delivery-option-name" data-i18n="form.homeDelivery">🏠 Home Delivery</span>
-                      <div class="delivery-option-check"><div class="delivery-option-dot"></div></div>
+                      <span
+                        class="delivery-option-name"
+                        data-i18n="form.homeDelivery"
+                        >🏠 Home Delivery</span
+                      >
+                      <div class="delivery-option-check">
+                        <div class="delivery-option-dot"></div>
+                      </div>
                     </div>
                     <div class="delivery-option-price">—</div>
-                    <div class="delivery-option-desc" data-i18n="form.deliveredDoor">Delivered to your door</div>
+                    <div
+                      class="delivery-option-desc"
+                      data-i18n="form.deliveredDoor"
+                    >
+                      Delivered to your door
+                    </div>
                   </div>
-                  <div class="delivery-option" id="deliveryOffice" onclick="selectDelivery('office')">
+                  <div
+                    class="delivery-option"
+                    id="deliveryOffice"
+                    onclick="selectDelivery('office')"
+                  >
                     <input type="radio" name="delivery" value="office" />
                     <div class="delivery-option-top">
-                      <span class="delivery-option-name" data-i18n="form.officePick">📦 Office Pickup</span>
-                      <div class="delivery-option-check"><div class="delivery-option-dot"></div></div>
+                      <span
+                        class="delivery-option-name"
+                        data-i18n="form.officePick"
+                        >📦 Office Pickup</span
+                      >
+                      <div class="delivery-option-check">
+                        <div class="delivery-option-dot"></div>
+                      </div>
                     </div>
                     <div class="delivery-option-price">—</div>
-                    <div class="delivery-option-desc" data-i18n="form.pickupOffice">Pickup at nearest office</div>
+                    <div
+                      class="delivery-option-desc"
+                      data-i18n="form.pickupOffice"
+                    >
+                      Pickup at nearest office
+                    </div>
                   </div>
                 </div>
               </div>
 
               <!-- Order Summary -->
               <div class="order-summary">
-                <div class="order-summary-title" data-i18n="form.orderSummary">Order Summary</div>
+                <div class="order-summary-title" data-i18n="form.orderSummary">
+                  Order Summary
+                </div>
                 <div id="summaryItemsList">
                   <!-- populated by updateOrderSummary() -->
                 </div>
                 <div class="order-summary-row" id="summarySubtotalRow">
-                  <span class="order-summary-label" data-i18n="checkout.subtotal">Subtotal</span>
-                  <span class="order-summary-val" id="summarySubtotal">0 DA</span>
+                  <span
+                    class="order-summary-label"
+                    data-i18n="checkout.subtotal"
+                    >Subtotal</span
+                  >
+                  <span class="order-summary-val" id="summarySubtotal"
+                    >0 DA</span
+                  >
                 </div>
                 <div class="order-summary-row">
-                  <span class="order-summary-label" data-i18n="form.delivery">Delivery</span>
-                  <span class="order-summary-val" id="summaryDelivery">+500 DA (Home)</span>
+                  <span class="order-summary-label" data-i18n="form.delivery"
+                    >Delivery</span
+                  >
+                  <span class="order-summary-val" id="summaryDelivery"
+                    >+500 DA (Home)</span
+                  >
                 </div>
-                <div class="order-summary-row" id="summaryDiscountRow" style="display:none;">
-                  <span class="order-summary-label" id="summaryDiscountLabel">Discount</span>
-                  <span class="order-summary-val" id="summaryDiscountVal" style="color:var(--green,#0a7c3e)"></span>
+                <div
+                  class="order-summary-row"
+                  id="summaryDiscountRow"
+                  style="display: none"
+                >
+                  <span class="order-summary-label" id="summaryDiscountLabel"
+                    >Discount</span
+                  >
+                  <span
+                    class="order-summary-val"
+                    id="summaryDiscountVal"
+                    style="color: var(--green, #0a7c3e)"
+                  ></span>
                 </div>
                 <div class="order-summary-total">
-                  <span class="order-summary-total-label" data-i18n="form.total">Total</span>
-                  <span class="order-summary-total-price" id="summaryTotal">0 DA</span>
+                  <span class="order-summary-total-label" data-i18n="form.total"
+                    >Total</span
+                  >
+                  <span class="order-summary-total-price" id="summaryTotal"
+                    >0 DA</span
+                  >
                 </div>
               </div>
 
               <!-- Promo Code -->
               <div class="promo-wrap">
                 <div class="promo-label">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                  <svg
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+                    <path
+                      d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
+                    />
+                    <line x1="7" y1="7" x2="7.01" y2="7" />
+                  </svg>
                   Promo Code
                 </div>
                 <div class="promo-input-row">
                   <div class="promo-input-wrap">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-                    <input type="text" id="promoCode" placeholder="Enter code…"
-                      oninput="this.value=this.value.toUpperCase()"
-                      onkeydown="if(event.key==='Enter'){applyPromo();event.preventDefault();}" />
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                    >
+                      <path
+                        d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
+                      />
+                      <line x1="7" y1="7" x2="7.01" y2="7" />
+                    </svg>
+                    <input
+                      type="text"
+                      id="promoCode"
+                      placeholder="Enter code…"
+                      oninput="this.value = this.value.toUpperCase()"
+                      onkeydown="
+                        if (event.key === 'Enter') {
+                          applyPromo();
+                          event.preventDefault();
+                        }
+                      "
+                    />
                   </div>
-                  <button onclick="applyPromo()" class="btn-apply-promo">APPLY</button>
+                  <button onclick="applyPromo()" class="btn-apply-promo">
+                    APPLY
+                  </button>
                 </div>
                 <span id="promoMsg" class="promo-msg"></span>
               </div>
 
               <button class="btn-order" onclick="submitOrder()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
                 <span data-i18n="form.confirmOrder">CONFIRM ORDER</span>
@@ -1476,7 +2793,9 @@
     <!-- ─── YOU MAY ALSO LIKE ──────────────────────────────────── -->
     <section class="also-like-section">
       <div class="container">
-        <h2 class="also-like-title" data-i18n="section.alsoLike">You May Also Like</h2>
+        <h2 class="also-like-title" data-i18n="section.alsoLike">
+          You May Also Like
+        </h2>
         <div class="also-like-grid" id="alsoLikeGrid"></div>
       </div>
     </section>
@@ -1486,77 +2805,124 @@
       <div class="container">
         <div class="footer-grid">
           <div class="footer-brand">
-            <a href="index.html" class="logo" style="margin-bottom: 16px; display: inline-flex">
+            <a
+              href="index.html"
+              class="logo"
+              style="margin-bottom: 16px; display: inline-flex"
+            >
               <span class="logo-mark"><span>BB</span></span>
               <span class="logo-text" style="color: #fff">By<em>Bens</em></span>
             </a>
-            <p data-i18n="footer.tagline">Algeria's premier sports nutrition store. Authentic products, fast delivery, and expert support to fuel your performance.</p>
+            <p data-i18n="footer.tagline">
+              Algeria's premier sports nutrition store. Authentic products, fast
+              delivery, and expert support to fuel your performance.
+            </p>
             <div class="footer-social">
               <a href="#" aria-label="Facebook">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                  />
                 </svg>
               </a>
-              <a href="#" aria-label="Instagram">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="2" y="2" width="20" height="20" rx="5"/>
-                  <circle cx="12" cy="12" r="5"/>
-                  <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
+              <a
+                href="https://www.instagram.com/bens.supplements?igsh=MTlpaGRnOGxsazBvbA%3D%3D"
+                aria-label="Instagram"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" />
+                  <circle cx="12" cy="12" r="5" />
+                  <circle
+                    cx="17.5"
+                    cy="6.5"
+                    r="1.5"
+                    fill="currentColor"
+                    stroke="none"
+                  />
                 </svg>
               </a>
               <a href="https://wa.me/213662269449" aria-label="WhatsApp">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                  />
                 </svg>
               </a>
             </div>
           </div>
           <div>
-            <div class="footer-col-title" data-i18n="footer.shop">Shop</div>
-            <div class="footer-links">
-              <a href="products.html" data-i18n="footer.allProducts">All Products</a>
-              <a href="products.html?cat=protein" data-i18n="footer.protein">Protein</a>
-              <a href="products.html?cat=preworkout" data-i18n="footer.preworkout">Pre-Workout</a>
-              <a href="products.html?cat=creatine" data-i18n="footer.creatine">Creatine</a>
-              <a href="products.html?cat=vitamins" data-i18n="footer.vitamins">Vitamins</a>
+            <div class="footer-col-title" data-i18n="footer.contact">
+              Contact Us
             </div>
-          </div>
-          <div>
-            <div class="footer-col-title" data-i18n="footer.info">Information</div>
-            <div class="footer-links">
-              <a href="index.html" data-i18n="nav.home">Home</a>
-              <a href="index.html#contact" data-i18n="nav.contact">Contact</a>
-              <a href="#" data-i18n="footer.shipping">Shipping Policy</a>
-              <a href="#" data-i18n="footer.returns">Returns</a>
-              <a href="#" data-i18n="footer.faq">FAQ</a>
-            </div>
-          </div>
-          <div>
-            <div class="footer-col-title" data-i18n="footer.contact">Contact Us</div>
             <div class="footer-contact-item">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
+                />
               </svg>
               <span>+213 662 269 449</span>
             </div>
             <div class="footer-contact-item">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                <polyline points="22,6 12,13 2,6"/>
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                />
+                <polyline points="22,6 12,13 2,6" />
               </svg>
-              <span>contact@bybens.dz</span>
+              <span>contact@bybens.com</span>
             </div>
             <div class="footer-contact-item">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                <circle cx="12" cy="10" r="3"/>
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
               </svg>
               <span data-i18n="footer.location">Algiers, Algeria</span>
             </div>
           </div>
         </div>
         <div class="footer-bottom">
-          <span>© <span id="footerYear"></span> ByBens. <span data-i18n="footer.rights">All rights reserved.</span></span>
+          <span
+            >© <span id="footerYear"></span> ByBens.
+            <span data-i18n="footer.rights">All rights reserved.</span></span
+          >
           <span><a href="#">Privacy Policy</a> · <a href="#">Terms</a></span>
         </div>
       </div>
@@ -1566,14 +2932,30 @@
     <div class="success-overlay" id="successOverlay">
       <div class="success-card">
         <div class="success-icon">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <svg
+            width="36"
+            height="36"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
         <div class="success-title" data-i18n="success.title">Order Placed!</div>
-        <div class="success-msg" id="successMsg">Thank you! We'll call you shortly to confirm your order.</div>
+        <div class="success-msg" id="successMsg">
+          Thank you! We'll call you shortly to confirm your order.
+        </div>
         <button class="success-close" onclick="closeSuccess()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
             <path d="m15 18-6-6 6-6" />
           </svg>
           <span data-i18n="success.back">Back to Products</span>
@@ -1583,15 +2965,39 @@
 
     <div class="toast" id="toast"><span id="toastMsg"></span></div>
 
-    <button id="scrollTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" title="Back to top">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+    <button
+      id="scrollTop"
+      onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+      title="Back to top"
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
         <path d="m18 15-6-6-6 6" />
       </svg>
     </button>
 
-    <a href="https://wa.me/213662269449" target="_blank" class="wa-btn" aria-label="WhatsApp">
-      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="white">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    <a
+      href="https://wa.me/213662269449"
+      target="_blank"
+      class="wa-btn"
+      aria-label="WhatsApp"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="30"
+        height="30"
+        viewBox="0 0 24 24"
+        fill="white"
+      >
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+        />
       </svg>
     </a>
 
@@ -1599,14 +3005,22 @@
     <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
     <div class="cart-drawer" id="cartDrawer">
       <div class="cart-drawer-hd">
-        <span class="cart-drawer-title">Cart &nbsp;<span id="cartDrawerCount" style="font-size:15px;font-weight:600;color:var(--gray-400)">0 items</span></span>
+        <span class="cart-drawer-title"
+          >Cart &nbsp;<span
+            id="cartDrawerCount"
+            style="font-size: 15px; font-weight: 600; color: var(--gray-400)"
+            >0 items</span
+          ></span
+        >
         <button class="cart-drawer-x" onclick="toggleCart()">&#x2715;</button>
       </div>
       <div class="cart-drawer-body" id="cartDrawerBody"></div>
       <div class="cart-drawer-ft">
         <div class="cart-total">
           <span class="cart-total-lbl">Total</span>
-          <span class="cart-total-num"><span id="cartDrawerTotal">0</span> DA</span>
+          <span class="cart-total-num"
+            ><span id="cartDrawerTotal">0</span> DA</span
+          >
         </div>
         <button class="cart-checkout" onclick="cartCheckout()">Checkout</button>
       </div>
@@ -1616,7 +3030,29 @@
       /* ══════════════════════════════════════════════════════
          CONFIG
       ══════════════════════════════════════════════════════ */
-      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
+      const SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
+
+      const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+      function cachedFetch(action) {
+        const key = `bybens_cache_${action}`;
+        try {
+          const cached = JSON.parse(localStorage.getItem(key));
+          if (cached && Date.now() - cached.ts < CACHE_TTL)
+            return Promise.resolve(cached.data);
+        } catch (e) {}
+        return fetch(`${SCRIPT_URL}?action=${action}`)
+          .then((r) => r.json())
+          .then((data) => {
+            try {
+              localStorage.setItem(
+                key,
+                JSON.stringify({ ts: Date.now(), data }),
+              );
+            } catch (e) {}
+            return data;
+          });
+      }
       const CART_KEY = "bybens_cart";
       let _deliveryPrices = [];
       let _allPromos = [];
@@ -1655,10 +3091,18 @@
          CART HELPERS
       ══════════════════════════════════════════════════════ */
       function cartGet() {
-        try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; }
+        try {
+          return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+        } catch {
+          return [];
+        }
       }
-      function cartSave(items) { localStorage.setItem(CART_KEY, JSON.stringify(items)); }
-      function cartCount() { return cartGet().reduce((s, i) => s + i.qty, 0); }
+      function cartSave(items) {
+        localStorage.setItem(CART_KEY, JSON.stringify(items));
+      }
+      function cartCount() {
+        return cartGet().reduce((s, i) => s + i.qty, 0);
+      }
       function cartUpdateBadge() {
         const n = cartCount();
         const b = document.getElementById("cartBadge");
@@ -1688,7 +3132,7 @@
             </div>`;
           // apply current lang translations
           const t = i18n[currentLang] || i18n.en;
-          list.querySelectorAll("[data-i18n]").forEach(el => {
+          list.querySelectorAll("[data-i18n]").forEach((el) => {
             const key = el.getAttribute("data-i18n");
             if (t[key]) el.textContent = t[key];
           });
@@ -1698,7 +3142,10 @@
 
         const subtotal = items.reduce((s, i) => s + i.unitPrice * i.qty, 0);
 
-        list.innerHTML = items.map((item, idx) => `
+        list.innerHTML =
+          items
+            .map(
+              (item, idx) => `
           <div class="checkout-item">
             <div class="checkout-item-img">
               ${item.imageUrl ? `<img src="${item.imageUrl}" alt="${item.name}">` : `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`}
@@ -1720,7 +3167,9 @@
                 </button>
               </div>
             </div>
-          </div>`).join("") +
+          </div>`,
+            )
+            .join("") +
           `<div class="checkout-subtotal">
             <span data-i18n="checkout.subtotal">Subtotal</span>
             <span>${subtotal.toLocaleString("fr-DZ")} DA</span>
@@ -1728,7 +3177,7 @@
 
         // apply lang
         const t = i18n[currentLang] || i18n.en;
-        list.querySelectorAll("[data-i18n]").forEach(el => {
+        list.querySelectorAll("[data-i18n]").forEach((el) => {
           const key = el.getAttribute("data-i18n");
           if (t[key]) el.textContent = t[key];
         });
@@ -1762,29 +3211,42 @@
 
         const subtotal = items.reduce((s, i) => s + i.unitPrice * i.qty, 0);
         const deliveryCost = getDeliveryCost()[selectedDelivery];
-        const { discount, freeDelivery } = getPromoDiscount(items, deliveryCost);
-        const deliveryCharge = selectedWilayaCode ? (freeDelivery ? 0 : deliveryCost) : 0;
+        const { discount, freeDelivery } = getPromoDiscount(
+          items,
+          deliveryCost,
+        );
+        const deliveryCharge = selectedWilayaCode
+          ? freeDelivery
+            ? 0
+            : deliveryCost
+          : 0;
         const total = subtotal + deliveryCharge - discount;
 
         if (summaryList) {
           if (!items.length) {
             summaryList.innerHTML = "";
           } else {
-            summaryList.innerHTML = items.map(item => `
+            summaryList.innerHTML = items
+              .map(
+                (item) => `
               <div class="order-summary-row">
                 <span class="order-summary-label">${item.name} × ${item.qty}</span>
                 <span class="order-summary-val">${(item.unitPrice * item.qty).toLocaleString("fr-DZ")} DA</span>
-              </div>`).join("");
+              </div>`,
+              )
+              .join("");
           }
         }
 
-        if (subtotalEl) subtotalEl.textContent = subtotal.toLocaleString("fr-DZ") + " DA";
+        if (subtotalEl)
+          subtotalEl.textContent = subtotal.toLocaleString("fr-DZ") + " DA";
 
         if (deliveryEl) {
           if (freeDelivery) deliveryEl.textContent = "FREE 🎉";
-          else deliveryEl.textContent = selectedWilayaCode
-            ? `+${deliveryCost.toLocaleString("fr-DZ")} DA (${selectedDelivery === "home" ? "Home" : "Office"})`
-            : "Select wilaya";
+          else
+            deliveryEl.textContent = selectedWilayaCode
+              ? `+${deliveryCost.toLocaleString("fr-DZ")} DA (${selectedDelivery === "home" ? "Home" : "Office"})`
+              : "Select wilaya";
         }
 
         const discountRow = document.getElementById("summaryDiscountRow");
@@ -1793,22 +3255,28 @@
         if (discountRow) {
           if (appliedPromo && discount > 0) {
             discountRow.style.display = "";
-            if (appliedPromo.type === "percent") discountLabel.textContent = `Promo (${appliedPromo.value}% off)`;
-            else if (appliedPromo.type === "fixed") discountLabel.textContent = "Promo discount";
+            if (appliedPromo.type === "percent")
+              discountLabel.textContent = `Promo (${appliedPromo.value}% off)`;
+            else if (appliedPromo.type === "fixed")
+              discountLabel.textContent = "Promo discount";
             discountVal.textContent = `−${discount.toLocaleString("fr-DZ")} DA`;
           } else {
             discountRow.style.display = "none";
           }
         }
 
-        if (totalEl) totalEl.textContent = total.toLocaleString("fr-DZ") + " DA";
+        if (totalEl)
+          totalEl.textContent = total.toLocaleString("fr-DZ") + " DA";
       }
 
       /* ══════════════════════════════════════════════════════
          PROMO CODE
       ══════════════════════════════════════════════════════ */
       function applyPromo() {
-        const code = document.getElementById("promoCode").value.trim().toUpperCase();
+        const code = document
+          .getElementById("promoCode")
+          .value.trim()
+          .toUpperCase();
         const msgEl = document.getElementById("promoMsg");
         if (!code) {
           msgEl.style.color = "var(--red)";
@@ -1816,60 +3284,79 @@
           return;
         }
 
-        const promo = _allPromos.find(pr => pr.code.toUpperCase() === code);
+        const promo = _allPromos.find((pr) => pr.code.toUpperCase() === code);
         if (!promo) {
-          appliedPromo = null; msgEl.style.color = "var(--red)";
+          appliedPromo = null;
+          msgEl.style.color = "var(--red)";
           msgEl.textContent = "✗ Invalid promo code.";
-          updateOrderSummary(); return;
+          updateOrderSummary();
+          return;
         }
         if (promo.status !== "active") {
-          appliedPromo = null; msgEl.style.color = "var(--red)";
+          appliedPromo = null;
+          msgEl.style.color = "var(--red)";
           msgEl.textContent = "✗ This promo code is no longer active.";
-          updateOrderSummary(); return;
+          updateOrderSummary();
+          return;
         }
         if (promo.expiry) {
-          const exp = new Date(promo.expiry); exp.setHours(23,59,59,999);
+          const exp = new Date(promo.expiry);
+          exp.setHours(23, 59, 59, 999);
           if (exp < new Date()) {
-            appliedPromo = null; msgEl.style.color = "var(--red)";
+            appliedPromo = null;
+            msgEl.style.color = "var(--red)";
             msgEl.textContent = "✗ This promo code has expired.";
-            updateOrderSummary(); return;
+            updateOrderSummary();
+            return;
           }
         }
         if (promo.maxUses && promo.uses >= promo.maxUses) {
-          appliedPromo = null; msgEl.style.color = "var(--red)";
+          appliedPromo = null;
+          msgEl.style.color = "var(--red)";
           msgEl.textContent = "✗ This promo code has reached its usage limit.";
-          updateOrderSummary(); return;
+          updateOrderSummary();
+          return;
         }
 
         const items = cartGet();
         const eligibleSubtotal = getEligibleSubtotal(items, promo);
         if (eligibleSubtotal === 0) {
-          appliedPromo = null; msgEl.style.color = "var(--red)";
-          msgEl.textContent = "✗ This code is not valid for any product in your cart.";
-          updateOrderSummary(); return;
+          appliedPromo = null;
+          msgEl.style.color = "var(--red)";
+          msgEl.textContent =
+            "✗ This code is not valid for any product in your cart.";
+          updateOrderSummary();
+          return;
         }
 
         const fullSubtotal = items.reduce((s, i) => s + i.unitPrice * i.qty, 0);
         if (promo.minOrder && fullSubtotal < promo.minOrder) {
-          appliedPromo = null; msgEl.style.color = "var(--red)";
+          appliedPromo = null;
+          msgEl.style.color = "var(--red)";
           msgEl.textContent = `✗ Minimum order of ${promo.minOrder.toLocaleString("fr-DZ")} DA required.`;
-          updateOrderSummary(); return;
+          updateOrderSummary();
+          return;
         }
 
         appliedPromo = promo;
         msgEl.style.color = "#0a7c3e";
-        if (promo.type === "percent") msgEl.textContent = `✓ Code applied! ${promo.value}% off eligible items`;
-        else if (promo.type === "fixed") msgEl.textContent = `✓ Code applied! −${promo.value.toLocaleString("fr-DZ")} DA`;
-        else if (promo.type === "free_delivery") msgEl.textContent = "✓ Code applied! Free delivery";
+        if (promo.type === "percent")
+          msgEl.textContent = `✓ Code applied! ${promo.value}% off eligible items`;
+        else if (promo.type === "fixed")
+          msgEl.textContent = `✓ Code applied! −${promo.value.toLocaleString("fr-DZ")} DA`;
+        else if (promo.type === "free_delivery")
+          msgEl.textContent = "✓ Code applied! Free delivery";
         updateOrderSummary();
       }
 
       // Returns the subtotal of cart items that are eligible for this promo
       function getEligibleSubtotal(items, promo) {
         return items.reduce((s, item) => {
-          const product = _allProducts.find(p => p.id === item.productId);
+          const product = _allProducts.find((p) => p.id === item.productId);
           if (!product) return s;
-          const allowPromo = product.allowPromo === true || String(product.allowPromo).toUpperCase() === "TRUE";
+          const allowPromo =
+            product.allowPromo === true ||
+            String(product.allowPromo).toUpperCase() === "TRUE";
           if (!allowPromo) return s;
           if (product.promoCodeIds && product.promoCodeIds.length > 0) {
             if (!product.promoCodeIds.includes(promo.id)) return s;
@@ -1882,9 +3369,15 @@
         if (!appliedPromo) return { discount: 0, freeDelivery: false };
         const eligible = getEligibleSubtotal(items, appliedPromo);
         if (appliedPromo.type === "percent")
-          return { discount: Math.round(eligible * (appliedPromo.value / 100)), freeDelivery: false };
+          return {
+            discount: Math.round(eligible * (appliedPromo.value / 100)),
+            freeDelivery: false,
+          };
         if (appliedPromo.type === "fixed")
-          return { discount: Math.min(appliedPromo.value, eligible), freeDelivery: false };
+          return {
+            discount: Math.min(appliedPromo.value, eligible),
+            freeDelivery: false,
+          };
         if (appliedPromo.type === "free_delivery")
           return { discount: deliveryCost, freeDelivery: true };
         return { discount: 0, freeDelivery: false };
@@ -1895,8 +3388,12 @@
       ══════════════════════════════════════════════════════ */
       function selectDelivery(type) {
         selectedDelivery = type;
-        document.getElementById("deliveryHome").classList.toggle("active", type === "home");
-        document.getElementById("deliveryOffice").classList.toggle("active", type === "office");
+        document
+          .getElementById("deliveryHome")
+          .classList.toggle("active", type === "home");
+        document
+          .getElementById("deliveryOffice")
+          .classList.toggle("active", type === "office");
         updateOrderSummary();
       }
 
@@ -1906,8 +3403,12 @@
       let _cartOpen = false;
       function toggleCart() {
         _cartOpen = !_cartOpen;
-        document.getElementById("cartDrawer").classList.toggle("open", _cartOpen);
-        document.getElementById("cartOverlay").classList.toggle("open", _cartOpen);
+        document
+          .getElementById("cartDrawer")
+          .classList.toggle("open", _cartOpen);
+        document
+          .getElementById("cartOverlay")
+          .classList.toggle("open", _cartOpen);
         document.body.style.overflow = _cartOpen ? "hidden" : "";
         if (_cartOpen) _renderCartDrawer();
       }
@@ -1915,14 +3416,18 @@
         const items = cartGet();
         const count = items.reduce((s, i) => s + i.qty, 0);
         const total = items.reduce((s, i) => s + i.unitPrice * i.qty, 0);
-        document.getElementById("cartDrawerCount").textContent = `${count} item${count !== 1 ? "s" : ""}`;
-        document.getElementById("cartDrawerTotal").textContent = total.toLocaleString();
+        document.getElementById("cartDrawerCount").textContent =
+          `${count} item${count !== 1 ? "s" : ""}`;
+        document.getElementById("cartDrawerTotal").textContent =
+          total.toLocaleString();
         const body = document.getElementById("cartDrawerBody");
         if (!items.length) {
           body.innerHTML = `<div class="cart-empty-state"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><p>Your cart is empty</p></div>`;
           return;
         }
-        body.innerHTML = items.map((item, idx) => `
+        body.innerHTML = items
+          .map(
+            (item, idx) => `
           <div class="cart-row">
             <div class="cart-row-img">${item.imageUrl ? `<img src="${item.imageUrl}" alt="${item.name}">` : ""}</div>
             <div class="cart-row-info">
@@ -1940,7 +3445,9 @@
             <button class="cart-row-del" onclick="cartRemove(${idx})" aria-label="Remove">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
-          </div>`).join("");
+          </div>`,
+          )
+          .join("");
       }
       function cartQty(idx, d) {
         const items = cartGet();
@@ -1971,9 +3478,13 @@
         const inner = document.getElementById("catNavInner");
         const mobile = document.getElementById("mobileCatItems");
         if (!inner || !mobile) return;
-        let dHTML = "", mHTML = "";
+        let dHTML = "",
+          mHTML = "";
         cats.forEach((cat) => {
-          const catSubs = subs.filter(s => Array.isArray(s.categoryIds) && s.categoryIds.includes(cat.id));
+          const catSubs = subs.filter(
+            (s) =>
+              Array.isArray(s.categoryIds) && s.categoryIds.includes(cat.id),
+          );
           if (catSubs.length > 0) {
             dHTML += `<div class="cat-item">
               <a href="products.html" class="cat-link">
@@ -1981,7 +3492,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
               </a>
               <div class="dropdown">
-                ${catSubs.map(s => `<a href="products.html?sub=${encodeURIComponent(s.name)}">${s.name}</a>`).join("")}
+                ${catSubs.map((s) => `<a href="products.html?sub=${encodeURIComponent(s.name)}">${s.name}</a>`).join("")}
               </div>
             </div>`;
             mHTML += `<div class="m-cat-item">
@@ -1989,7 +3500,7 @@
                 ${cat.name} <span class="m-arrow">›</span>
               </button>
               <div class="m-sub">
-                ${catSubs.map(s => `<a href="products.html?sub=${encodeURIComponent(s.name)}" class="m-sub-link">${s.name}</a>`).join("")}
+                ${catSubs.map((s) => `<a href="products.html?sub=${encodeURIComponent(s.name)}" class="m-sub-link">${s.name}</a>`).join("")}
               </div>
             </div>`;
           } else {
@@ -2003,18 +3514,24 @@
         if (mobileCatItems) mobileCatItems.innerHTML = mHTML;
       }
 
+      function hideLoader() {
+        var l = document.getElementById("pageLoader");
+        if (l) l.classList.add("hidden");
+      }
+
       /* ══════════════════════════════════════════════════════
          DATA LOADING
       ══════════════════════════════════════════════════════ */
       async function loadData() {
         try {
-          const [catRes, subRes, prodRes, deliveryRes, promoRes] = await Promise.all([
-            fetch(`${SCRIPT_URL}?action=getCategories`).then(r => r.json()),
-            fetch(`${SCRIPT_URL}?action=getSubCategories`).then(r => r.json()),
-            fetch(`${SCRIPT_URL}?action=getProducts`).then(r => r.json()),
-            fetch(`${SCRIPT_URL}?action=getDeliveryPrices`).then(r => r.json()),
-            fetch(`${SCRIPT_URL}?action=getPromos`).then(r => r.json()),
-          ]);
+          const [catRes, subRes, prodRes, deliveryRes, promoRes] =
+            await Promise.all([
+              cachedFetch("getCategories"),
+              cachedFetch("getSubCategories"),
+              cachedFetch("getProducts"),
+              cachedFetch("getDeliveryPrices"),
+              cachedFetch("getPromos"),
+            ]);
           if (catRes.success) _allCategories = catRes.categories;
           if (subRes.success) _allSubCategories = subRes.subCategories;
           if (deliveryRes.success) _deliveryPrices = deliveryRes.deliveryPrices;
@@ -2025,28 +3542,33 @@
         } catch (err) {
           console.error("Failed to load data:", err);
         }
+        hideLoader();
         populateWilayas();
       }
 
       function renderAlsoLike() {
         const grid = document.getElementById("alsoLikeGrid");
         if (!grid || !_allProducts.length) return;
-        const cartIds = cartGet().map(i => i.id);
-        const others = _allProducts.filter(p => p.status !== "inactive");
+        const cartIds = cartGet().map((i) => i.id);
+        const others = _allProducts.filter((p) => p.status !== "inactive");
         const picked = others
-          .map(p => ({ p, sort: Math.random() }))
+          .map((p) => ({ p, sort: Math.random() }))
           .sort((a, b) => a.sort - b.sort)
           .slice(0, 4)
-          .map(x => x.p);
+          .map((x) => x.p);
 
-        grid.innerHTML = picked.map(p => {
-          const price = p.variants && p.variants.length
-            ? (typeof p.variants[0] === "object" ? p.variants[0].price : 0)
-            : 0;
-          const img = p.imageUrl
-            ? `<img src="${p.imageUrl}" alt="${p.name}" />`
-            : `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
-          return `
+        grid.innerHTML = picked
+          .map((p) => {
+            const price =
+              p.variants && p.variants.length
+                ? typeof p.variants[0] === "object"
+                  ? p.variants[0].price
+                  : 0
+                : 0;
+            const img = p.imageUrl
+              ? `<img src="${p.imageUrl}" alt="${p.name}" />`
+              : `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
+            return `
             <div class="also-card" onclick="window.location.href='product-detail.html?id=${p.id}'">
               <div class="also-card-img">${img}</div>
               <div class="also-card-body">
@@ -2054,10 +3576,11 @@
                 <div class="also-card-price">${price ? price.toLocaleString("fr-DZ") + " DA" : ""}</div>
               </div>
             </div>`;
-        }).join("");
+          })
+          .join("");
       }
 
-            const WILAYAS = {
+      const WILAYAS = {
         "01": {
           name: "Adrar",
           communes: [
@@ -3875,11 +5398,14 @@
       }
 
       function closeAllDropdowns() {
-        ["wilaya", "commune"].forEach(name => {
+        ["wilaya", "commune"].forEach((name) => {
           dropdownState[name] = false;
           const trigger = document.getElementById(name + "Trigger");
           const list = document.getElementById(name + "Dropdown");
-          if (trigger) { trigger.classList.remove("open"); trigger.setAttribute("aria-expanded", "false"); }
+          if (trigger) {
+            trigger.classList.remove("open");
+            trigger.setAttribute("aria-expanded", "false");
+          }
           if (list) list.classList.remove("open");
         });
       }
@@ -3893,7 +5419,10 @@
       });
 
       function handleDropdownKey(e, name) {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleCustomSelect(name); }
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggleCustomSelect(name);
+        }
         if (e.key === "Escape") closeAllDropdowns();
       }
 
@@ -3901,14 +5430,20 @@
         const optionsEl = document.getElementById(name + "Options");
         const allOpts = optionsEl.querySelectorAll(".dropdown-option");
         let visibleCount = 0;
-        allOpts.forEach(opt => {
-          const match = opt.dataset.label.toLowerCase().includes(query.toLowerCase());
+        allOpts.forEach((opt) => {
+          const match = opt.dataset.label
+            .toLowerCase()
+            .includes(query.toLowerCase());
           opt.style.display = match ? "" : "none";
           if (match) visibleCount++;
         });
         let emptyEl = optionsEl.querySelector(".dropdown-empty");
         if (!visibleCount) {
-          if (!emptyEl) { emptyEl = document.createElement("div"); emptyEl.className = "dropdown-empty"; optionsEl.appendChild(emptyEl); }
+          if (!emptyEl) {
+            emptyEl = document.createElement("div");
+            emptyEl.className = "dropdown-empty";
+            optionsEl.appendChild(emptyEl);
+          }
           emptyEl.textContent = "No results found";
           emptyEl.style.display = "";
         } else if (emptyEl) emptyEl.style.display = "none";
@@ -3920,11 +5455,15 @@
         const trigger = document.getElementById("wilayaTrigger");
         trigger.classList.remove("placeholder", "error-field");
         document.getElementById("wilayaErr").textContent = "";
-        document.querySelectorAll("#wilayaOptions .dropdown-option").forEach(o => {
-          const sel = o.dataset.value === code;
-          o.classList.toggle("selected", sel);
-          o.querySelector(".check-icon").style.display = sel ? "block" : "none";
-        });
+        document
+          .querySelectorAll("#wilayaOptions .dropdown-option")
+          .forEach((o) => {
+            const sel = o.dataset.value === code;
+            o.classList.toggle("selected", sel);
+            o.querySelector(".check-icon").style.display = sel
+              ? "block"
+              : "none";
+          });
         closeAllDropdowns();
         populateCommune(code);
         updateDeliveryPriceDisplay();
@@ -3933,12 +5472,20 @@
 
       function updateDeliveryPriceDisplay() {
         const costs = getDeliveryCost();
-        const homePriceEl = document.querySelector("#deliveryHome .delivery-option-price");
-        const officePriceEl = document.querySelector("#deliveryOffice .delivery-option-price");
+        const homePriceEl = document.querySelector(
+          "#deliveryHome .delivery-option-price",
+        );
+        const officePriceEl = document.querySelector(
+          "#deliveryOffice .delivery-option-price",
+        );
         if (homePriceEl)
-          homePriceEl.textContent = selectedWilayaCode ? `+${costs.home.toLocaleString("fr-DZ")} DA` : "—";
+          homePriceEl.textContent = selectedWilayaCode
+            ? `+${costs.home.toLocaleString("fr-DZ")} DA`
+            : "—";
         if (officePriceEl)
-          officePriceEl.textContent = selectedWilayaCode ? `+${costs.office.toLocaleString("fr-DZ")} DA` : "—";
+          officePriceEl.textContent = selectedWilayaCode
+            ? `+${costs.office.toLocaleString("fr-DZ")} DA`
+            : "—";
       }
 
       function selectCommuneOption(name) {
@@ -3947,11 +5494,15 @@
         const trigger = document.getElementById("communeTrigger");
         trigger.classList.remove("placeholder", "error-field");
         document.getElementById("communeErr").textContent = "";
-        document.querySelectorAll("#communeOptions .dropdown-option").forEach(o => {
-          const sel = o.dataset.value === name;
-          o.classList.toggle("selected", sel);
-          o.querySelector(".check-icon").style.display = sel ? "block" : "none";
-        });
+        document
+          .querySelectorAll("#communeOptions .dropdown-option")
+          .forEach((o) => {
+            const sel = o.dataset.value === name;
+            o.classList.toggle("selected", sel);
+            o.querySelector(".check-icon").style.display = sel
+              ? "block"
+              : "none";
+          });
         closeAllDropdowns();
       }
 
@@ -3980,7 +5531,7 @@
         document.getElementById("communeLabel").textContent = "Select commune…";
         trigger.classList.add("placeholder");
         trigger.removeAttribute("aria-disabled");
-        (WILAYAS[wilayaCode]?.communes || []).forEach(name => {
+        (WILAYAS[wilayaCode]?.communes || []).forEach((name) => {
           const div = document.createElement("div");
           div.className = "dropdown-option";
           div.dataset.value = name;
@@ -4010,7 +5561,9 @@
 
       function validateCustomField(value, errId, msg) {
         const err = document.getElementById(errId);
-        const trigger = document.getElementById(errId.replace("Err", "Trigger"));
+        const trigger = document.getElementById(
+          errId.replace("Err", "Trigger"),
+        );
         if (!value) {
           if (trigger) trigger.classList.add("error-field");
           err.textContent = msg;
@@ -4023,16 +5576,36 @@
 
       function submitOrder() {
         let valid = true;
-        valid = validateField("firstName", "firstNameErr", "First name is required") && valid;
-        valid = validateField("lastName", "lastNameErr", "Last name is required") && valid;
-        valid = validateField("phone", "phoneErr", "Phone number is required") && valid;
-        valid = validateCustomField(selectedWilayaCode, "wilayaErr", "Please select a wilaya") && valid;
-        valid = validateCustomField(selectedCommuneName, "communeErr", "Please select a commune") && valid;
+        valid =
+          validateField(
+            "firstName",
+            "firstNameErr",
+            "First name is required",
+          ) && valid;
+        valid =
+          validateField("lastName", "lastNameErr", "Last name is required") &&
+          valid;
+        valid =
+          validateField("phone", "phoneErr", "Phone number is required") &&
+          valid;
+        valid =
+          validateCustomField(
+            selectedWilayaCode,
+            "wilayaErr",
+            "Please select a wilaya",
+          ) && valid;
+        valid =
+          validateCustomField(
+            selectedCommuneName,
+            "communeErr",
+            "Please select a commune",
+          ) && valid;
 
         const phoneEl = document.getElementById("phone");
         if (phoneEl.value && !/^[0-9\s+\-]{9,14}$/.test(phoneEl.value.trim())) {
           phoneEl.classList.add("error");
-          document.getElementById("phoneErr").textContent = "Enter a valid phone number";
+          document.getElementById("phoneErr").textContent =
+            "Enter a valid phone number";
           valid = false;
         }
 
@@ -4054,7 +5627,10 @@
         const wilayaName = wilayaData ? wilayaData.name : selectedWilayaCode;
         const deliveryCost = getDeliveryCost()[selectedDelivery];
         const subtotal = items.reduce((s, i) => s + i.unitPrice * i.qty, 0);
-        const { discount, freeDelivery } = getPromoDiscount(items, deliveryCost);
+        const { discount, freeDelivery } = getPromoDiscount(
+          items,
+          deliveryCost,
+        );
         const total = subtotal + (freeDelivery ? 0 : deliveryCost) - discount;
 
         const payload = {
@@ -4068,7 +5644,7 @@
           deliveryCost: freeDelivery ? 0 : deliveryCost,
           promoCode: appliedPromo ? appliedPromo.code : "",
           promoDiscount: discount,
-          items: items.map(i => ({
+          items: items.map((i) => ({
             name: i.name,
             flavor: i.flavor || "",
             variant: i.variant || "",
@@ -4106,14 +5682,22 @@
         if (Array.isArray(val)) return val;
         const s = String(val).trim();
         if (s === "" || s === "[]") return [];
-        if (s.startsWith("[")) { try { return JSON.parse(s); } catch (e) {} }
-        return s.split(",").map(v => v.trim()).filter(Boolean);
+        if (s.startsWith("[")) {
+          try {
+            return JSON.parse(s);
+          } catch (e) {}
+        }
+        return s
+          .split(",")
+          .map((v) => v.trim())
+          .filter(Boolean);
       }
 
       function getProductPrice(p, variantIndex) {
         const idx = variantIndex != null ? variantIndex : 0;
         const variants = parseField(p.variants);
-        const base = variants.length > idx ? Number(variants[idx].price) || 0 : 0;
+        const base =
+          variants.length > idx ? Number(variants[idx].price) || 0 : 0;
         const disc = Number(p.discount) || 0;
         return disc > 0 ? Math.round(base * (1 - disc / 100)) : base;
       }
@@ -4121,14 +5705,21 @@
       function handleSearch(query) {
         const dropdown = document.getElementById("searchDropdown");
         const q = (query || "").trim().toLowerCase();
-        if (!q) { dropdown.classList.remove("open"); dropdown.innerHTML = ""; return; }
+        if (!q) {
+          dropdown.classList.remove("open");
+          dropdown.innerHTML = "";
+          return;
+        }
         const matches = _allProducts
-          .filter(p =>
-            p.name.toLowerCase().includes(q) ||
-            (p.brand || "").toLowerCase().includes(q) ||
-            parseField(p.flavors).some(f =>
-              (typeof f === "object" ? f.name || "" : String(f)).toLowerCase().includes(q)
-            )
+          .filter(
+            (p) =>
+              p.name.toLowerCase().includes(q) ||
+              (p.brand || "").toLowerCase().includes(q) ||
+              parseField(p.flavors).some((f) =>
+                (typeof f === "object" ? f.name || "" : String(f))
+                  .toLowerCase()
+                  .includes(q),
+              ),
           )
           .slice(0, 8);
         if (!matches.length) {
@@ -4136,12 +5727,13 @@
           dropdown.classList.add("open");
           return;
         }
-        dropdown.innerHTML = matches.map(p => {
-          const price = getProductPrice(p, 0).toLocaleString("fr-DZ");
-          const thumb = p.imageUrl
-            ? `<img src="${p.imageUrl}" alt="${p.name}" />`
-            : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
-          return `
+        dropdown.innerHTML = matches
+          .map((p) => {
+            const price = getProductPrice(p, 0).toLocaleString("fr-DZ");
+            const thumb = p.imageUrl
+              ? `<img src="${p.imageUrl}" alt="${p.name}" />`
+              : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
+            return `
             <div class="search-drop-item" onclick="window.location.href='products.html?search=${encodeURIComponent(p.name)}'">
               <div class="search-drop-thumb">${thumb}</div>
               <div class="search-drop-info">
@@ -4150,7 +5742,8 @@
               </div>
               <span class="search-drop-price">${price} DA</span>
             </div>`;
-        }).join("");
+          })
+          .join("");
         dropdown.classList.add("open");
       }
 
@@ -4158,10 +5751,14 @@
         const si = document.getElementById("searchInput");
         if (si) {
           si.addEventListener("keydown", (e) => {
-            if (e.key === "Escape") { const dd = document.getElementById("searchDropdown"); if (dd) dd.classList.remove("open"); }
+            if (e.key === "Escape") {
+              const dd = document.getElementById("searchDropdown");
+              if (dd) dd.classList.remove("open");
+            }
             if (e.key === "Enter") {
               const q = e.target.value.trim();
-              if (q) window.location.href = `products.html?q=${encodeURIComponent(q)}`;
+              if (q)
+                window.location.href = `products.html?q=${encodeURIComponent(q)}`;
             }
           });
         }
@@ -4170,7 +5767,10 @@
       function openMobileSearch() {
         document.getElementById("mobileSearchOverlay").style.display = "flex";
         document.body.style.overflow = "hidden";
-        setTimeout(() => document.getElementById("mobileSearchInput").focus(), 50);
+        setTimeout(
+          () => document.getElementById("mobileSearchInput").focus(),
+          50,
+        );
       }
       function closeMobileSearch() {
         document.getElementById("mobileSearchOverlay").style.display = "none";
@@ -4194,7 +5794,9 @@
       function toggleMobileCat(btn) {
         const item = btn.closest(".m-cat-item");
         const isOpen = item.classList.contains("open");
-        document.querySelectorAll(".m-cat-item.open").forEach(el => el.classList.remove("open"));
+        document
+          .querySelectorAll(".m-cat-item.open")
+          .forEach((el) => el.classList.remove("open"));
         if (!isOpen) item.classList.add("open");
       }
 
@@ -4244,7 +5846,8 @@
           "breadcrumb.cart": "Cart",
           "breadcrumb.checkout": "Checkout",
           "section.alsoLike": "You May Also Like",
-          "footer.tagline": "Algeria's premier sports nutrition store. Authentic products, fast delivery, and expert support to fuel your performance.",
+          "footer.tagline":
+            "Algeria's premier sports nutrition store. Authentic products, fast delivery, and expert support to fuel your performance.",
           "footer.shop": "Shop",
           "footer.allProducts": "All Products",
           "footer.protein": "Protein",
@@ -4292,7 +5895,8 @@
           "breadcrumb.cart": "Panier",
           "breadcrumb.checkout": "Commande",
           "section.alsoLike": "Vous Aimerez Aussi",
-          "footer.tagline": "La boutique de nutrition sportive de référence en Algérie.",
+          "footer.tagline":
+            "La boutique de nutrition sportive de référence en Algérie.",
           "footer.shop": "Boutique",
           "footer.allProducts": "Tous les Produits",
           "footer.protein": "Protéine",
@@ -4340,7 +5944,8 @@
           "breadcrumb.cart": "السلة",
           "breadcrumb.checkout": "الدفع",
           "section.alsoLike": "قد يعجبك أيضاً",
-          "footer.tagline": "المتجر الأول للتغذية الرياضية في الجزائر. منتجات أصيلة، توصيل سريع.",
+          "footer.tagline":
+            "المتجر الأول للتغذية الرياضية في الجزائر. منتجات أصيلة، توصيل سريع.",
           "footer.shop": "المتجر",
           "footer.allProducts": "جميع المنتجات",
           "footer.protein": "البروتين",
@@ -4369,22 +5974,23 @@
         const isAr = lang === "ar";
         document.documentElement.lang = lang;
         document.documentElement.dir = isAr ? "rtl" : "ltr";
-        document.querySelectorAll("[data-i18n]").forEach(el => {
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
           const key = el.getAttribute("data-i18n");
           if (t[key] !== undefined) el.textContent = t[key];
         });
-        document.querySelectorAll(".lang-btn").forEach(btn => {
+        document.querySelectorAll(".lang-btn").forEach((btn) => {
           btn.classList.toggle("active", btn.dataset.lang === lang);
         });
         const wt = document.getElementById("wilayaTrigger");
         if (wt && wt.classList.contains("placeholder"))
-          document.getElementById("wilayaLabel").textContent = t["form.selectWilaya"] || "Select wilaya…";
+          document.getElementById("wilayaLabel").textContent =
+            t["form.selectWilaya"] || "Select wilaya…";
         const ct = document.getElementById("communeTrigger");
         if (ct && ct.classList.contains("placeholder")) {
           const dis = ct.getAttribute("aria-disabled") === "true";
           document.getElementById("communeLabel").textContent = dis
-            ? (t["form.selectWilayaFirst"] || "Select wilaya first")
-            : (t["form.selectWilaya"] || "Select commune…");
+            ? t["form.selectWilayaFirst"] || "Select wilaya first"
+            : t["form.selectWilaya"] || "Select commune…";
         }
         // Re-render checkout items to update translated empty state if needed
         renderCheckoutItems();
@@ -4393,10 +5999,18 @@
       /* ══════════════════════════════════════════════════════
          SCROLL
       ══════════════════════════════════════════════════════ */
-      window.addEventListener("scroll", () => {
-        document.getElementById("site-header").classList.toggle("scrolled", window.scrollY > 12);
-        document.getElementById("scrollTop").classList.toggle("visible", window.scrollY > 400);
-      }, { passive: true });
+      window.addEventListener(
+        "scroll",
+        () => {
+          document
+            .getElementById("site-header")
+            .classList.toggle("scrolled", window.scrollY > 12);
+          document
+            .getElementById("scrollTop")
+            .classList.toggle("visible", window.scrollY > 400);
+        },
+        { passive: true },
+      );
 
       /* ══════════════════════════════════════════════════════
          INIT

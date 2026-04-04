@@ -41,6 +41,19 @@
         --shadow-red: 0 4px 20px rgba(173, 0, 0, 0.3);
       }
 
+      /* ─── PAGE LOADER ─────────────────────────────────────────── */
+      #pageLoader{position:fixed;inset:0;background:#0a0a0a;display:flex;align-items:center;justify-content:center;z-index:99999;transition:opacity .5s ease,visibility .5s ease}
+      #pageLoader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+      .loader-inner{display:flex;flex-direction:column;align-items:center;gap:24px}
+      .loader-brand{font-family:"Bebas Neue",sans-serif;font-size:clamp(3rem,10vw,5rem);letter-spacing:.06em;line-height:1}
+      .lb-by{color:#fff;display:inline-block;opacity:0;transform:translateY(28px);animation:ldrUp .5s cubic-bezier(.4,0,.2,1) .1s forwards}
+      .lb-bens{color:#ad0000;display:inline-block;opacity:0;transform:translateY(28px);animation:ldrUp .5s cubic-bezier(.4,0,.2,1) .35s forwards}
+      @keyframes ldrUp{to{opacity:1;transform:translateY(0)}}
+      .loader-bar{width:120px;height:2px;background:rgba(255,255,255,.12);border-radius:2px;overflow:hidden;opacity:0;animation:ldrBarIn .3s ease .6s forwards}
+      @keyframes ldrBarIn{to{opacity:1}}
+      .loader-bar-fill{height:100%;width:40%;background:#ad0000;border-radius:2px;animation:ldrSweep 1.2s ease-in-out .6s infinite}
+      @keyframes ldrSweep{0%{transform:translateX(-250%)}100%{transform:translateX(450%)}}
+
       /* ─── RESET ────────────────────────────────────────────────── */
       *,
       *::before,
@@ -1704,6 +1717,14 @@
     </style>
   </head>
   <body>
+    <!-- PAGE LOADER -->
+    <div id="pageLoader">
+      <div class="loader-inner">
+        <div class="loader-brand"><span class="lb-by">By</span><span class="lb-bens"> Ben's</span></div>
+        <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+      </div>
+    </div>
+    <script>(function(){var n=['getProducts','getCategories','getSubCategories','getDeliveryPrices','getPromos'],T=6e5,ok=n.every(function(a){try{var c=JSON.parse(localStorage.getItem('bybens_cache_'+a));return c&&Date.now()-c.ts<T;}catch(e){return false;}});if(ok)document.getElementById('pageLoader').style.display='none';})();</script>
     <!-- ─── MARQUEE ─────────────────────────────────────────────── -->
     <div class="marquee-bar">
       <div class="marquee-track">
@@ -2617,6 +2638,26 @@
       const SCRIPT_URL =
         "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
 
+      const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+      function cachedFetch(action) {
+        const key = `bybens_cache_${action}`;
+        try {
+          const cached = JSON.parse(localStorage.getItem(key));
+          if (cached && Date.now() - cached.ts < CACHE_TTL) return Promise.resolve(cached.data);
+        } catch (e) {}
+        return fetch(`${SCRIPT_URL}?action=${action}`)
+          .then(r => r.json())
+          .then(data => {
+            try { localStorage.setItem(key, JSON.stringify({ ts: Date.now(), data })); } catch (e) {}
+            return data;
+          });
+      }
+
+      function hideLoader() {
+        var l = document.getElementById('pageLoader');
+        if (l) l.classList.add('hidden');
+      }
+
       let _allCategories = [];
       let _allSubCategories = [];
       let _allProducts = [];
@@ -2736,15 +2777,11 @@
           const productId = params.get("id");
 
           const [prodRes, catRes, subRes, deliveryRes, promoRes] = await Promise.all([
-            fetch(`${SCRIPT_URL}?action=getProducts`).then((r) => r.json()),
-            fetch(`${SCRIPT_URL}?action=getCategories`).then((r) => r.json()),
-            fetch(`${SCRIPT_URL}?action=getSubCategories`).then((r) =>
-              r.json(),
-            ),
-            fetch(`${SCRIPT_URL}?action=getDeliveryPrices`).then((r) =>
-              r.json(),
-            ),
-            fetch(`${SCRIPT_URL}?action=getPromos`).then((r) => r.json()),
+            cachedFetch("getProducts"),
+            cachedFetch("getCategories"),
+            cachedFetch("getSubCategories"),
+            cachedFetch("getDeliveryPrices"),
+            cachedFetch("getPromos"),
           ]);
 
           if (catRes.success) _allCategories = catRes.categories;
@@ -2771,6 +2808,7 @@
         } catch (err) {
           console.error("Failed to load product data:", err);
         }
+        hideLoader();
       }
 
       function renderAlsoLike() {

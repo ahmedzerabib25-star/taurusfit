@@ -42,6 +42,19 @@
         --shadow-red: 0 4px 20px rgba(173, 0, 0, 0.3);
       }
 
+      /* ─── PAGE LOADER ─────────────────────────────────────────── */
+      #pageLoader{position:fixed;inset:0;background:#0a0a0a;display:flex;align-items:center;justify-content:center;z-index:99999;transition:opacity .5s ease,visibility .5s ease}
+      #pageLoader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+      .loader-inner{display:flex;flex-direction:column;align-items:center;gap:24px}
+      .loader-brand{font-family:"Bebas Neue",sans-serif;font-size:clamp(3rem,10vw,5rem);letter-spacing:.06em;line-height:1}
+      .lb-by{color:#fff;display:inline-block;opacity:0;transform:translateY(28px);animation:ldrUp .5s cubic-bezier(.4,0,.2,1) .1s forwards}
+      .lb-bens{color:#ad0000;display:inline-block;opacity:0;transform:translateY(28px);animation:ldrUp .5s cubic-bezier(.4,0,.2,1) .35s forwards}
+      @keyframes ldrUp{to{opacity:1;transform:translateY(0)}}
+      .loader-bar{width:120px;height:2px;background:rgba(255,255,255,.12);border-radius:2px;overflow:hidden;opacity:0;animation:ldrBarIn .3s ease .6s forwards}
+      @keyframes ldrBarIn{to{opacity:1}}
+      .loader-bar-fill{height:100%;width:40%;background:#ad0000;border-radius:2px;animation:ldrSweep 1.2s ease-in-out .6s infinite}
+      @keyframes ldrSweep{0%{transform:translateX(-250%)}100%{transform:translateX(450%)}}
+
       /* ─── RESET ─────────────────────────────────────────────── */
       *,
       *::before,
@@ -1869,6 +1882,14 @@
     </style>
   </head>
   <body>
+    <!-- PAGE LOADER -->
+    <div id="pageLoader">
+      <div class="loader-inner">
+        <div class="loader-brand"><span class="lb-by">By</span><span class="lb-bens"> Ben's</span></div>
+        <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+      </div>
+    </div>
+    <script>(function(){var n=['getProducts','getCategories','getSubCategories'],T=6e5,ok=n.every(function(a){try{var c=JSON.parse(localStorage.getItem('bybens_cache_'+a));return c&&Date.now()-c.ts<T;}catch(e){return false;}});if(ok)document.getElementById('pageLoader').style.display='none';})();</script>
     <!-- Full-screen mobile search overlay -->
     <div
       id="mobileSearchOverlay"
@@ -2203,8 +2224,8 @@
       <section class="hero" aria-label="Hero section">
         <div class="hero-left">
           <p class="hero-eyebrow animate-up" data-i18n="hero.eyebrow">
-            Algeria's #1 Supplements Store
-          </p>
+            Your Premium Supplements Store
+</p>
           <h1 class="hero-title animate-up delay-1" data-i18n-html="hero.title">
             FUEL YOUR<em>AMBITION</em>PERFORM
           </h1>
@@ -2529,7 +2550,7 @@
               <img
                 src="images/logo.png"
                 alt="ByBens Logo"
-                style="height: 150px; width: auto; object-fit: contain"
+                style="height: 70px; width: auto; object-fit: contain"
               />
             </a>
             <p data-i18n="footer.brand.desc">
@@ -2582,7 +2603,7 @@
             <h4 data-i18n="footer.links">Quick Links</h4>
             <ul>
               <li><a href="#" data-i18n="nav.home">Home</a></li>
-              <li><a href="#products" data-i18n="nav.products">Products</a></li>
+              <li><a href="products.html" data-i18n="nav.products">Products</a></li>
             </ul>
           </div>
 
@@ -2726,7 +2747,7 @@
           "nav.home": "Home",
           "nav.products": "Products",
           "nav.contact": "Contact",
-          "hero.eyebrow": "Algeria's #1 Supplements Store",
+          "hero.eyebrow": "Your Premium Supplements Store",
           "hero.title": "FUEL YOUR<em>AMBITION</em>PERFORM",
           "hero.desc":
             "Premium sports nutrition delivered across Algeria. Authentic products, unbeatable prices, and certified quality for serious athletes.",
@@ -2777,7 +2798,7 @@
           "nav.home": "Accueil",
           "nav.products": "Produits",
           "nav.contact": "Contact",
-          "hero.eyebrow": "N°1 Suppléments en Algérie",
+          "hero.eyebrow": "Votre Boutique de Suppléments Premium",
           "hero.title": "ALIMENTEZ VOTRE<em>AMBITION</em>PERFORMEZ",
           "hero.desc":
             "Nutrition sportive premium livrée partout en Algérie. Produits authentiques, prix imbattables et qualité certifiée.",
@@ -2829,7 +2850,7 @@
           "nav.products": "المنتجات",
           "nav.contact": "اتصل بنا",
           /* Categories intentionally omitted — stay in English always */
-          "hero.eyebrow": "رقم 1 للمكملات في الجزائر",
+          "hero.eyebrow": "متجرك للمكملات الرياضية",
           "hero.title": "أشعل<em>طموحك</em>وتفوّق",
           "hero.desc":
             "تغذية رياضية متميزة تُوصَّل في كل أنحاء الجزائر. منتجات أصيلة وأسعار لا تُنافَس وجودة معتمدة.",
@@ -2880,6 +2901,26 @@
 
       const SCRIPT_URL =
         "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
+
+      const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+      function cachedFetch(action) {
+        const key = `bybens_cache_${action}`;
+        try {
+          const cached = JSON.parse(localStorage.getItem(key));
+          if (cached && Date.now() - cached.ts < CACHE_TTL) return Promise.resolve(cached.data);
+        } catch (e) {}
+        return fetch(`${SCRIPT_URL}?action=${action}`)
+          .then(r => r.json())
+          .then(data => {
+            try { localStorage.setItem(key, JSON.stringify({ ts: Date.now(), data })); } catch (e) {}
+            return data;
+          });
+      }
+
+      function hideLoader() {
+        var l = document.getElementById('pageLoader');
+        if (l) l.classList.add('hidden');
+      }
 
       let currentLang = "en";
       /* ══════════════════════════════════════════════════════════════
@@ -3295,7 +3336,7 @@
 ───────────────────────────────────────────────────────────── */
       async function loadProducts() {
         try {
-          const res = await fetch(`${SCRIPT_URL}?action=getProducts`).then((r) => r.json());
+          const res = await cachedFetch("getProducts");
           if (!res.success) return;
           // Only active products, max 10
           products = res.products
@@ -3305,6 +3346,7 @@
         } catch (err) {
           console.error("Failed to load products:", err);
         }
+        hideLoader();
       }
 
       /* ─────────────────────────────────────────────────────────────
@@ -3313,8 +3355,8 @@
       async function loadBundle() {
         try {
           const [bundleRes, prodRes] = await Promise.all([
-            fetch(`${SCRIPT_URL}?action=getBundle`).then((r) => r.json()),
-            fetch(`${SCRIPT_URL}?action=getProducts`).then((r) => r.json()),
+            cachedFetch("getBundle"),
+            cachedFetch("getProducts"),
           ]);
           if (!bundleRes.success || !bundleRes.bundleId) return;
           if (!prodRes.success) return;
@@ -3340,8 +3382,8 @@
       async function loadCategories() {
         try {
           const [catRes, subRes] = await Promise.all([
-            fetch(`${SCRIPT_URL}?action=getCategories`).then((r) => r.json()),
-            fetch(`${SCRIPT_URL}?action=getSubCategories`).then((r) => r.json()),
+            cachedFetch("getCategories"),
+            cachedFetch("getSubCategories"),
           ]);
 
           if (!catRes.success || !subRes.success) return;
