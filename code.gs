@@ -463,7 +463,7 @@ function handleGetProducts() {
     categoryIds: String(r[3]).split(",").filter(Boolean),
     subCategoryIds: String(r[4]).split(",").filter(Boolean),
     description: r[5],
-    imageUrl: r[6],
+    imageUrl: (function() { var v = r[6]; if (!v) return []; var p = safeParseJSON(v, null); return Array.isArray(p) ? p : [String(v)]; })(),
     variants: safeParseJSON(r[7], []),
     flavors: safeParseJSON(r[8], []),
     stock: Number(r[9]) || 0,
@@ -488,7 +488,7 @@ function handleAddProduct(body) {
     (body.categoryIds || []).join(","),
     (body.subCategoryIds || []).join(","),
     body.description || "",
-    body.imageUrl || "",
+    JSON.stringify(Array.isArray(body.imageUrl) ? body.imageUrl : (body.imageUrl ? [body.imageUrl] : [])),
     JSON.stringify(body.variants || []),
     JSON.stringify(body.flavors || []),
     Number(body.stock) || 0,
@@ -518,7 +518,7 @@ function handleUpdateProduct(body) {
       sheet.getRange(row, 4).setNumberFormat("@").setValue((body.categoryIds || []).join(","));
       sheet.getRange(row, 5).setNumberFormat("@").setValue((body.subCategoryIds || []).join(","));
       sheet.getRange(row, 6).setValue(body.description || "");
-      sheet.getRange(row, 7).setValue(body.imageUrl || "");
+      sheet.getRange(row, 7).setValue(JSON.stringify(Array.isArray(body.imageUrl) ? body.imageUrl : (body.imageUrl ? [body.imageUrl] : [])));
       sheet.getRange(row, 8).setValue(JSON.stringify(body.variants || []));
       sheet.getRange(row, 9).setValue(JSON.stringify(body.flavors || []));
       sheet.getRange(row, 10).setValue(Number(body.stock) || 0);
