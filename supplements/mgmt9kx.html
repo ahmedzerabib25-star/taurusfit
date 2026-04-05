@@ -552,7 +552,7 @@
 
       // If already logged in, go straight to admin
       if (sessionStorage.getItem("bb_admin_auth") === "1") {
-        window.location.href = "/supplements/admin";
+        window.location.href = "/supplements/panel4rz";
       }
 
       async function doLogin() {
@@ -590,7 +590,7 @@
             // Store auth + display name
             sessionStorage.setItem("bb_admin_auth", "1");
             sessionStorage.setItem("bb_admin_name", data.displayName || u);
-            window.location.href = "/supplements/admin";
+            window.location.href = "/supplements/panel4rz";
           } else {
             showError("Invalid username or password");
             document.getElementById("loginPass").value = "";

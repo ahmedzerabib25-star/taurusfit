@@ -5,7 +5,7 @@
     { "source": "/products", "destination": "/supplements/products", "permanent": true },
     { "source": "/product-detail", "destination": "/supplements/product-detail", "permanent": true },
     { "source": "/checkout", "destination": "/supplements/checkout", "permanent": true },
-    { "source": "/login", "destination": "/supplements/login", "permanent": true },
-    { "source": "/admin", "destination": "/supplements/admin", "permanent": true }
+    { "source": "/mgmt9kx", "destination": "/supplements/mgmt9kx", "permanent": false },
+    { "source": "/panel4rz", "destination": "/supplements/panel4rz", "permanent": false }
   ]
 }

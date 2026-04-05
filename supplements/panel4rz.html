@@ -3276,7 +3276,7 @@
       // AUTH GUARD — redirect to login if not authenticated
       // ════════════════════════════════════════════
       if (sessionStorage.getItem("bb_admin_auth") !== "1") {
-        window.location.href = "/supplements/login";
+        window.location.href = "/supplements/mgmt9kx";
       }
 
       // ── STATE ──
@@ -3698,7 +3698,7 @@
       function doLogout() {
         sessionStorage.removeItem("bb_admin_auth");
         sessionStorage.removeItem("bb_admin_name");
-        window.location.href = "/supplements/login";
+        window.location.href = "/supplements/mgmt9kx";
       }
 
       // ════════════════════════════════════════════
