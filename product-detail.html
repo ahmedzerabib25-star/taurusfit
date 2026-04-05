@@ -2358,7 +2358,7 @@
             "getDeliveryPrices",
             "getPromos",
           ],
-          T = 6e5,
+          T = 6e4,
           ok = n.every(function (a) {
             try {
               var c = JSON.parse(localStorage.getItem("bybens_cache_" + a));
@@ -2966,6 +2966,7 @@
                     placeholder="Enter code…"
                     style="text-transform: uppercase"
                     oninput="this.value = this.value.toUpperCase()"
+                    onkeydown="if(event.key==='Enter'){applyPromo();event.preventDefault();}"
                   />
                   <button
                     onclick="applyPromo()"
@@ -2988,6 +2989,7 @@
                     APPLY
                   </button>
                 </div>
+                <div id="promoTagsPD" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
                 <span
                   id="promoMsg"
                   style="font-size: 12px; margin-top: 4px"
@@ -3328,7 +3330,7 @@
 
       const PAGE_LOAD_TIME = Date.now(); // used for bot timing check
 
-      const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+      const CACHE_TTL = 1 * 60 * 1000; // 1 minute
       function cachedFetch(action) {
         const key = `bybens_cache_${action}`;
         try {
@@ -3385,7 +3387,7 @@
         return { home: 0, office: 0 };
       }
       let _allPromos = [];
-      let appliedPromo = null; // the validated promo object
+      let appliedPromos = []; // all validated promo objects (stacked)
 
       /* ── HELPERS ── */
       /**
@@ -3749,7 +3751,32 @@
       function changeQty(delta) {
         selectedQty = Math.max(1, selectedQty + delta);
         document.getElementById("qtyValue").textContent = selectedQty;
+        revalidateAppliedPromos();
         updateSummary();
+      }
+
+      function revalidateAppliedPromos() {
+        if (!appliedPromos.length) return;
+        const p = selectedProduct;
+        if (!p) return;
+        const variantPrice = getProductPrice(p, selectedVariantIndex);
+        const subtotal = variantPrice * selectedQty;
+        const removed = [];
+        appliedPromos = appliedPromos.filter((pr) => {
+          if (pr.minOrder && subtotal < pr.minOrder) {
+            removed.push(pr.code);
+            return false;
+          }
+          return true;
+        });
+        if (removed.length) {
+          renderPromoTagsPD();
+          const msgEl = document.getElementById("promoMsg");
+          if (msgEl) {
+            msgEl.style.color = "var(--red)";
+            msgEl.textContent = `✗ ${removed.join(", ")} removed — order total is below the minimum.`;
+          }
+        }
       }
 
       /* ── DELIVERY ── */
@@ -3809,22 +3836,40 @@
         }
 
         let promoLabel = "";
-        if (appliedPromo) {
-          if (appliedPromo.type === "percent")
-            promoLabel = `(-${appliedPromo.value}%) `;
-          else if (appliedPromo.type === "fixed")
-            promoLabel = `(-${appliedPromo.value.toLocaleString("fr-DZ")} DA) `;
+        if (appliedPromos.length && discount > 0) {
+          promoLabel = `(−${discount.toLocaleString("fr-DZ")} DA) `;
         }
         document.getElementById("summaryTotal").textContent =
           promoLabel + total.toLocaleString("fr-DZ") + " DA";
       }
 
       /* ── PROMO CODE ── */
+      function renderPromoTagsPD() {
+        const container = document.getElementById("promoTagsPD");
+        if (!container) return;
+        container.innerHTML = appliedPromos.map((pr) => {
+          let label = pr.code;
+          if (pr.type === "percent") label += ` (${pr.value}% off)`;
+          else if (pr.type === "fixed") label += ` (−${pr.value.toLocaleString("fr-DZ")} DA)`;
+          else if (pr.type === "free_delivery") label += " (Free delivery)";
+          return `<span style="display:inline-flex;align-items:center;gap:5px;background:#e6f4ec;color:#0a7c3e;border:1px solid #b2dfcc;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:600;">
+            ${label}
+            <button onclick="removePromoPD('${pr.id}')" style="background:none;border:none;cursor:pointer;color:#0a7c3e;font-size:14px;line-height:1;padding:0;margin-left:2px;">×</button>
+          </span>`;
+        }).join("");
+      }
+
+      function removePromoPD(id) {
+        appliedPromos = appliedPromos.filter((pr) => pr.id !== id);
+        renderPromoTagsPD();
+        const msgEl = document.getElementById("promoMsg");
+        if (msgEl) msgEl.textContent = "";
+        updateSummary();
+      }
+
       function applyPromo() {
-        const code = document
-          .getElementById("promoCode")
-          .value.trim()
-          .toUpperCase();
+        const input = document.getElementById("promoCode");
+        const code = input.value.trim().toUpperCase();
         const msgEl = document.getElementById("promoMsg");
         if (!code) {
           msgEl.style.color = "var(--red)";
@@ -3832,55 +3877,45 @@
           return;
         }
 
-        const promo = _allPromos.find((pr) => pr.code.toUpperCase() === code);
+        // Already applied?
+        if (appliedPromos.some((pr) => pr.code.toUpperCase() === code)) {
+          msgEl.style.color = "var(--red)";
+          msgEl.textContent = "✗ This code is already applied.";
+          return;
+        }
 
+        const promo = _allPromos.find((pr) => pr.code.toUpperCase() === code);
         if (!promo) {
-          appliedPromo = null;
           msgEl.style.color = "var(--red)";
           msgEl.textContent = "✗ Invalid promo code.";
-          updateSummary();
           return;
         }
-
-        // Status check
         if (promo.status !== "active") {
-          appliedPromo = null;
           msgEl.style.color = "var(--red)";
           msgEl.textContent = "✗ This promo code is no longer active.";
-          updateSummary();
           return;
         }
-
-        // Expiry check
         if (promo.expiry) {
           const expiry = new Date(promo.expiry);
           expiry.setHours(23, 59, 59, 999);
           if (expiry < new Date()) {
-            appliedPromo = null;
             msgEl.style.color = "var(--red)";
             msgEl.textContent = "✗ This promo code has expired.";
-            updateSummary();
             return;
           }
         }
-
-        // Max uses check
         if (promo.maxUses && promo.uses >= promo.maxUses) {
-          appliedPromo = null;
           msgEl.style.color = "var(--red)";
           msgEl.textContent = "✗ This promo code has reached its usage limit.";
-          updateSummary();
           return;
         }
 
-        // Product link check — if the product has specific promoCodeIds, the code must be in that list
+        // Product link check
         const p = selectedProduct;
         if (p && p.promoCodeIds && p.promoCodeIds.length > 0) {
           if (!p.promoCodeIds.includes(promo.id)) {
-            appliedPromo = null;
             msgEl.style.color = "var(--red)";
             msgEl.textContent = "✗ This code is not valid for this product.";
-            updateSummary();
             return;
           }
         }
@@ -3889,41 +3924,34 @@
         const variantPrice = getProductPrice(p, selectedVariantIndex);
         const subtotal = variantPrice * selectedQty;
         if (promo.minOrder && subtotal < promo.minOrder) {
-          appliedPromo = null;
           msgEl.style.color = "var(--red)";
           msgEl.textContent = `✗ Minimum order of ${promo.minOrder.toLocaleString("fr-DZ")} DA required.`;
-          updateSummary();
           return;
         }
 
-        // All checks passed
-        appliedPromo = promo;
+        // All checks passed — add to stack
+        appliedPromos.push(promo);
+        input.value = "";
         msgEl.style.color = "#0a7c3e";
-        if (promo.type === "percent") {
-          msgEl.textContent = `✓ Code applied! ${promo.value}% off`;
-        } else if (promo.type === "fixed") {
-          msgEl.textContent = `✓ Code applied! −${promo.value.toLocaleString("fr-DZ")} DA`;
-        } else if (promo.type === "free_delivery") {
-          msgEl.textContent = "✓ Code applied! Free delivery";
-        }
+        if (promo.type === "percent") msgEl.textContent = `✓ Code applied! ${promo.value}% off`;
+        else if (promo.type === "fixed") msgEl.textContent = `✓ Code applied! −${promo.value.toLocaleString("fr-DZ")} DA`;
+        else if (promo.type === "free_delivery") msgEl.textContent = "✓ Code applied! Free delivery";
+        renderPromoTagsPD();
         updateSummary();
       }
 
       function getPromoDiscount(subtotal, deliveryCost) {
-        if (!appliedPromo) return { discount: 0, freeDelivery: false };
-        if (appliedPromo.type === "percent")
-          return {
-            discount: Math.round(subtotal * (appliedPromo.value / 100)),
-            freeDelivery: false,
-          };
-        if (appliedPromo.type === "fixed")
-          return {
-            discount: Math.min(appliedPromo.value, subtotal),
-            freeDelivery: false,
-          };
-        if (appliedPromo.type === "free_delivery")
-          return { discount: deliveryCost, freeDelivery: true };
-        return { discount: 0, freeDelivery: false };
+        if (!appliedPromos.length) return { discount: 0, freeDelivery: false };
+        let discount = 0;
+        let freeDelivery = false;
+        for (const pr of appliedPromos) {
+          if (pr.type === "percent") discount += Math.round(subtotal * (pr.value / 100));
+          else if (pr.type === "fixed") discount += Math.min(pr.value, subtotal);
+          else if (pr.type === "free_delivery") freeDelivery = true;
+        }
+        // Cap discount at subtotal so total never goes negative
+        discount = Math.min(discount, subtotal);
+        return { discount, freeDelivery };
       }
 
       /* ══════════════════════════════════════════════════════
@@ -6012,7 +6040,7 @@
             commune: selectedCommuneName,
             deliveryType: selectedDelivery,
             deliveryCost: deliveryCharge,
-            promoCode: appliedPromo ? appliedPromo.code : "",
+            promoCode: appliedPromos.map((pr) => pr.code).join(","),
             promoDiscount: discount,
             items: [
               {

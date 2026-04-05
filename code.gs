@@ -227,6 +227,8 @@ function doPost(e) {
         return handleSubmitOrder(body);
       case "updateOrderStatus":
         return handleUpdateOrderStatus(body);
+      case "deleteOrder":
+        return handleDeleteOrder(body);
       default:
         return jsonResponse({
           success: false,
@@ -496,6 +498,12 @@ function handleAddProduct(body) {
     body.status || "active",
     new Date().toISOString(),
   ]);
+  // Force text format on ID columns so Sheets doesn't treat comma-separated
+  // timestamp IDs as numbers with thousand separators
+  const newRow = sheet.getLastRow();
+  sheet.getRange(newRow, 4).setNumberFormat("@").setValue((body.categoryIds || []).join(","));
+  sheet.getRange(newRow, 5).setNumberFormat("@").setValue((body.subCategoryIds || []).join(","));
+  sheet.getRange(newRow, 13).setNumberFormat("@").setValue((body.promoCodeIds || []).join(","));
   return jsonResponse({ success: true, id });
 }
 
@@ -507,8 +515,8 @@ function handleUpdateProduct(body) {
       const row = i + 1;
       sheet.getRange(row, 2).setValue(body.name);
       sheet.getRange(row, 3).setValue(body.brand || "");
-      sheet.getRange(row, 4).setValue((body.categoryIds || []).join(","));
-      sheet.getRange(row, 5).setValue((body.subCategoryIds || []).join(","));
+      sheet.getRange(row, 4).setNumberFormat("@").setValue((body.categoryIds || []).join(","));
+      sheet.getRange(row, 5).setNumberFormat("@").setValue((body.subCategoryIds || []).join(","));
       sheet.getRange(row, 6).setValue(body.description || "");
       sheet.getRange(row, 7).setValue(body.imageUrl || "");
       sheet.getRange(row, 8).setValue(JSON.stringify(body.variants || []));
@@ -516,7 +524,7 @@ function handleUpdateProduct(body) {
       sheet.getRange(row, 10).setValue(Number(body.stock) || 0);
       sheet.getRange(row, 11).setValue(Number(body.discount) || 0);
       sheet.getRange(row, 12).setValue(body.allowPromo ? "true" : "false");
-      sheet.getRange(row, 13).setValue((body.promoCodeIds || []).join(","));
+      sheet.getRange(row, 13).setNumberFormat("@").setValue((body.promoCodeIds || []).join(","));
       sheet.getRange(row, 14).setValue(body.status || "active");
       break;
     }
@@ -798,6 +806,25 @@ function handleSubmitOrder(body) {
     "waiting",
     new Date().toISOString(),
   ]);
+  // Force text format on promoCode column (col 10) so comma-separated codes aren't treated as numbers
+  const newRow = sheet.getLastRow();
+  sheet.getRange(newRow, 10).setNumberFormat("@").setValue(body.promoCode || "");
+
+  // Increment uses counter for each applied promo code
+  if (body.promoCode) {
+    const appliedCodes = String(body.promoCode).split(",").map(function(c) { return c.trim().toUpperCase(); }).filter(Boolean);
+    if (appliedCodes.length > 0) {
+      const promoSheet = getSheet("PromoCodes");
+      const promoData = promoSheet.getDataRange().getValues();
+      for (var i = 1; i < promoData.length; i++) {
+        if (appliedCodes.includes(String(promoData[i][1]).trim().toUpperCase())) {
+          const currentUses = Number(promoData[i][6]) || 0;
+          promoSheet.getRange(i + 1, 7).setValue(currentUses + 1);
+        }
+      }
+    }
+  }
+
   return jsonResponse({ success: true, id });
 }
 
@@ -845,6 +872,21 @@ function handleUpdateOrderStatus(body) {
     }
   }
   return jsonResponse({ success: true });
+}
+
+function handleDeleteOrder(body) {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const sheet = ss.getSheetByName("Orders");
+  if (!sheet)
+    return jsonResponse({ success: false, error: "Orders sheet not found" });
+  const data = sheet.getDataRange().getValues();
+  for (let i = data.length - 1; i >= 1; i--) {
+    if (String(data[i][0]) === String(body.id)) {
+      sheet.deleteRow(i + 1);
+      return jsonResponse({ success: true });
+    }
+  }
+  return jsonResponse({ success: false, error: "Order not found" });
 }
 
 // ════════════════════════════════════════════

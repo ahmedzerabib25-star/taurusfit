@@ -2144,7 +2144,7 @@
           <div
             class="sb-user"
             onclick="
-              showPage('settings', document.querySelectorAll('.sb-link')[4])
+              showPage('settings', document.querySelector('.sb-link[onclick*=settings]'))
             "
           >
             <div class="sb-avatar">A</div>
@@ -3467,22 +3467,25 @@
         hideLoading();
       });
 
-      async function loadCategories() {
-        const r = await apiGet("getCategories");
-        if (r.success) {
-          categories = r.categories;
-          renderCats();
-        }
-      }
       async function loadSubCategories() {
         const r = await apiGet("getSubCategories");
         if (r.success) subCategories = r.subCategories;
+      }
+      async function loadCategories() {
+        const [catRes, subRes] = await Promise.all([
+          apiGet("getCategories"),
+          apiGet("getSubCategories"),
+        ]);
+        if (catRes.success) categories = catRes.categories;
+        if (subRes.success) subCategories = subRes.subCategories;
+        renderCats();
       }
       async function loadProducts() {
         const r = await apiGet("getProducts");
         if (r.success) {
           products = r.products;
           renderProducts();
+          renderBundleList(document.getElementById("bundle-search")?.value || "");
         }
       }
       async function loadPromos() {
@@ -4324,6 +4327,7 @@
           subcat: "This sub-category will be removed.",
           promo: "This promo code will be deleted.",
           delivery: "This delivery price will be permanently deleted.",
+          order: "This order will be permanently deleted and cannot be recovered.",
         };
         document.getElementById("confirm-msg").textContent =
           msgs[type] || "This action cannot be undone.";
@@ -4337,6 +4341,7 @@
             else if (type === "subcat") action = "deleteSubCategory";
             else if (type === "promo") action = "deletePromo";
             else if (type === "delivery") action = "deleteDeliveryPrice";
+            else if (type === "order") action = "deleteOrder";
             const r = await apiPost({ action, id });
             if (r.success) {
               showToast(
@@ -4348,7 +4353,13 @@
                 await loadSubCategories();
               } else if (type === "promo") await loadPromos();
               else if (type === "delivery") await loadDeliveryPrices();
-              updateDashboard();
+              else if (type === "order") {
+                orders = orders.filter((o) => o.id !== id);
+                renderOrders();
+                document.getElementById("order-detail-modal").classList.remove("open");
+                updateDashboard();
+              }
+              if (type !== "order") updateDashboard();
             } else showToast("Error: " + (r.error || "Unknown"), "error");
           } catch (e) {
             showToast("Error: " + e.message, "error");
@@ -4727,7 +4738,7 @@
               <td><span style="font-size:11px;color:var(--g400);background:var(--g100);padding:2px 7px;border-radius:4px">${o.source || "—"}</span></td>
               <td style="font-size:12px;color:var(--g600)">${date}</td>
               <td><span class="badge ${badgeClass}">${cap(o.status)}</span></td>
-              <td><button class="act-btn act-view" onclick="openOrderDetail('${safeId}')">View More</button></td>
+              <td><div class="action-group"><button class="act-btn act-view" onclick="openOrderDetail('${safeId}')">View More</button><button class="act-btn act-delete" onclick="confirmDelete('order','${safeId}')">Delete</button></div></td>
             </tr>`;
           })
           .join("");
@@ -4795,6 +4806,9 @@
               <button class="status-btn status-delivered${o.status==='delivered'?' active':''}" onclick="updateOrderStatus('${safeId}','delivered')">📦 Delivered</button>
               <button class="status-btn status-canceled${o.status==='canceled'?' active':''}" onclick="updateOrderStatus('${safeId}','canceled')">✖ Canceled</button>
             </div>
+          </div>
+          <div class="order-detail-section" style="padding-top:0">
+            <button class="act-btn act-delete" style="width:100%;justify-content:center;padding:9px" onclick="confirmDelete('order','${safeId}')">Delete Order</button>
           </div>`;
 
         document.getElementById("order-detail-id").textContent =

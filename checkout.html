@@ -2183,7 +2183,7 @@
             "getDeliveryPrices",
             "getPromos",
           ],
-          T = 6e5,
+          T = 6e4,
           ok = n.every(function (a) {
             try {
               var c = JSON.parse(localStorage.getItem("bybens_cache_" + a));
@@ -2824,6 +2824,7 @@
                     APPLY
                   </button>
                 </div>
+                <div id="promoTagsCO" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
                 <span id="promoMsg" class="promo-msg"></span>
               </div>
 
@@ -3113,7 +3114,7 @@
 
       const PAGE_LOAD_TIME = Date.now(); // used for bot timing check
 
-      const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+      const CACHE_TTL = 1 * 60 * 1000; // 1 minute
       function cachedFetch(action) {
         const key = `bybens_cache_${action}`;
         try {
@@ -3136,7 +3137,7 @@
       const CART_KEY = "bybens_cart";
       let _deliveryPrices = [];
       let _allPromos = [];
-      let appliedPromo = null;
+      let appliedPromos = []; // all validated promo objects (stacked)
 
       function getDeliveryCost() {
         if (selectedWilayaCode && _deliveryPrices.length) {
@@ -3382,12 +3383,9 @@
         const discountVal = document.getElementById("summaryDiscountVal");
         const discountLabel = document.getElementById("summaryDiscountLabel");
         if (discountRow) {
-          if (appliedPromo && discount > 0) {
+          if (appliedPromos.length && discount > 0) {
             discountRow.style.display = "";
-            if (appliedPromo.type === "percent")
-              discountLabel.textContent = `Promo (${appliedPromo.value}% off)`;
-            else if (appliedPromo.type === "fixed")
-              discountLabel.textContent = "Promo discount";
+            discountLabel.textContent = `Promo discount (${appliedPromos.length} code${appliedPromos.length > 1 ? "s" : ""})`;
             discountVal.textContent = `−${discount.toLocaleString("fr-DZ")} DA`;
           } else {
             discountRow.style.display = "none";
@@ -3401,11 +3399,32 @@
       /* ══════════════════════════════════════════════════════
          PROMO CODE
       ══════════════════════════════════════════════════════ */
+      function renderPromoTagsCO() {
+        const container = document.getElementById("promoTagsCO");
+        if (!container) return;
+        container.innerHTML = appliedPromos.map((pr) => {
+          let label = pr.code;
+          if (pr.type === "percent") label += ` (${pr.value}% off)`;
+          else if (pr.type === "fixed") label += ` (−${pr.value.toLocaleString("fr-DZ")} DA)`;
+          else if (pr.type === "free_delivery") label += " (Free delivery)";
+          return `<span style="display:inline-flex;align-items:center;gap:5px;background:#e6f4ec;color:#0a7c3e;border:1px solid #b2dfcc;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:600;">
+            ${label}
+            <button onclick="removePromoCO('${pr.id}')" style="background:none;border:none;cursor:pointer;color:#0a7c3e;font-size:14px;line-height:1;padding:0;margin-left:2px;">×</button>
+          </span>`;
+        }).join("");
+      }
+
+      function removePromoCO(id) {
+        appliedPromos = appliedPromos.filter((pr) => pr.id !== id);
+        renderPromoTagsCO();
+        const msgEl = document.getElementById("promoMsg");
+        if (msgEl) msgEl.textContent = "";
+        updateOrderSummary();
+      }
+
       function applyPromo() {
-        const code = document
-          .getElementById("promoCode")
-          .value.trim()
-          .toUpperCase();
+        const input = document.getElementById("promoCode");
+        const code = input.value.trim().toUpperCase();
         const msgEl = document.getElementById("promoMsg");
         if (!code) {
           msgEl.style.color = "var(--red)";
@@ -3413,61 +3432,59 @@
           return;
         }
 
+        // Already applied?
+        if (appliedPromos.some((pr) => pr.code.toUpperCase() === code)) {
+          msgEl.style.color = "var(--red)";
+          msgEl.textContent = "✗ This code is already applied.";
+          return;
+        }
+
         const promo = _allPromos.find((pr) => pr.code.toUpperCase() === code);
         if (!promo) {
-          appliedPromo = null;
           msgEl.style.color = "var(--red)";
           msgEl.textContent = "✗ Invalid promo code.";
-          updateOrderSummary();
           return;
         }
         if (promo.status !== "active") {
-          appliedPromo = null;
           msgEl.style.color = "var(--red)";
           msgEl.textContent = "✗ This promo code is no longer active.";
-          updateOrderSummary();
           return;
         }
         if (promo.expiry) {
           const exp = new Date(promo.expiry);
           exp.setHours(23, 59, 59, 999);
           if (exp < new Date()) {
-            appliedPromo = null;
             msgEl.style.color = "var(--red)";
             msgEl.textContent = "✗ This promo code has expired.";
-            updateOrderSummary();
             return;
           }
         }
         if (promo.maxUses && promo.uses >= promo.maxUses) {
-          appliedPromo = null;
           msgEl.style.color = "var(--red)";
           msgEl.textContent = "✗ This promo code has reached its usage limit.";
-          updateOrderSummary();
           return;
         }
 
         const items = cartGet();
         const eligibleSubtotal = getEligibleSubtotal(items, promo);
         if (eligibleSubtotal === 0) {
-          appliedPromo = null;
           msgEl.style.color = "var(--red)";
-          msgEl.textContent =
-            "✗ This code is not valid for any product in your cart.";
-          updateOrderSummary();
+          msgEl.textContent = promo.type === "free_delivery"
+            ? "✗ This code is not valid for your cart."
+            : "✗ No products in your cart are linked to this promo code.";
           return;
         }
 
         const fullSubtotal = items.reduce((s, i) => s + i.unitPrice * i.qty, 0);
         if (promo.minOrder && fullSubtotal < promo.minOrder) {
-          appliedPromo = null;
           msgEl.style.color = "var(--red)";
           msgEl.textContent = `✗ Minimum order of ${promo.minOrder.toLocaleString("fr-DZ")} DA required.`;
-          updateOrderSummary();
           return;
         }
 
-        appliedPromo = promo;
+        // All checks passed — add to stack
+        appliedPromos.push(promo);
+        input.value = "";
         msgEl.style.color = "#0a7c3e";
         if (promo.type === "percent")
           msgEl.textContent = `✓ Code applied! ${promo.value}% off eligible items`;
@@ -3475,11 +3492,37 @@
           msgEl.textContent = `✓ Code applied! −${promo.value.toLocaleString("fr-DZ")} DA`;
         else if (promo.type === "free_delivery")
           msgEl.textContent = "✓ Code applied! Free delivery";
+        renderPromoTagsCO();
         updateOrderSummary();
       }
 
-      // Returns the subtotal of cart items that are eligible for this promo
+      // Returns the subtotal of cart items eligible for this promo.
+      // percent / fixed → sum of items where product.allowPromo && product.promoCodeIds includes promo.
+      // free_delivery → full subtotal if at least one eligible product is in cart;
+      //   if no products are explicitly linked to the promo, it is treated as a global code (always valid).
       function getEligibleSubtotal(items, promo) {
+        const fullSubtotal = items.reduce((s, item) => s + item.unitPrice * item.qty, 0);
+
+        if (!_allProducts.length) {
+          // Products not loaded yet — can't verify, allow for now
+          return fullSubtotal;
+        }
+
+        // Find all products that explicitly allow this promo
+        const linkedProducts = _allProducts.filter((p) => {
+          const allowPromo = p.allowPromo === true || String(p.allowPromo).toUpperCase() === "TRUE";
+          return allowPromo && p.promoCodeIds && p.promoCodeIds.includes(promo.id);
+        });
+
+        if (promo.type === "free_delivery") {
+          // No products linked → global free-delivery code, applies to any cart
+          if (linkedProducts.length === 0) return fullSubtotal;
+          // Otherwise at least one linked product must be in the cart
+          const hasEligible = items.some((item) => linkedProducts.some((p) => p.id === item.productId));
+          return hasEligible ? fullSubtotal : 0;
+        }
+
+        // percent / fixed: only count eligible items' subtotal
         return items.reduce((s, item) => {
           const product = _allProducts.find((p) => p.id === item.productId);
           if (!product) return s;
@@ -3487,29 +3530,24 @@
             product.allowPromo === true ||
             String(product.allowPromo).toUpperCase() === "TRUE";
           if (!allowPromo) return s;
-          if (product.promoCodeIds && product.promoCodeIds.length > 0) {
-            if (!product.promoCodeIds.includes(promo.id)) return s;
-          }
+          if (!product.promoCodeIds || !product.promoCodeIds.includes(promo.id)) return s;
           return s + item.unitPrice * item.qty;
         }, 0);
       }
 
       function getPromoDiscount(items, deliveryCost) {
-        if (!appliedPromo) return { discount: 0, freeDelivery: false };
-        const eligible = getEligibleSubtotal(items, appliedPromo);
-        if (appliedPromo.type === "percent")
-          return {
-            discount: Math.round(eligible * (appliedPromo.value / 100)),
-            freeDelivery: false,
-          };
-        if (appliedPromo.type === "fixed")
-          return {
-            discount: Math.min(appliedPromo.value, eligible),
-            freeDelivery: false,
-          };
-        if (appliedPromo.type === "free_delivery")
-          return { discount: deliveryCost, freeDelivery: true };
-        return { discount: 0, freeDelivery: false };
+        if (!appliedPromos.length) return { discount: 0, freeDelivery: false };
+        let discount = 0;
+        let freeDelivery = false;
+        const subtotal = items.reduce((s, i) => s + i.unitPrice * i.qty, 0);
+        for (const pr of appliedPromos) {
+          if (pr.type === "free_delivery") { freeDelivery = true; continue; }
+          const eligible = getEligibleSubtotal(items, pr);
+          if (pr.type === "percent") discount += Math.round(eligible * (pr.value / 100));
+          else if (pr.type === "fixed") discount += Math.min(pr.value, eligible);
+        }
+        discount = Math.min(discount, subtotal);
+        return { discount, freeDelivery };
       }
 
       /* ══════════════════════════════════════════════════════
@@ -5855,7 +5893,7 @@
           commune: selectedCommuneName,
           deliveryType: selectedDelivery,
           deliveryCost: freeDelivery ? 0 : deliveryCost,
-          promoCode: appliedPromo ? appliedPromo.code : "",
+          promoCode: appliedPromos.map((pr) => pr.code).join(","),
           promoDiscount: discount,
           items: items.map((i) => ({
             name: i.name,

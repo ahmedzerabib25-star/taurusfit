@@ -1926,7 +1926,7 @@
         <div class="loader-bar"><div class="loader-bar-fill"></div></div>
       </div>
     </div>
-    <script>(function(){var n=['getProducts','getCategories','getSubCategories'],T=6e5,ok=n.every(function(a){try{var c=JSON.parse(localStorage.getItem('bybens_cache_'+a));return c&&Date.now()-c.ts<T;}catch(e){return false;}});if(ok)document.getElementById('pageLoader').style.display='none';})();</script>
+    <script>(function(){var n=['getProducts','getCategories','getSubCategories'],T=6e4,ok=n.every(function(a){try{var c=JSON.parse(localStorage.getItem('bybens_cache_'+a));return c&&Date.now()-c.ts<T;}catch(e){return false;}});if(ok)document.getElementById('pageLoader').style.display='none';})();</script>
     <!-- Full-screen mobile search overlay -->
     <div
       id="mobileSearchOverlay"
@@ -2786,7 +2786,7 @@
           "btn.addcart": "Add to Cart",
           "btn.buynow": "Buy Now",
           "about.who.title": "Who We Are",
-          "about.who.text": "ByBen's is Algeria's #1 supplements store, built by athletes for athletes. We are passionate about sports nutrition and committed to delivering authentic, premium products at honest prices straight to your door.",
+          "about.who.text": "ByBen's is a trusted supplements store in Algeria, built by athletes for athletes. We are passionate about sports nutrition and committed to delivering authentic, premium products at honest prices straight to your door.",
           "about.offer.title": "What We Offer",
           "about.offer.text": "Whey protein, creatine, pre-workouts, mass gainers, vitamins, and more — all 100% authentic, sourced directly from trusted international brands. Free delivery on orders over 15,000 DA, covering all 58 wilayas.",
           "about.order.title": "How to Order",
@@ -2844,7 +2844,7 @@
           "btn.addcart": "Ajouter",
           "btn.buynow": "Acheter",
           "about.who.title": "Qui Sommes-Nous",
-          "about.who.text": "ByBen's est la boutique de suppléments n°1 en Algérie, créée par des sportifs pour des sportifs. Nous sommes passionnés par la nutrition sportive et nous nous engageons à vous livrer des produits authentiques et premium à des prix honnêtes.",
+          "about.who.text": "ByBen's est une boutique de suppléments de confiance en Algérie, créée par des sportifs pour des sportifs. Nous sommes passionnés par la nutrition sportive et nous nous engageons à vous livrer des produits authentiques et premium à des prix honnêtes.",
           "about.offer.title": "Ce Que Nous Offrons",
           "about.offer.text": "Whey protéine, créatine, pré-entraînements, gainers, vitamines et bien plus — 100% authentiques, sourcés directement auprès de marques internationales de confiance. Livraison gratuite dès 15 000 DA, partout en Algérie.",
           "about.order.title": "Comment Commander",
@@ -2903,7 +2903,7 @@
           "btn.addcart": "أضف للسلة",
           "btn.buynow": "اشتر الآن",
           "about.who.title": "من نحن",
-          "about.who.text": "ByBen's هو متجر المكملات الرياضية الأول في الجزائر، أسسه رياضيون لرياضيين. نحن شغوفون بالتغذية الرياضية وملتزمون بتوصيل منتجات أصيلة وعالية الجودة بأسعار عادلة مباشرة إلى بابك.",
+          "about.who.text": "ByBen's متجر موثوق للمكملات الرياضية في الجزائر، أسسه رياضيون لرياضيين. نحن شغوفون بالتغذية الرياضية وملتزمون بتوصيل منتجات أصيلة وعالية الجودة بأسعار عادلة مباشرة إلى بابك.",
           "about.offer.title": "ماذا نقدّم",
           "about.offer.text": "بروتين واي، كرياتين، منتجات ما قبل التمرين، مكملات الكتلة العضلية، فيتامينات والمزيد — جميعها 100% أصيلة، مصدرها مباشرة من علامات تجارية عالمية موثوقة. توصيل مجاني للطلبات فوق 15,000 دج في 58 ولاية.",
           "about.order.title": "كيف تطلب",
@@ -2917,7 +2917,7 @@
       const SCRIPT_URL =
         "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
 
-      const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+      const CACHE_TTL = 1 * 60 * 1000; // 1 minute
       function cachedFetch(action) {
         const key = `bybens_cache_${action}`;
         try {
@@ -3593,7 +3593,7 @@
             </div>
             <div class="about-card-text">
               <h4 data-i18n="about.who.title">Who We Are</h4>
-              <p data-i18n="about.who.text">ByBen's is Algeria's #1 supplements store, built by athletes for athletes. We are passionate about sports nutrition and committed to delivering authentic, premium products at honest prices straight to your door.</p>
+              <p data-i18n="about.who.text">ByBen's is a trusted supplements store in Algeria, built by athletes for athletes. We are passionate about sports nutrition and committed to delivering authentic, premium products at honest prices straight to your door.</p>
             </div>
           </div>
           <div class="about-card">
