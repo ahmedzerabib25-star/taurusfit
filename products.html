@@ -1350,6 +1350,14 @@
         background: #ff6b00;
         color: var(--white);
       }
+      .badge-bundle {
+        background: #0a7c3e;
+        color: var(--white);
+      }
+      .badge-promo {
+        background: #7c3aed;
+        color: var(--white);
+      }
 
       .wishlist-btn {
         position: absolute;
@@ -1825,6 +1833,12 @@
         .top-nav {
           gap: 10px;
         }
+        #desktopProductSearch {
+          display: none !important;
+        }
+        #mobileProductSearchBtn {
+          display: flex !important;
+        }
 
         .product-grid {
           grid-template-columns: repeat(2, 1fr);
@@ -2286,8 +2300,8 @@
           <!-- Supplements link (desktop only) -->
           <a href="products.html" class="nav-link active" id="desktopSupplementsBtn">Supplements</a>
 
-          <!-- Search bar -->
-          <div class="search-wrap" role="search">
+          <!-- Search bar (desktop only) -->
+          <div class="search-wrap" id="desktopProductSearch" role="search">
             <input
               type="search"
               id="productSearch"
@@ -2302,6 +2316,30 @@
               </svg>
             </button>
           </div>
+
+          <!-- Search icon (mobile only) -->
+          <button
+            id="mobileProductSearchBtn"
+            onclick="openMobileProductSearch()"
+            aria-label="Search"
+            style="
+              display: none;
+              width: 40px;
+              height: 40px;
+              align-items: center;
+              justify-content: center;
+              border-radius: 8px;
+              color: var(--black);
+              background: none;
+              border: none;
+              cursor: pointer;
+              transition: background var(--transition);
+            "
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+          </button>
 
           <div class="nav-right">
             <div
@@ -2389,6 +2427,82 @@
         </button>
       </div>
     </nav>
+
+    <!-- Full-screen mobile search overlay -->
+    <div
+      id="mobileProductSearchOverlay"
+      style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: var(--white);
+        z-index: 9998;
+        flex-direction: column;
+        padding: 20px 24px;
+      "
+    >
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+        <div style="position: relative; flex: 1">
+          <input
+            type="search"
+            id="mobileProductSearchInput"
+            placeholder="Search products…"
+            style="
+              width: 100%;
+              height: 48px;
+              padding: 0 48px 0 16px;
+              border: 1.5px solid var(--gray-200);
+              border-radius: 10px;
+              font-size: 16px;
+              background: var(--gray-50);
+              outline: none;
+              font-family: var(--font-body);
+            "
+            onkeydown="if(event.key==='Enter') submitMobileProductSearch()"
+          />
+          <svg
+            style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--gray-400);"
+            width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+        </div>
+        <button
+          onclick="submitMobileProductSearch()"
+          style="
+            flex-shrink: 0;
+            height: 48px;
+            padding: 0 18px;
+            background: var(--red);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font-body);
+          "
+        >
+          Search
+        </button>
+        <button
+          onclick="closeMobileProductSearch(false)"
+          style="
+            flex-shrink: 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--red);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+            padding: 8px 4px;
+          "
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
 
     <!-- ═══ PAGE HERO ═════════════════════════════════════════════ -->
     <section class="page-hero">
@@ -2845,6 +2959,31 @@
       let brandOptions = [];
       let allCategories = [];
       let allSubCategories = [];
+      let _bundleId = null;
+      let _topSoldIds = [];
+
+      function computeTopSoldIds(orders, prods) {
+        const qty = {};
+        orders.forEach(o => (o.items || []).forEach(it => {
+          const name = (it.name || '').split(' (')[0].trim().toLowerCase();
+          if (name) qty[name] = (qty[name] || 0) + (Number(it.qty) || 1);
+        }));
+        const top3 = Object.entries(qty).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([n])=>n);
+        const ids = [];
+        top3.forEach(name => { const p = prods.find(x=>x.name.toLowerCase().trim()===name); if(p&&!ids.includes(p.id))ids.push(p.id); });
+        return ids;
+      }
+
+      function computeBadge(p, bundleId, topSoldIds) {
+        if (topSoldIds && topSoldIds.includes(p.id)) return { type:'hot', label:'HOT' };
+        if (bundleId && p.id === bundleId) return { type:'bundle', label:'BUNDLE' };
+        const disc = p.discount || 0;
+        if (disc > 0) return { type:'sale', label:`-${disc}%` };
+        const ap = p.allowPromo===true||String(p.allowPromo||'').toUpperCase()==='TRUE';
+        if (ap && Array.isArray(p.promoCodeIds) && p.promoCodeIds.length) return { type:'promo', label:'PROMO' };
+        if (p.createdAt) { const c=new Date(p.createdAt),n=new Date(); if(c.toDateString()===n.toDateString()) return { type:'new', label:'NEW' }; }
+        return null;
+      }
 
       function parseIds(val) {
         if (!val) return [];
@@ -2910,10 +3049,12 @@
 
       async function loadData() {
         try {
-          const [prodRes, catRes, subRes] = await Promise.all([
+          const [prodRes, catRes, subRes, bundleRes, ordersRes] = await Promise.all([
             cachedFetch("getProducts"),
             cachedFetch("getCategories"),
             cachedFetch("getSubCategories"),
+            cachedFetch("getBundle").catch(()=>({})),
+            cachedFetch("getOrders").catch(()=>({})),
           ]);
 
           if (prodRes.success) {
@@ -2955,6 +3096,9 @@
               })
               .filter((opt) => opt.count > 0);
           }
+
+          if (bundleRes.success && bundleRes.bundleId) _bundleId = bundleRes.bundleId;
+          if (ordersRes.success && Array.isArray(ordersRes.orders)) _topSoldIds = computeTopSoldIds(ordersRes.orders, allProducts);
 
           // Apply URL params after data is ready
           const params = new URLSearchParams(window.location.search);
@@ -3256,15 +3400,7 @@
             const oldPrice = discount > 0 ? basePrice : null;
             const saveLabel = discount > 0 ? `-${discount}%` : null;
 
-            let badge = null;
-            if (discount > 0) badge = "sale";
-            else if (
-              p.createdAt &&
-              Date.now() - new Date(p.createdAt).getTime() <
-                30 * 24 * 3600 * 1000
-            )
-              badge = "new";
-            else if (p.stock > 0 && p.stock <= 5) badge = "hot";
+            const badge = computeBadge(p, _bundleId, _topSoldIds);
 
             const flavorLabel =
               p.flavors && p.flavors.length > 0 ? p.flavors[0].name : "";
@@ -3277,6 +3413,7 @@
         <article class="product-card" style="animation-delay:${i * 0.05}s;cursor:pointer" onclick="window.location.href='product-detail.html?id=${p.id}'">
           <div class="product-img">
             ${imgEl}
+            ${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ''}
           </div>
           <div class="product-info">
             <span class="product-brand">${p.brand || ""}</span>
@@ -3508,6 +3645,33 @@
         state.search = document.getElementById("productSearch").value;
         state.page = 1;
         refresh();
+      }
+
+      function openMobileProductSearch() {
+        const overlay = document.getElementById("mobileProductSearchOverlay");
+        overlay.style.display = "flex";
+        document.body.style.overflow = "hidden";
+        setTimeout(() => document.getElementById("mobileProductSearchInput").focus(), 50);
+      }
+
+      function closeMobileProductSearch(keepSearch) {
+        const overlay = document.getElementById("mobileProductSearchOverlay");
+        overlay.style.display = "none";
+        document.body.style.overflow = "";
+        if (!keepSearch) {
+          document.getElementById("mobileProductSearchInput").value = "";
+          state.search = "";
+          state.page = 1;
+          refresh();
+        }
+      }
+
+      function submitMobileProductSearch() {
+        const query = document.getElementById("mobileProductSearchInput").value;
+        state.search = query;
+        state.page = 1;
+        refresh();
+        closeMobileProductSearch(true);
       }
 
       function handleSort() {

@@ -145,6 +145,7 @@
       }
       html {
         scroll-behavior: smooth;
+        overflow-x: hidden;
       }
       body {
         font-family: var(--font-body);
@@ -1467,6 +1468,25 @@
         box-shadow: 0 8px 28px rgba(37, 211, 102, 0.6);
       }
 
+      /* ─── CARD BADGES ──────────────────────────────────────────── */
+      .product-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        z-index: 1;
+      }
+      .badge-hot   { background: #ff6b00; color: #fff; }
+      .badge-bundle{ background: #0a7c3e; color: #fff; }
+      .badge-sale  { background: var(--red); color: #fff; }
+      .badge-promo { background: #7c3aed; color: #fff; }
+      .badge-new   { background: #000; color: #fff; }
+
       /* ─── YOU MAY ALSO LIKE ───────────────────────────────────── */
       .also-like-section {
         padding: 64px 0 0;
@@ -1489,7 +1509,7 @@
       }
       @media (max-width: 640px) {
         .also-like-grid {
-          grid-template-columns: repeat(2, 1fr);
+          grid-template-columns: 1fr;
           gap: 12px;
         }
       }
@@ -2149,10 +2169,25 @@
         }
       }
       @media (max-width: 600px) {
+        .container {
+          padding: 0 14px;
+        }
         .hamburger {
           display: flex;
         }
+        .top-nav {
+          position: relative;
+          gap: 8px;
+        }
         .logo {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        .logo img {
+          max-width: 100px;
+        }
+        #mobileSearchBtn {
           margin-left: auto;
         }
         .lang-switch {
@@ -3204,7 +3239,32 @@
       let _allProducts = [];
       let _allCategories = [];
       let _allSubCategories = [];
+      let _bundleId = null;
+      let _topSoldIds = [];
       const dropdownState = { wilaya: false, commune: false };
+
+      function computeTopSoldIds(orders, prods) {
+        const qty = {};
+        orders.forEach(o => (o.items || []).forEach(it => {
+          const name = (it.name || '').split(' (')[0].trim().toLowerCase();
+          if (name) qty[name] = (qty[name] || 0) + (Number(it.qty) || 1);
+        }));
+        const top3 = Object.entries(qty).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([n])=>n);
+        const ids = [];
+        top3.forEach(name => { const p = prods.find(x=>x.name.toLowerCase().trim()===name); if(p&&!ids.includes(p.id))ids.push(p.id); });
+        return ids;
+      }
+
+      function computeBadge(p, bundleId, topSoldIds) {
+        if (topSoldIds && topSoldIds.includes(p.id)) return { type:'hot', label:'HOT' };
+        if (bundleId && p.id === bundleId) return { type:'bundle', label:'BUNDLE' };
+        const disc = p.discount || 0;
+        if (disc > 0) return { type:'sale', label:`-${disc}%` };
+        const ap = p.allowPromo===true||String(p.allowPromo||'').toUpperCase()==='TRUE';
+        if (ap && Array.isArray(p.promoCodeIds) && p.promoCodeIds.length) return { type:'promo', label:'PROMO' };
+        if (p.createdAt) { const c=new Date(p.createdAt),n=new Date(); if(c.toDateString()===n.toDateString()) return { type:'new', label:'NEW' }; }
+        return null;
+      }
 
       /* ══════════════════════════════════════════════════════
          CART HELPERS
@@ -3729,19 +3789,23 @@
       ══════════════════════════════════════════════════════ */
       async function loadData() {
         try {
-          const [catRes, subRes, prodRes, deliveryRes, promoRes] =
+          const [catRes, subRes, prodRes, deliveryRes, promoRes, bundleRes, ordersRes] =
             await Promise.all([
               cachedFetch("getCategories"),
               cachedFetch("getSubCategories"),
               cachedFetch("getProducts"),
               cachedFetch("getDeliveryPrices"),
               cachedFetch("getPromos"),
+              cachedFetch("getBundle").catch(()=>({})),
+              cachedFetch("getOrders").catch(()=>({})),
             ]);
           if (catRes.success) _allCategories = catRes.categories;
           if (subRes.success) _allSubCategories = subRes.subCategories;
           if (deliveryRes.success) _deliveryPrices = deliveryRes.deliveryPrices;
           if (prodRes.success) _allProducts = prodRes.products;
           if (promoRes.success) _allPromos = promoRes.promos;
+          if (bundleRes.success && bundleRes.bundleId) _bundleId = bundleRes.bundleId;
+          if (ordersRes.success && Array.isArray(ordersRes.orders)) _topSoldIds = computeTopSoldIds(ordersRes.orders, _allProducts);
           renderCatNav(_allCategories, _allSubCategories);
           renderCheckoutItems();
           renderAlsoLike();
@@ -3775,9 +3839,10 @@
             const img = _alsoImgs[0]
               ? `<img src="${_alsoImgs[0]}" alt="${p.name}" class="img-primary" />${_alsoImgs[1] ? `<img src="${_alsoImgs[1]}" alt="${p.name}" class="img-hover" />` : ""}`
               : `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
+            const badge = computeBadge(p, _bundleId, _topSoldIds);
             return `
             <div class="also-card" onclick="window.location.href='product-detail.html?id=${p.id}'" style="cursor:pointer">
-              <div class="also-card-img">${img}</div>
+              <div class="also-card-img">${img}${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ''}</div>
               <div class="also-card-body">
                 <div class="also-card-name">${p.name}</div>
                 <div class="also-card-price">${price ? price.toLocaleString("fr-DZ") + " DA" : ""}</div>

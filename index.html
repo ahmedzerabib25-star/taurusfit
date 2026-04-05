@@ -1042,6 +1042,14 @@
         background: #ff6b00;
         color: var(--white);
       }
+      .badge-bundle {
+        background: #0a7c3e;
+        color: var(--white);
+      }
+      .badge-promo {
+        background: #7c3aed;
+        color: var(--white);
+      }
 
       .wishlist-btn {
         position: absolute;
@@ -2270,13 +2278,13 @@
           </div>
           <div class="hero-stats animate-up delay-4">
             <div class="stat-item">
-              <span class="stat-num" data-count="5000" data-suffix="+">0+</span>
+              <span class="stat-num" data-count="300" data-suffix="+">0+</span>
               <span class="stat-label" data-i18n="hero.stat1"
                 >Happy Customers</span
               >
             </div>
             <div class="stat-item">
-              <span class="stat-num" data-count="200" data-suffix="+">0+</span>
+              <span class="stat-num" data-count="60" data-suffix="+">0+</span>
               <span class="stat-label" data-i18n="hero.stat2">Products</span>
             </div>
             <div class="stat-item">
@@ -3096,6 +3104,31 @@
    PRODUCTS DATA — loaded from Google Sheets via Apps Script
 ───────────────────────────────────────────────────────────── */
       let products = [];
+      let _bundleId = null;
+      let _topSoldIds = [];
+
+      function computeTopSoldIds(orders, prods) {
+        const qty = {};
+        orders.forEach(o => (o.items || []).forEach(it => {
+          const name = (it.name || '').split(' (')[0].trim().toLowerCase();
+          if (name) qty[name] = (qty[name] || 0) + (Number(it.qty) || 1);
+        }));
+        const top3 = Object.entries(qty).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([n])=>n);
+        const ids = [];
+        top3.forEach(name => { const p = prods.find(x=>x.name.toLowerCase().trim()===name); if(p&&!ids.includes(p.id))ids.push(p.id); });
+        return ids;
+      }
+
+      function computeBadge(p, bundleId, topSoldIds) {
+        if (topSoldIds && topSoldIds.includes(p.id)) return { type:'hot', label:'HOT' };
+        if (bundleId && p.id === bundleId) return { type:'bundle', label:'BUNDLE' };
+        const disc = p.discount || 0;
+        if (disc > 0) return { type:'sale', label:`-${disc}%` };
+        const ap = p.allowPromo===true||String(p.allowPromo||'').toUpperCase()==='TRUE';
+        if (ap && Array.isArray(p.promoCodeIds) && p.promoCodeIds.length) return { type:'promo', label:'PROMO' };
+        if (p.createdAt) { const c=new Date(p.createdAt),n=new Date(); if(c.toDateString()===n.toDateString()) return { type:'new', label:'NEW' }; }
+        return null;
+      }
 
       function getProductPrice(p) {
         const base = p.variants && p.variants.length > 0 ? p.variants[0].price : 0;
@@ -3130,11 +3163,7 @@
             const oldPrice = discount > 0 ? basePrice : null;
             const saveLabel = discount > 0 ? `-${discount}%` : null;
 
-            // Badge: sale > new (within 30 days) > hot (low stock)
-            let badge = null;
-            if (discount > 0) badge = "sale";
-            else if (p.createdAt && Date.now() - new Date(p.createdAt).getTime() < 30 * 24 * 3600 * 1000) badge = "new";
-            else if (p.stock > 0 && p.stock <= 5) badge = "hot";
+            const badge = computeBadge(p, _bundleId, _topSoldIds);
 
             // Flavor label
             const flavorLabel = p.flavors && p.flavors.length > 0 ? p.flavors[0].name : "";
@@ -3149,6 +3178,7 @@
     <article class="product-card" onclick="window.location.href='product-detail.html?id=${p.id}'" style="cursor:pointer">
       <div class="product-img">
         ${imgEl}
+        ${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ''}
       </div>
       <div class="product-info">
         <span class="product-brand">${p.brand || ""}</span>
@@ -3377,12 +3407,18 @@
 ───────────────────────────────────────────────────────────── */
       async function loadProducts() {
         try {
-          const res = await cachedFetch("getProducts");
+          const [res, bundleRes, ordersRes] = await Promise.all([
+            cachedFetch("getProducts"),
+            cachedFetch("getBundle").catch(()=>({})),
+            cachedFetch("getOrders").catch(()=>({})),
+          ]);
           if (!res.success) return;
           // Only active products, max 10
           products = res.products
             .filter((p) => p.status === "active")
             .slice(0, 10);
+          if (bundleRes.success && bundleRes.bundleId) _bundleId = bundleRes.bundleId;
+          if (ordersRes.success && Array.isArray(ordersRes.orders)) _topSoldIds = computeTopSoldIds(ordersRes.orders, products);
           renderProducts(currentLang);
         } catch (err) {
           console.error("Failed to load products:", err);
