@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" type="image/png" href="./images/favicon.ico" />
+    <link rel="icon" type="image/png" href="/images/favicon.ico" />
 
     <style>
       /* ─── VARIABLES ─────────────────────────────────────────── */
@@ -1358,6 +1358,18 @@
         background: #7c3aed;
         color: var(--white);
       }
+      .badge-oos {
+        background: #888;
+        color: var(--white);
+      }
+      .product-card.is-oos .product-img {
+        opacity: 0.55;
+      }
+      .product-card.is-oos .btn-cart {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
 
       .wishlist-btn {
         position: absolute;
@@ -2293,12 +2305,12 @@
             <span></span><span></span><span></span>
           </button>
           <!-- Logo — single <a> tag, no nesting -->
-          <a href="supplements" class="logo" aria-label="ByBens Home">
-            <img src="images/logo.png" alt="ByBens Logo" />
+          <a href="/supplements" class="logo" aria-label="ByBens Home">
+            <img src="/images/logo.png" alt="ByBens Logo" />
           </a>
 
           <!-- Supplements link (desktop only) -->
-          <a href="products.html" class="nav-link active" id="desktopSupplementsBtn">Supplements</a>
+          <a href="/supplements/products" class="nav-link active" id="desktopSupplementsBtn">Supplements</a>
 
           <!-- Search bar (desktop only) -->
           <div class="search-wrap" id="desktopProductSearch" role="search">
@@ -2405,7 +2417,7 @@
 
     <!-- Mobile Menu — no search bar, categories always in English -->
     <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
-      <a href="products.html" class="m-link active" onclick="toggleMobileMenu()"
+      <a href="/supplements/products" class="m-link active" onclick="toggleMobileMenu()"
         >Supplements</a
       >
 
@@ -2508,7 +2520,7 @@
     <section class="page-hero">
       <div class="container page-hero-inner">
         <div class="breadcrumb">
-          <a href="supplements" data-i18n="nav.home">Home</a>
+          <a href="/supplements" data-i18n="nav.home">Home</a>
           <span>›</span>
           <strong data-i18n="products.title">All Products</strong>
         </div>
@@ -2667,8 +2679,8 @@
         <div class="footer-grid">
           <!-- Brand -->
           <div class="footer-brand">
-            <a href="supplements" aria-label="ByBens Home" style="display:inline-block;margin-bottom:16px;">
-              <img src="images/logo.png" alt="ByBens Logo" style="height:70px;width:auto;object-fit:contain;" />
+            <a href="/supplements" aria-label="ByBens Home" style="display:inline-block;margin-bottom:16px;">
+              <img src="/images/logo.png" alt="ByBens Logo" style="height:70px;width:auto;object-fit:contain;" />
             </a>
             <p data-i18n="footer.brand.desc">Algeria's premier destination for authentic sports nutrition, delivered to your door.</p>
             <div class="social-links">
@@ -2688,11 +2700,11 @@
           <div>
             <div class="footer-col-title" data-i18n="footer.shop">Shop</div>
             <div class="footer-col-links">
-              <a href="products.html" data-i18n="footer.allProducts">All Products</a>
-              <a href="products.html?cat=protein" data-i18n="footer.protein">Protein</a>
-              <a href="products.html?cat=preworkout" data-i18n="footer.preworkout">Pre-Workout</a>
-              <a href="products.html?cat=creatine" data-i18n="footer.creatine">Creatine</a>
-              <a href="products.html?cat=vitamins" data-i18n="footer.vitamins">Vitamins</a>
+              <a href="/supplements/products" data-i18n="footer.allProducts">All Products</a>
+              <a href="/supplements/products?cat=protein" data-i18n="footer.protein">Protein</a>
+              <a href="/supplements/products?cat=preworkout" data-i18n="footer.preworkout">Pre-Workout</a>
+              <a href="/supplements/products?cat=creatine" data-i18n="footer.creatine">Creatine</a>
+              <a href="/supplements/products?cat=vitamins" data-i18n="footer.vitamins">Vitamins</a>
             </div>
           </div>
 
@@ -2703,7 +2715,7 @@
               <a href="#" data-i18n="footer.shipping">Shipping Policy</a>
               <a href="#" data-i18n="footer.returns">Returns</a>
               <a href="#" data-i18n="footer.faq">FAQ</a>
-              <a href="supplements#contact" data-i18n="footer.contactLink">Contact Us</a>
+              <a href="/supplements#contact" data-i18n="footer.contactLink">Contact Us</a>
             </div>
           </div>
 
@@ -3400,7 +3412,8 @@
             const oldPrice = discount > 0 ? basePrice : null;
             const saveLabel = discount > 0 ? `-${discount}%` : null;
 
-            const badge = computeBadge(p, _bundleId, _topSoldIds);
+            const oos = Number(p.stock) <= 0;
+            const badge = oos ? { type: "oos", label: "OUT OF STOCK" } : computeBadge(p, _bundleId, _topSoldIds);
 
             const flavorLabel =
               p.flavors && p.flavors.length > 0 ? p.flavors[0].name : "";
@@ -3410,7 +3423,7 @@
               : `<svg class="placeholder-icon" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
 
             return `
-        <article class="product-card" style="animation-delay:${i * 0.05}s;cursor:pointer" onclick="window.location.href='product-detail.html?id=${p.id}'">
+        <article class="product-card${oos ? " is-oos" : ""}" style="animation-delay:${i * 0.05}s;cursor:pointer" onclick="window.location.href='/supplements/product-detail?id=${p.id}'">
           <div class="product-img">
             ${imgEl}
             ${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ''}
@@ -3425,14 +3438,14 @@
               ${saveLabel ? `<span class="price-save">${saveLabel}</span>` : ""}
             </div>
             <div class="product-actions">
-              <button class="btn-cart" onclick="event.stopPropagation();openAddToCartModal('${p.id}')" >
+              <button class="btn-cart" ${oos ? 'disabled style="opacity:.4;cursor:not-allowed;pointer-events:none;"' : `onclick="event.stopPropagation();openAddToCartModal('${p.id}')"`}>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
                   <line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
                 </svg>
-                ${t["btn.addcart"]}
+                ${oos ? "Out of Stock" : t["btn.addcart"]}
               </button>
-              <button class="btn-buy" onclick="event.stopPropagation();window.location.href='product-detail.html?id=${p.id}'">
+              <button class="btn-buy" onclick="event.stopPropagation();window.location.href='/supplements/product-detail?id=${p.id}'">
                 ${t["btn.buynow"]}
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <path d="m9 18 6-6-6-6"/>
@@ -3759,7 +3772,7 @@
         _atcVariantIdx = 0;
       function openAddToCartModal(productId) {
         const p = allProducts.find((x) => x.id === productId);
-        if (!p) return;
+        if (!p || Number(p.stock) <= 0) return;
         _atcProduct = p;
         _atcQty = 1;
         _atcFlavor = "";
@@ -3836,7 +3849,8 @@
         _atcRefreshPrice();
       }
       function atcChangeQty(d) {
-        _atcQty = Math.min(5, Math.max(1, _atcQty + d));
+        const maxQty = Math.min(5, Number(_atcProduct?.stock) || 5);
+        _atcQty = Math.min(maxQty, Math.max(1, _atcQty + d));
         document.getElementById("atcQtyVal").textContent = _atcQty;
       }
       function closeAddToCartModal() {
@@ -3845,7 +3859,7 @@
       }
       function confirmAddToCart() {
         const p = _atcProduct;
-        if (!p) return;
+        if (!p || Number(p.stock) <= 0) return;
         const variants = Array.isArray(p.variants) ? p.variants : [];
         const v = variants[_atcVariantIdx];
         const base = v && typeof v === "object" ? v.price || 0 : 0;
@@ -3949,7 +3963,7 @@
         _renderCartDrawer();
       }
       function cartCheckout() {
-        window.location.href = "checkout.html";
+        window.location.href = "/supplements/checkout";
       }
 
       /* ── WISHLIST ── */

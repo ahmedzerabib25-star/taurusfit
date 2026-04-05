@@ -2062,7 +2062,7 @@
     </style>
   </head>
   <body>
-    <audio id="notif-sound" src="images/notification.mp3" preload="auto"></audio>
+    <audio id="notif-sound" src="/images/notification.mp3" preload="auto"></audio>
     <div class="loading-overlay" id="loading-overlay">
       <div class="spinner"></div>
       <div class="loading-text" id="loading-text">Loading…</div>
@@ -2208,7 +2208,7 @@
               <div class="sb-user-role">Super Admin</div>
             </div>
           </div>
-          <a href="supplements" class="back-to-site"
+          <a href="/supplements" class="back-to-site"
             ><svg
               viewBox="0 0 24 24"
               fill="none"
@@ -3276,7 +3276,7 @@
       // AUTH GUARD — redirect to login if not authenticated
       // ════════════════════════════════════════════
       if (sessionStorage.getItem("bb_admin_auth") !== "1") {
-        window.location.href = "login.html";
+        window.location.href = "/supplements/login";
       }
 
       // ── STATE ──
@@ -3698,7 +3698,7 @@
       function doLogout() {
         sessionStorage.removeItem("bb_admin_auth");
         sessionStorage.removeItem("bb_admin_name");
-        window.location.href = "login.html";
+        window.location.href = "/supplements/login";
       }
 
       // ════════════════════════════════════════════

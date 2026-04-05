@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" type="image/png" href="./images/favicon.ico" />
+    <link rel="icon" type="image/png" href="/images/favicon.ico" />
 
     <style>
       /* ─── VARIABLES ────────────────────────────────────────────── */
@@ -2263,16 +2263,16 @@
           >
             <span></span><span></span><span></span>
           </button>
-          <a href="supplements" class="logo" aria-label="ByBens Home">
+          <a href="/supplements" class="logo" aria-label="ByBens Home">
             <img
-              src="images/logo.png"
+              src="/images/logo.png"
               alt="ByBens Logo"
               style="height: auto; width: auto; max-width: 140px; object-fit: contain;"
             />
           </a>
 
           <!-- Supplements link (desktop only) -->
-          <a href="products.html" class="nav-link active" id="desktopSupplementsBtn">Supplements</a>
+          <a href="/supplements/products" class="nav-link active" id="desktopSupplementsBtn">Supplements</a>
 
           <div class="search-wrap" role="search" id="desktopSearch">
             <input
@@ -2495,7 +2495,7 @@
     <!-- Mobile menu -->
     <div class="mobile-menu" id="mobileMenu">
       <div class="mobile-nav-links">
-        <a class="mobile-nav-link active" href="products.html">Supplements</a>
+        <a class="mobile-nav-link active" href="/supplements/products">Supplements</a>
       </div>
       <div id="mobileCatItems"></div>
       <div
@@ -2561,9 +2561,9 @@
     <main>
       <div class="container">
         <nav class="breadcrumb" aria-label="Breadcrumb">
-          <a href="supplements" data-i18n="breadcrumb.home">Home</a>
+          <a href="/supplements" data-i18n="breadcrumb.home">Home</a>
           <span class="sep">›</span>
-          <a href="products.html" data-i18n="breadcrumb.cart">Cart</a>
+          <a href="/supplements/products" data-i18n="breadcrumb.cart">Cart</a>
           <span class="sep">›</span>
           <span class="current" data-i18n="breadcrumb.checkout">Checkout</span>
         </nav>
@@ -2939,8 +2939,8 @@
       <div class="container">
         <div class="footer-grid">
           <div class="footer-brand">
-            <a href="supplements" class="logo" style="margin-bottom: 16px; display: inline-flex">
-              <img src="images/logo.png" alt="ByBens Logo" style="height: 70px; width: auto; object-fit: contain;" />
+            <a href="/supplements" class="logo" style="margin-bottom: 16px; display: inline-flex">
+              <img src="/images/logo.png" alt="ByBens Logo" style="height: 70px; width: auto; object-fit: contain;" />
             </a>
             <p data-i18n="footer.tagline">
               Algeria's premier sports nutrition store. Authentic products, fast
@@ -3000,11 +3000,11 @@
           <div>
             <div class="footer-col-title" data-i18n="footer.shop">Shop</div>
             <div class="footer-links">
-              <a href="products.html" data-i18n="footer.allProducts">All Products</a>
-              <a href="products.html?cat=protein" data-i18n="footer.protein">Protein</a>
-              <a href="products.html?cat=preworkout" data-i18n="footer.preworkout">Pre-Workout</a>
-              <a href="products.html?cat=creatine" data-i18n="footer.creatine">Creatine</a>
-              <a href="products.html?cat=vitamins" data-i18n="footer.vitamins">Vitamins</a>
+              <a href="/supplements/products" data-i18n="footer.allProducts">All Products</a>
+              <a href="/supplements/products?cat=protein" data-i18n="footer.protein">Protein</a>
+              <a href="/supplements/products?cat=preworkout" data-i18n="footer.preworkout">Pre-Workout</a>
+              <a href="/supplements/products?cat=creatine" data-i18n="footer.creatine">Creatine</a>
+              <a href="/supplements/products?cat=vitamins" data-i18n="footer.vitamins">Vitamins</a>
             </div>
           </div>
 
@@ -3307,7 +3307,7 @@
                 <path d="M16 10a4 4 0 0 1-8 0"/>
               </svg>
               <p data-i18n="checkout.empty">Your cart is empty</p>
-              <a href="products.html" data-i18n="checkout.goShop">Continue Shopping</a>
+              <a href="/supplements/products" data-i18n="checkout.goShop">Continue Shopping</a>
             </div>`;
           // apply current lang translations
           const t = i18n[currentLang] || i18n.en;
@@ -3752,12 +3752,12 @@
           );
           if (catSubs.length > 0) {
             dHTML += `<div class="cat-item">
-              <a href="products.html" class="cat-link">
+              <a href="/supplements/products" class="cat-link">
                 ${cat.name}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
               </a>
               <div class="dropdown">
-                ${catSubs.map((s) => `<a href="products.html?sub=${encodeURIComponent(s.name)}">${s.name}</a>`).join("")}
+                ${catSubs.map((s) => `<a href="/supplements/products?sub=${encodeURIComponent(s.name)}">${s.name}</a>`).join("")}
               </div>
             </div>`;
             mHTML += `<div class="m-cat-item">
@@ -3765,12 +3765,12 @@
                 ${cat.name} <span class="m-arrow">›</span>
               </button>
               <div class="m-sub">
-                ${catSubs.map((s) => `<a href="products.html?sub=${encodeURIComponent(s.name)}" class="m-sub-link">${s.name}</a>`).join("")}
+                ${catSubs.map((s) => `<a href="/supplements/products?sub=${encodeURIComponent(s.name)}" class="m-sub-link">${s.name}</a>`).join("")}
               </div>
             </div>`;
           } else {
-            dHTML += `<div class="cat-item"><a href="products.html" class="cat-link">${cat.name}</a></div>`;
-            mHTML += `<a href="products.html" class="mobile-nav-link">${cat.name}</a>`;
+            dHTML += `<div class="cat-item"><a href="/supplements/products" class="cat-link">${cat.name}</a></div>`;
+            mHTML += `<a href="/supplements/products" class="mobile-nav-link">${cat.name}</a>`;
           }
         });
         inner.innerHTML = dHTML;
@@ -3841,7 +3841,7 @@
               : `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
             const badge = computeBadge(p, _bundleId, _topSoldIds);
             return `
-            <div class="also-card" onclick="window.location.href='product-detail.html?id=${p.id}'" style="cursor:pointer">
+            <div class="also-card" onclick="window.location.href='/supplements/product-detail?id=${p.id}'" style="cursor:pointer">
               <div class="also-card-img">${img}${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ''}</div>
               <div class="also-card-body">
                 <div class="also-card-name">${p.name}</div>
@@ -3851,7 +3851,7 @@
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                     Add to Cart
                   </button>
-                  <button class="also-btn-buy" onclick="event.stopPropagation();window.location.href='product-detail.html?id=${p.id}'">
+                  <button class="also-btn-buy" onclick="event.stopPropagation();window.location.href='/supplements/product-detail?id=${p.id}'">
                     Buy Now
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
                   </button>
@@ -6027,7 +6027,7 @@
       function closeSuccess() {
         localStorage.removeItem(CART_KEY);
         document.getElementById("successOverlay").classList.remove("show");
-        window.location.href = "products.html";
+        window.location.href = "/supplements/products";
       }
 
       /* ══════════════════════════════════════════════════════
@@ -6091,7 +6091,7 @@
               ? `<img src="${_t0}" alt="${p.name}" />`
               : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
             return `
-            <div class="search-drop-item" onclick="window.location.href='products.html?search=${encodeURIComponent(p.name)}'">
+            <div class="search-drop-item" onclick="window.location.href='/supplements/products?search=${encodeURIComponent(p.name)}'">
               <div class="search-drop-thumb">${thumb}</div>
               <div class="search-drop-info">
                 <p class="search-drop-brand">${p.brand || ""}</p>
@@ -6115,7 +6115,7 @@
             if (e.key === "Enter") {
               const q = e.target.value.trim();
               if (q)
-                window.location.href = `products.html?q=${encodeURIComponent(q)}`;
+                window.location.href = `/supplements/products?q=${encodeURIComponent(q)}`;
             }
           });
         }

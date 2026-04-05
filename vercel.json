@@ -1,10 +1,11 @@
 {
   "cleanUrls": true,
   "redirects": [
-    {
-      "source": "/",
-      "destination": "/supplements",
-      "permanent": false
-    }
+    { "source": "/", "destination": "/supplements", "permanent": false },
+    { "source": "/products", "destination": "/supplements/products", "permanent": true },
+    { "source": "/product-detail", "destination": "/supplements/product-detail", "permanent": true },
+    { "source": "/checkout", "destination": "/supplements/checkout", "permanent": true },
+    { "source": "/login", "destination": "/supplements/login", "permanent": true },
+    { "source": "/admin", "destination": "/supplements/admin", "permanent": true }
   ]
 }
