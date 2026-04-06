@@ -2983,7 +2983,7 @@
         if (!b) return; b.textContent = n; b.style.display = n === 0 ? "none" : "";
       }
       /* ── Add to Cart Modal ── */
-      let _atcProduct = null, _atcQty = 1, _atcFlavor = "", _atcVariantIdx = 0;
+      let _atcProduct = null, _atcQty = 1, _atcFlavor = "", _atcFlavorObjs = [], _atcVariantIdx = 0;
       function openAddToCartModal(productId) {
         const p = products.find(x => x.id === productId); if (!p) return;
         _atcProduct = p; _atcQty = 1; _atcFlavor = ""; _atcVariantIdx = 0;
@@ -2993,12 +2993,19 @@
           : `<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
         document.getElementById("atcName").textContent = p.name;
         _atcRefreshPrice();
-        const flavors = (Array.isArray(p.flavors) ? p.flavors : []).map(f => typeof f === "object" ? (f.name || f.label || "") : String(f)).filter(Boolean);
+        _atcFlavorObjs = (Array.isArray(p.flavors) ? p.flavors : [])
+          .map(f => typeof f === "object" ? { name: f.name || f.label || "", qty: f.qty || 0 } : { name: String(f), qty: 0 })
+          .filter(fo => fo.name);
+        const hasQtyData = _atcFlavorObjs.some(fo => fo.qty > 0);
         const flavorSec = document.getElementById("atcFlavorSection");
-        if (flavors.length) {
-          _atcFlavor = flavors[0];
-          document.getElementById("atcFlavorOptions").innerHTML = flavors.map((f, i) =>
-            `<button class="atc-option${i===0?" active":""}" onclick="atcPickFlavor(this,'${f.replace(/'/g,"\\'")}')">${f}</button>`).join("");
+        if (_atcFlavorObjs.length) {
+          const firstAvail = (hasQtyData ? _atcFlavorObjs.find(fo => fo.qty > 0) : null) || _atcFlavorObjs[0];
+          _atcFlavor = firstAvail.name;
+          document.getElementById("atcFlavorOptions").innerHTML = _atcFlavorObjs.map(fo => {
+            const oos = hasQtyData && fo.qty <= 0;
+            const active = fo.name === _atcFlavor;
+            return `<button class="atc-option${active?" active":""}" ${oos ? 'disabled style="opacity:.4;cursor:not-allowed;"' : `onclick="atcPickFlavor(this,'${fo.name.replace(/'/g,"\\'")}')" `}>${fo.name}${oos?" (OOS)":""}</button>`;
+          }).join("");
           flavorSec.style.display = "";
         } else { flavorSec.style.display = "none"; }
         const variants = Array.isArray(p.variants) ? p.variants : [];
@@ -3025,12 +3032,18 @@
       function atcPickFlavor(btn, f) {
         document.querySelectorAll("#atcFlavorOptions .atc-option").forEach(b => b.classList.remove("active"));
         btn.classList.add("active"); _atcFlavor = f;
+        _atcQty = 1; document.getElementById("atcQtyVal").textContent = 1;
       }
       function atcPickVariant(btn, idx) {
         document.querySelectorAll("#atcWeightOptions .atc-option").forEach(b => b.classList.remove("active"));
         btn.classList.add("active"); _atcVariantIdx = idx; _atcRefreshPrice();
       }
-      function atcChangeQty(d) { _atcQty = Math.min(5, Math.max(1, _atcQty + d)); document.getElementById("atcQtyVal").textContent = _atcQty; }
+      function _atcCurrentFlavorQty() {
+        if (!_atcFlavorObjs.length || !_atcFlavorObjs.some(fo => fo.qty > 0)) return Number(_atcProduct?.stock) || 5;
+        const fo = _atcFlavorObjs.find(f => f.name === _atcFlavor);
+        return fo ? fo.qty : 1;
+      }
+      function atcChangeQty(d) { const maxQty = Math.min(5, _atcCurrentFlavorQty()); _atcQty = Math.min(maxQty, Math.max(1, _atcQty + d)); document.getElementById("atcQtyVal").textContent = _atcQty; }
       function closeAddToCartModal() { document.getElementById("atcOverlay").classList.remove("open"); document.body.style.overflow = ""; }
       function openAboutModal() { document.getElementById("aboutOverlay").classList.add("open"); document.body.style.overflow = "hidden"; }
       function closeAboutModal() { document.getElementById("aboutOverlay").classList.remove("open"); document.body.style.overflow = ""; }

@@ -4017,6 +4017,14 @@
             return { name: i[0].value.trim(), qty: parseInt(i[1].value) || 0 };
           })
           .filter((f) => f.name);
+        const totalStock = parseInt(document.getElementById("pm-stock").value) || 0;
+        if (flavors.length > 0) {
+          const flavorSum = flavors.reduce((s, f) => s + f.qty, 0);
+          if (flavorSum !== totalStock) {
+            showToast(`Flavor quantities sum to ${flavorSum} but total stock is ${totalStock}. They must match exactly.`, "error");
+            return;
+          }
+        }
         const payload = {
           name,
           brand: document.getElementById("pm-brand").value.trim(),
