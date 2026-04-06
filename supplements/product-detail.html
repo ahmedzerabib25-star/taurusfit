@@ -3498,6 +3498,7 @@
       }
       let selectedVariantIndex = 0;
       let selectedFlavor = "";
+      let _productFlavorObjs = [];
       let selectedDelivery = "home";
       let selectedQty = 1;
 
@@ -3801,24 +3802,25 @@
         const flavorGroup = document.getElementById("flavorGroup");
         const flavorPills = document.getElementById("flavorPills");
 
-        // Normalise flavors to plain strings
-        const flavorList = p.flavors
-          .map((f) =>
-            typeof f === "object" && f !== null
-              ? f.name || f.label || String(f)
-              : String(f),
-          )
-          .filter(Boolean);
+        // Normalise flavors to { name, qty } objects
+        const hasFlavorQty = (p.flavors || []).some((f) => typeof f === "object" && f.qty > 0);
+        _productFlavorObjs = (p.flavors || [])
+          .map((f) => typeof f === "object" && f !== null
+            ? { name: f.name || f.label || "", qty: f.qty || 0 }
+            : { name: String(f), qty: 0 })
+          .filter((fo) => fo.name);
 
-        if (flavorList.length > 0) {
+        if (_productFlavorObjs.length > 0) {
           flavorGroup.style.display = "";
-          selectedFlavor = flavorList[0];
-          document.getElementById("productFlavor").textContent = flavorList[0];
-          flavorPills.innerHTML = flavorList
-            .map(
-              (f, i) =>
-                `<div class="variant-pill${i === 0 ? " active" : ""}" onclick="selectFlavor(this,'${f.replace(/'/g, "\\'")}')">${f}</div>`,
-            )
+          const firstAvail = (hasFlavorQty ? _productFlavorObjs.find((fo) => fo.qty > 0) : null) || _productFlavorObjs[0];
+          selectedFlavor = firstAvail.name;
+          document.getElementById("productFlavor").textContent = firstAvail.name;
+          flavorPills.innerHTML = _productFlavorObjs
+            .map((fo) => {
+              const oos = hasFlavorQty && fo.qty <= 0;
+              const active = fo.name === selectedFlavor;
+              return `<div class="variant-pill${active ? " active" : ""}" ${oos ? 'style="opacity:.4;cursor:not-allowed;pointer-events:none;" ' : `onclick="selectFlavor(this,'${fo.name.replace(/'/g, "\\'")}')" `}>${fo.name}${oos ? " (OOS)" : ""}</div>`;
+            })
             .join("");
         } else {
           flavorGroup.style.display = "none";
@@ -3926,11 +3928,17 @@
           .forEach((p) => p.classList.remove("active"));
         el.classList.add("active");
         document.getElementById("productFlavor").textContent = f;
+        selectedQty = 1;
+        document.getElementById("qtyValue").textContent = 1;
         updateSummary();
       }
 
       function changeQty(delta) {
-        const maxQty = Math.min(5, Number(selectedProduct?.stock) || 5);
+        const hasFlavorQty = _productFlavorObjs.some((fo) => fo.qty > 0);
+        const flavorQty = hasFlavorQty
+          ? (_productFlavorObjs.find((f) => f.name === selectedFlavor)?.qty || 1)
+          : (Number(selectedProduct?.stock) || 5);
+        const maxQty = Math.min(5, flavorQty);
         selectedQty = Math.min(maxQty, Math.max(1, selectedQty + delta));
         document.getElementById("qtyValue").textContent = selectedQty;
         revalidateAppliedPromos();
@@ -6140,6 +6148,10 @@
 
       function submitOrder() {
         if (!selectedProduct || Number(selectedProduct.stock) <= 0) return;
+        if (_productFlavorObjs.some((fo) => fo.qty > 0)) {
+          const fo = _productFlavorObjs.find((f) => f.name === selectedFlavor);
+          if (!fo || fo.qty <= 0) return;
+        }
         // Bot checks
         if (document.getElementById("hp_website").value !== "") return;
         if (Date.now() - PAGE_LOAD_TIME < 4000) {
@@ -6527,6 +6539,10 @@
         if (!selectedProduct) return;
         const p = selectedProduct;
         if (Number(p.stock) <= 0) return;
+        if (_productFlavorObjs.some((fo) => fo.qty > 0)) {
+          const fo = _productFlavorObjs.find((f) => f.name === selectedFlavor);
+          if (!fo || fo.qty <= 0) return;
+        }
         const variants = parseField(p.variants);
         const v = variants[selectedVariantIndex];
         const unitPrice = getProductPrice(p, selectedVariantIndex);

@@ -3049,6 +3049,7 @@
       function closeAboutModal() { document.getElementById("aboutOverlay").classList.remove("open"); document.body.style.overflow = ""; }
       function confirmAddToCart() {
         const p = _atcProduct; if (!p) return;
+        if (_atcFlavorObjs.some(fo => fo.qty > 0)) { const fo = _atcFlavorObjs.find(f => f.name === _atcFlavor); if (!fo || fo.qty <= 0) return; }
         const variants = Array.isArray(p.variants) ? p.variants : [];
         const v = variants[_atcVariantIdx];
         const base = v && typeof v === "object" ? (v.price || 0) : 0;
