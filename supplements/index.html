@@ -1184,6 +1184,19 @@
         background: var(--black);
         color: var(--white);
       }
+      .btn-cart:disabled,
+      .btn-buy:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .btn-cart:disabled:hover,
+      .btn-buy:disabled:hover {
+        border-color: var(--gray-200);
+        background: transparent;
+        color: var(--black);
+        box-shadow: none;
+      }
       .btn-buy {
         flex: 1;
         height: 38px;
@@ -3004,18 +3017,8 @@
         _atcFlavorObjs = (Array.isArray(p.flavors) ? p.flavors : [])
           .map(f => typeof f === "object" ? { name: f.name || f.label || "", qty: f.qty || 0 } : { name: String(f), qty: 0 })
           .filter(fo => fo.name);
-        const hasQtyData = _atcFlavorObjs.some(fo => fo.qty > 0);
-        const flavorSec = document.getElementById("atcFlavorSection");
-        if (_atcFlavorObjs.length) {
-          const firstAvail = (hasQtyData ? _atcFlavorObjs.find(fo => fo.qty > 0) : null) || _atcFlavorObjs[0];
-          _atcFlavor = firstAvail.name;
-          document.getElementById("atcFlavorOptions").innerHTML = _atcFlavorObjs.map(fo => {
-            const oos = hasQtyData && fo.qty <= 0;
-            const active = fo.name === _atcFlavor;
-            return `<button class="atc-option${active?" active":""}" ${oos ? 'disabled style="opacity:.4;cursor:not-allowed;"' : `onclick="atcPickFlavor(this,'${fo.name.replace(/'/g,"\\'")}')" `}>${fo.name}${oos?" (OOS)":""}</button>`;
-          }).join("");
-          flavorSec.style.display = "";
-        } else { flavorSec.style.display = "none"; }
+        document.getElementById("atcFlavorSection").style.display = _atcFlavorObjs.length ? "" : "none";
+        _atcRenderFlavorOptions();
         const variants = Array.isArray(p.variants) ? p.variants : [];
         const weightSec = document.getElementById("atcWeightSection");
         if (variants.length) {
@@ -3028,6 +3031,26 @@
         document.getElementById("atcQtyVal").textContent = 1;
         document.getElementById("atcOverlay").classList.add("open");
         document.body.style.overflow = "hidden";
+      }
+      function _atcRenderFlavorOptions() {
+        const p = _atcProduct;
+        if (!p || !_atcFlavorObjs.length) return;
+        const variants = Array.isArray(p.variants) ? p.variants : [];
+        const v = variants[_atcVariantIdx];
+        const hasFlavorStock = v && typeof v === "object" && v.flavorStock !== undefined;
+        const hasOldQty = !hasFlavorStock && _atcFlavorObjs.some(fo => fo.qty > 0);
+        const isOOS = (fo) => {
+          if (hasFlavorStock) return v.flavorStock[fo.name] !== undefined && v.flavorStock[fo.name] <= 0;
+          if (hasOldQty) return fo.qty <= 0;
+          return false;
+        };
+        const firstAvail = _atcFlavorObjs.find(fo => !isOOS(fo)) || _atcFlavorObjs[0];
+        if (!_atcFlavor || isOOS({ name: _atcFlavor })) _atcFlavor = firstAvail.name;
+        document.getElementById("atcFlavorOptions").innerHTML = _atcFlavorObjs.map(fo => {
+          const oos = isOOS(fo);
+          const active = fo.name === _atcFlavor;
+          return `<button class="atc-option${active ? " active" : ""}" ${oos ? 'disabled style="opacity:.4;cursor:not-allowed;text-decoration:line-through;"' : `onclick="atcPickFlavor(this,'${fo.name.replace(/'/g, "\\'")}')"`}>${fo.name}${oos ? " (OOS)" : ""}</button>`;
+        }).join("");
       }
       function _atcRefreshPrice() {
         const p = _atcProduct; if (!p) return;
@@ -3045,9 +3068,15 @@
       function atcPickVariant(btn, idx) {
         document.querySelectorAll("#atcWeightOptions .atc-option").forEach(b => b.classList.remove("active"));
         btn.classList.add("active"); _atcVariantIdx = idx; _atcRefreshPrice();
+        _atcRenderFlavorOptions();
       }
       function _atcCurrentFlavorQty() {
-        if (!_atcFlavorObjs.length || !_atcFlavorObjs.some(fo => fo.qty > 0)) return Number(_atcProduct?.stock) || 5;
+        const p = _atcProduct;
+        if (!p) return 5;
+        const variants = Array.isArray(p.variants) ? p.variants : [];
+        const v = variants[_atcVariantIdx];
+        if (v && typeof v === "object" && v.flavorStock && _atcFlavor) return Number(v.flavorStock[_atcFlavor]) || 0;
+        if (!_atcFlavorObjs.length || !_atcFlavorObjs.some(fo => fo.qty > 0)) return Number(p.stock) || 5;
         const fo = _atcFlavorObjs.find(f => f.name === _atcFlavor);
         return fo ? fo.qty : 1;
       }
@@ -3211,14 +3240,17 @@
           ${saveLabel ? `<span class="price-save">${saveLabel}</span>` : ""}
         </div>
         <div class="product-actions">
-          <button class="btn-cart" onclick="event.stopPropagation();openAddToCartModal('${p.id}')">
+          ${Number(p.stock) <= 0
+            ? `<button class="btn-cart" disabled style="flex:1;opacity:0.45;cursor:not-allowed">Out of Stock</button>`
+            : `<button class="btn-cart" onclick="event.stopPropagation();openAddToCartModal('${p.id}')">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
             <span>${t["btn.addcart"]}</span>
           </button>
           <button class="btn-buy" onclick="event.stopPropagation();buyNow('${p.id}')">
             <span>${t["btn.buynow"]}</span>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
-          </button>
+          </button>`
+          }
         </div>
       </div>
     </article>`;

@@ -616,6 +616,9 @@ function handleGetPromos() {
 
 function handleAddPromo(body) {
   const sheet = getSheet("PromoCodes");
+  const data = sheet.getDataRange().getValues();
+  const duplicate = data.slice(1).find(function(r) { return String(r[1]).toUpperCase() === String(body.code).toUpperCase(); });
+  if (duplicate) return jsonResponse({ success: false, error: "A promo code with this name already exists." });
   const id = Date.now().toString();
   sheet.appendRow([
     id,
@@ -635,6 +638,8 @@ function handleAddPromo(body) {
 function handleUpdatePromo(body) {
   const sheet = getSheet("PromoCodes");
   const data = sheet.getDataRange().getValues();
+  const duplicate = data.slice(1).find(function(r) { return String(r[1]).toUpperCase() === String(body.code).toUpperCase() && String(r[0]) !== String(body.id); });
+  if (duplicate) return jsonResponse({ success: false, error: "A promo code with this name already exists." });
   for (let i = 1; i < data.length; i++) {
     if (String(data[i][0]) === String(body.id)) {
       const row = i + 1;
@@ -834,6 +839,39 @@ function handleSubmitOrder(body) {
     sheet.getRange(1, 1, 1, hdrs.length).setFontWeight("bold");
     sheet.setFrozenRows(1);
   }
+  // Server-side promo re-validation (atomicity guard)
+  if (body.promoCode) {
+    const appliedCodes = String(body.promoCode).split(",").map(function(c) { return c.trim().toUpperCase(); }).filter(Boolean);
+    if (appliedCodes.length > 0) {
+      const promoSheet = getSheet("PromoCodes");
+      const promoRows = promoSheet.getDataRange().getValues();
+      for (var ci = 0; ci < appliedCodes.length; ci++) {
+        var code = appliedCodes[ci];
+        var promoRow = null;
+        for (var pi = 1; pi < promoRows.length; pi++) {
+          if (String(promoRows[pi][1]).toUpperCase() === code) { promoRow = promoRows[pi]; break; }
+        }
+        if (!promoRow) continue;
+        var promoStatus = String(promoRow[8] || "active");
+        var promoExpiry = promoRow[7];
+        var promoMaxUses = promoRow[5] ? Number(promoRow[5]) : null;
+        var promoUses = Number(promoRow[6]) || 0;
+        if (promoStatus !== "active") {
+          return jsonResponse({ success: false, error: "Promo code " + code + " is no longer active." });
+        }
+        if (promoExpiry) {
+          var exp = new Date(promoExpiry); exp.setHours(23, 59, 59, 999);
+          if (exp < new Date()) {
+            return jsonResponse({ success: false, error: "Promo code " + code + " has expired." });
+          }
+        }
+        if (promoMaxUses && promoUses >= promoMaxUses) {
+          return jsonResponse({ success: false, error: "Promo code " + code + " has reached its usage limit." });
+        }
+      }
+    }
+  }
+
   const id = Date.now().toString();
   const source =
     body.action === "submitCartOrder" ? "checkout" : "product-detail";
@@ -878,18 +916,26 @@ function handleSubmitOrder(body) {
   _adjustStock(body.items || [], -1);
 
   // Telegram notification
-  const itemLines = (body.items || []).map(function(it) {
+  const orderItems = body.items || [];
+  const itemLines = orderItems.map(function(it) {
     return "  • " + it.name + (it.flavor ? " – " + it.flavor : "") + (it.variant ? " (" + it.variant + ")" : "") + " x" + it.qty;
   }).join("\n");
   const promoLine = body.promoCode
     ? "🎟️ Promo: " + body.promoCode + " (-" + (body.promoDiscount || 0) + " DA)\n"
     : "🎟️ No promo code\n";
+  const now = new Date();
+  const timeStr = Utilities.formatDate(now, Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm");
+  const sourceStr = body.action === "submitCartOrder" ? "Cart" : "Product page";
+  const totalItems = orderItems.reduce(function(s, it) { return s + (Number(it.qty) || 1); }, 0);
   sendTelegram(
     "🛒 <b>New Order!</b>\n" +
+    "🕐 " + timeStr + "\n" +
+    "📱 Source: " + sourceStr + "\n" +
     "👤 " + (body.firstName || "") + " " + (body.lastName || "") + "\n" +
     "📞 " + (body.phone || "") + "\n" +
     "📍 " + (body.wilaya || "") + " – " + (body.commune || "") + "\n" +
-    "📦 " + (body.deliveryType || "") + "\n\n" +
+    "📦 " + (body.deliveryType || "") + "\n" +
+    "🛍️ Items: " + totalItems + "\n\n" +
     itemLines + "\n\n" +
     "🏷️ Products: " + (body.subtotal || 0) + " DA\n" +
     "🚚 Delivery: " + (body.deliveryCost || 0) + " DA\n" +
@@ -1032,9 +1078,15 @@ function _adjustStock(items, direction) {
           v.flavorStock[itemFlavor] = Math.max(0, (Number(v.flavorStock[itemFlavor]) || 0) + direction * qty);
           // Recompute variant stock from flavorStock sum
           v.stock = Object.values(v.flavorStock).reduce(function (s, q) { return s + Number(q); }, 0);
+          if (direction < 0 && v.flavorStock[itemFlavor] === 0) {
+            sendTelegram("⚠️ <b>Out of Stock!</b>\n📦 " + prodData[i][1] + " – " + itemFlavor + " (" + itemVariantLabel + ") is now out of stock.");
+          }
         } else {
           // Variant-only stock (no flavors)
           v.stock = Math.max(0, (Number(v.stock) || 0) + direction * qty);
+          if (direction < 0 && v.stock === 0) {
+            sendTelegram("⚠️ <b>Out of Stock!</b>\n📦 " + prodData[i][1] + " (" + itemVariantLabel + ") is now out of stock.");
+          }
         }
 
         // Save updated variants array
@@ -1072,6 +1124,9 @@ function _adjustStock(items, direction) {
       var newStock = Math.max(0, currentStock + direction * qty);
       prodSheet.getRange(row, 10).setValue(newStock);
       prodData[i][9] = newStock;
+      if (direction < 0 && newStock === 0) {
+        sendTelegram("⚠️ <b>Out of Stock!</b>\n📦 " + prodData[i][1] + (itemFlavor ? " – " + itemFlavor : "") + " is now out of stock.");
+      }
       break;
     }
   });
