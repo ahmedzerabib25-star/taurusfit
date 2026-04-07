@@ -974,6 +974,39 @@
         resize: vertical;
         min-height: 80px;
       }
+
+      /* ── Rich Text Editor ── */
+      .rte-wrap { display:flex; flex-direction:column; border:1.5px solid var(--g200); border-radius:10px; overflow:hidden; transition:border-color var(--tr),box-shadow var(--tr); }
+      .rte-wrap:focus-within { border-color:var(--red); box-shadow:0 0 0 3px rgba(173,0,0,.1); }
+      .rte-toolbar { display:flex; align-items:center; gap:4px; padding:6px 8px; background:var(--g50); border-bottom:1.5px solid var(--g200); flex-wrap:wrap; }
+      .rte-btn { height:28px; min-width:28px; padding:0 8px; background:#fff; border:1.5px solid var(--g200); border-radius:6px; font-size:13px; cursor:pointer; color:var(--g600); transition:all var(--tr); display:inline-flex; align-items:center; justify-content:center; gap:4px; line-height:1; }
+      .rte-btn:hover { border-color:var(--red); color:var(--red); background:rgba(173,0,0,.06); }
+      .rte-btn.active { border-color:var(--red); color:var(--red); background:rgba(173,0,0,.1); }
+      .rte-sep { width:1px; height:18px; background:var(--g200); margin:0 2px; flex-shrink:0; }
+      .rte-editor { min-height:130px; max-height:320px; padding:10px 12px; border:none; outline:none; font-size:14px; line-height:1.7; color:var(--g900); overflow-y:auto; background:#fff; }
+      .rte-editor:empty::before { content:attr(data-placeholder); color:var(--g400); pointer-events:none; display:block; }
+      .rte-editor ul,.rte-editor ol { padding-left:20px; margin:4px 0; }
+      .rte-editor li { margin-bottom:3px; }
+      .rte-editor strong { font-weight:700; }
+      .rte-editor em { font-style:italic; }
+      .rte-editor u { text-decoration:underline; }
+
+      /* ── Stock Matrix ── */
+      .stock-section-label { font-size:12px; font-weight:700; color:var(--g600); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; display:block; }
+      .stock-matrix-wrap { overflow-x:auto; border:1.5px solid var(--g200); border-radius:10px; }
+      .stock-matrix { border-collapse:collapse; width:100%; min-width:260px; font-size:13px; }
+      .stock-matrix th { background:var(--g100); padding:8px 10px; font-weight:700; text-align:center; border:1px solid var(--g200); white-space:nowrap; font-size:12px; }
+      .stock-matrix th:first-child { text-align:left; }
+      .stock-matrix td { border:1px solid var(--g200); padding:4px 6px; text-align:center; }
+      .stock-matrix td:first-child { font-weight:600; background:var(--g50); text-align:left; white-space:nowrap; padding:8px 12px; font-size:13px; }
+      .stock-matrix .matrix-cell { height:32px; width:72px; text-align:center; padding:0 6px; border-radius:6px; }
+      .stock-matrix .matrix-total { font-weight:700; color:var(--red); background:var(--g50); min-width:48px; }
+      .vstock-list { display:flex; flex-direction:column; gap:6px; padding:10px 12px; border:1.5px solid var(--g200); border-radius:10px; }
+      .vstock-row { display:flex; align-items:center; gap:12px; }
+      .vstock-label { font-size:13px; font-weight:600; color:var(--g700); min-width:64px; }
+      .vstock-input { height:34px; width:96px; text-align:center; }
+      .pm-stock-hint { font-size:11px; color:var(--g400); margin-top:3px; }
+
       .form-select {
         appearance: none;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a5a5a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
@@ -2844,13 +2877,26 @@
           </div>
           <div class="form-row full">
             <div class="form-group">
-              <label>Description</label
-              ><textarea
-                class="form-control textarea"
-                id="pm-desc"
-                placeholder="Describe the product…"
-                style="min-height: 90px"
-              ></textarea>
+              <label>Description</label>
+              <div class="rte-wrap">
+                <div class="rte-toolbar">
+                  <button type="button" class="rte-btn" onclick="rteCmd('bold')" title="Bold"><strong>B</strong></button>
+                  <button type="button" class="rte-btn" onclick="rteCmd('italic')" title="Italic"><em>I</em></button>
+                  <button type="button" class="rte-btn" onclick="rteCmd('underline')" title="Underline"><u>U</u></button>
+                  <span class="rte-sep"></span>
+                  <button type="button" class="rte-btn" onclick="rteCmd('insertUnorderedList')" title="Bullet list">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1.5" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.5" fill="currentColor" stroke="none"/></svg>
+                    Bullets
+                  </button>
+                  <button type="button" class="rte-btn" onclick="rteCmd('insertOrderedList')" title="Numbered list">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><text x="2" y="8" font-size="8" fill="currentColor" stroke="none" font-weight="bold">1.</text><text x="2" y="14" font-size="8" fill="currentColor" stroke="none" font-weight="bold">2.</text><text x="2" y="20" font-size="8" fill="currentColor" stroke="none" font-weight="bold">3.</text></svg>
+                    Numbers
+                  </button>
+                  <span class="rte-sep"></span>
+                  <button type="button" class="rte-btn" onclick="rteCmd('removeFormat')" title="Clear formatting">✕ Clear</button>
+                </div>
+                <div class="rte-editor" id="pm-desc" contenteditable="true" spellcheck="true" data-placeholder="Describe the product…"></div>
+              </div>
             </div>
           </div>
           <div class="form-group" style="margin-bottom: 16px">
@@ -2876,32 +2922,38 @@
             >Add Variant
           </button>
           <div class="form-group" style="margin-top: 16px; margin-bottom: 8px">
-            <label>Flavors & Quantity per Flavor</label>
+            <label>Flavors</label>
           </div>
           <div class="flavors-list" id="flavors-list"></div>
           <button class="btn-add-variant" onclick="addFlavor()">
-            <svg
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-            >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" /></svg
             >Add Flavor
           </button>
+
+          <!-- Per-variant stock (variants only, no flavors) -->
+          <div id="variant-stock-section" style="display:none; margin-top:14px">
+            <span class="stock-section-label">Stock per Variant</span>
+            <div class="vstock-list" id="variant-stock-list"></div>
+          </div>
+
+          <!-- Stock matrix (variants + flavors) -->
+          <div id="stock-matrix-section" style="display:none; margin-top:14px">
+            <span class="stock-section-label">Stock per Variant &amp; Flavor</span>
+            <div class="stock-matrix-wrap">
+              <table class="stock-matrix">
+                <thead id="stock-matrix-head"></thead>
+                <tbody id="stock-matrix-body"></tbody>
+              </table>
+            </div>
+          </div>
+
           <div class="form-row" style="margin-top: 16px">
-            <div class="form-group">
-              <label>Total Stock Quantity</label
-              ><input
-                type="number"
-                class="form-control"
-                id="pm-stock"
-                placeholder="0"
-                min="0"
-              />
+            <div class="form-group" id="pm-stock-group">
+              <label>Total Stock</label>
+              <input type="number" class="form-control" id="pm-stock" placeholder="0" min="0" />
+              <span class="pm-stock-hint" id="pm-stock-hint" style="display:none">Auto-calculated from variants above</span>
             </div>
             <div class="form-group">
               <label>Discount %</label
@@ -3907,7 +3959,7 @@
           if (p) {
             document.getElementById("pm-name").value = p.name;
             document.getElementById("pm-brand").value = p.brand || "";
-            document.getElementById("pm-desc").value = p.description || "";
+            document.getElementById("pm-desc").innerHTML = p.description || "";
             document.getElementById("pm-stock").value = p.stock;
             document.getElementById("pm-discount").value = p.discount;
             document.getElementById("pm-status").value = p.status;
@@ -3938,13 +3990,23 @@
               activePromos.map((pr) => ({ id: pr.id, name: pr.code })),
               p.promoCodeIds || [],
             );
+            document.getElementById("variants-list").innerHTML = "";
+            document.getElementById("flavors-list").innerHTML = "";
             (p.variants || []).forEach((v) => addVariant(v));
             (p.flavors || []).forEach((f) => addFlavor(f));
+            refreshStockMatrix();
           }
         } else {
-          ["pm-name", "pm-brand", "pm-desc", "pm-stock", "pm-discount"].forEach(
+          ["pm-name", "pm-brand", "pm-stock", "pm-discount"].forEach(
             (x) => (document.getElementById(x).value = ""),
           );
+          document.getElementById("pm-desc").innerHTML = "";
+          document.getElementById("variants-list").innerHTML = "";
+          document.getElementById("flavors-list").innerHTML = "";
+          document.getElementById("stock-matrix-section").style.display = "none";
+          document.getElementById("variant-stock-section").style.display = "none";
+          document.getElementById("pm-stock").readOnly = false;
+          document.getElementById("pm-stock-hint").style.display = "none";
           document.getElementById("pm-status").value = "active";
           document.getElementById("pm-promo-toggle").checked = true;
           buildCheckboxGroup(
@@ -3975,15 +4037,124 @@
         const list = document.getElementById("variants-list");
         const div = document.createElement("div");
         div.className = "variant-row";
-        div.innerHTML = `<div class="form-group"><label>Weight</label><input type="number" class="form-control" placeholder="e.g. 908" value="${v ? v.weight : ""}" /></div><div class="form-group"><label>Unit</label><select class="form-control form-select"><option ${v && v.unit === "g" ? "selected" : ""}>g</option><option ${v && v.unit === "kg" ? "selected" : ""}>kg</option><option ${v && v.unit === "caps" ? "selected" : ""}>caps</option><option ${v && v.unit === "ml" ? "selected" : ""}>ml</option><option ${v && v.unit === "L" ? "selected" : ""}>L</option><option ${v && v.unit === "pcs" ? "selected" : ""}>pcs</option></select></div><div class="form-group"><label>Price (DA)</label><input type="number" class="form-control" placeholder="0" value="${v ? v.price : ""}" /></div><button class="btn-remove-variant" onclick="this.closest('.variant-row').remove()">×</button>`;
+        if (v && v.flavorStock) div.dataset.flavorStock = JSON.stringify(v.flavorStock);
+        if (v && v.stock !== undefined) div.dataset.varStock = String(v.stock);
+        div.innerHTML = `<div class="form-group"><label>Weight</label><input type="number" class="form-control" placeholder="e.g. 908" value="${v ? v.weight : ""}" oninput="refreshStockMatrix()" /></div><div class="form-group"><label>Unit</label><select class="form-control form-select" onchange="refreshStockMatrix()"><option ${v && v.unit === "g" ? "selected" : ""}>g</option><option ${v && v.unit === "kg" ? "selected" : ""}>kg</option><option ${v && v.unit === "caps" ? "selected" : ""}>caps</option><option ${v && v.unit === "ml" ? "selected" : ""}>ml</option><option ${v && v.unit === "L" ? "selected" : ""}>L</option><option ${v && v.unit === "pcs" ? "selected" : ""}>pcs</option></select></div><div class="form-group"><label>Price (DA)</label><input type="number" class="form-control" placeholder="0" value="${v ? v.price : ""}" /></div><button class="btn-remove-variant" onclick="this.closest('.variant-row').remove();refreshStockMatrix()">×</button>`;
         list.appendChild(div);
+        refreshStockMatrix();
       }
+
       function addFlavor(f = null) {
         const list = document.getElementById("flavors-list");
         const div = document.createElement("div");
         div.className = "flavor-row";
-        div.innerHTML = `<div class="form-group"><label>Flavor Name</label><input type="text" class="form-control" placeholder="e.g. Chocolate" value="${f ? f.name : ""}" /></div><div class="form-group"><label>Qty</label><input type="number" class="form-control" placeholder="0" value="${f ? f.qty : ""}" min="0" /></div><button class="btn-remove-variant" onclick="this.closest('.flavor-row').remove()">×</button>`;
+        div.innerHTML = `<div class="form-group"><label>Flavor Name</label><input type="text" class="form-control flavor-name-input" placeholder="e.g. Chocolate" value="${f ? f.name : ""}" oninput="refreshStockMatrix()" /></div><div class="form-group flavor-qty-cell"><label>Qty (no variants)</label><input type="number" class="form-control flavor-qty-input" placeholder="0" value="${f && f.qty ? f.qty : ""}" min="0" oninput="refreshStockMatrix()" /></div><button class="btn-remove-variant" onclick="this.closest('.flavor-row').remove();refreshStockMatrix()">×</button>`;
         list.appendChild(div);
+        refreshStockMatrix();
+      }
+
+      /* ── Stock Matrix helpers ── */
+      function refreshStockMatrix() {
+        const variantRows = Array.from(document.querySelectorAll("#variants-list .variant-row"));
+        const flavorRows  = Array.from(document.querySelectorAll("#flavors-list .flavor-row"));
+        const flavors = flavorRows.map(r => (r.querySelector(".flavor-name-input")?.value || "").trim()).filter(Boolean);
+        const hasVariants = variantRows.length > 0;
+        const hasFlavors  = flavors.length > 0;
+        const showMatrix  = hasVariants && hasFlavors;
+
+        // Preserve current values before re-render
+        const matrixVals = {};
+        document.querySelectorAll("#stock-matrix-body input").forEach(inp => {
+          matrixVals[`${inp.dataset.vi}_${inp.dataset.fn}`] = parseInt(inp.value) || 0;
+        });
+        const vstockVals = {};
+        document.querySelectorAll("#variant-stock-list .vstock-input").forEach(inp => {
+          vstockVals[String(inp.dataset.vi)] = parseInt(inp.value) || 0;
+        });
+        // If switching matrix→variant-only: seed variant stocks from matrix row totals
+        if (!Object.keys(vstockVals).length && Object.keys(matrixVals).length) {
+          document.querySelectorAll("#stock-matrix-body tr").forEach((row, vi) => {
+            vstockVals[String(vi)] = Array.from(row.querySelectorAll("input")).reduce((s, i) => s + (parseInt(i.value) || 0), 0);
+          });
+        }
+
+        const pmStock = document.getElementById("pm-stock");
+        const pmHint  = document.getElementById("pm-stock-hint");
+
+        document.querySelectorAll(".flavor-qty-cell").forEach(el => {
+          el.style.display = showMatrix ? "none" : "";
+        });
+
+        if (showMatrix) {
+          document.getElementById("variant-stock-section").style.display = "none";
+          document.getElementById("stock-matrix-section").style.display = "";
+          pmStock.readOnly = true; pmHint.style.display = "";
+
+          const varMeta = variantRows.map((row, vi) => {
+            const ins = row.querySelectorAll("input,select");
+            const w = ins[0]?.value || ""; const u = ins[1]?.value || "";
+            return { vi, label: w ? `${w}${u}` : `V${vi+1}`, fs: JSON.parse(row.dataset.flavorStock || "{}") };
+          });
+
+          let head = "<tr><th>Variant</th>";
+          flavors.forEach(fn => { head += `<th>${fn}</th>`; });
+          head += "<th>Total</th></tr>";
+          document.getElementById("stock-matrix-head").innerHTML = head;
+
+          let body = "";
+          varMeta.forEach(({ vi, label, fs }) => {
+            body += `<tr><td>${label}</td>`;
+            let rowTotal = 0;
+            flavors.forEach(fn => {
+              const key = `${vi}_${fn}`;
+              const val = matrixVals[key] !== undefined ? matrixVals[key] : (fs[fn] !== undefined ? Number(fs[fn]) : 0);
+              rowTotal += val;
+              body += `<td><input type="number" class="form-control matrix-cell" min="0" value="${val}" data-vi="${vi}" data-fn="${fn}" oninput="updateMatrixTotals()"></td>`;
+            });
+            body += `<td class="matrix-total" id="mrt-${vi}">${rowTotal}</td></tr>`;
+          });
+          document.getElementById("stock-matrix-body").innerHTML = body;
+          updateMatrixTotals();
+
+        } else if (hasVariants) {
+          document.getElementById("stock-matrix-section").style.display = "none";
+          document.getElementById("variant-stock-section").style.display = "";
+          pmStock.readOnly = true; pmHint.style.display = "";
+
+          document.getElementById("variant-stock-list").innerHTML = variantRows.map((row, vi) => {
+            const ins = row.querySelectorAll("input,select");
+            const w = ins[0]?.value || ""; const u = ins[1]?.value || "";
+            const label = w ? `${w}${u}` : `V${vi+1}`;
+            const stock = vstockVals[String(vi)] !== undefined ? vstockVals[String(vi)] : (parseInt(row.dataset.varStock) || 0);
+            return `<div class="vstock-row"><span class="vstock-label">${label}</span><input type="number" class="form-control vstock-input" data-vi="${vi}" value="${stock}" min="0" placeholder="0" oninput="refreshStockTotal()"></div>`;
+          }).join("");
+          refreshStockTotal();
+
+        } else {
+          document.getElementById("stock-matrix-section").style.display = "none";
+          document.getElementById("variant-stock-section").style.display = "none";
+          pmStock.readOnly = false; pmHint.style.display = "none";
+          if (hasFlavors) {
+            pmStock.value = flavorRows.reduce((s, r) => s + (parseInt(r.querySelector(".flavor-qty-input")?.value) || 0), 0);
+          }
+        }
+      }
+
+      function updateMatrixTotals() {
+        let grand = 0;
+        document.querySelectorAll("#stock-matrix-body tr").forEach((row, vi) => {
+          const sum = Array.from(row.querySelectorAll("input")).reduce((s, i) => s + (parseInt(i.value) || 0), 0);
+          const cell = document.getElementById(`mrt-${vi}`);
+          if (cell) cell.textContent = sum;
+          grand += sum;
+        });
+        document.getElementById("pm-stock").value = grand;
+      }
+
+      function refreshStockTotal() {
+        const total = Array.from(document.querySelectorAll("#variant-stock-list .vstock-input"))
+          .reduce((s, i) => s + (parseInt(i.value) || 0), 0);
+        document.getElementById("pm-stock").value = total;
       }
 
       async function saveProduct() {
@@ -3997,44 +4168,55 @@
         const promoCodeIds = document.getElementById("pm-promo-toggle").checked
           ? getCheckedValues("pm-promo-codes")
           : [];
-        const variants = Array.from(
-          document.querySelectorAll("#variants-list .variant-row"),
-        )
-          .map((r) => {
-            const i = r.querySelectorAll("input,select");
-            return {
-              weight: i[0].value,
-              unit: i[1].value,
-              price: parseFloat(i[2].value) || 0,
-            };
+        const showMatrix = document.getElementById("stock-matrix-section").style.display !== "none";
+        const showVStock = document.getElementById("variant-stock-section").style.display !== "none";
+
+        const variants = Array.from(document.querySelectorAll("#variants-list .variant-row"))
+          .map((r, vi) => {
+            const ins = r.querySelectorAll("input,select");
+            const v = { weight: ins[0].value, unit: ins[1].value, price: parseFloat(ins[2].value) || 0 };
+            if (showMatrix) {
+              v.flavorStock = {};
+              document.querySelectorAll(`#stock-matrix-body input[data-vi="${vi}"]`).forEach(inp => {
+                v.flavorStock[inp.dataset.fn] = parseInt(inp.value) || 0;
+              });
+              v.stock = Object.values(v.flavorStock).reduce((s, q) => s + q, 0);
+            } else if (showVStock) {
+              const vstockInp = document.querySelector(`#variant-stock-list .vstock-input[data-vi="${vi}"]`);
+              v.stock = parseInt(vstockInp?.value) || 0;
+            }
+            return v;
           })
           .filter((v) => v.weight);
-        const flavors = Array.from(
-          document.querySelectorAll("#flavors-list .flavor-row"),
-        )
+
+        const flavors = Array.from(document.querySelectorAll("#flavors-list .flavor-row"))
           .map((r) => {
-            const i = r.querySelectorAll("input");
-            return { name: i[0].value.trim(), qty: parseInt(i[1].value) || 0 };
+            const name = r.querySelector(".flavor-name-input")?.value.trim() || "";
+            const qty  = parseInt(r.querySelector(".flavor-qty-input")?.value) || 0;
+            return { name, qty };
           })
           .filter((f) => f.name);
-        const totalStock = parseInt(document.getElementById("pm-stock").value) || 0;
-        if (flavors.length > 0) {
-          const flavorSum = flavors.reduce((s, f) => s + f.qty, 0);
-          if (flavorSum !== totalStock) {
-            showToast(`Flavor quantities sum to ${flavorSum} but total stock is ${totalStock}. They must match exactly.`, "error");
-            return;
-          }
+
+        // Compute global stock
+        let globalStock;
+        if (variants.length > 0) {
+          globalStock = variants.reduce((s, v) => s + (v.stock || 0), 0);
+        } else if (flavors.length > 0) {
+          globalStock = flavors.reduce((s, f) => s + f.qty, 0);
+        } else {
+          globalStock = parseInt(document.getElementById("pm-stock").value) || 0;
         }
+
         const payload = {
           name,
           brand: document.getElementById("pm-brand").value.trim(),
           categoryIds,
           subCategoryIds,
-          description: document.getElementById("pm-desc").value.trim(),
+          description: document.getElementById("pm-desc").innerHTML.trim(),
           imageUrl: currentImageUrls,
           variants,
           flavors,
-          stock: parseInt(document.getElementById("pm-stock").value) || 0,
+          stock: globalStock,
           discount: parseInt(document.getElementById("pm-discount").value) || 0,
           allowPromo: document.getElementById("pm-promo-toggle").checked,
           promoCodeIds,
@@ -4420,6 +4602,13 @@
         });
       });
       let toastTimer;
+      /* ── Rich Text Editor helpers ── */
+      function rteCmd(cmd) {
+        const ed = document.getElementById("pm-desc");
+        ed.focus();
+        document.execCommand(cmd, false, null);
+      }
+
       function showToast(msg, type = "success") {
         const t = document.getElementById("toast");
         document.getElementById("toast-msg").textContent = msg;

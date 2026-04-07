@@ -3345,10 +3345,30 @@
       /* ─────────────────────────────────────────────────────────────
    CONTACT FORM
 ───────────────────────────────────────────────────────────── */
-      function handleContactForm(e) {
+      async function handleContactForm(e) {
         e.preventDefault();
+        const form = e.target;
+        const btn = form.querySelector("button[type=submit]");
+        const name = document.getElementById("contactName").value.trim();
+        const contact = document.getElementById("contactEmail").value.trim();
+        const message = document.getElementById("contactMsg").value.trim();
+        if (!name || !contact || !message) return;
+
+        btn.disabled = true;
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<span style="opacity:.7">Sending…</span>';
+
+        try {
+          await fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "submitContact", name, contact, message }),
+          });
+        } catch (_) {}
+
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+        form.reset();
         showToast(i18n[currentLang]["toast.sent"]);
-        e.target.reset();
       }
 
       /* ─────────────────────────────────────────────────────────────

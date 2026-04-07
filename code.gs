@@ -77,6 +77,7 @@ function initSheets() {
       "status",
       "createdAt",
     ],
+    Contacts: ["id", "name", "contact", "message", "createdAt"],
   };
 
   for (const [sheetName, headers] of Object.entries(sheets)) {
@@ -225,6 +226,8 @@ function doPost(e) {
       case "submitCartOrder":
       case "submitProductOrder":
         return handleSubmitOrder(body);
+      case "submitContact":
+        return handleSubmitContact(body);
       case "updateOrderStatus":
         return handleUpdateOrderStatus(body);
       case "deleteOrder":
@@ -828,6 +831,27 @@ function handleSubmitOrder(body) {
   return jsonResponse({ success: true, id });
 }
 
+function handleSubmitContact(body) {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  let sheet = ss.getSheetByName("Contacts");
+  if (!sheet) {
+    sheet = ss.insertSheet("Contacts");
+    const hdrs = ["id", "name", "contact", "message", "createdAt"];
+    sheet.getRange(1, 1, 1, hdrs.length).setValues([hdrs]);
+    sheet.getRange(1, 1, 1, hdrs.length).setFontWeight("bold");
+    sheet.setFrozenRows(1);
+  }
+  const id = Date.now().toString();
+  sheet.appendRow([
+    id,
+    String(body.name || "").trim(),
+    String(body.contact || "").trim(),
+    String(body.message || "").trim(),
+    new Date().toISOString(),
+  ]);
+  return jsonResponse({ success: true, id });
+}
+
 function handleGetOrders() {
   const ss = SpreadsheetApp.openById(SHEET_ID);
   const sheet = ss.getSheetByName("Orders");
@@ -902,41 +926,75 @@ function _adjustStock(items, direction) {
   items.forEach(function (item) {
     if (!item.productId) return;
     const qty = Number(item.qty) || 1;
+    const itemVariantLabel = String(item.variant || "").trim().toLowerCase();
+    const itemFlavor = String(item.flavor || "").trim();
 
-    for (let i = 1; i < prodData.length; i++) {
-      if (String(prodData[i][0]) === String(item.productId)) {
-        const row = i + 1;
+    for (var i = 1; i < prodData.length; i++) {
+      if (String(prodData[i][0]) !== String(item.productId)) continue;
 
-        // ── Global stock (col 10) ──
-        const currentStock = Number(prodData[i][9]) || 0;
-        const newStock = Math.max(0, currentStock + direction * qty);
-        prodSheet.getRange(row, 10).setValue(newStock);
-        prodData[i][9] = newStock; // keep in-memory copy consistent
+      const row = i + 1;
+      const variants = safeParseJSON(prodData[i][7], []); // col 8 (index 7) = variants
+      const flavors  = safeParseJSON(prodData[i][8], []); // col 9 (index 8) = flavors
 
-        // ── Flavor-level stock (col 9 = flavors JSON) ──
-        if (item.flavor) {
-          const flavors = safeParseJSON(prodData[i][8], []);
-          let changed = false;
-          const updatedFlavors = flavors.map(function (f) {
-            const fName =
-              typeof f === "object" ? String(f.name || "") : String(f);
-            if (fName.toLowerCase() === String(item.flavor).toLowerCase()) {
-              changed = true;
-              const fQty = Number(f.qty) || 0;
-              return Object.assign({}, f, {
-                qty: Math.max(0, fQty + direction * qty),
-              });
-            }
-            return f;
-          });
-          if (changed) {
-            prodSheet.getRange(row, 9).setValue(JSON.stringify(updatedFlavors));
-            prodData[i][8] = JSON.stringify(updatedFlavors);
-          }
+      // ── Try new system: match variant by label ──
+      var matchedIdx = -1;
+      if (itemVariantLabel && variants.length > 0) {
+        matchedIdx = variants.findIndex(function (v) {
+          if (typeof v !== "object") return String(v).toLowerCase() === itemVariantLabel;
+          var vLabel = (v.weight ? String(v.weight) + String(v.unit || "") : String(v.label || v.name || "")).trim().toLowerCase();
+          return vLabel === itemVariantLabel;
+        });
+      }
+
+      if (matchedIdx >= 0) {
+        var v = variants[matchedIdx];
+
+        // New system with flavorStock per variant
+        if (itemFlavor && v.flavorStock && v.flavorStock[itemFlavor] !== undefined) {
+          v.flavorStock[itemFlavor] = Math.max(0, (Number(v.flavorStock[itemFlavor]) || 0) + direction * qty);
+          // Recompute variant stock from flavorStock sum
+          v.stock = Object.values(v.flavorStock).reduce(function (s, q) { return s + Number(q); }, 0);
+        } else {
+          // Variant-only stock (no flavors)
+          v.stock = Math.max(0, (Number(v.stock) || 0) + direction * qty);
         }
 
+        // Save updated variants array
+        prodSheet.getRange(row, 8).setValue(JSON.stringify(variants));
+        prodData[i][7] = JSON.stringify(variants);
+
+        // Recompute global stock = sum of all variant stocks
+        var newGlobal = variants.reduce(function (s, vv) {
+          return s + (typeof vv === "object" ? Number(vv.stock) || 0 : 0);
+        }, 0);
+        prodSheet.getRange(row, 10).setValue(newGlobal);
+        prodData[i][9] = newGlobal;
         break;
       }
+
+      // ── Fallback: old system (no variants matched) ──
+      // Update flavor.qty if flavor specified
+      if (itemFlavor) {
+        var changed = false;
+        var updatedFlavors = flavors.map(function (f) {
+          var fName = typeof f === "object" ? String(f.name || "") : String(f);
+          if (fName.toLowerCase() === itemFlavor.toLowerCase()) {
+            changed = true;
+            return Object.assign({}, f, { qty: Math.max(0, (Number(f.qty) || 0) + direction * qty) });
+          }
+          return f;
+        });
+        if (changed) {
+          prodSheet.getRange(row, 9).setValue(JSON.stringify(updatedFlavors));
+          prodData[i][8] = JSON.stringify(updatedFlavors);
+        }
+      }
+      // Update global stock
+      var currentStock = Number(prodData[i][9]) || 0;
+      var newStock = Math.max(0, currentStock + direction * qty);
+      prodSheet.getRange(row, 10).setValue(newStock);
+      prodData[i][9] = newStock;
+      break;
     }
   });
 }

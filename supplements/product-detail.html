@@ -780,6 +780,11 @@
       .mobile-nav-link.active:hover {
         background: rgba(173, 0, 0, 0.13);
       }
+      .mobile-lang {
+        display: flex;
+        gap: 8px;
+        margin-top: 24px;
+      }
 
       .m-cat-item {
         border-bottom: 1px solid var(--gray-100);
@@ -1016,6 +1021,12 @@
         border-color: var(--red);
         background: var(--red-light);
         color: var(--red);
+      }
+      .variant-pill.variant-pill-oos {
+        opacity: .4;
+        cursor: not-allowed;
+        pointer-events: none;
+        text-decoration: line-through;
         font-weight: 700;
       }
 
@@ -1406,6 +1417,26 @@
         color: var(--gray-600);
         margin-bottom: 8px;
       }
+      .product-description p,
+      #productDescription {
+        font-size: 14px;
+        color: var(--gray-600);
+        line-height: 1.7;
+      }
+      #productDescription ul,
+      #productDescription ol {
+        padding-left: 20px;
+        margin: 6px 0;
+      }
+      #productDescription li {
+        font-size: 14px;
+        color: var(--gray-600);
+        line-height: 1.7;
+        margin-bottom: 3px;
+      }
+      #productDescription strong { color: var(--black); font-weight: 700; }
+      #productDescription em { font-style: italic; }
+      #productDescription u { text-decoration: underline; }
       .product-description p {
         font-size: 14px;
         color: var(--gray-600);
@@ -2738,6 +2769,11 @@
         <a class="mobile-nav-link active" href="/supplements/products">Supplements</a>
       </div>
       <div id="mobileCatItems"></div>
+      <div class="mobile-lang">
+        <button class="lang-btn active" data-lang="en" onclick="switchLang('en')">EN</button>
+        <button class="lang-btn" data-lang="fr" onclick="switchLang('fr')">FR</button>
+        <button class="lang-btn" data-lang="ar" onclick="switchLang('ar')">AR</button>
+      </div>
     </div>
     <div
       class="mobile-overlay"
@@ -2844,7 +2880,7 @@
                 <div class="product-description-title" data-i18n="detail.about">
                   About this product
                 </div>
-                <p id="productDescription">Loading…</p>
+                <div id="productDescription">Loading…</div>
               </div>
 
               <hr class="section-divider" />
@@ -3788,64 +3824,47 @@
         catEl.style.display = tags.length ? "flex" : "none";
 
         // Description
-        document.getElementById("productDescription").textContent =
+        document.getElementById("productDescription").innerHTML =
           p.description ||
           `${p.name} by ${p.brand} — a premium sports nutrition product.`;
 
         // ── VARIANTS (weight/size) pills ──
         const weightGroup = document.getElementById("weightGroup");
         const weightPills = document.getElementById("weightPills");
-        selectedVariantIndex = 0; // reset
+        selectedVariantIndex = 0;
 
-        if (p.variants && p.variants.length > 0) {
-          weightGroup.style.display = "";
-          weightPills.innerHTML = p.variants
-            .map((v, i) => {
-              // Support both {weight, unit} and plain string variants
-              let label;
-              if (typeof v === "object" && v !== null) {
-                label = v.weight
-                  ? `${v.weight}${v.unit || ""}`
-                  : v.label || v.name || `Option ${i + 1}`;
-              } else {
-                label = String(v);
-              }
-              return `<div class="variant-pill${i === 0 ? " active" : ""}" onclick="selectVariant(this,${i})">${label}</div>`;
-            })
-            .join("");
-        } else {
-          weightGroup.style.display = "none";
-        }
-
-        // ── FLAVORS ──
-        const flavorGroup = document.getElementById("flavorGroup");
-        const flavorPills = document.getElementById("flavorPills");
-
-        // Normalise flavors to { name, qty } objects
-        const hasFlavorQty = (p.flavors || []).some((f) => typeof f === "object" && f.qty > 0);
+        // Normalise flavors globally (used by renderFlavorPills)
         _productFlavorObjs = (p.flavors || [])
           .map((f) => typeof f === "object" && f !== null
             ? { name: f.name || f.label || "", qty: f.qty || 0 }
             : { name: String(f), qty: 0 })
           .filter((fo) => fo.name);
 
-        if (_productFlavorObjs.length > 0) {
-          flavorGroup.style.display = "";
-          const firstAvail = (hasFlavorQty ? _productFlavorObjs.find((fo) => fo.qty > 0) : null) || _productFlavorObjs[0];
-          selectedFlavor = firstAvail.name;
-          document.getElementById("productFlavor").textContent = firstAvail.name;
-          flavorPills.innerHTML = _productFlavorObjs
-            .map((fo) => {
-              const oos = hasFlavorQty && fo.qty <= 0;
-              const active = fo.name === selectedFlavor;
-              return `<div class="variant-pill${active ? " active" : ""}" ${oos ? 'style="opacity:.4;cursor:not-allowed;pointer-events:none;" ' : `onclick="selectFlavor(this,'${fo.name.replace(/'/g, "\\'")}')" `}>${fo.name}${oos ? " (OOS)" : ""}</div>`;
-            })
-            .join("");
+        if (p.variants && p.variants.length > 0) {
+          weightGroup.style.display = "";
+          const hasNewStock = p.variants.some(v => typeof v === "object" && v.stock !== undefined);
+          weightPills.innerHTML = p.variants.map((v, i) => {
+            let label;
+            if (typeof v === "object" && v !== null) {
+              label = v.weight ? `${v.weight}${v.unit || ""}` : v.label || v.name || `Option ${i + 1}`;
+            } else { label = String(v); }
+            const oos = hasNewStock && typeof v === "object" && v.stock !== undefined && v.stock <= 0;
+            return `<div class="variant-pill${i === 0 && !oos ? " active" : ""}${oos ? " variant-pill-oos" : ""}" ${oos ? "" : `onclick="selectVariant(this,${i})"`}>${label}</div>`;
+          }).join("");
+          // If first variant is OOS, auto-select first available
+          if (p.variants[0] && p.variants[0].stock <= 0 && hasNewStock) {
+            const firstAvailIdx = p.variants.findIndex(v => typeof v === "object" && v.stock > 0);
+            if (firstAvailIdx > 0) {
+              selectedVariantIndex = firstAvailIdx;
+              weightPills.querySelectorAll(".variant-pill")[firstAvailIdx]?.classList.add("active");
+            }
+          }
         } else {
-          flavorGroup.style.display = "none";
-          selectedFlavor = "";
-          document.getElementById("productFlavor").textContent = "";
+          weightGroup.style.display = "none";
         }
+
+        // ── FLAVORS ──
+        renderFlavorPills();
 
         // ── PRICE ──
         updatePriceDisplay();
@@ -3930,21 +3949,80 @@
         }
       }
 
+      /* ── Stock helpers ── */
+      function getCurrentStock() {
+        const p = selectedProduct;
+        if (!p) return 0;
+        const variants = parseField(p.variants);
+        const v = variants[selectedVariantIndex];
+        if (v && typeof v === "object") {
+          // New system: variant has flavorStock per flavor
+          if (v.flavorStock && selectedFlavor) {
+            return Number(v.flavorStock[selectedFlavor]) || 0;
+          }
+          // New system: variant has stock (no flavors)
+          if (v.stock !== undefined && !selectedFlavor) {
+            return Number(v.stock) || 0;
+          }
+        }
+        // Old system: flavor.qty or global stock
+        if (selectedFlavor && _productFlavorObjs.length > 0) {
+          const fo = _productFlavorObjs.find(f => f.name === selectedFlavor);
+          if (fo && fo.qty > 0) return fo.qty;
+        }
+        return Number(p.stock) || 0;
+      }
+
+      function renderFlavorPills() {
+        const p = selectedProduct;
+        const flavorGroup = document.getElementById("flavorGroup");
+        const flavorPills = document.getElementById("flavorPills");
+
+        if (!_productFlavorObjs.length) {
+          flavorGroup.style.display = "none";
+          selectedFlavor = "";
+          document.getElementById("productFlavor").textContent = "";
+          return;
+        }
+
+        flavorGroup.style.display = "";
+        const variants = parseField(p.variants);
+        const v = variants[selectedVariantIndex];
+        const hasFlavorStock = v && typeof v === "object" && v.flavorStock !== undefined;
+        const hasOldQty = !hasFlavorStock && _productFlavorObjs.some(fo => fo.qty > 0);
+
+        const isOOS = (fo) => {
+          if (hasFlavorStock) return v.flavorStock[fo.name] !== undefined && v.flavorStock[fo.name] <= 0;
+          if (hasOldQty) return fo.qty <= 0;
+          return false;
+        };
+
+        // Pick first available flavor
+        const firstAvail = _productFlavorObjs.find(fo => !isOOS(fo)) || _productFlavorObjs[0];
+        if (!selectedFlavor || isOOS({ name: selectedFlavor })) {
+          selectedFlavor = firstAvail.name;
+          document.getElementById("productFlavor").textContent = firstAvail.name;
+        }
+
+        flavorPills.innerHTML = _productFlavorObjs.map(fo => {
+          const oos = isOOS(fo);
+          const active = fo.name === selectedFlavor;
+          return `<div class="variant-pill${active ? " active" : ""}${oos ? " variant-pill-oos" : ""}" ${oos ? "" : `onclick="selectFlavor(this,'${fo.name.replace(/'/g, "\\'")}')"`}>${fo.name}</div>`;
+        }).join("");
+      }
+
       function selectVariant(el, idx) {
         selectedVariantIndex = idx;
-        document
-          .querySelectorAll("#weightPills .variant-pill")
-          .forEach((p) => p.classList.remove("active"));
+        document.querySelectorAll("#weightPills .variant-pill").forEach((p) => p.classList.remove("active"));
         el.classList.add("active");
+        renderFlavorPills(); // re-evaluate OOS flavors for this variant
         updatePriceDisplay();
         updateSummary();
       }
 
       function selectFlavor(el, f) {
         selectedFlavor = f;
-        document
-          .querySelectorAll("#flavorPills .variant-pill")
-          .forEach((p) => p.classList.remove("active"));
+        document.querySelectorAll("#flavorPills .variant-pill").forEach((p) => p.classList.remove("active"));
         el.classList.add("active");
         document.getElementById("productFlavor").textContent = f;
         selectedQty = 1;
@@ -3953,11 +4031,7 @@
       }
 
       function changeQty(delta) {
-        const hasFlavorQty = _productFlavorObjs.some((fo) => fo.qty > 0);
-        const flavorQty = hasFlavorQty
-          ? (_productFlavorObjs.find((f) => f.name === selectedFlavor)?.qty || 1)
-          : (Number(selectedProduct?.stock) || 5);
-        const maxQty = Math.min(5, flavorQty);
+        const maxQty = Math.min(5, getCurrentStock() || 5);
         selectedQty = Math.min(maxQty, Math.max(1, selectedQty + delta));
         document.getElementById("qtyValue").textContent = selectedQty;
         revalidateAppliedPromos();
@@ -6166,11 +6240,7 @@
       }
 
       function submitOrder() {
-        if (!selectedProduct || Number(selectedProduct.stock) <= 0) return;
-        if (_productFlavorObjs.some((fo) => fo.qty > 0)) {
-          const fo = _productFlavorObjs.find((f) => f.name === selectedFlavor);
-          if (!fo || fo.qty <= 0) return;
-        }
+        if (!selectedProduct || getCurrentStock() <= 0) return;
         // Bot checks
         if (document.getElementById("hp_website").value !== "") return;
         if (Date.now() - PAGE_LOAD_TIME < 4000) {
@@ -6558,11 +6628,7 @@
       function addToCartFromDetail() {
         if (!selectedProduct) return;
         const p = selectedProduct;
-        if (Number(p.stock) <= 0) return;
-        if (_productFlavorObjs.some((fo) => fo.qty > 0)) {
-          const fo = _productFlavorObjs.find((f) => f.name === selectedFlavor);
-          if (!fo || fo.qty <= 0) return;
-        }
+        if (getCurrentStock() <= 0) return;
         const variants = parseField(p.variants);
         const v = variants[selectedVariantIndex];
         const unitPrice = getProductPrice(p, selectedVariantIndex);
