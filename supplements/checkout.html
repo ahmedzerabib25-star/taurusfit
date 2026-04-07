@@ -654,6 +654,14 @@
           visibility var(--transition);
         z-index: 1001;
       }
+      .dropdown::before {
+        content: '';
+        position: absolute;
+        top: -12px;
+        left: 0;
+        right: 0;
+        height: 12px;
+      }
       .cat-item:hover .dropdown {
         opacity: 1;
         visibility: visible;
@@ -1499,7 +1507,7 @@
       .badge-hot   { background: #ff6b00; color: #fff; }
       .badge-bundle{ background: #0a7c3e; color: #fff; }
       .badge-sale  { background: var(--red); color: #fff; }
-      .badge-promo { background: #7c3aed; color: #fff; }
+      .badge-promo { background: var(--red); color: #fff; }
       .badge-new   { background: #000; color: #fff; }
 
       /* ─── YOU MAY ALSO LIKE ───────────────────────────────────── */
@@ -3275,13 +3283,12 @@
       }
 
       function computeBadge(p, bundleId, topSoldIds) {
+        if (Number(p.stock) <= 0) return { type:'oos', label:'OUT OF STOCK' };
         if (topSoldIds && topSoldIds.includes(p.id)) return { type:'hot', label:'HOT' };
         if (bundleId && p.id === bundleId) return { type:'bundle', label:'BUNDLE' };
-        const disc = p.discount || 0;
-        if (disc > 0) return { type:'sale', label:`-${disc}%` };
-        const ap = p.allowPromo===true||String(p.allowPromo||'').toUpperCase()==='TRUE';
-        if (ap && Array.isArray(p.promoCodeIds) && p.promoCodeIds.length) return { type:'promo', label:'PROMO' };
         if (p.createdAt) { const c=new Date(p.createdAt),n=new Date(); if(c.toDateString()===n.toDateString()) return { type:'new', label:'NEW' }; }
+        const disc = p.discount || 0;
+        if (disc > 0) return { type:'promo', label:'PROMO' };
         return null;
       }
 

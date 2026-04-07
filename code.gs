@@ -13,6 +13,46 @@
 
 const SHEET_ID = "19G5rvx6bNxhU0sM638tF_hDXrP6v1vuSYOKVFrdDeHU"; // ← Paste your Google Sheet ID here
 
+// ── TELEGRAM NOTIFICATIONS ──
+const TELEGRAM_TOKEN  = "8597076283:AAEcCim85KCQZQC-5ik4SLXdS8xPvOJg__o";
+const TELEGRAM_CHAT_ID = "-1003790940322";
+
+function sendTelegram(message) {
+  try {
+    UrlFetchApp.fetch(
+      "https://api.telegram.org/bot" + TELEGRAM_TOKEN + "/sendMessage",
+      {
+        method: "post",
+        contentType: "application/json",
+        payload: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: message,
+          parse_mode: "HTML"
+        }),
+        muteHttpExceptions: true
+      }
+    );
+  } catch (e) {
+    // Silent fail — don't break the order flow if Telegram is down
+  }
+}
+
+function testTelegram() {
+  const res = UrlFetchApp.fetch(
+    "https://api.telegram.org/bot" + TELEGRAM_TOKEN + "/sendMessage",
+    {
+      method: "post",
+      contentType: "application/json",
+      payload: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: "✅ Test message from Bybens!"
+      }),
+      muteHttpExceptions: true
+    }
+  );
+  Logger.log(res.getContentText());
+}
+
 function getSheet(name) {
   const ss = SpreadsheetApp.openById(SHEET_ID);
   return ss.getSheetByName(name);
@@ -477,6 +517,8 @@ function handleGetProducts() {
       .filter(Boolean),
     status: r[13] || "active",
     createdAt: r[14],
+    nutritionalFacts: r[15] || "",
+    benefits: r[16] || "",
   }));
   return jsonResponse({ success: true, products });
 }
@@ -500,6 +542,8 @@ function handleAddProduct(body) {
     (body.promoCodeIds || []).join(","),
     body.status || "active",
     new Date().toISOString(),
+    body.nutritionalFacts || "",
+    body.benefits || "",
   ]);
   // Force text format on ID columns so Sheets doesn't treat comma-separated
   // timestamp IDs as numbers with thousand separators
@@ -529,6 +573,8 @@ function handleUpdateProduct(body) {
       sheet.getRange(row, 12).setValue(body.allowPromo ? "true" : "false");
       sheet.getRange(row, 13).setNumberFormat("@").setValue((body.promoCodeIds || []).join(","));
       sheet.getRange(row, 14).setValue(body.status || "active");
+      sheet.getRange(row, 16).setValue(body.nutritionalFacts || "");
+      sheet.getRange(row, 17).setValue(body.benefits || "");
       break;
     }
   }
@@ -828,6 +874,29 @@ function handleSubmitOrder(body) {
     }
   }
 
+  // Deduct stock immediately when order is submitted
+  _adjustStock(body.items || [], -1);
+
+  // Telegram notification
+  const itemLines = (body.items || []).map(function(it) {
+    return "  • " + it.name + (it.flavor ? " – " + it.flavor : "") + (it.variant ? " (" + it.variant + ")" : "") + " x" + it.qty;
+  }).join("\n");
+  const promoLine = body.promoCode
+    ? "🎟️ Promo: " + body.promoCode + " (-" + (body.promoDiscount || 0) + " DA)\n"
+    : "🎟️ No promo code\n";
+  sendTelegram(
+    "🛒 <b>New Order!</b>\n" +
+    "👤 " + (body.firstName || "") + " " + (body.lastName || "") + "\n" +
+    "📞 " + (body.phone || "") + "\n" +
+    "📍 " + (body.wilaya || "") + " – " + (body.commune || "") + "\n" +
+    "📦 " + (body.deliveryType || "") + "\n\n" +
+    itemLines + "\n\n" +
+    "🏷️ Products: " + (body.subtotal || 0) + " DA\n" +
+    "🚚 Delivery: " + (body.deliveryCost || 0) + " DA\n" +
+    promoLine +
+    "💰 Total: " + (body.total || 0) + " DA"
+  );
+
   return jsonResponse({ success: true, id });
 }
 
@@ -849,6 +918,15 @@ function handleSubmitContact(body) {
     String(body.message || "").trim(),
     new Date().toISOString(),
   ]);
+
+  // Telegram notification
+  sendTelegram(
+    "✉️ <b>New Contact Message!</b>\n" +
+    "👤 " + String(body.name || "").trim() + "\n" +
+    "📬 " + String(body.contact || "").trim() + "\n\n" +
+    "💬 " + String(body.message || "").trim()
+  );
+
   return jsonResponse({ success: true, id });
 }
 
@@ -899,15 +977,15 @@ function handleUpdateOrderStatus(body) {
       if (statusCol >= 0)
         sheet.getRange(i + 1, statusCol + 1).setValue(newStatus);
 
-      // Deduct stock when order is marked as delivered
-      if (oldStatus !== "delivered" && newStatus === "delivered") {
-        const items = safeParseJSON(data[i][11], []);
-        _adjustStock(items, -1);
-      }
-      // Restore stock if order is moved back from delivered (e.g. admin correction)
-      if (oldStatus === "delivered" && newStatus !== "delivered") {
+      // Restore stock when admin cancels an order
+      if (oldStatus !== "canceled" && newStatus === "canceled") {
         const items = safeParseJSON(data[i][11], []);
         _adjustStock(items, +1);
+      }
+      // Re-deduct stock if admin moves order back from canceled to active
+      if (oldStatus === "canceled" && newStatus !== "canceled") {
+        const items = safeParseJSON(data[i][11], []);
+        _adjustStock(items, -1);
       }
 
       break;

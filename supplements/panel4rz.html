@@ -2899,6 +2899,54 @@
               </div>
             </div>
           </div>
+          <div class="form-row full">
+            <div class="form-group">
+              <label>Nutritional Facts <span style="font-weight:400;color:var(--g400);font-size:11px;">(optional)</span></label>
+              <div class="rte-wrap">
+                <div class="rte-toolbar">
+                  <button type="button" class="rte-btn" onclick="rteCmd('bold','pm-nutritional')" title="Bold"><strong>B</strong></button>
+                  <button type="button" class="rte-btn" onclick="rteCmd('italic','pm-nutritional')" title="Italic"><em>I</em></button>
+                  <button type="button" class="rte-btn" onclick="rteCmd('underline','pm-nutritional')" title="Underline"><u>U</u></button>
+                  <span class="rte-sep"></span>
+                  <button type="button" class="rte-btn" onclick="rteCmd('insertUnorderedList','pm-nutritional')" title="Bullet list">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1.5" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.5" fill="currentColor" stroke="none"/></svg>
+                    Bullets
+                  </button>
+                  <button type="button" class="rte-btn" onclick="rteCmd('insertOrderedList','pm-nutritional')" title="Numbered list">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><text x="2" y="8" font-size="8" fill="currentColor" stroke="none" font-weight="bold">1.</text><text x="2" y="14" font-size="8" fill="currentColor" stroke="none" font-weight="bold">2.</text><text x="2" y="20" font-size="8" fill="currentColor" stroke="none" font-weight="bold">3.</text></svg>
+                    Numbers
+                  </button>
+                  <span class="rte-sep"></span>
+                  <button type="button" class="rte-btn" onclick="rteCmd('removeFormat','pm-nutritional')" title="Clear formatting">✕ Clear</button>
+                </div>
+                <div class="rte-editor" id="pm-nutritional" contenteditable="true" spellcheck="true" data-placeholder="Nutritional facts (optional)…"></div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row full">
+            <div class="form-group">
+              <label>Benefits <span style="font-weight:400;color:var(--g400);font-size:11px;">(optional)</span></label>
+              <div class="rte-wrap">
+                <div class="rte-toolbar">
+                  <button type="button" class="rte-btn" onclick="rteCmd('bold','pm-benefits')" title="Bold"><strong>B</strong></button>
+                  <button type="button" class="rte-btn" onclick="rteCmd('italic','pm-benefits')" title="Italic"><em>I</em></button>
+                  <button type="button" class="rte-btn" onclick="rteCmd('underline','pm-benefits')" title="Underline"><u>U</u></button>
+                  <span class="rte-sep"></span>
+                  <button type="button" class="rte-btn" onclick="rteCmd('insertUnorderedList','pm-benefits')" title="Bullet list">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1.5" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.5" fill="currentColor" stroke="none"/></svg>
+                    Bullets
+                  </button>
+                  <button type="button" class="rte-btn" onclick="rteCmd('insertOrderedList','pm-benefits')" title="Numbered list">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><text x="2" y="8" font-size="8" fill="currentColor" stroke="none" font-weight="bold">1.</text><text x="2" y="14" font-size="8" fill="currentColor" stroke="none" font-weight="bold">2.</text><text x="2" y="20" font-size="8" fill="currentColor" stroke="none" font-weight="bold">3.</text></svg>
+                    Numbers
+                  </button>
+                  <span class="rte-sep"></span>
+                  <button type="button" class="rte-btn" onclick="rteCmd('removeFormat','pm-benefits')" title="Clear formatting">✕ Clear</button>
+                </div>
+                <div class="rte-editor" id="pm-benefits" contenteditable="true" spellcheck="true" data-placeholder="Product benefits (optional)…"></div>
+              </div>
+            </div>
+          </div>
           <div class="form-group" style="margin-bottom: 16px">
             <label>Product Images</label>
             <div id="images-grid" class="images-grid"></div>
@@ -3960,6 +4008,8 @@
             document.getElementById("pm-name").value = p.name;
             document.getElementById("pm-brand").value = p.brand || "";
             document.getElementById("pm-desc").innerHTML = p.description || "";
+            document.getElementById("pm-nutritional").innerHTML = p.nutritionalFacts || "";
+            document.getElementById("pm-benefits").innerHTML = p.benefits || "";
             document.getElementById("pm-stock").value = p.stock;
             document.getElementById("pm-discount").value = p.discount;
             document.getElementById("pm-status").value = p.status;
@@ -4001,6 +4051,8 @@
             (x) => (document.getElementById(x).value = ""),
           );
           document.getElementById("pm-desc").innerHTML = "";
+          document.getElementById("pm-nutritional").innerHTML = "";
+          document.getElementById("pm-benefits").innerHTML = "";
           document.getElementById("variants-list").innerHTML = "";
           document.getElementById("flavors-list").innerHTML = "";
           document.getElementById("stock-matrix-section").style.display = "none";
@@ -4213,6 +4265,8 @@
           categoryIds,
           subCategoryIds,
           description: document.getElementById("pm-desc").innerHTML.trim(),
+          nutritionalFacts: document.getElementById("pm-nutritional").innerHTML.trim(),
+          benefits: document.getElementById("pm-benefits").innerHTML.trim(),
           imageUrl: currentImageUrls,
           variants,
           flavors,
@@ -4603,8 +4657,8 @@
       });
       let toastTimer;
       /* ── Rich Text Editor helpers ── */
-      function rteCmd(cmd) {
-        const ed = document.getElementById("pm-desc");
+      function rteCmd(cmd, edId) {
+        const ed = document.getElementById(edId || "pm-desc");
         ed.focus();
         document.execCommand(cmd, false, null);
       }

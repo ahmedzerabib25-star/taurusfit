@@ -685,6 +685,14 @@
           visibility var(--transition);
         z-index: 1001;
       }
+      .dropdown::before {
+        content: '';
+        position: absolute;
+        top: -12px;
+        left: 0;
+        right: 0;
+        height: 12px;
+      }
       .cat-item:hover .dropdown {
         opacity: 1;
         visibility: visible;
@@ -1437,6 +1445,26 @@
       #productDescription strong { color: var(--black); font-weight: 700; }
       #productDescription em { font-style: italic; }
       #productDescription u { text-decoration: underline; }
+      #productNutritionalFacts ul,
+      #productNutritionalFacts ol,
+      #productBenefits ul,
+      #productBenefits ol {
+        padding-left: 20px;
+        margin: 6px 0;
+      }
+      #productNutritionalFacts li,
+      #productBenefits li {
+        font-size: 14px;
+        color: var(--gray-600);
+        line-height: 1.7;
+        margin-bottom: 3px;
+      }
+      #productNutritionalFacts strong,
+      #productBenefits strong { color: var(--black); font-weight: 700; }
+      #productNutritionalFacts em,
+      #productBenefits em { font-style: italic; }
+      #productNutritionalFacts u,
+      #productBenefits u { text-decoration: underline; }
       .product-description p {
         font-size: 14px;
         color: var(--gray-600);
@@ -1797,7 +1825,7 @@
       .badge-hot   { background: #ff6b00; color: #fff; }
       .badge-bundle{ background: #0a7c3e; color: #fff; }
       .badge-sale  { background: var(--red); color: #fff; }
-      .badge-promo { background: #7c3aed; color: #fff; }
+      .badge-promo { background: var(--red); color: #fff; }
       .badge-new   { background: #000; color: #fff; }
       .badge-oos   { background: #888; color: #fff; }
 
@@ -2883,6 +2911,18 @@
                 <div id="productDescription">Loading…</div>
               </div>
 
+              <!-- Nutritional Facts (shown only if data exists) -->
+              <div class="product-description" id="productNutritionalFactsBox" style="display:none;">
+                <div class="product-description-title">Nutritional Facts</div>
+                <div id="productNutritionalFacts"></div>
+              </div>
+
+              <!-- Benefits (shown only if data exists) -->
+              <div class="product-description" id="productBenefitsBox" style="display:none;">
+                <div class="product-description-title">Benefits</div>
+                <div id="productBenefits"></div>
+              </div>
+
               <hr class="section-divider" />
 
               <!-- ORDER FORM -->
@@ -3542,13 +3582,12 @@
       }
 
       function computeBadge(p, bundleId, topSoldIds) {
+        if (Number(p.stock) <= 0) return { type:'oos', label:'OUT OF STOCK' };
         if (topSoldIds && topSoldIds.includes(p.id)) return { type:'hot', label:'HOT' };
         if (bundleId && p.id === bundleId) return { type:'bundle', label:'BUNDLE' };
-        const disc = p.discount || 0;
-        if (disc > 0) return { type:'sale', label:`-${disc}%` };
-        const ap = p.allowPromo===true||String(p.allowPromo||'').toUpperCase()==='TRUE';
-        if (ap && Array.isArray(p.promoCodeIds) && p.promoCodeIds.length) return { type:'promo', label:'PROMO' };
         if (p.createdAt) { const c=new Date(p.createdAt),n=new Date(); if(c.toDateString()===n.toDateString()) return { type:'new', label:'NEW' }; }
+        const disc = p.discount || 0;
+        if (disc > 0) return { type:'promo', label:'PROMO' };
         return null;
       }
       let selectedVariantIndex = 0;
@@ -3827,6 +3866,26 @@
         document.getElementById("productDescription").innerHTML =
           p.description ||
           `${p.name} by ${p.brand} — a premium sports nutrition product.`;
+
+        // Nutritional Facts (optional)
+        const nutBox = document.getElementById("productNutritionalFactsBox");
+        const nutEl = document.getElementById("productNutritionalFacts");
+        if (p.nutritionalFacts && p.nutritionalFacts.trim()) {
+          nutEl.innerHTML = p.nutritionalFacts;
+          nutBox.style.display = "";
+        } else {
+          nutBox.style.display = "none";
+        }
+
+        // Benefits (optional)
+        const benBox = document.getElementById("productBenefitsBox");
+        const benEl = document.getElementById("productBenefits");
+        if (p.benefits && p.benefits.trim()) {
+          benEl.innerHTML = p.benefits;
+          benBox.style.display = "";
+        } else {
+          benBox.style.display = "none";
+        }
 
         // ── VARIANTS (weight/size) pills ──
         const weightGroup = document.getElementById("weightGroup");
