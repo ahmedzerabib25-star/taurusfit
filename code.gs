@@ -865,13 +865,80 @@ function handleUpdateOrderStatus(body) {
   const data = sheet.getDataRange().getValues();
   for (let i = 1; i < data.length; i++) {
     if (String(data[i][0]) === String(body.id)) {
+      // Orders columns: id(0) source(1) firstName(2) lastName(3) phone(4)
+      // wilaya(5) commune(6) deliveryType(7) deliveryCost(8) promoCode(9)
+      // promoDiscount(10) items(11) subtotal(12) total(13) status(14) createdAt(15)
+      const oldStatus = String(data[i][14] || "waiting");
+      const newStatus = body.status;
+
       const statusCol = data[0].indexOf("status");
       if (statusCol >= 0)
-        sheet.getRange(i + 1, statusCol + 1).setValue(body.status);
+        sheet.getRange(i + 1, statusCol + 1).setValue(newStatus);
+
+      // Deduct stock when order is marked as delivered
+      if (oldStatus !== "delivered" && newStatus === "delivered") {
+        const items = safeParseJSON(data[i][11], []);
+        _adjustStock(items, -1);
+      }
+      // Restore stock if order is moved back from delivered (e.g. admin correction)
+      if (oldStatus === "delivered" && newStatus !== "delivered") {
+        const items = safeParseJSON(data[i][11], []);
+        _adjustStock(items, +1);
+      }
+
       break;
     }
   }
   return jsonResponse({ success: true });
+}
+
+// direction: -1 to deduct stock, +1 to restore stock
+function _adjustStock(items, direction) {
+  if (!items || items.length === 0) return;
+
+  const prodSheet = getSheet("Products");
+  const prodData = prodSheet.getDataRange().getValues();
+
+  items.forEach(function (item) {
+    if (!item.productId) return;
+    const qty = Number(item.qty) || 1;
+
+    for (let i = 1; i < prodData.length; i++) {
+      if (String(prodData[i][0]) === String(item.productId)) {
+        const row = i + 1;
+
+        // ── Global stock (col 10) ──
+        const currentStock = Number(prodData[i][9]) || 0;
+        const newStock = Math.max(0, currentStock + direction * qty);
+        prodSheet.getRange(row, 10).setValue(newStock);
+        prodData[i][9] = newStock; // keep in-memory copy consistent
+
+        // ── Flavor-level stock (col 9 = flavors JSON) ──
+        if (item.flavor) {
+          const flavors = safeParseJSON(prodData[i][8], []);
+          let changed = false;
+          const updatedFlavors = flavors.map(function (f) {
+            const fName =
+              typeof f === "object" ? String(f.name || "") : String(f);
+            if (fName.toLowerCase() === String(item.flavor).toLowerCase()) {
+              changed = true;
+              const fQty = Number(f.qty) || 0;
+              return Object.assign({}, f, {
+                qty: Math.max(0, fQty + direction * qty),
+              });
+            }
+            return f;
+          });
+          if (changed) {
+            prodSheet.getRange(row, 9).setValue(JSON.stringify(updatedFlavors));
+            prodData[i][8] = JSON.stringify(updatedFlavors);
+          }
+        }
+
+        break;
+      }
+    }
+  });
 }
 
 function handleDeleteOrder(body) {
