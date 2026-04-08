@@ -3919,7 +3919,7 @@
             i.variant === variantLabel,
         );
         if (existing) {
-          existing.qty = Math.min(5, existing.qty + _atcQty);
+          existing.qty = Math.min(_itemMaxQty(existing), existing.qty + _atcQty);
         } else {
           items.push({
             productId: p.id,
@@ -3986,10 +3986,31 @@
           )
           .join("");
       }
+      function _itemMaxQty(item) {
+        const pid = item.productId || item.id;
+        const product = allProducts.find(p => p.id === pid || p.productId === pid);
+        if (!product) return 5;
+        const variants = (typeof product.variants === 'string' ? JSON.parse(product.variants) : (product.variants || []));
+        const variantLabels = variants.map(v => typeof v === 'object' ? (v.weight ? `${v.weight}${v.unit||''}` : v.label || v.name || '') : String(v));
+        const vIdx = Math.max(0, variantLabels.indexOf(item.variant));
+        const v = variants[vIdx];
+        if (v && typeof v === 'object' && v.flavorStock && item.flavor) {
+          const s = Number(v.flavorStock[item.flavor]);
+          return Math.min(5, isNaN(s) ? 5 : Math.max(1, s));
+        }
+        const flavorObjs = (typeof product.flavors === 'string' ? JSON.parse(product.flavors) : (product.flavors || [])).map(f => typeof f === 'object' ? { name: f.name || '', qty: f.qty || 0 } : { name: String(f), qty: 0 });
+        if (flavorObjs.some(fo => fo.qty > 0) && item.flavor) {
+          const fo = flavorObjs.find(f => f.name === item.flavor);
+          if (fo) return Math.min(5, Math.max(1, fo.qty));
+        }
+        const stock = Number(product.stock);
+        return Math.min(5, isNaN(stock) || stock <= 0 ? 5 : Math.max(1, stock));
+      }
+
       function cartQty(idx, d) {
         const items = cartGet();
         if (!items[idx]) return;
-        items[idx].qty = Math.min(5, Math.max(1, items[idx].qty + d));
+        items[idx].qty = Math.min(_itemMaxQty(items[idx]), Math.max(1, items[idx].qty + d));
         cartSave(items);
         cartUpdateBadge();
         _renderCartDrawer();
