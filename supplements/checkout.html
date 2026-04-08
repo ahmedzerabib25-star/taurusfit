@@ -3361,19 +3361,41 @@
                 const product = _allProducts.find(p => p.productId === item.productId || p.id === item.productId);
                 const flavors = product ? parseField(product.flavors) : [];
                 const variants = product ? parseField(product.variants) : [];
-                const flavorNames = flavors.map(f => typeof f === 'object' ? (f.name || '') : String(f)).filter(Boolean);
-                const variantLabels = variants.map(v => typeof v === 'object' ? (v.weight ? `${v.weight}${v.unit||''}` : v.label || v.name || '') : String(v)).filter(Boolean);
+                const flavorObjs = flavors.map(f => typeof f === 'object' ? { name: f.name || '', qty: f.qty || 0 } : { name: String(f), qty: 0 }).filter(fo => fo.name);
+                // Find currently selected variant index
+                const variantLabels = variants.map(v => typeof v === 'object' ? (v.weight ? `${v.weight}${v.unit||''}` : v.label || v.name || '') : String(v));
+                const selectedVariantIdx = Math.max(0, variantLabels.indexOf(item.variant));
+                const selectedVariant = variants[selectedVariantIdx];
+                // Determine if variant has flavorStock
+                const hasFlavorStock = selectedVariant && typeof selectedVariant === 'object' && selectedVariant.flavorStock !== undefined;
+                const hasOldQty = !hasFlavorStock && flavorObjs.some(fo => fo.qty > 0);
+                const isFlavorOOS = (fo) => {
+                  if (hasFlavorStock) return selectedVariant.flavorStock[fo.name] !== undefined && selectedVariant.flavorStock[fo.name] <= 0;
+                  if (hasOldQty) return fo.qty <= 0;
+                  return false;
+                };
+                // Filter variants with any stock
+                const isVariantOOS = (v, i) => {
+                  if (typeof v !== 'object') return false;
+                  if (v.flavorStock) return Object.values(v.flavorStock).every(qty => Number(qty) <= 0);
+                  if (v.stock !== undefined) return Number(v.stock) <= 0;
+                  return false;
+                };
+                const availableFlavorObjs = flavorObjs.filter(fo => !isFlavorOOS(fo));
+                const availableVariants = variants.map((v, i) => ({ v, i, label: variantLabels[i] })).filter(({ v, i }) => !isVariantOOS(v, i));
+                const flavorNames = availableFlavorObjs.map(fo => fo.name);
+                const availableVariantLabels = availableVariants.map(({ label }) => label);
                 let html = '';
-                if (flavorNames.length > 1 || variantLabels.length > 1) {
+                if (flavorNames.length > 1 || availableVariantLabels.length > 1) {
                   html += '<div class="checkout-item-selects">';
                   if (flavorNames.length > 1) {
                     html += `<select class="checkout-item-select" onchange="checkoutChangeFlavor(${idx}, this.value)">`;
                     flavorNames.forEach(f => { html += `<option value="${f}" ${item.flavor===f?'selected':''}>${f}</option>`; });
                     html += '</select>';
                   }
-                  if (variantLabels.length > 1) {
-                    html += `<select class="checkout-item-select" onchange="checkoutChangeVariant(${idx}, this.selectedIndex)">`;
-                    variantLabels.forEach((v,i) => { html += `<option value="${i}" ${item.variant===v?'selected':''}>${v}</option>`; });
+                  if (availableVariantLabels.length > 1) {
+                    html += `<select class="checkout-item-select" onchange="checkoutChangeVariant(${idx}, this.options[this.selectedIndex].dataset.origIdx)">`;
+                    availableVariants.forEach(({ v, i, label }) => { html += `<option value="${i}" data-orig-idx="${i}" ${item.variant===label?'selected':''}>${label}</option>`; });
                     html += '</select>';
                   }
                   html += '</div>';
