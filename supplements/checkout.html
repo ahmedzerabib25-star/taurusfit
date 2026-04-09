@@ -2247,23 +2247,10 @@
     </div>
     <script>
       (function () {
-        var n = [
-            "getProducts",
-            "getCategories",
-            "getSubCategories",
-            "getDeliveryPrices",
-            "getPromos",
-          ],
-          T = 6e4,
-          ok = n.every(function (a) {
-            try {
-              var c = JSON.parse(localStorage.getItem("bybens_cache_" + a));
-              return c && Date.now() - c.ts < T;
-            } catch (e) {
-              return false;
-            }
-          });
-        if (ok) document.getElementById("pageLoader").style.display = "none";
+        try {
+          var c = JSON.parse(localStorage.getItem("bybens_cache_getInitialData"));
+          if (c && Date.now() - c.ts < 5 * 60 * 1000) document.getElementById("pageLoader").style.display = "none";
+        } catch (e) {}
       })();
     </script>
     <!-- ─── MARQUEE ─────────────────────────────────────────────── -->
@@ -3214,7 +3201,7 @@
 
       const PAGE_LOAD_TIME = Date.now(); // used for bot timing check
 
-      const CACHE_TTL = 1 * 60 * 1000; // 1 minute
+      const CACHE_TTL = 5 * 60 * 1000; // 5 minutes (matches server-side CacheService TTL)
       function cachedFetch(action) {
         const key = `bybens_cache_${action}`;
         try {
@@ -3867,23 +3854,16 @@
       ══════════════════════════════════════════════════════ */
       async function loadData() {
         try {
-          const [catRes, subRes, prodRes, deliveryRes, promoRes, bundleRes, ordersRes] =
-            await Promise.all([
-              cachedFetch("getCategories"),
-              cachedFetch("getSubCategories"),
-              cachedFetch("getProducts"),
-              cachedFetch("getDeliveryPrices"),
-              cachedFetch("getPromos"),
-              cachedFetch("getBundle").catch(()=>({})),
-              cachedFetch("getOrders").catch(()=>({})),
-            ]);
-          if (catRes.success) _allCategories = catRes.categories;
-          if (subRes.success) _allSubCategories = subRes.subCategories;
-          if (deliveryRes.success) _deliveryPrices = deliveryRes.deliveryPrices;
-          if (prodRes.success) _allProducts = prodRes.products;
-          if (promoRes.success) _allPromos = promoRes.promos;
-          if (bundleRes.success && bundleRes.bundleId) _bundleId = bundleRes.bundleId;
-          if (ordersRes.success && Array.isArray(ordersRes.orders)) _topSoldIds = computeTopSoldIds(ordersRes.orders, _allProducts);
+          const res = await cachedFetch("getInitialData");
+          if (!res.success) throw new Error("getInitialData failed");
+          _allCategories = res.categories || [];
+          _allSubCategories = res.subCategories || [];
+          _deliveryPrices = res.deliveryPrices || [];
+          _allProducts = res.products || [];
+          _allPromos = res.promos || [];
+          const bundle = res.bundle || {};
+          if (bundle.bundleId) _bundleId = bundle.bundleId;
+          if (Array.isArray(res.orders)) _topSoldIds = computeTopSoldIds(res.orders, _allProducts);
           renderCatNav(_allCategories, _allSubCategories);
           renderCheckoutItems();
           renderAlsoLike();

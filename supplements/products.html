@@ -2279,17 +2279,10 @@
     </div>
     <script>
       (function () {
-        var n = ["getProducts", "getCategories", "getSubCategories"],
-          T = 6e5,
-          ok = n.every(function (a) {
-            try {
-              var c = JSON.parse(localStorage.getItem("bybens_cache_" + a));
-              return c && Date.now() - c.ts < T;
-            } catch (e) {
-              return false;
-            }
-          });
-        if (ok) document.getElementById("pageLoader").style.display = "none";
+        try {
+          var c = JSON.parse(localStorage.getItem("bybens_cache_getInitialData"));
+          if (c && Date.now() - c.ts < 5 * 60 * 1000) document.getElementById("pageLoader").style.display = "none";
+        } catch (e) {}
       })();
     </script>
     <!-- ═══ MARQUEE ══════════════════════════════════════════════ -->
@@ -2947,7 +2940,7 @@
       const SCRIPT_URL =
         "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
 
-      const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+      const CACHE_TTL = 5 * 60 * 1000; // 5 minutes (matches server-side CacheService TTL)
       function cachedFetch(action) {
         const key = `bybens_cache_${action}`;
         try {
@@ -3068,56 +3061,38 @@
 
       async function loadData() {
         try {
-          const [prodRes, catRes, subRes, bundleRes, ordersRes] = await Promise.all([
-            cachedFetch("getProducts"),
-            cachedFetch("getCategories"),
-            cachedFetch("getSubCategories"),
-            cachedFetch("getBundle").catch(()=>({})),
-            cachedFetch("getOrders").catch(()=>({})),
-          ]);
+          const res = await cachedFetch("getInitialData");
+          if (!res.success) throw new Error("getInitialData failed");
 
-          if (prodRes.success) {
-            allProducts = prodRes.products
-              .filter((p) => p.status === "active")
-              .map((p) => ({
-                ...p,
-                categoryIds: parseIds(p.categoryIds),
-                subCategoryIds: parseIds(p.subCategoryIds),
-              }));
-          }
+          allProducts = res.products
+            .filter((p) => p.status === "active")
+            .map((p) => ({
+              ...p,
+              categoryIds: parseIds(p.categoryIds),
+              subCategoryIds: parseIds(p.subCategoryIds),
+            }));
 
-          if (catRes.success) {
-            allCategories = catRes.categories;
-            categoryOptions = allCategories
-              .map((cat) => ({
-                value: cat.id,
-                label: cat.name,
-                count: allProducts.filter((p) => p.categoryIds.includes(cat.id))
-                  .length,
-              }))
-              .filter((opt) => opt.count > 0);
-          }
+          allCategories = res.categories || [];
+          categoryOptions = allCategories
+            .map((cat) => ({
+              value: cat.id,
+              label: cat.name,
+              count: allProducts.filter((p) => p.categoryIds.includes(cat.id)).length,
+            }))
+            .filter((opt) => opt.count > 0);
 
-          if (subRes.success) {
-            allSubCategories = subRes.subCategories;
-            subCategoryOptions = allSubCategories
-              .map((sub) => {
-                const parsedCatIds = parseIds(sub.categoryIds);
-                const count = allProducts.filter((p) =>
-                  p.subCategoryIds.includes(sub.id),
-                ).length;
-                return {
-                  value: sub.id,
-                  label: sub.name,
-                  categoryIds: parsedCatIds,
-                  count,
-                };
-              })
-              .filter((opt) => opt.count > 0);
-          }
+          allSubCategories = res.subCategories || [];
+          subCategoryOptions = allSubCategories
+            .map((sub) => {
+              const parsedCatIds = parseIds(sub.categoryIds);
+              const count = allProducts.filter((p) => p.subCategoryIds.includes(sub.id)).length;
+              return { value: sub.id, label: sub.name, categoryIds: parsedCatIds, count };
+            })
+            .filter((opt) => opt.count > 0);
 
-          if (bundleRes.success && bundleRes.bundleId) _bundleId = bundleRes.bundleId;
-          if (ordersRes.success && Array.isArray(ordersRes.orders)) _topSoldIds = computeTopSoldIds(ordersRes.orders, allProducts);
+          const bundle = res.bundle || {};
+          if (bundle.bundleId) _bundleId = bundle.bundleId;
+          if (Array.isArray(res.orders)) _topSoldIds = computeTopSoldIds(res.orders, allProducts);
 
           // Apply URL params after data is ready
           const params = new URLSearchParams(window.location.search);

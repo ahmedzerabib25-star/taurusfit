@@ -58,6 +58,28 @@ function getSheet(name) {
   return ss.getSheetByName(name);
 }
 
+// ── SERVER-SIDE CACHE HELPERS (5-minute TTL) ──
+const GAS_CACHE_TTL = 300; // seconds
+
+function gasCache() {
+  return CacheService.getScriptCache();
+}
+
+function cachedSheetGet(key, fetchFn) {
+  const cache = gasCache();
+  const hit = cache.get(key);
+  if (hit) {
+    try { return JSON.parse(hit); } catch(e) {}
+  }
+  const data = fetchFn();
+  try { cache.put(key, JSON.stringify(data), GAS_CACHE_TTL); } catch(e) {}
+  return data;
+}
+
+function invalidateCache() {
+  gasCache().removeAll(["gs_products", "gs_categories", "gs_subcategories", "gs_bundle", "gs_promos", "gs_delivery", "gs_orders", "gs_initialdata"]);
+}
+
 // ── INIT: Run this once to create all sheets ──
 function initSheets() {
   const ss = SHEET_ID
@@ -209,6 +231,8 @@ function doGet(e) {
         return handleGetDeliveryPrices();
       case "getBundle":
         return handleGetBundle();
+      case "getInitialData":
+        return handleGetInitialData();
       case "getSettings":
         return handleGetSettings();
       case "getDashboard":
@@ -345,15 +369,19 @@ function handleUpdateSettings(body) {
 // ════════════════════════════════════════════
 // CATEGORIES
 // ════════════════════════════════════════════
-function handleGetCategories() {
+function _fetchCategories() {
   const sheet = getSheet("Categories");
   const data = sheet.getDataRange().getValues();
-  const categories = data.slice(1).map((r) => ({
+  return data.slice(1).map((r) => ({
     id: String(r[0]),
     name: r[1],
     description: r[2],
     createdAt: r[3],
   }));
+}
+
+function handleGetCategories() {
+  const categories = cachedSheetGet("gs_categories", _fetchCategories);
   return jsonResponse({ success: true, categories });
 }
 
@@ -374,6 +402,7 @@ function handleAddCategory(body) {
       Utilities.sleep(5);
     });
   }
+  invalidateCache();
   return jsonResponse({ success: true, id: id });
 }
 
@@ -413,6 +442,7 @@ function handleUpdateCategory(body) {
       }
     });
   }
+  invalidateCache();
   return jsonResponse({ success: true });
 }
 
@@ -438,22 +468,27 @@ function handleDeleteCategory(body) {
       }
     }
   }
+  invalidateCache();
   return jsonResponse({ success: true });
 }
 
 // ════════════════════════════════════════════
 // SUB-CATEGORIES
 // ════════════════════════════════════════════
-function handleGetSubCategories() {
+function _fetchSubCategories() {
   const sheet = getSheet("SubCategories");
   const data = sheet.getDataRange().getValues();
-  const subs = data.slice(1).map((r) => ({
+  return data.slice(1).map((r) => ({
     id: String(r[0]),
     name: r[1],
     categoryIds: String(r[2]).split(",").filter(Boolean),
     createdAt: r[3],
   }));
-  return jsonResponse({ success: true, subCategories: subs });
+}
+
+function handleGetSubCategories() {
+  const subCategories = cachedSheetGet("gs_subcategories", _fetchSubCategories);
+  return jsonResponse({ success: true, subCategories });
 }
 
 function handleAddSubCategory(body) {
@@ -463,6 +498,7 @@ function handleAddSubCategory(body) {
     ? body.categoryIds.join(",")
     : body.categoryIds;
   sheet.appendRow([id, body.name, categoryIds, new Date().toISOString()]);
+  invalidateCache();
   return jsonResponse({ success: true, id });
 }
 
@@ -475,6 +511,7 @@ function handleUpdateSubCategory(body) {
       break;
     }
   }
+  invalidateCache();
   return jsonResponse({ success: true });
 }
 
@@ -487,6 +524,7 @@ function handleDeleteSubCategory(body) {
       break;
     }
   }
+  invalidateCache();
   return jsonResponse({ success: true });
 }
 
@@ -496,10 +534,10 @@ function handleDeleteSubCategory(body) {
 // Columns: id(1) name(2) brand(3) categoryIds(4) subCategoryIds(5) description(6) imageUrl(7)
 //          variants(8) flavors(9) stock(10) discount(11) allowPromo(12) promoCodeIds(13) status(14) createdAt(15)
 
-function handleGetProducts() {
+function _fetchProducts() {
   const sheet = getSheet("Products");
   const data = sheet.getDataRange().getValues();
-  const products = data.slice(1).map((r) => ({
+  return data.slice(1).map((r) => ({
     id: String(r[0]),
     name: r[1],
     brand: r[2],
@@ -520,6 +558,10 @@ function handleGetProducts() {
     nutritionalFacts: r[15] || "",
     benefits: r[16] || "",
   }));
+}
+
+function handleGetProducts() {
+  const products = cachedSheetGet("gs_products", _fetchProducts);
   return jsonResponse({ success: true, products });
 }
 
@@ -551,6 +593,7 @@ function handleAddProduct(body) {
   sheet.getRange(newRow, 4).setNumberFormat("@").setValue((body.categoryIds || []).join(","));
   sheet.getRange(newRow, 5).setNumberFormat("@").setValue((body.subCategoryIds || []).join(","));
   sheet.getRange(newRow, 13).setNumberFormat("@").setValue((body.promoCodeIds || []).join(","));
+  invalidateCache();
   return jsonResponse({ success: true, id });
 }
 
@@ -578,6 +621,7 @@ function handleUpdateProduct(body) {
       break;
     }
   }
+  invalidateCache();
   return jsonResponse({ success: true });
 }
 
@@ -590,16 +634,17 @@ function handleDeleteProduct(body) {
       break;
     }
   }
+  invalidateCache();
   return jsonResponse({ success: true });
 }
 
 // ════════════════════════════════════════════
 // PROMO CODES
 // ════════════════════════════════════════════
-function handleGetPromos() {
+function _fetchPromos() {
   const sheet = getSheet("PromoCodes");
   const data = sheet.getDataRange().getValues();
-  const promos = data.slice(1).map((r) => ({
+  return data.slice(1).map((r) => ({
     id: String(r[0]),
     code: r[1],
     type: r[2],
@@ -611,6 +656,10 @@ function handleGetPromos() {
     status: r[8] || "active",
     createdAt: r[9],
   }));
+}
+
+function handleGetPromos() {
+  const promos = cachedSheetGet("gs_promos", _fetchPromos);
   return jsonResponse({ success: true, promos });
 }
 
@@ -673,16 +722,20 @@ function handleDeletePromo(body) {
 // ════════════════════════════════════════════
 // DELIVERY PRICES
 // ════════════════════════════════════════════
-function handleGetDeliveryPrices() {
+function _fetchDeliveryPrices() {
   const sheet = getSheet("DeliveryPrices");
   const data = sheet.getDataRange().getValues();
-  const deliveryPrices = data.slice(1).map((r) => ({
+  return data.slice(1).map((r) => ({
     id: String(r[0]),
     wilaya: r[1],
     homePrice: Number(r[2]) || 0,
     officePrice: Number(r[3]) || 0,
     createdAt: r[4],
   }));
+}
+
+function handleGetDeliveryPrices() {
+  const deliveryPrices = cachedSheetGet("gs_delivery", _fetchDeliveryPrices);
   return jsonResponse({ success: true, deliveryPrices });
 }
 
@@ -729,31 +782,39 @@ function handleDeleteDeliveryPrice(body) {
 // ════════════════════════════════════════════
 // BUNDLE
 // ════════════════════════════════════════════
-function handleGetBundle() {
+function _fetchBundle() {
   const sheet = getSheet("Bundle");
-  if (!sheet)
-    return jsonResponse({
-      success: true,
-      bundleId: "",
-      bundleDescriptionAr: "",
-      bundleDescriptionFr: "",
-      bundleDescriptionEn: "",
-    });
+  if (!sheet) return { bundleId: "", bundleDescriptionAr: "", bundleDescriptionFr: "", bundleDescriptionEn: "" };
   const data = sheet.getDataRange().getValues();
-  const bundleId = data.length > 1 ? String(data[1][0] || "").trim() : "";
-  const bundleDescriptionAr =
-    data.length > 1 ? String(data[1][1] || "").trim() : "";
-  const bundleDescriptionFr =
-    data.length > 1 ? String(data[1][2] || "").trim() : "";
-  const bundleDescriptionEn =
-    data.length > 1 ? String(data[1][3] || "").trim() : "";
-  return jsonResponse({
-    success: true,
-    bundleId,
-    bundleDescriptionAr,
-    bundleDescriptionFr,
-    bundleDescriptionEn,
-  });
+  return {
+    bundleId: data.length > 1 ? String(data[1][0] || "").trim() : "",
+    bundleDescriptionAr: data.length > 1 ? String(data[1][1] || "").trim() : "",
+    bundleDescriptionFr: data.length > 1 ? String(data[1][2] || "").trim() : "",
+    bundleDescriptionEn: data.length > 1 ? String(data[1][3] || "").trim() : "",
+  };
+}
+
+function handleGetBundle() {
+  const bundle = cachedSheetGet("gs_bundle", _fetchBundle);
+  return jsonResponse({ success: true, ...bundle });
+}
+
+// ── COMBINED INITIAL DATA — one request instead of 5 ──
+function handleGetInitialData() {
+  const cached = gasCache().get("gs_initialdata");
+  if (cached) {
+    try { return ContentService.createTextOutput(cached).setMimeType(ContentService.MimeType.JSON); } catch(e) {}
+  }
+  const products = cachedSheetGet("gs_products", _fetchProducts);
+  const categories = cachedSheetGet("gs_categories", _fetchCategories);
+  const subCategories = cachedSheetGet("gs_subcategories", _fetchSubCategories);
+  const bundle = cachedSheetGet("gs_bundle", _fetchBundle);
+  const promos = cachedSheetGet("gs_promos", _fetchPromos);
+  const deliveryPrices = cachedSheetGet("gs_delivery", _fetchDeliveryPrices);
+  const orders = cachedSheetGet("gs_orders", _fetchOrders);
+  const payload = JSON.stringify({ success: true, products, categories, subCategories, bundle, promos, deliveryPrices, orders });
+  try { gasCache().put("gs_initialdata", payload, GAS_CACHE_TTL); } catch(e) {}
+  return ContentService.createTextOutput(payload).setMimeType(ContentService.MimeType.JSON);
 }
 
 function handleSaveBundle(body) {
@@ -784,6 +845,7 @@ function handleSaveBundle(body) {
       sheet.getRange(3, 1, sheet.getLastRow() - 2, 4).clear();
     }
   }
+  invalidateCache();
   return jsonResponse({ success: true });
 }
 
@@ -943,6 +1005,7 @@ function handleSubmitOrder(body) {
     "💰 Total: " + (body.total || 0) + " DA"
   );
 
+  invalidateCache();
   return jsonResponse({ success: true, id });
 }
 
@@ -976,13 +1039,13 @@ function handleSubmitContact(body) {
   return jsonResponse({ success: true, id });
 }
 
-function handleGetOrders() {
+function _fetchOrders() {
   const ss = SpreadsheetApp.openById(SHEET_ID);
   const sheet = ss.getSheetByName("Orders");
-  if (!sheet) return jsonResponse({ success: true, orders: [] });
+  if (!sheet) return [];
   const data = sheet.getDataRange().getValues();
-  if (data.length <= 1) return jsonResponse({ success: true, orders: [] });
-  const orders = data.slice(1).map(function (r) {
+  if (data.length <= 1) return [];
+  return data.slice(1).map(function (r) {
     return {
       id: String(r[0] || ""),
       source: String(r[1] || ""),
@@ -1002,6 +1065,10 @@ function handleGetOrders() {
       createdAt: r[15] ? String(r[15]) : "",
     };
   });
+}
+
+function handleGetOrders() {
+  const orders = cachedSheetGet("gs_orders", _fetchOrders);
   return jsonResponse({ success: true, orders });
 }
 

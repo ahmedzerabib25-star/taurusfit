@@ -1058,6 +1058,10 @@
         background: var(--red);
         color: var(--white);
       }
+      .badge-oos {
+        background: #888;
+        color: var(--white);
+      }
 
       .wishlist-btn {
         position: absolute;
@@ -2971,7 +2975,7 @@
       const SCRIPT_URL =
         "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
 
-      const CACHE_TTL = 1 * 60 * 1000; // 1 minute
+      const CACHE_TTL = 5 * 60 * 1000; // 5 minutes (matches server-side CacheService TTL)
       function cachedFetch(action) {
         const key = `bybens_cache_${action}`;
         try {
@@ -3499,71 +3503,40 @@
       /* ─────────────────────────────────────────────────────────────
    PRODUCTS — fetch from Google Sheets via Apps Script (max 10)
 ───────────────────────────────────────────────────────────── */
-      async function loadProducts() {
+      // Single request that loads products, bundle, and categories in one shot.
+      // Falls back to individual requests if getInitialData is not yet deployed.
+      async function loadInitialData() {
         try {
-          const [res, bundleRes, ordersRes] = await Promise.all([
-            cachedFetch("getProducts"),
-            cachedFetch("getBundle").catch(()=>({})),
-            cachedFetch("getOrders").catch(()=>({})),
-          ]);
-          if (!res.success) return;
-          // Only active products, max 10
+          const res = await cachedFetch("getInitialData");
+          if (!res.success) throw new Error("getInitialData failed");
+
+          // ── Products ──
           products = res.products
             .filter((p) => p.status === "active")
             .slice(0, 10);
-          if (bundleRes.success && bundleRes.bundleId) _bundleId = bundleRes.bundleId;
-          if (ordersRes.success && Array.isArray(ordersRes.orders)) _topSoldIds = computeTopSoldIds(ordersRes.orders, products);
           renderProducts(currentLang);
-        } catch (err) {
-          console.error("Failed to load products:", err);
-        }
-        hideLoader();
-      }
 
-      /* ─────────────────────────────────────────────────────────────
-   BUNDLE BANNER — fetch assigned bundle product and update banner
-───────────────────────────────────────────────────────────── */
-      async function loadBundle() {
-        try {
-          const [bundleRes, prodRes] = await Promise.all([
-            cachedFetch("getBundle"),
-            cachedFetch("getProducts"),
-          ]);
-          if (!bundleRes.success || !bundleRes.bundleId) return;
-          if (!prodRes.success) return;
-          const product = prodRes.products.find(
-            (p) => p.id === bundleRes.bundleId && p.status === "active",
-          );
-          if (!product) return;
-          const img = document.getElementById("bundleBannerImg");
-          const link = document.getElementById("bundleBannerLink");
-          const _bundleImg0 = Array.isArray(product.imageUrl) ? product.imageUrl[0] : product.imageUrl;
-          if (img && _bundleImg0) {
-            img.src = _bundleImg0;
-            img.style.display = "";
+          // ── Bundle banner ──
+          const bundle = res.bundle || {};
+          if (bundle.bundleId) {
+            _bundleId = bundle.bundleId;
+            const product = res.products.find(
+              (p) => p.id === bundle.bundleId && p.status === "active",
+            );
+            if (product) {
+              const img = document.getElementById("bundleBannerImg");
+              const link = document.getElementById("bundleBannerLink");
+              const _bundleImg0 = Array.isArray(product.imageUrl) ? product.imageUrl[0] : product.imageUrl;
+              if (img && _bundleImg0) { img.src = _bundleImg0; img.style.display = ""; }
+              if (link) link.href = `/supplements/product-detail?id=${product.id}`;
+              const section = document.getElementById("featuredBannerSection");
+              if (section) section.style.display = "";
+            }
           }
-          if (link) link.href = `/supplements/product-detail?id=${product.id}`;
-          const section = document.getElementById("featuredBannerSection");
-          if (section) section.style.display = "";
-        } catch (err) {
-          console.error("Failed to load bundle:", err);
-        }
-      }
 
-      /* ─────────────────────────────────────────────────────────────
-   CATEGORIES — fetch from Google Sheets via Apps Script
-───────────────────────────────────────────────────────────── */
-      async function loadCategories() {
-        try {
-          const [catRes, subRes] = await Promise.all([
-            cachedFetch("getCategories"),
-            cachedFetch("getSubCategories"),
-          ]);
-
-          if (!catRes.success || !subRes.success) return;
-
-          const categories = catRes.categories;
-          const subCategories = subRes.subCategories;
+          // ── Categories ──
+          const categories = res.categories || [];
+          const subCategories = res.subCategories || [];
 
           const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>`;
 
@@ -3618,8 +3591,9 @@
             })
             .join("");
         } catch (err) {
-          console.error("Failed to load categories:", err);
+          console.error("Failed to load initial data:", err);
         }
+        hideLoader();
       }
 
       /* ─────────────────────────────────────────────────────────────
@@ -3627,9 +3601,7 @@
 ───────────────────────────────────────────────────────────── */
       document.addEventListener("DOMContentLoaded", () => {
         cartUpdateBadge();
-        loadCategories();
-        loadProducts();
-        loadBundle();
+        loadInitialData();
         const savedLang = localStorage.getItem("bybens_lang") || "en";
         // Merge content.js into i18n so static texts can be edited from that file
         if (window.BYBENS_CONTENT) {
