@@ -3473,6 +3473,80 @@
         });
         return res.json();
       }
+      // ── Local cache for instant first paint (stale-while-revalidate) ──
+      const ADMIN_CACHE_KEY = "bybens_admin_cache";
+      // Server (Apps Script CacheService) caches GETs for ~5 min. After we mutate
+      // anything, GET responses will be stale until the cache expires. We track the
+      // last local-write timestamp so polling/refresh skips clobbering our state.
+      const SERVER_CACHE_TTL = 6 * 60 * 1000; // 6 minutes — slightly longer than server TTL
+      const LAST_WRITE_KEY = "bybens_admin_last_write";
+      function getLastWriteAt() {
+        try { return parseInt(localStorage.getItem(LAST_WRITE_KEY)) || 0; } catch (e) { return 0; }
+      }
+      function bustAdminCache() {
+        try { localStorage.setItem(LAST_WRITE_KEY, String(Date.now())); } catch (e) {}
+        // Persist the current in-memory state so reloads during the cooldown
+        // keep showing the user's local mutations rather than empty/stale data.
+        try {
+          const initial = {
+            success: true,
+            products: products,
+            categories: categories,
+            subCategories: subCategories,
+            promos: promos,
+            deliveryPrices: deliveryPrices,
+            orders: orders,
+            bundle: window._cachedBundle || {},
+          };
+          const settingsRes = { success: true, settings: settings };
+          writeAdminCache({ initial: initial, settingsRes: settingsRes });
+        } catch (e) {}
+      }
+      function isWriteCooldown() {
+        return Date.now() - getLastWriteAt() < SERVER_CACHE_TTL;
+      }
+      function readAdminCache() {
+        try { return JSON.parse(localStorage.getItem(ADMIN_CACHE_KEY)); } catch (e) { return null; }
+      }
+      function writeAdminCache(data) {
+        try { localStorage.setItem(ADMIN_CACHE_KEY, JSON.stringify({ ts: Date.now(), data: data })); } catch (e) {}
+      }
+      // Apply a getInitialData-shaped response to the in-memory state and re-render
+      function applyInitialData(res, settingsRes) {
+        if (!res) return;
+        if (Array.isArray(res.products)) products = res.products;
+        if (Array.isArray(res.categories)) categories = res.categories;
+        if (Array.isArray(res.subCategories)) subCategories = res.subCategories;
+        if (Array.isArray(res.promos)) promos = res.promos;
+        if (Array.isArray(res.deliveryPrices)) deliveryPrices = res.deliveryPrices;
+        if (Array.isArray(res.orders)) orders = res.orders;
+        if (res.bundle && res.bundle.bundleId) {
+          // mirror loadBundle() side effects without a network call
+          window._cachedBundle = res.bundle;
+        }
+        if (settingsRes && settingsRes.success && settingsRes.settings) {
+          settings = settingsRes.settings;
+          var u = document.getElementById("set-username");
+          var d = document.getElementById("set-displayname");
+          if (u) u.value = settings.admin_username || "";
+          if (d) d.value = settings.admin_displayname || "";
+          var name = settings.admin_displayname || settings.admin_username || "Admin";
+          var sb = document.getElementById("sb-username");
+          if (sb) sb.textContent = name;
+          var av = document.querySelector(".sb-avatar");
+          if (av) av.textContent = name[0].toUpperCase();
+        }
+        renderCats();
+        renderProducts();
+        renderPromos();
+        renderDelivery();
+        renderOrders();
+        renderBundleList(document.getElementById("bundle-search")?.value || "");
+        if (typeof renderBundleSelected === "function" && window._cachedBundle) {
+          try { renderBundleSelected(window._cachedBundle); } catch (e) {}
+        }
+        updateDashboard();
+      }
       function showLoading(msg = "Loading…") {
         document.getElementById("loading-text").textContent = msg;
         document.getElementById("loading-overlay").classList.add("show");
@@ -3578,6 +3652,7 @@
       }
 
       async function silentPollOrders() {
+        if (isWriteCooldown()) return;
         try {
           const r = await apiGet("getOrders");
           if (!r.success) return;
@@ -3596,6 +3671,7 @@
       }
 
       async function silentPollProducts() {
+        if (isWriteCooldown()) return;
         try {
           const [rProd, rPromo] = await Promise.all([
             apiGet("getProducts"),
@@ -3605,7 +3681,6 @@
           if (rPromo.success) { promos = rPromo.promos; renderPromos(); }
         } catch (e) { /* silent */ }
       }
-
       function startPolling() {
         setInterval(silentPollOrders, 15000);
         setInterval(silentPollProducts, 30000);
@@ -3619,25 +3694,51 @@
           showToast("Set API_URL in the script!", "error");
           return;
         }
-        showLoading("Loading dashboard…");
-        try {
-          await Promise.all([
-            loadCategories(),
-            loadSubCategories(),
-            loadProducts(),
-            loadPromos(),
-            loadDeliveryPrices(),
-            loadSettings(),
-            loadBundle(),
-            loadOrders(),
-          ]);
-          updateDashboard();
-          // seed known IDs so first poll doesn't false-alarm
+        // 1) Instant first paint from cache (if any) — no spinner, no waiting
+        const cached = readAdminCache();
+        if (cached && cached.data) {
+          applyInitialData(cached.data.initial, cached.data.settingsRes);
           orders.forEach(o => { if (o.id) knownOrderIds.add(o.id); });
           updateLastUpdated();
+        } else {
+          showLoading("Loading dashboard…");
+        }
+        // 2) Refresh in background — 3 parallel calls instead of 9
+        try {
+          const [initRes, settingsRes, bundleRes] = await Promise.all([
+            apiGet("getInitialData"),
+            apiGet("getSettings"),
+            apiGet("getBundle"),
+          ]);
+          // If we just wrote locally, the server cache may still be stale.
+          // Skip the apply but keep the freshly loaded data only if no cooldown.
+          if (initRes && initRes.success && !isWriteCooldown()) {
+            applyInitialData(initRes, settingsRes);
+            writeAdminCache({ initial: initRes, settingsRes: settingsRes });
+            // Apply bundle description (not part of getInitialData)
+            if (bundleRes && bundleRes.success) {
+              if (bundleRes.bundleId) {
+                bundleSelectedId = bundleRes.bundleId;
+                const p = products.find((x) => x.id === bundleRes.bundleId);
+                const lbl = document.getElementById("bundle-selected-label");
+                if (lbl) lbl.innerHTML = p
+                  ? `Selected: <strong>${p.name}</strong>`
+                  : `Selected: <strong>${bundleRes.bundleId}</strong>`;
+              }
+              if (bundleRes.bundleDescription) {
+                const desc = document.getElementById("bundle-description");
+                if (desc) desc.value = bundleRes.bundleDescription;
+              }
+              renderBundleList(document.getElementById("bundle-search")?.value || "");
+            }
+            orders.forEach(o => { if (o.id) knownOrderIds.add(o.id); });
+            updateLastUpdated();
+          } else if (!cached) {
+            showToast("Failed to load data", "error");
+          }
           startPolling();
         } catch (e) {
-          showToast("Failed to load: " + e.message, "error");
+          if (!cached) showToast("Failed to load: " + e.message, "error");
         }
         hideLoading();
       });
@@ -4344,8 +4445,19 @@
           if (r.success) {
             showToast(editingProductId ? "Product updated!" : "Product added!");
             closeModal("product-modal");
-            await loadProducts();
+            // Local mutation — no refetch round-trip
+            if (editingProductId) {
+              const idx = products.findIndex(p => p.id === editingProductId);
+              if (idx >= 0) products[idx] = { ...products[idx], ...payload, id: editingProductId };
+            } else {
+              const newProduct = { ...payload, id: r.id || ("tmp_" + Date.now()) };
+              products.unshift(newProduct);
+            }
+            renderProducts();
+            renderBundleList(document.getElementById("bundle-search")?.value || "");
             updateDashboard();
+            // Silent background sync to pick up server-canonical IDs
+            bustAdminCache();
           } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {
           showToast("Error: " + e.message, "error");
@@ -4435,8 +4547,16 @@
             showToast(editingCatId ? "Category updated!" : "Category saved!");
             closeModal("cat-modal");
             editingCatId = null;
-            await Promise.all([loadCategories(), loadSubCategories()]);
+            // Local mutation + silent background sync
+            if (payload.action === "updateCategory") {
+              const idx = categories.findIndex(c => c.id === payload.id);
+              if (idx >= 0) categories[idx] = { ...categories[idx], name: payload.name, description: payload.description };
+            } else {
+              categories.push({ id: r.id || ("tmp_cat_" + Date.now()), name: payload.name, description: payload.description });
+            }
+            renderCats();
             updateDashboard();
+            bustAdminCache();
           } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {
           showToast("Error: " + e.message, "error");
@@ -4459,8 +4579,11 @@
           if (r.success) {
             showToast("Sub-category updated!");
             closeModal("subcat-edit-modal");
+            const sIdx = subCategories.findIndex(s => s.id === editingSubCatId);
+            if (sIdx >= 0) subCategories[sIdx] = { ...subCategories[sIdx], name };
             editingSubCatId = null;
-            await Promise.all([loadCategories(), loadSubCategories()]);
+            renderCats();
+            bustAdminCache();
           } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {
           showToast("Error: " + e.message, "error");
@@ -4581,8 +4704,15 @@
           if (r.success) {
             showToast(editingPromoId ? "Promo updated!" : "Promo created!");
             closeModal("promo-modal");
-            await loadPromos();
+            if (editingPromoId) {
+              const idx = promos.findIndex(p => p.id === editingPromoId);
+              if (idx >= 0) promos[idx] = { ...promos[idx], ...payload, id: editingPromoId, uses: promos[idx].uses || 0 };
+            } else {
+              promos.push({ ...payload, id: r.id || ("tmp_promo_" + Date.now()), uses: 0 });
+            }
+            renderPromos();
             updateDashboard();
+            bustAdminCache();
           } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {
           showToast("Error: " + e.message, "error");
@@ -4692,19 +4822,35 @@
               showToast(
                 cap(type === "subcat" ? "sub-category" : type) + " deleted",
               );
-              if (type === "product") await loadProducts();
-              else if (type === "cat" || type === "subcat") {
-                await loadCategories();
-                await loadSubCategories();
-              } else if (type === "promo") await loadPromos();
-              else if (type === "delivery") await loadDeliveryPrices();
-              else if (type === "order") {
+              // Local mutation
+              if (type === "product") {
+                products = products.filter(p => p.id !== id);
+                renderProducts();
+                renderBundleList(document.getElementById("bundle-search")?.value || "");
+                bustAdminCache();
+              } else if (type === "cat") {
+                categories = categories.filter(c => c.id !== id);
+                subCategories = subCategories.filter(s => !(s.categoryIds || []).includes(id));
+                renderCats();
+                bustAdminCache();
+              } else if (type === "subcat") {
+                subCategories = subCategories.filter(s => s.id !== id);
+                renderCats();
+                bustAdminCache();
+              } else if (type === "promo") {
+                promos = promos.filter(p => p.id !== id);
+                renderPromos();
+                bustAdminCache();
+              } else if (type === "delivery") {
+                deliveryPrices = deliveryPrices.filter(d => d.id !== id);
+                renderDelivery();
+                bustAdminCache();
+              } else if (type === "order") {
                 orders = orders.filter((o) => o.id !== id);
                 renderOrders();
                 document.getElementById("order-detail-modal").classList.remove("open");
-                updateDashboard();
               }
-              if (type !== "order") updateDashboard();
+              updateDashboard();
             } else showToast("Error: " + (r.error || "Unknown"), "error");
           } catch (e) {
             showToast("Error: " + e.message, "error");
@@ -4799,15 +4945,30 @@
             } catch(e) { failed++; }
           }
           _selReset(type);
-          if (type === "product") await loadProducts();
-          else if (type === "cat") { await loadCategories(); await loadSubCategories(); }
-          else if (type === "promo") await loadPromos();
-          else if (type === "delivery") await loadDeliveryPrices();
-          else if (type === "order") {
-            for (const id of deletedIds) orders = orders.filter(o => o.id !== id);
+          const deletedSet = new Set(deletedIds);
+          if (type === "product") {
+            products = products.filter(p => !deletedSet.has(p.id));
+            renderProducts();
+            renderBundleList(document.getElementById("bundle-search")?.value || "");
+            bustAdminCache();
+          } else if (type === "cat") {
+            categories = categories.filter(c => !deletedSet.has(c.id));
+            subCategories = subCategories.filter(s => !(s.categoryIds || []).some(cid => deletedSet.has(cid)));
+            renderCats();
+            bustAdminCache();
+          } else if (type === "promo") {
+            promos = promos.filter(p => !deletedSet.has(p.id));
+            renderPromos();
+            bustAdminCache();
+          } else if (type === "delivery") {
+            deliveryPrices = deliveryPrices.filter(d => !deletedSet.has(d.id));
+            renderDelivery();
+            bustAdminCache();
+          } else if (type === "order") {
+            orders = orders.filter(o => !deletedSet.has(o.id));
             renderOrders();
           }
-          if (type !== "order") updateDashboard();
+          updateDashboard();
           hideLoading();
           if (failed) showToast(failed + " item(s) failed to delete", "error");
           else showToast(n + " item" + (n !== 1 ? "s" : "") + " deleted");
@@ -4937,7 +5098,14 @@
               editingDeliveryId ? "Delivery price updated!" : "Wilaya added!",
             );
             closeModal("delivery-modal");
-            await loadDeliveryPrices();
+            if (editingDeliveryId) {
+              const idx = deliveryPrices.findIndex(d => d.id === editingDeliveryId);
+              if (idx >= 0) deliveryPrices[idx] = { ...deliveryPrices[idx], wilaya, homePrice, officePrice };
+            } else {
+              deliveryPrices.push({ id: r.id || ("tmp_dp_" + Date.now()), wilaya, homePrice, officePrice });
+            }
+            renderDelivery();
+            bustAdminCache();
           } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {
           showToast("Error: " + e.message, "error");

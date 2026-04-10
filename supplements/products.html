@@ -6,11 +6,29 @@
     <title>Products – ByBens Sports Nutrition Algeria</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://script.google.com" />
+    <link rel="dns-prefetch" href="https://script.googleusercontent.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" type="image/png" href="/images/favicon.ico" />
+    <link rel="icon" href="/images/favicon.ico" />
+    <script>
+      (function () {
+        var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
+        try {
+          var cached = JSON.parse(localStorage.getItem("bybens_cache_getInitialData"));
+          if (cached && Date.now() - cached.ts < 5 * 60 * 1000) {
+            window.__initialDataPromise = Promise.resolve(cached.data);
+            window.__initialDataFromCache = true;
+            return;
+          }
+        } catch (e) {}
+        window.__initialDataPromise = fetch(SCRIPT_URL + "?action=getInitialData")
+          .then(function (r) { return r.json(); })
+          .catch(function () { return null; });
+      })();
+    </script>
 
     <style>
       /* ─── VARIABLES ─────────────────────────────────────────── */
@@ -43,98 +61,29 @@
       }
 
       /* ─── PAGE LOADER ─────────────────────────────────────────── */
-      #pageLoader {
-        position: fixed;
-        inset: 0;
-        background: #0a0a0a;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 99999;
-        transition:
-          opacity 0.5s ease,
-          visibility 0.5s ease;
-      }
-      #pageLoader.hidden {
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-      }
-      .loader-inner {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 24px;
-      }
-      .loader-brand {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: clamp(3rem, 10vw, 5rem);
-        letter-spacing: 0.06em;
-        line-height: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 4px;
-      }
-      .lb-supplements {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: clamp(1rem, 3.5vw, 1.6rem);
-        letter-spacing: 0.25em;
-        color: #fff;
-        opacity: 0;
-        transform: translateY(28px);
-        animation: ldrUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
-      }
-      .lb-by {
-        color: #fff;
-        display: inline-block;
-        opacity: 0;
-        transform: translateY(28px);
-        animation: ldrUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.45s forwards;
-      }
-      .lb-bens {
-        color: #ad0000;
-        display: inline-block;
-        opacity: 0;
-        transform: translateY(28px);
-        animation: ldrUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards;
-      }
-      @keyframes ldrUp {
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .loader-bar {
-        width: 120px;
-        height: 2px;
-        background: rgba(255, 255, 255, 0.12);
-        border-radius: 2px;
-        overflow: hidden;
-        opacity: 0;
-        animation: ldrBarIn 0.3s ease 0.6s forwards;
-      }
-      @keyframes ldrBarIn {
-        to {
-          opacity: 1;
-        }
-      }
-      .loader-bar-fill {
-        height: 100%;
-        width: 40%;
-        background: #ad0000;
-        border-radius: 2px;
-        animation: ldrSweep 1.2s ease-in-out 0.6s infinite;
-      }
-      @keyframes ldrSweep {
-        0% {
-          transform: translateX(-250%);
-        }
-        100% {
-          transform: translateX(450%);
-        }
-      }
+      #pageLoader{position:fixed;inset:0;background:radial-gradient(ellipse at center,#1a0303 0%,#0a0000 50%,#050505 100%);display:flex;align-items:center;justify-content:center;z-index:99999;transition:opacity .6s ease,visibility .6s ease;overflow:hidden}
+      #pageLoader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+      #pageLoader::before{content:"";position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,10,10,.08) 0%,transparent 60%);animation:ldrGlow 4s ease-in-out infinite;pointer-events:none}
+      @keyframes ldrGlow{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.15);opacity:1}}
+      .ldr-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:36px;z-index:1}
+      .ldr-ring-wrap{position:relative;width:160px;height:160px;display:flex;align-items:center;justify-content:center;animation:ldrFadeUp .6s cubic-bezier(.22,1,.36,1) both}
+      .ldr-ring{position:absolute;inset:0;width:100%;height:100%;animation:ldrRotate 1.8s linear infinite}
+      .ldr-ring circle{fill:none;stroke:url(#ldrGrad);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:120 220;filter:drop-shadow(0 0 6px rgba(255,10,10,.5))}
+      .ldr-ring-inner{position:absolute;inset:14px;border-radius:50%;border:1px solid rgba(255,255,255,.06)}
+      .ldr-brand{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;color:#fff;letter-spacing:.06em;line-height:1;animation:ldrPulse 2.4s ease-in-out infinite}
+      .ldr-brand-by{font-size:18px;letter-spacing:.32em;color:rgba(255,255,255,.55);margin-bottom:6px}
+      .ldr-brand-bens{font-size:38px;color:#fff}
+      .ldr-brand-bens em{color:#ff0a0a;font-style:normal;text-shadow:0 0 18px rgba(255,10,10,.65),0 0 36px rgba(255,10,10,.35)}
+      .ldr-tagline{font-family:"Bebas Neue",sans-serif;color:rgba(255,255,255,.45);letter-spacing:.42em;font-size:11px;opacity:0;animation:ldrFadeIn 1s ease .35s forwards;text-align:center}
+      .ldr-dots{display:inline-flex;gap:4px;margin-left:8px;vertical-align:middle}
+      .ldr-dots span{width:3px;height:3px;background:#ff0a0a;border-radius:50%;opacity:.3;animation:ldrDot 1.4s ease-in-out infinite}
+      .ldr-dots span:nth-child(2){animation-delay:.2s}
+      .ldr-dots span:nth-child(3){animation-delay:.4s}
+      @keyframes ldrDot{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-2px)}}
+      @keyframes ldrRotate{to{transform:rotate(360deg)}}
+      @keyframes ldrPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+      @keyframes ldrFadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+      @keyframes ldrFadeIn{to{opacity:1}}
 
       /* ─── RESET ─────────────────────────────────────────────── */
       *,
@@ -2269,22 +2218,28 @@
   <body>
     <!-- PAGE LOADER -->
     <div id="pageLoader">
-      <div class="loader-inner">
-        <div class="loader-brand">
-          <span class="lb-supplements">Supplements</span>
-          <div><span class="lb-by">By</span><span class="lb-bens"> Ben's</span></div>
+      <div class="ldr-wrap">
+        <div class="ldr-ring-wrap">
+          <svg class="ldr-ring" viewBox="0 0 100 100" aria-hidden="true">
+            <defs>
+              <linearGradient id="ldrGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff1a1a"/>
+                <stop offset="50%" stop-color="#ad0000"/>
+                <stop offset="100%" stop-color="#3d0000"/>
+              </linearGradient>
+            </defs>
+            <circle cx="50" cy="50" r="46"/>
+          </svg>
+          <div class="ldr-ring-inner"></div>
+          <div class="ldr-brand">
+            <span class="ldr-brand-by">SUPPLEMENTS</span>
+            <span class="ldr-brand-bens">BY BEN<em>'</em>S</span>
+          </div>
         </div>
-        <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+        <div class="ldr-tagline">FUEL · PERFORM · DOMINATE<span class="ldr-dots"><span></span><span></span><span></span></span></div>
       </div>
     </div>
-    <script>
-      (function () {
-        try {
-          var c = JSON.parse(localStorage.getItem("bybens_cache_getInitialData"));
-          if (c && Date.now() - c.ts < 5 * 60 * 1000) document.getElementById("pageLoader").style.display = "none";
-        } catch (e) {}
-      })();
-    </script>
+    <script>if(window.__initialDataFromCache){document.getElementById('pageLoader').style.display='none';}</script>
     <!-- ═══ MARQUEE ══════════════════════════════════════════════ -->
     <div class="marquee-bar">
       <div class="marquee-track">
@@ -2307,7 +2262,7 @@
           </button>
           <!-- Logo — single <a> tag, no nesting -->
           <a href="/supplements" class="logo" aria-label="ByBens Home">
-            <img src="/images/logo.png" alt="ByBens Logo" />
+            <img src="/images/logo.png" alt="ByBens Logo" width="140" height="40" fetchpriority="high" decoding="async" />
           </a>
 
           <!-- Supplements link (desktop only) -->
@@ -2960,6 +2915,17 @@
             return data;
           });
       }
+      function getInitialData() {
+        if (window.__initialDataPromise) {
+          return window.__initialDataPromise.then(function (data) {
+            if (data && !window.__initialDataFromCache) {
+              try { localStorage.setItem("bybens_cache_getInitialData", JSON.stringify({ ts: Date.now(), data: data })); } catch (e) {}
+            }
+            return data;
+          });
+        }
+        return cachedFetch("getInitialData");
+      }
 
       function hideLoader() {
         var l = document.getElementById("pageLoader");
@@ -3061,8 +3027,8 @@
 
       async function loadData() {
         try {
-          const res = await cachedFetch("getInitialData");
-          if (!res.success) throw new Error("getInitialData failed");
+          const res = await getInitialData();
+          if (!res || !res.success) throw new Error("getInitialData failed");
 
           allProducts = res.products
             .filter((p) => p.status === "active")

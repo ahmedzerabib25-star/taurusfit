@@ -7,5 +7,25 @@
     { "source": "/checkout", "destination": "/supplements/checkout", "permanent": true },
     { "source": "/mgmt9kx", "destination": "/supplements/mgmt9kx", "permanent": false },
     { "source": "/panel4rz", "destination": "/supplements/panel4rz", "permanent": false }
+  ],
+  "headers": [
+    {
+      "source": "/images/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/content.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/(.*)\\.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    }
   ]
 }
