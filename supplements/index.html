@@ -76,8 +76,16 @@
       .ldr-brand-by{font-size:18px;letter-spacing:.32em;color:rgba(255,255,255,.55);margin-bottom:6px}
       .ldr-brand-bens{font-size:38px;color:#fff}
       .ldr-brand-bens em{color:#ff0a0a;font-style:normal;text-shadow:0 0 18px rgba(255,10,10,.65),0 0 36px rgba(255,10,10,.35)}
-      .ldr-tagline{font-family:"Bebas Neue",sans-serif;color:rgba(255,255,255,.45);letter-spacing:.42em;font-size:11px;opacity:0;animation:ldrFadeIn 1s ease .35s forwards;text-align:center}
-      .ldr-dots{display:inline-flex;gap:4px;margin-left:8px;vertical-align:middle}
+      .ldr-tagline{font-family:"Bebas Neue",sans-serif;color:rgba(255,255,255,.45);letter-spacing:.42em;font-size:11px;text-align:center;display:flex;align-items:center;gap:6px;justify-content:center}
+      .ldr-tagline .ldr-word{opacity:0;transform:scale(0);animation:ldrPop .45s cubic-bezier(.175,.885,.32,1.275) forwards}
+      .ldr-tagline .ldr-word:nth-child(1){animation-delay:.4s}
+      .ldr-tagline .ldr-word:nth-child(3){animation-delay:.7s}
+      .ldr-tagline .ldr-word:nth-child(5){animation-delay:1s}
+      .ldr-tagline .ldr-sep{opacity:0;animation:ldrFadeIn .3s ease forwards}
+      .ldr-tagline .ldr-sep:nth-child(2){animation-delay:.55s}
+      .ldr-tagline .ldr-sep:nth-child(4){animation-delay:.85s}
+      @keyframes ldrPop{0%{opacity:0;transform:scale(0)}70%{opacity:1;transform:scale(1.3)}100%{opacity:1;transform:scale(1)}}
+      .ldr-dots{display:inline-flex;gap:4px;margin-left:8px;vertical-align:middle;opacity:0;animation:ldrFadeIn .3s ease 1.15s forwards}
       .ldr-dots span{width:3px;height:3px;background:#ff0a0a;border-radius:50%;opacity:.3;animation:ldrDot 1.4s ease-in-out infinite}
       .ldr-dots span:nth-child(2){animation-delay:.2s}
       .ldr-dots span:nth-child(3){animation-delay:.4s}
@@ -1993,7 +2001,7 @@
             <span class="ldr-brand-bens">BY BEN<em>'</em>S</span>
           </div>
         </div>
-        <div class="ldr-tagline">FUEL · PERFORM · DOMINATE<span class="ldr-dots"><span></span><span></span><span></span></span></div>
+        <div class="ldr-tagline"><span class="ldr-word">FUEL</span><span class="ldr-sep">·</span><span class="ldr-word">PERFORM</span><span class="ldr-sep">·</span><span class="ldr-word">DOMINATE</span><span class="ldr-dots"><span></span><span></span><span></span></span></div>
       </div>
     </div>
     <script>if(window.__initialDataFromCache){document.getElementById('pageLoader').style.display='none';}</script>
