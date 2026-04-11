@@ -15,18 +15,27 @@
     <link rel="icon" href="/images/favicon.ico" />
     <script>
       (function () {
-        var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
+        var SCRIPT_URL =
+          "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
         try {
-          var cached = JSON.parse(localStorage.getItem("bybens_cache_getInitialData"));
+          var cached = JSON.parse(
+            localStorage.getItem("bybens_cache_getInitialData"),
+          );
           if (cached && Date.now() - cached.ts < 5 * 60 * 1000) {
             window.__initialDataPromise = Promise.resolve(cached.data);
             window.__initialDataFromCache = true;
             return;
           }
         } catch (e) {}
-        window.__initialDataPromise = fetch(SCRIPT_URL + "?action=getInitialData")
-          .then(function (r) { return r.json(); })
-          .catch(function () { return null; });
+        window.__initialDataPromise = fetch(
+          SCRIPT_URL + "?action=getInitialData",
+        )
+          .then(function (r) {
+            return r.json();
+          })
+          .catch(function () {
+            return null;
+          });
       })();
     </script>
 
@@ -60,37 +69,232 @@
       }
 
       /* ─── PAGE LOADER ─────────────────────────────────────────── */
-      #pageLoader{position:fixed;inset:0;background:radial-gradient(ellipse at center,#1a0303 0%,#0a0000 50%,#050505 100%);display:flex;align-items:center;justify-content:center;z-index:99999;transition:opacity .6s ease,visibility .6s ease;overflow:hidden}
-      #pageLoader.hidden{opacity:0;visibility:hidden;pointer-events:none}
-      #pageLoader::before{content:"";position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,10,10,.08) 0%,transparent 60%);animation:ldrGlow 4s ease-in-out infinite;pointer-events:none}
-      @keyframes ldrGlow{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.15);opacity:1}}
-      .ldr-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:36px;z-index:1}
-      .ldr-ring-wrap{position:relative;width:160px;height:160px;display:flex;align-items:center;justify-content:center;animation:ldrFadeUp .6s cubic-bezier(.22,1,.36,1) both}
-      .ldr-ring{position:absolute;inset:0;width:100%;height:100%;animation:ldrRotate 1.8s linear infinite}
-      .ldr-ring circle{fill:none;stroke:url(#ldrGrad);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:120 220;filter:drop-shadow(0 0 6px rgba(255,10,10,.5))}
-      .ldr-ring-inner{position:absolute;inset:14px;border-radius:50%;border:1px solid rgba(255,255,255,.06)}
-      .ldr-brand{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;color:#fff;letter-spacing:.06em;line-height:1;animation:ldrPulse 2.4s ease-in-out infinite}
-      .ldr-brand-by{font-size:18px;letter-spacing:.32em;color:rgba(255,255,255,.55);margin-bottom:6px}
-      .ldr-brand-bens{font-size:38px;color:#fff}
-      .ldr-brand-bens em{color:#ff0a0a;font-style:normal;text-shadow:0 0 18px rgba(255,10,10,.65),0 0 36px rgba(255,10,10,.35)}
-      .ldr-tagline{font-family:"Bebas Neue",sans-serif;color:rgba(255,255,255,.45);letter-spacing:.42em;font-size:11px;text-align:center;display:flex;align-items:center;gap:6px;justify-content:center}
-      .ldr-tagline .ldr-word{opacity:0;transform:scale(0);animation:ldrPop .45s cubic-bezier(.175,.885,.32,1.275) forwards}
-      .ldr-tagline .ldr-word:nth-child(1){animation-delay:.4s}
-      .ldr-tagline .ldr-word:nth-child(3){animation-delay:.7s}
-      .ldr-tagline .ldr-word:nth-child(5){animation-delay:1s}
-      .ldr-tagline .ldr-sep{opacity:0;animation:ldrFadeIn .3s ease forwards}
-      .ldr-tagline .ldr-sep:nth-child(2){animation-delay:.55s}
-      .ldr-tagline .ldr-sep:nth-child(4){animation-delay:.85s}
-      @keyframes ldrPop{0%{opacity:0;transform:scale(0)}70%{opacity:1;transform:scale(1.3)}100%{opacity:1;transform:scale(1)}}
-      .ldr-dots{display:inline-flex;gap:4px;margin-left:8px;vertical-align:middle;opacity:0;animation:ldrFadeIn .3s ease 1.15s forwards}
-      .ldr-dots span{width:3px;height:3px;background:#ff0a0a;border-radius:50%;opacity:.3;animation:ldrDot 1.4s ease-in-out infinite}
-      .ldr-dots span:nth-child(2){animation-delay:.2s}
-      .ldr-dots span:nth-child(3){animation-delay:.4s}
-      @keyframes ldrDot{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-2px)}}
-      @keyframes ldrRotate{to{transform:rotate(360deg)}}
-      @keyframes ldrPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-      @keyframes ldrFadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-      @keyframes ldrFadeIn{to{opacity:1}}
+      #pageLoader {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          #1a0303 0%,
+          #0a0000 50%,
+          #050505 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        transition:
+          opacity 0.6s ease,
+          visibility 0.6s ease;
+        overflow: hidden;
+      }
+      #pageLoader.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      #pageLoader::before {
+        content: "";
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 10, 10, 0.08) 0%,
+          transparent 60%
+        );
+        animation: ldrGlow 4s ease-in-out infinite;
+        pointer-events: none;
+      }
+      @keyframes ldrGlow {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.6;
+        }
+        50% {
+          transform: scale(1.15);
+          opacity: 1;
+        }
+      }
+      .ldr-wrap {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 36px;
+        z-index: 1;
+      }
+      .ldr-ring-wrap {
+        position: relative;
+        width: 160px;
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: ldrFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      .ldr-ring {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        animation: ldrRotate 1.8s linear infinite;
+      }
+      .ldr-ring circle {
+        fill: none;
+        stroke: url(#ldrGrad);
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-dasharray: 120 220;
+        filter: drop-shadow(0 0 6px rgba(255, 10, 10, 0.5));
+      }
+      .ldr-ring-inner {
+        position: absolute;
+        inset: 14px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .ldr-brand {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: "Bebas Neue", sans-serif;
+        color: #fff;
+        letter-spacing: 0.06em;
+        line-height: 1;
+        animation: ldrPulse 2.4s ease-in-out infinite;
+      }
+      .ldr-brand-by {
+        font-size: 18px;
+        letter-spacing: 0.32em;
+        color: rgba(255, 255, 255, 0.55);
+        margin-bottom: 6px;
+      }
+      .ldr-brand-bens {
+        font-size: 38px;
+        color: #fff;
+      }
+      .ldr-brand-bens em {
+        color: #ff0a0a;
+        font-style: normal;
+        text-shadow:
+          0 0 18px rgba(255, 10, 10, 0.65),
+          0 0 36px rgba(255, 10, 10, 0.35);
+      }
+      .ldr-tagline {
+        font-family: "Bebas Neue", sans-serif;
+        color: rgba(255, 255, 255, 0.45);
+        letter-spacing: 0.42em;
+        font-size: 11px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        justify-content: center;
+      }
+      .ldr-tagline .ldr-word {
+        opacity: 0;
+        transform: scale(0);
+        animation: ldrPop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      }
+      .ldr-tagline .ldr-word:nth-child(1) {
+        animation-delay: 0.4s;
+      }
+      .ldr-tagline .ldr-word:nth-child(3) {
+        animation-delay: 0.7s;
+      }
+      .ldr-tagline .ldr-word:nth-child(5) {
+        animation-delay: 1s;
+      }
+      .ldr-tagline .ldr-sep {
+        opacity: 0;
+        animation: ldrFadeIn 0.3s ease forwards;
+      }
+      .ldr-tagline .ldr-sep:nth-child(2) {
+        animation-delay: 0.55s;
+      }
+      .ldr-tagline .ldr-sep:nth-child(4) {
+        animation-delay: 0.85s;
+      }
+      @keyframes ldrPop {
+        0% {
+          opacity: 0;
+          transform: scale(0);
+        }
+        70% {
+          opacity: 1;
+          transform: scale(1.3);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      .ldr-dots {
+        display: inline-flex;
+        gap: 4px;
+        margin-left: 8px;
+        vertical-align: middle;
+        opacity: 0;
+        animation: ldrFadeIn 0.3s ease 1.15s forwards;
+      }
+      .ldr-dots span {
+        width: 3px;
+        height: 3px;
+        background: #ff0a0a;
+        border-radius: 50%;
+        opacity: 0.3;
+        animation: ldrDot 1.4s ease-in-out infinite;
+      }
+      .ldr-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .ldr-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      @keyframes ldrDot {
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: translateY(0);
+        }
+        50% {
+          opacity: 1;
+          transform: translateY(-2px);
+        }
+      }
+      @keyframes ldrRotate {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes ldrPulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.04);
+        }
+      }
+      @keyframes ldrFadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes ldrFadeIn {
+        to {
+          opacity: 1;
+        }
+      }
 
       /* ─── RESET ────────────────────────────────────────────────── */
       *,
@@ -643,7 +847,7 @@
         z-index: 1001;
       }
       .dropdown::before {
-        content: '';
+        content: "";
         position: absolute;
         top: -12px;
         left: 0;
@@ -876,7 +1080,9 @@
         cursor: pointer;
         border: 2px solid transparent;
         background: var(--gray-50);
-        transition: border-color 0.2s, opacity 0.2s;
+        transition:
+          border-color 0.2s,
+          opacity 0.2s;
         flex-shrink: 0;
       }
       .gallery-thumb img {
@@ -885,10 +1091,17 @@
         object-fit: cover;
         display: block;
       }
-      .gallery-thumb:hover { opacity: 0.8; }
-      .gallery-thumb.active { border-color: var(--red); }
+      .gallery-thumb:hover {
+        opacity: 0.8;
+      }
+      .gallery-thumb.active {
+        border-color: var(--red);
+      }
       @media (max-width: 600px) {
-        .gallery-thumb { width: 52px; height: 52px; }
+        .gallery-thumb {
+          width: 52px;
+          height: 52px;
+        }
       }
       .product-main-img .product-badge {
         position: absolute;
@@ -988,7 +1201,7 @@
         color: var(--red);
       }
       .variant-pill.variant-pill-oos {
-        opacity: .4;
+        opacity: 0.4;
         cursor: not-allowed;
         pointer-events: none;
         text-decoration: line-through;
@@ -1399,9 +1612,16 @@
         line-height: 1.7;
         margin-bottom: 3px;
       }
-      #productDescription strong { color: var(--black); font-weight: 700; }
-      #productDescription em { font-style: italic; }
-      #productDescription u { text-decoration: underline; }
+      #productDescription strong {
+        color: var(--black);
+        font-weight: 700;
+      }
+      #productDescription em {
+        font-style: italic;
+      }
+      #productDescription u {
+        text-decoration: underline;
+      }
       #productNutritionalFacts ul,
       #productNutritionalFacts ol,
       #productBenefits ul,
@@ -1417,11 +1637,18 @@
         margin-bottom: 3px;
       }
       #productNutritionalFacts strong,
-      #productBenefits strong { color: var(--black); font-weight: 700; }
+      #productBenefits strong {
+        color: var(--black);
+        font-weight: 700;
+      }
       #productNutritionalFacts em,
-      #productBenefits em { font-style: italic; }
+      #productBenefits em {
+        font-style: italic;
+      }
       #productNutritionalFacts u,
-      #productBenefits u { text-decoration: underline; }
+      #productBenefits u {
+        text-decoration: underline;
+      }
       .product-description p {
         font-size: 14px;
         color: var(--gray-600);
@@ -1648,7 +1875,14 @@
         align-items: center;
         gap: 8px;
         padding: 10px 22px;
-        background: linear-gradient(135deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+        background: linear-gradient(
+          135deg,
+          #f09433 0%,
+          #e6683c 25%,
+          #dc2743 50%,
+          #cc2366 75%,
+          #bc1888 100%
+        );
         color: #fff;
         border-radius: 8px;
         font-size: 14px;
@@ -1657,7 +1891,9 @@
         margin-bottom: 16px;
         transition: opacity 0.2s;
       }
-      .success-instagram:hover { opacity: 0.88; }
+      .success-instagram:hover {
+        opacity: 0.88;
+      }
 
       /* ─── TOAST ────────────────────────────────────────────────── */
       .toast {
@@ -1779,12 +2015,30 @@
         text-transform: uppercase;
         z-index: 1;
       }
-      .badge-hot   { background: #ff6b00; color: #fff; }
-      .badge-bundle{ background: #0a7c3e; color: #fff; }
-      .badge-sale  { background: var(--red); color: #fff; }
-      .badge-promo { background: var(--red); color: #fff; }
-      .badge-new   { background: #000; color: #fff; }
-      .badge-oos   { background: #888; color: #fff; }
+      .badge-hot {
+        background: #ff6b00;
+        color: #fff;
+      }
+      .badge-bundle {
+        background: #0a7c3e;
+        color: #fff;
+      }
+      .badge-sale {
+        background: var(--red);
+        color: #fff;
+      }
+      .badge-promo {
+        background: var(--red);
+        color: #fff;
+      }
+      .badge-new {
+        background: #000;
+        color: #fff;
+      }
+      .badge-oos {
+        background: #888;
+        color: #fff;
+      }
 
       /* ─── YOU MAY ALSO LIKE ───────────────────────────────────── */
       .also-like-section {
@@ -1852,8 +2106,12 @@
         opacity: 0;
         transition: opacity 0.35s ease;
       }
-      .also-card:hover .also-card-img:has(.img-hover) .img-primary { opacity: 0; }
-      .also-card:hover .also-card-img img.img-hover { opacity: 1; }
+      .also-card:hover .also-card-img:has(.img-hover) .img-primary {
+        opacity: 0;
+      }
+      .also-card:hover .also-card-img img.img-hover {
+        opacity: 1;
+      }
       .also-card-body {
         padding: 12px 14px 16px;
         flex: 1;
@@ -2461,12 +2719,12 @@
           <svg class="ldr-ring" viewBox="0 0 100 100" aria-hidden="true">
             <defs>
               <linearGradient id="ldrGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#ff1a1a"/>
-                <stop offset="50%" stop-color="#ad0000"/>
-                <stop offset="100%" stop-color="#3d0000"/>
+                <stop offset="0%" stop-color="#ff1a1a" />
+                <stop offset="50%" stop-color="#ad0000" />
+                <stop offset="100%" stop-color="#3d0000" />
               </linearGradient>
             </defs>
-            <circle cx="50" cy="50" r="46"/>
+            <circle cx="50" cy="50" r="46" />
           </svg>
           <div class="ldr-ring-inner"></div>
           <div class="ldr-brand">
@@ -2474,10 +2732,19 @@
             <span class="ldr-brand-bens">BY BEN<em>'</em>S</span>
           </div>
         </div>
-        <div class="ldr-tagline"><span class="ldr-word">FUEL</span><span class="ldr-sep">·</span><span class="ldr-word">PERFORM</span><span class="ldr-sep">·</span><span class="ldr-word">DOMINATE</span><span class="ldr-dots"><span></span><span></span><span></span></span></div>
+        <div class="ldr-tagline">
+          <span class="ldr-word">FUEL</span><span class="ldr-sep">·</span
+          ><span class="ldr-word">PERFORM</span><span class="ldr-sep">·</span
+          ><span class="ldr-word">DOMINATE</span
+          ><span class="ldr-dots"><span></span><span></span><span></span></span>
+        </div>
       </div>
     </div>
-    <script>if(window.__initialDataFromCache){document.getElementById('pageLoader').style.display='none';}</script>
+    <script>
+      if (window.__initialDataFromCache) {
+        document.getElementById("pageLoader").style.display = "none";
+      }
+    </script>
     <!-- ─── MARQUEE ─────────────────────────────────────────────── -->
     <div class="marquee-bar">
       <div class="marquee-track">
@@ -2506,7 +2773,12 @@
               height="40"
               fetchpriority="high"
               decoding="async"
-              style="height: auto; width: auto; max-width: 140px; object-fit: contain;"
+              style="
+                height: auto;
+                width: auto;
+                max-width: 140px;
+                object-fit: contain;
+              "
               onerror="
                 this.style.display = 'none';
                 this.nextElementSibling.style.display = 'flex';
@@ -2522,7 +2794,12 @@
           </a>
 
           <!-- Supplements link (desktop only) -->
-          <a href="/supplements/products" class="nav-link active" id="desktopSupplementsBtn">Supplements</a>
+          <a
+            href="/supplements/products"
+            class="nav-link active"
+            id="desktopSupplementsBtn"
+            >Supplements</a
+          >
 
           <div class="search-wrap" role="search" id="desktopSearch">
             <input
@@ -2741,13 +3018,25 @@
     <!-- Mobile menu -->
     <div class="mobile-menu" id="mobileMenu">
       <div class="mobile-nav-links">
-        <a class="mobile-nav-link active" href="/supplements/products">Supplements</a>
+        <a class="mobile-nav-link active" href="/supplements/products"
+          >Supplements</a
+        >
       </div>
       <div id="mobileCatItems"></div>
       <div class="mobile-lang">
-        <button class="lang-btn active" data-lang="en" onclick="switchLang('en')">EN</button>
-        <button class="lang-btn" data-lang="fr" onclick="switchLang('fr')">FR</button>
-        <button class="lang-btn" data-lang="ar" onclick="switchLang('ar')">AR</button>
+        <button
+          class="lang-btn active"
+          data-lang="en"
+          onclick="switchLang('en')"
+        >
+          EN
+        </button>
+        <button class="lang-btn" data-lang="fr" onclick="switchLang('fr')">
+          FR
+        </button>
+        <button class="lang-btn" data-lang="ar" onclick="switchLang('ar')">
+          AR
+        </button>
       </div>
     </div>
     <div
@@ -2762,7 +3051,9 @@
         <nav class="breadcrumb">
           <a href="/supplements" data-i18n="breadcrumb.home">Home</a>
           <span class="sep">›</span>
-          <a href="/supplements/products" data-i18n="breadcrumb.products">Products</a>
+          <a href="/supplements/products" data-i18n="breadcrumb.products"
+            >Products</a
+          >
           <span class="sep">›</span>
           <span class="current" id="breadcrumbName">Product</span>
         </nav>
@@ -2792,7 +3083,11 @@
                   <span>Product Image</span>
                 </div>
               </div>
-              <div class="gallery-thumbs" id="galleryThumbs" style="display:none"></div>
+              <div
+                class="gallery-thumbs"
+                id="galleryThumbs"
+                style="display: none"
+              ></div>
             </div>
 
             <!-- RIGHT: Info + Form -->
@@ -2859,14 +3154,22 @@
               </div>
 
               <!-- Nutritional Facts (shown only if data exists) -->
-              <div class="product-description" id="productNutritionalFactsBox" style="display:none;">
+              <div
+                class="product-description"
+                id="productNutritionalFactsBox"
+                style="display: none"
+              >
                 <div class="product-description-title">Nutritional Facts</div>
                 <div id="productNutritionalFacts"></div>
               </div>
 
               <!-- Benefits (shown only if data exists) -->
-              <div class="product-description" id="productBenefitsBox" style="display:none;">
-                <div class="product-description-title">Benefits</div>
+              <div
+                class="product-description"
+                id="productBenefitsBox"
+                style="display: none"
+              >
+                <div class="product-description-title">About This Product</div>
                 <div id="productBenefits"></div>
               </div>
 
@@ -3093,7 +3396,12 @@
                     placeholder="Enter code…"
                     style="text-transform: uppercase"
                     oninput="this.value = this.value.toUpperCase()"
-                    onkeydown="if(event.key==='Enter'){applyPromo();event.preventDefault();}"
+                    onkeydown="
+                      if (event.key === 'Enter') {
+                        applyPromo();
+                        event.preventDefault();
+                      }
+                    "
                   />
                   <button
                     onclick="applyPromo()"
@@ -3116,7 +3424,15 @@
                     APPLY
                   </button>
                 </div>
-                <div id="promoTagsPD" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
+                <div
+                  id="promoTagsPD"
+                  style="
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 6px;
+                    margin-top: 8px;
+                  "
+                ></div>
                 <span
                   id="promoMsg"
                   style="font-size: 12px; margin-top: 4px"
@@ -3319,17 +3635,37 @@
           <div>
             <div class="footer-col-title" data-i18n="footer.shop">Shop</div>
             <div class="footer-links">
-              <a href="/supplements/products" data-i18n="footer.allProducts">All Products</a>
-              <a href="/supplements/products?cat=protein" data-i18n="footer.protein">Protein</a>
-              <a href="/supplements/products?cat=preworkout" data-i18n="footer.preworkout">Pre-Workout</a>
-              <a href="/supplements/products?cat=creatine" data-i18n="footer.creatine">Creatine</a>
-              <a href="/supplements/products?cat=vitamins" data-i18n="footer.vitamins">Vitamins</a>
+              <a href="/supplements/products" data-i18n="footer.allProducts"
+                >All Products</a
+              >
+              <a
+                href="/supplements/products?cat=protein"
+                data-i18n="footer.protein"
+                >Protein</a
+              >
+              <a
+                href="/supplements/products?cat=preworkout"
+                data-i18n="footer.preworkout"
+                >Pre-Workout</a
+              >
+              <a
+                href="/supplements/products?cat=creatine"
+                data-i18n="footer.creatine"
+                >Creatine</a
+              >
+              <a
+                href="/supplements/products?cat=vitamins"
+                data-i18n="footer.vitamins"
+                >Vitamins</a
+              >
             </div>
           </div>
 
           <!-- Info column -->
           <div>
-            <div class="footer-col-title" data-i18n="footer.info">Information</div>
+            <div class="footer-col-title" data-i18n="footer.info">
+              Information
+            </div>
             <div class="footer-links">
               <a href="#" data-i18n="footer.shipping">Shipping Policy</a>
               <a href="#" data-i18n="footer.returns">Returns</a>
@@ -3390,7 +3726,10 @@
           </div>
         </div>
         <div class="footer-bottom">
-          <span>© <span id="footerYear"></span> ByBens. <span data-i18n="footer.rights">All rights reserved.</span></span>
+          <span
+            >© <span id="footerYear"></span> ByBens.
+            <span data-i18n="footer.rights">All rights reserved.</span></span
+          >
           <span><a href="#">Privacy Policy</a> · <a href="#">Terms</a></span>
         </div>
       </div>
@@ -3415,8 +3754,23 @@
         <div class="success-msg" id="successMsg">
           Thank you! We'll call you shortly to confirm your order.
         </div>
-        <a class="success-instagram" href="https://www.instagram.com/bens.supplements?igsh=MTlpaGRnOGxsazBvbA==" target="_blank" rel="noopener">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        <a
+          class="success-instagram"
+          href="https://www.instagram.com/bens.supplements?igsh=MTlpaGRnOGxsazBvbA=="
+          target="_blank"
+          rel="noopener"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+            />
+          </svg>
           Visit our Instagram
         </a>
         <button class="success-close" onclick="closeSuccess()">
@@ -3506,7 +3860,12 @@
         if (window.__initialDataPromise) {
           return window.__initialDataPromise.then(function (data) {
             if (data && !window.__initialDataFromCache) {
-              try { localStorage.setItem("bybens_cache_getInitialData", JSON.stringify({ ts: Date.now(), data: data })); } catch (e) {}
+              try {
+                localStorage.setItem(
+                  "bybens_cache_getInitialData",
+                  JSON.stringify({ ts: Date.now(), data: data }),
+                );
+              } catch (e) {}
             }
             return data;
           });
@@ -3529,23 +3888,38 @@
 
       function computeTopSoldIds(orders, prods) {
         const qty = {};
-        orders.forEach(o => (o.items || []).forEach(it => {
-          const name = (it.name || '').split(' (')[0].trim().toLowerCase();
-          if (name) qty[name] = (qty[name] || 0) + (Number(it.qty) || 1);
-        }));
-        const top3 = Object.entries(qty).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([n])=>n);
+        orders.forEach((o) =>
+          (o.items || []).forEach((it) => {
+            const name = (it.name || "").split(" (")[0].trim().toLowerCase();
+            if (name) qty[name] = (qty[name] || 0) + (Number(it.qty) || 1);
+          }),
+        );
+        const top3 = Object.entries(qty)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 3)
+          .map(([n]) => n);
         const ids = [];
-        top3.forEach(name => { const p = prods.find(x=>x.name.toLowerCase().trim()===name); if(p&&!ids.includes(p.id))ids.push(p.id); });
+        top3.forEach((name) => {
+          const p = prods.find((x) => x.name.toLowerCase().trim() === name);
+          if (p && !ids.includes(p.id)) ids.push(p.id);
+        });
         return ids;
       }
 
       function computeBadge(p, bundleId, topSoldIds) {
-        if (Number(p.stock) <= 0) return { type:'oos', label:'OUT OF STOCK' };
-        if (topSoldIds && topSoldIds.includes(p.id)) return { type:'hot', label:'HOT' };
-        if (bundleId && p.id === bundleId) return { type:'bundle', label:'BUNDLE' };
-        if (p.createdAt) { const c=new Date(p.createdAt),n=new Date(); if(c.toDateString()===n.toDateString()) return { type:'new', label:'NEW' }; }
+        if (Number(p.stock) <= 0) return { type: "oos", label: "OUT OF STOCK" };
+        if (topSoldIds && topSoldIds.includes(p.id))
+          return { type: "hot", label: "HOT" };
+        if (bundleId && p.id === bundleId)
+          return { type: "bundle", label: "BUNDLE" };
+        if (p.createdAt) {
+          const c = new Date(p.createdAt),
+            n = new Date();
+          if (c.toDateString() === n.toDateString())
+            return { type: "new", label: "NEW" };
+        }
         const disc = p.discount || 0;
-        if (disc > 0) return { type:'promo', label:'PROMO' };
+        if (disc > 0) return { type: "promo", label: "PROMO" };
         return null;
       }
       let selectedVariantIndex = 0;
@@ -3677,7 +4051,8 @@
           if (res.products && res.products.length) {
             const products = res.products;
             _allProducts = products;
-            if (Array.isArray(res.orders)) _topSoldIds = computeTopSoldIds(res.orders, products);
+            if (Array.isArray(res.orders))
+              _topSoldIds = computeTopSoldIds(res.orders, products);
             const p =
               (productId ? products.find((x) => x.id === productId) : null) ||
               products[0];
@@ -3718,24 +4093,30 @@
                   ? p.variants[0].price
                   : 0
                 : 0;
-            const _alsoImgs = Array.isArray(p.imageUrl) ? p.imageUrl : (p.imageUrl ? [p.imageUrl] : []);
+            const _alsoImgs = Array.isArray(p.imageUrl)
+              ? p.imageUrl
+              : p.imageUrl
+                ? [p.imageUrl]
+                : [];
             const img = _alsoImgs[0]
               ? `<img src="${_alsoImgs[0]}" alt="${p.name}" class="img-primary" />${_alsoImgs[1] ? `<img src="${_alsoImgs[1]}" alt="${p.name}" class="img-hover" />` : ""}`
               : `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
             const badge = computeBadge(p, _bundleId, _topSoldIds);
             return `
             <div class="also-card" onclick="window.location.href='/supplements/product-detail?id=${p.id}'" style="cursor:pointer">
-              <div class="also-card-img">${img}${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ''}</div>
+              <div class="also-card-img">${img}${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ""}</div>
               <div class="also-card-body">
                 <div class="also-card-name">${p.name}</div>
                 <div class="also-card-price">${price ? price.toLocaleString("fr-DZ") + " DA" : ""}</div>
                 <div class="also-card-actions">
-                  ${Number(p.stock) <= 0
-                    ? `<button class="also-btn-cart" disabled style="opacity:0.45;cursor:not-allowed">Out of Stock</button>`
-                    : `<button class="also-btn-cart" onclick="event.stopPropagation();openAddToCartModal('${p.id}')">
+                  ${
+                    Number(p.stock) <= 0
+                      ? `<button class="also-btn-cart" disabled style="opacity:0.45;cursor:not-allowed">Out of Stock</button>`
+                      : `<button class="also-btn-cart" onclick="event.stopPropagation();openAddToCartModal('${p.id}')">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                     Add to Cart
-                  </button>`}
+                  </button>`
+                  }
                   <button class="also-btn-buy" onclick="event.stopPropagation();window.location.href='/supplements/product-detail?id=${p.id}'">
                     Buy Now
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
@@ -3753,7 +4134,9 @@
       ── */
       function switchProductImg(url, thumbEl) {
         document.getElementById("productMainImg").src = url;
-        document.querySelectorAll(".gallery-thumb").forEach(t => t.classList.remove("active"));
+        document
+          .querySelectorAll(".gallery-thumb")
+          .forEach((t) => t.classList.remove("active"));
         thumbEl.classList.add("active");
       }
 
@@ -3774,7 +4157,11 @@
         // Image
         const imgWrap = document.getElementById("productImgWrap");
         const thumbsEl = document.getElementById("galleryThumbs");
-        const _imgs = Array.isArray(p.imageUrl) ? p.imageUrl : (p.imageUrl ? [p.imageUrl] : []);
+        const _imgs = Array.isArray(p.imageUrl)
+          ? p.imageUrl
+          : p.imageUrl
+            ? [p.imageUrl]
+            : [];
         imgWrap.querySelector(".placeholder-img-wrap")?.remove();
         imgWrap.querySelectorAll("img").forEach((el) => el.remove());
         if (_imgs.length > 0) {
@@ -3785,9 +4172,12 @@
           mainImg.style.cssText = "width:100%;height:100%;object-fit:cover;";
           imgWrap.appendChild(mainImg);
           if (_imgs.length > 1) {
-            thumbsEl.innerHTML = _imgs.map((url, i) =>
-              `<div class="gallery-thumb${i === 0 ? " active" : ""}" onclick="switchProductImg('${url.replace(/'/g,"\\'")}',this)"><img src="${url}" alt="" /></div>`
-            ).join("");
+            thumbsEl.innerHTML = _imgs
+              .map(
+                (url, i) =>
+                  `<div class="gallery-thumb${i === 0 ? " active" : ""}" onclick="switchProductImg('${url.replace(/'/g, "\\'")}',this)"><img src="${url}" alt="" /></div>`,
+              )
+              .join("");
             thumbsEl.style.display = "flex";
           } else {
             thumbsEl.style.display = "none";
@@ -3845,28 +4235,46 @@
 
         // Normalise flavors globally (used by renderFlavorPills)
         _productFlavorObjs = (p.flavors || [])
-          .map((f) => typeof f === "object" && f !== null
-            ? { name: f.name || f.label || "", qty: f.qty || 0 }
-            : { name: String(f), qty: 0 })
+          .map((f) =>
+            typeof f === "object" && f !== null
+              ? { name: f.name || f.label || "", qty: f.qty || 0 }
+              : { name: String(f), qty: 0 },
+          )
           .filter((fo) => fo.name);
 
         if (p.variants && p.variants.length > 0) {
           weightGroup.style.display = "";
-          const hasNewStock = p.variants.some(v => typeof v === "object" && v.stock !== undefined);
-          weightPills.innerHTML = p.variants.map((v, i) => {
-            let label;
-            if (typeof v === "object" && v !== null) {
-              label = v.weight ? `${v.weight}${v.unit || ""}` : v.label || v.name || `Option ${i + 1}`;
-            } else { label = String(v); }
-            const oos = hasNewStock && typeof v === "object" && v.stock !== undefined && v.stock <= 0;
-            return `<div class="variant-pill${i === 0 && !oos ? " active" : ""}${oos ? " variant-pill-oos" : ""}" ${oos ? "" : `onclick="selectVariant(this,${i})"`}>${label}</div>`;
-          }).join("");
+          const hasNewStock = p.variants.some(
+            (v) => typeof v === "object" && v.stock !== undefined,
+          );
+          weightPills.innerHTML = p.variants
+            .map((v, i) => {
+              let label;
+              if (typeof v === "object" && v !== null) {
+                label = v.weight
+                  ? `${v.weight}${v.unit || ""}`
+                  : v.label || v.name || `Option ${i + 1}`;
+              } else {
+                label = String(v);
+              }
+              const oos =
+                hasNewStock &&
+                typeof v === "object" &&
+                v.stock !== undefined &&
+                v.stock <= 0;
+              return `<div class="variant-pill${i === 0 && !oos ? " active" : ""}${oos ? " variant-pill-oos" : ""}" ${oos ? "" : `onclick="selectVariant(this,${i})"`}>${label}</div>`;
+            })
+            .join("");
           // If first variant is OOS, auto-select first available
           if (p.variants[0] && p.variants[0].stock <= 0 && hasNewStock) {
-            const firstAvailIdx = p.variants.findIndex(v => typeof v === "object" && v.stock > 0);
+            const firstAvailIdx = p.variants.findIndex(
+              (v) => typeof v === "object" && v.stock > 0,
+            );
             if (firstAvailIdx > 0) {
               selectedVariantIndex = firstAvailIdx;
-              weightPills.querySelectorAll(".variant-pill")[firstAvailIdx]?.classList.add("active");
+              weightPills
+                .querySelectorAll(".variant-pill")
+                [firstAvailIdx]?.classList.add("active");
             }
           }
         } else {
@@ -3894,7 +4302,8 @@
         else if (Number(p.stock) <= 5) badge = "hot";
 
         if (badge) {
-          badgeEl.textContent = badge === "oos" ? "OUT OF STOCK" : badge.toUpperCase();
+          badgeEl.textContent =
+            badge === "oos" ? "OUT OF STOCK" : badge.toUpperCase();
           badgeEl.className = `product-badge badge-${badge}`;
           badgeEl.style.display = "";
         } else {
@@ -3977,7 +4386,7 @@
         }
         // Old system: flavor.qty or global stock
         if (selectedFlavor && _productFlavorObjs.length > 0) {
-          const fo = _productFlavorObjs.find(f => f.name === selectedFlavor);
+          const fo = _productFlavorObjs.find((f) => f.name === selectedFlavor);
           if (fo && fo.qty > 0) return fo.qty;
         }
         return Number(p.stock) || 0;
@@ -3998,32 +4407,44 @@
         flavorGroup.style.display = "";
         const variants = parseField(p.variants);
         const v = variants[selectedVariantIndex];
-        const hasFlavorStock = v && typeof v === "object" && v.flavorStock !== undefined;
-        const hasOldQty = !hasFlavorStock && _productFlavorObjs.some(fo => fo.qty > 0);
+        const hasFlavorStock =
+          v && typeof v === "object" && v.flavorStock !== undefined;
+        const hasOldQty =
+          !hasFlavorStock && _productFlavorObjs.some((fo) => fo.qty > 0);
 
         const isOOS = (fo) => {
-          if (hasFlavorStock) return v.flavorStock[fo.name] !== undefined && v.flavorStock[fo.name] <= 0;
+          if (hasFlavorStock)
+            return (
+              v.flavorStock[fo.name] !== undefined &&
+              v.flavorStock[fo.name] <= 0
+            );
           if (hasOldQty) return fo.qty <= 0;
           return false;
         };
 
         // Pick first available flavor
-        const firstAvail = _productFlavorObjs.find(fo => !isOOS(fo)) || _productFlavorObjs[0];
+        const firstAvail =
+          _productFlavorObjs.find((fo) => !isOOS(fo)) || _productFlavorObjs[0];
         if (!selectedFlavor || isOOS({ name: selectedFlavor })) {
           selectedFlavor = firstAvail.name;
-          document.getElementById("productFlavor").textContent = firstAvail.name;
+          document.getElementById("productFlavor").textContent =
+            firstAvail.name;
         }
 
-        flavorPills.innerHTML = _productFlavorObjs.map(fo => {
-          const oos = isOOS(fo);
-          const active = fo.name === selectedFlavor;
-          return `<div class="variant-pill${active ? " active" : ""}${oos ? " variant-pill-oos" : ""}" ${oos ? "" : `onclick="selectFlavor(this,'${fo.name.replace(/'/g, "\\'")}')"`}>${fo.name}</div>`;
-        }).join("");
+        flavorPills.innerHTML = _productFlavorObjs
+          .map((fo) => {
+            const oos = isOOS(fo);
+            const active = fo.name === selectedFlavor;
+            return `<div class="variant-pill${active ? " active" : ""}${oos ? " variant-pill-oos" : ""}" ${oos ? "" : `onclick="selectFlavor(this,'${fo.name.replace(/'/g, "\\'")}')"`}>${fo.name}</div>`;
+          })
+          .join("");
       }
 
       function selectVariant(el, idx) {
         selectedVariantIndex = idx;
-        document.querySelectorAll("#weightPills .variant-pill").forEach((p) => p.classList.remove("active"));
+        document
+          .querySelectorAll("#weightPills .variant-pill")
+          .forEach((p) => p.classList.remove("active"));
         el.classList.add("active");
         renderFlavorPills(); // re-evaluate OOS flavors for this variant
         updatePriceDisplay();
@@ -4032,7 +4453,9 @@
 
       function selectFlavor(el, f) {
         selectedFlavor = f;
-        document.querySelectorAll("#flavorPills .variant-pill").forEach((p) => p.classList.remove("active"));
+        document
+          .querySelectorAll("#flavorPills .variant-pill")
+          .forEach((p) => p.classList.remove("active"));
         el.classList.add("active");
         document.getElementById("productFlavor").textContent = f;
         selectedQty = 1;
@@ -4140,16 +4563,19 @@
       function renderPromoTagsPD() {
         const container = document.getElementById("promoTagsPD");
         if (!container) return;
-        container.innerHTML = appliedPromos.map((pr) => {
-          let label = pr.code;
-          if (pr.type === "percent") label += ` (${pr.value}% off)`;
-          else if (pr.type === "fixed") label += ` (−${pr.value.toLocaleString("fr-DZ")} DA)`;
-          else if (pr.type === "free_delivery") label += " (Free delivery)";
-          return `<span style="display:inline-flex;align-items:center;gap:5px;background:#e6f4ec;color:#0a7c3e;border:1px solid #b2dfcc;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:600;">
+        container.innerHTML = appliedPromos
+          .map((pr) => {
+            let label = pr.code;
+            if (pr.type === "percent") label += ` (${pr.value}% off)`;
+            else if (pr.type === "fixed")
+              label += ` (−${pr.value.toLocaleString("fr-DZ")} DA)`;
+            else if (pr.type === "free_delivery") label += " (Free delivery)";
+            return `<span style="display:inline-flex;align-items:center;gap:5px;background:#e6f4ec;color:#0a7c3e;border:1px solid #b2dfcc;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:600;">
             ${label}
             <button onclick="removePromoPD('${pr.id}')" style="background:none;border:none;cursor:pointer;color:#0a7c3e;font-size:14px;line-height:1;padding:0;margin-left:2px;">×</button>
           </span>`;
-        }).join("");
+          })
+          .join("");
       }
 
       function removePromoPD(id) {
@@ -4226,9 +4652,12 @@
         appliedPromos.push(promo);
         input.value = "";
         msgEl.style.color = "#0a7c3e";
-        if (promo.type === "percent") msgEl.textContent = `✓ Code applied! ${promo.value}% off`;
-        else if (promo.type === "fixed") msgEl.textContent = `✓ Code applied! −${promo.value.toLocaleString("fr-DZ")} DA`;
-        else if (promo.type === "free_delivery") msgEl.textContent = "✓ Code applied! Free delivery";
+        if (promo.type === "percent")
+          msgEl.textContent = `✓ Code applied! ${promo.value}% off`;
+        else if (promo.type === "fixed")
+          msgEl.textContent = `✓ Code applied! −${promo.value.toLocaleString("fr-DZ")} DA`;
+        else if (promo.type === "free_delivery")
+          msgEl.textContent = "✓ Code applied! Free delivery";
         renderPromoTagsPD();
         updateSummary();
       }
@@ -4238,8 +4667,10 @@
         let discount = 0;
         let freeDelivery = false;
         for (const pr of appliedPromos) {
-          if (pr.type === "percent") discount += Math.round(subtotal * (pr.value / 100));
-          else if (pr.type === "fixed") discount += Math.min(pr.value, subtotal);
+          if (pr.type === "percent")
+            discount += Math.round(subtotal * (pr.value / 100));
+          else if (pr.type === "fixed")
+            discount += Math.min(pr.value, subtotal);
           else if (pr.type === "free_delivery") freeDelivery = true;
         }
         // Cap discount at subtotal so total never goes negative
@@ -6619,19 +7050,31 @@
       }
       function _itemMaxQty(item) {
         const pid = item.productId || item.id;
-        const product = _allProducts.find(p => p.id === pid || p.productId === pid);
+        const product = _allProducts.find(
+          (p) => p.id === pid || p.productId === pid,
+        );
         if (!product) return 5;
         const variants = parseField(product.variants);
-        const variantLabels = variants.map(v => typeof v === 'object' ? (v.weight ? `${v.weight}${v.unit||''}` : v.label || v.name || '') : String(v));
+        const variantLabels = variants.map((v) =>
+          typeof v === "object"
+            ? v.weight
+              ? `${v.weight}${v.unit || ""}`
+              : v.label || v.name || ""
+            : String(v),
+        );
         const vIdx = Math.max(0, variantLabels.indexOf(item.variant));
         const v = variants[vIdx];
-        if (v && typeof v === 'object' && v.flavorStock && item.flavor) {
+        if (v && typeof v === "object" && v.flavorStock && item.flavor) {
           const s = Number(v.flavorStock[item.flavor]);
           return Math.min(5, isNaN(s) ? 5 : Math.max(1, s));
         }
-        const flavorObjs = parseField(product.flavors).map(f => typeof f === 'object' ? { name: f.name || '', qty: f.qty || 0 } : { name: String(f), qty: 0 });
-        if (flavorObjs.some(fo => fo.qty > 0) && item.flavor) {
-          const fo = flavorObjs.find(f => f.name === item.flavor);
+        const flavorObjs = parseField(product.flavors).map((f) =>
+          typeof f === "object"
+            ? { name: f.name || "", qty: f.qty || 0 }
+            : { name: String(f), qty: 0 },
+        );
+        if (flavorObjs.some((fo) => fo.qty > 0) && item.flavor) {
+          const fo = flavorObjs.find((f) => f.name === item.flavor);
           if (fo) return Math.min(5, Math.max(1, fo.qty));
         }
         const stock = Number(product.stock);
@@ -6641,7 +7084,10 @@
       function cartQty(idx, d) {
         const items = cartGet();
         if (!items[idx]) return;
-        items[idx].qty = Math.min(_itemMaxQty(items[idx]), Math.max(1, items[idx].qty + d));
+        items[idx].qty = Math.min(
+          _itemMaxQty(items[idx]),
+          Math.max(1, items[idx].qty + d),
+        );
         cartSave(items);
         cartUpdateBadge();
         _renderCartDrawer();
@@ -6670,7 +7116,10 @@
         const key = `${p.id}__${selectedVariantIndex}__${selectedFlavor}`;
         const existing = items.find((i) => i.key === key);
         if (existing) {
-          existing.qty = Math.min(_itemMaxQty(existing), existing.qty + selectedQty);
+          existing.qty = Math.min(
+            _itemMaxQty(existing),
+            existing.qty + selectedQty,
+          );
         } else {
           items.push({
             key,
@@ -6680,7 +7129,8 @@
             flavor: selectedFlavor || "",
             unitPrice,
             qty: selectedQty,
-            imageUrl: (Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl) || "",
+            imageUrl:
+              (Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl) || "",
           });
         }
         cartSave(items);
@@ -6710,11 +7160,14 @@
         document.getElementById("atcName").textContent = p.name;
         _atcRefreshPrice();
         _atcFlavorObjs = parseField(p.flavors)
-          .map((f) => typeof f === "object"
-            ? { name: f.name || f.label || "", qty: f.qty || 0 }
-            : { name: String(f), qty: 0 })
+          .map((f) =>
+            typeof f === "object"
+              ? { name: f.name || f.label || "", qty: f.qty || 0 }
+              : { name: String(f), qty: 0 },
+          )
           .filter((fo) => fo.name);
-        document.getElementById("atcFlavorSection").style.display = _atcFlavorObjs.length ? "" : "none";
+        document.getElementById("atcFlavorSection").style.display =
+          _atcFlavorObjs.length ? "" : "none";
         _atcRenderFlavorOptions();
         const variants = parseField(p.variants);
         const weightSec = document.getElementById("atcWeightSection");
@@ -6743,20 +7196,30 @@
         if (!p || !_atcFlavorObjs.length) return;
         const variants = parseField(p.variants);
         const v = variants[_atcVariantIdx];
-        const hasFlavorStock = v && typeof v === "object" && v.flavorStock !== undefined;
-        const hasOldQty = !hasFlavorStock && _atcFlavorObjs.some(fo => fo.qty > 0);
+        const hasFlavorStock =
+          v && typeof v === "object" && v.flavorStock !== undefined;
+        const hasOldQty =
+          !hasFlavorStock && _atcFlavorObjs.some((fo) => fo.qty > 0);
         const isOOS = (fo) => {
-          if (hasFlavorStock) return v.flavorStock[fo.name] !== undefined && v.flavorStock[fo.name] <= 0;
+          if (hasFlavorStock)
+            return (
+              v.flavorStock[fo.name] !== undefined &&
+              v.flavorStock[fo.name] <= 0
+            );
           if (hasOldQty) return fo.qty <= 0;
           return false;
         };
-        const firstAvail = _atcFlavorObjs.find(fo => !isOOS(fo)) || _atcFlavorObjs[0];
-        if (!_atcFlavor || isOOS({ name: _atcFlavor })) _atcFlavor = firstAvail.name;
-        document.getElementById("atcFlavorOptions").innerHTML = _atcFlavorObjs.map(fo => {
-          const oos = isOOS(fo);
-          const active = fo.name === _atcFlavor;
-          return `<button class="atc-option${active ? " active" : ""}" ${oos ? 'disabled style="opacity:.4;cursor:not-allowed;text-decoration:line-through;"' : `onclick="atcPickFlavor(this,'${fo.name.replace(/'/g, "\\'")}')"`}>${fo.name}${oos ? " (OOS)" : ""}</button>`;
-        }).join("");
+        const firstAvail =
+          _atcFlavorObjs.find((fo) => !isOOS(fo)) || _atcFlavorObjs[0];
+        if (!_atcFlavor || isOOS({ name: _atcFlavor }))
+          _atcFlavor = firstAvail.name;
+        document.getElementById("atcFlavorOptions").innerHTML = _atcFlavorObjs
+          .map((fo) => {
+            const oos = isOOS(fo);
+            const active = fo.name === _atcFlavor;
+            return `<button class="atc-option${active ? " active" : ""}" ${oos ? 'disabled style="opacity:.4;cursor:not-allowed;text-decoration:line-through;"' : `onclick="atcPickFlavor(this,'${fo.name.replace(/'/g, "\\'")}')"`}>${fo.name}${oos ? " (OOS)" : ""}</button>`;
+          })
+          .join("");
       }
       function _atcRefreshPrice() {
         const p = _atcProduct;
@@ -6791,8 +7254,10 @@
         if (!p) return 5;
         const variants = parseField(p.variants);
         const v = variants[_atcVariantIdx];
-        if (v && typeof v === "object" && v.flavorStock && _atcFlavor) return Number(v.flavorStock[_atcFlavor]) || 0;
-        if (!_atcFlavorObjs.length || !_atcFlavorObjs.some((fo) => fo.qty > 0)) return Number(p.stock) || 5;
+        if (v && typeof v === "object" && v.flavorStock && _atcFlavor)
+          return Number(v.flavorStock[_atcFlavor]) || 0;
+        if (!_atcFlavorObjs.length || !_atcFlavorObjs.some((fo) => fo.qty > 0))
+          return Number(p.stock) || 5;
         const fo = _atcFlavorObjs.find((f) => f.name === _atcFlavor);
         return fo ? fo.qty : 1;
       }
@@ -6828,12 +7293,16 @@
             i.variant === variantLabel,
         );
         if (existing) {
-          existing.qty = Math.min(_itemMaxQty(existing), existing.qty + _atcQty);
+          existing.qty = Math.min(
+            _itemMaxQty(existing),
+            existing.qty + _atcQty,
+          );
         } else {
           items.push({
             productId: p.id,
             name: p.name,
-            imageUrl: (Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl) || "",
+            imageUrl:
+              (Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl) || "",
             unitPrice,
             qty: _atcQty,
             flavor: _atcFlavor,
