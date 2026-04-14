@@ -4,12 +4,12 @@
 // ============================================================
 window.BYBENS_CONTENT = {
   en: {
-    "hero.eyebrow": "Your Premium Supplements Store",
+    "hero.eyebrow": "Most Authentic Premium Supplements Store",
     "hero.title": "FUEL YOUR<em>AMBITION</em>PERFORM",
     "hero.desc":
       "Premium sports nutrition delivered across Algeria. Authentic products, unbeatable prices, and certified quality for serious athletes.",
     "trust.delivery": "Free Delivery",
-    "trust.delivery.sub": "Orders over 15000 DA",
+    "trust.delivery.sub": "Orders over 15000 DA CODE: FREEDELIVERY",
     "trust.authentic": "100% Authentic",
     "trust.authentic.sub": "Quality Guaranteed",
     "trust.wilayas": "All 69 Wilayas",
@@ -21,7 +21,7 @@ window.BYBENS_CONTENT = {
     "banner.eyebrow": "Limited Time Offer",
     "banner.title": "RAMP UP YOUR<em>PERFORMANCE</em>",
     "banner.desc":
-      "Get our most popular Whey Protein bundle at 30% off. Limited stock — order now and fuel your next workout.",
+      "Get our most popular bundle at 20% off. Limited stock — order now and fuel your next workout.",
   },
   fr: {
     "hero.eyebrow": "Votre Boutique de Suppléments Premium",
@@ -41,7 +41,7 @@ window.BYBENS_CONTENT = {
     "banner.eyebrow": "Offre Limitée",
     "banner.title": "BOOSTEZ VOS<em>PERFORMANCES</em>",
     "banner.desc":
-      "Obtenez notre bundle Whey Protein le plus populaire à -30%. Stock limité — commandez maintenant.",
+      "Obtenez notre bundle le plus populaire à -20%. Stock limité — commandez maintenant.",
   },
   ar: {
     "hero.eyebrow": "متجرك للمكملات الرياضية",
@@ -61,6 +61,6 @@ window.BYBENS_CONTENT = {
     "banner.eyebrow": "عرض محدود",
     "banner.title": "ارفع <em>أداءك</em> للقمة",
     "banner.desc":
-      "احصل على حزمة بروتين الواي الأكثر مبيعاً بخصم 30%. مخزون محدود — اطلب الآن.",
+      "احصل على حزمةالأكثر مبيعاً بخصم 20%. مخزون محدود — اطلب الآن.",
   },
 };
