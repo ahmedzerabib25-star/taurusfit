@@ -2564,7 +2564,7 @@
               <thead>
                 <tr>
                   <th class="cb-th"><input type="checkbox" class="row-cb" id="selall-promo" onchange="_selAll('promo',this.checked)"></th>
-                  <th>Code</th>
+                  <th>Code / Target</th>
                   <th>Type</th>
                   <th>Value</th>
                   <th>Min. Order</th>
@@ -2852,6 +2852,7 @@
                   <th>Customer</th>
                   <th>Phone</th>
                   <th>Wilaya</th>
+                  <th>Address</th>
                   <th style="text-align:center">Items</th>
                   <th>Total</th>
                   <th>Source</th>
@@ -2861,7 +2862,7 @@
                 </tr>
               </thead>
               <tbody id="orders-tbody">
-                <tr><td colspan="11"><div class="empty-state"><p>No orders yet</p></div></td></tr>
+                <tr><td colspan="12"><div class="empty-state"><p>No orders yet</p></div></td></tr>
               </tbody>
             </table>
           </div>
@@ -3308,6 +3309,17 @@
               <option value="inactive">Inactive</option>
             </select>
           </div>
+          <div class="form-row full" style="margin-top: 16px; margin-bottom: 0">
+            <div class="form-group">
+              <div class="toggle-row" style="margin-bottom: 0" onclick="document.getElementById('promo-apply-all').click()">
+                <div>
+                  <div class="toggle-label">Apply to all products</div>
+                  <div class="toggle-desc">Valid for all products that allow promos</div>
+                </div>
+                <label class="toggle-switch" onclick="event.stopPropagation()"><input type="checkbox" id="promo-apply-all" /><span class="toggle-slider"></span></label>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button class="btn-secondary" onclick="closeModal('promo-modal')">
@@ -3424,8 +3436,7 @@
       // ════════════════════════════════════════════
       // CONFIG
       // ════════════════════════════════════════════
-      const API_URL =
-        "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec"; // ← YOUR DEPLOYED APPS SCRIPT WEB APP URL
+      const API_URL = "https://script.google.com/macros/s/AKfycbzYEJF3vwS5nZDP2zmVXiYputV_qSRmXGOnBtEOmhqAqFg9Tygg8g90Wplljynbrq2_rQ/exec"; // ← YOUR DEPLOYED APPS SCRIPT WEB APP URL
       const CLOUDINARY_CLOUD = "dbxna1ipc";
       const CLOUDINARY_PRESET = "Bybens";
 
@@ -4197,7 +4208,10 @@
             const activePromos = promos.filter((pr) => pr.status === "active");
             buildCheckboxGroup(
               "pm-promo-codes",
-              activePromos.map((pr) => ({ id: pr.id, name: pr.code })),
+              activePromos.map((pr) => ({ 
+                id: pr.id, 
+                name: pr.code + ( (pr.applyToAll===true || String(pr.applyToAll).toUpperCase()==="TRUE") ? " (Global)" : "" ) 
+              })),
               p.promoCodeIds || [],
             );
             document.getElementById("variants-list").innerHTML = "";
@@ -4231,7 +4245,10 @@
           const activePromos = promos.filter((pr) => pr.status === "active");
           buildCheckboxGroup(
             "pm-promo-codes",
-            activePromos.map((pr) => ({ id: pr.id, name: pr.code })),
+            activePromos.map((pr) => ({ 
+              id: pr.id, 
+              name: pr.code + ( (pr.applyToAll===true || String(pr.applyToAll).toUpperCase()==="TRUE") ? " (Global)" : "" ) 
+            })),
             [],
           );
           addVariant();
@@ -4615,7 +4632,13 @@
                 : p.type === "percent"
                   ? p.value + "%"
                   : p.value.toLocaleString() + " DA";
-            return `<tr><td class="cb-td"><input type="checkbox" class="row-cb" data-sel-type="promo" data-sel-id="${p.id}" onchange="_selToggle('promo','${p.id}',this.checked)"></td><td><span class="code-tag">${p.code}</span></td><td>${typeLabel}</td><td><strong>${valStr}</strong></td><td>${p.minOrder ? p.minOrder.toLocaleString() + " DA" : "—"}</td><td>${p.uses}${p.maxUses ? " / " + p.maxUses : ""}</td><td style="font-size:12px;color:var(--g600)">${p.expiry || "—"}</td><td><span class="badge badge-${p.status}">${cap(p.status)}</span></td><td><div class="action-group"><button class="act-btn act-edit" onclick="editPromo('${p.id}')">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('promo','${p.id}')">Delete</button></div></td></tr>`;
+            const appliesToAll = p.applyToAll === true || String(p.applyToAll).toUpperCase() === "TRUE";
+            const targetStr = appliesToAll
+              ? '<span class="badge badge-active" style="margin-top:4px">All Products</span>' 
+              : '<span class="badge badge-inactive" style="margin-top:4px">Specific Only</span>';
+            return `<tr><td class="cb-td"><input type="checkbox" class="row-cb" data-sel-type="promo" data-sel-id="${p.id}" onchange="_selToggle('promo','${p.id}',this.checked)"></td>
+          <td><span class="code-tag">${p.code}</span><br>${targetStr}</td>
+          <td>${typeLabel}</td><td><strong>${valStr}</strong></td><td>${p.minOrder ? p.minOrder.toLocaleString() + " DA" : "—"}</td><td>${p.uses}${p.maxUses ? " / " + p.maxUses : ""}</td><td style="font-size:12px;color:var(--g600)">${p.expiry || "—"}</td><td><span class="badge badge-${p.status}">${cap(p.status)}</span></td><td><div class="action-group"><button class="act-btn act-edit" onclick="editPromo('${p.id}')">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('promo','${p.id}')">Delete</button></div></td></tr>`;
           })
           .join("");
       }
@@ -4645,6 +4668,7 @@
             document.getElementById("promo-max-uses").value = p.maxUses || "";
             document.getElementById("promo-expiry").value = p.expiry || "";
             document.getElementById("promo-status").value = p.status;
+            document.getElementById("promo-apply-all").checked = p.applyToAll === true || String(p.applyToAll).toUpperCase() === "TRUE";
           }
         } else {
           [
@@ -4656,6 +4680,7 @@
           ].forEach((x) => (document.getElementById(x).value = ""));
           document.getElementById("promo-type").value = "percent";
           document.getElementById("promo-status").value = "active";
+          document.getElementById("promo-apply-all").checked = false;
         }
         updatePromoValueLabel();
         openModal("promo-modal");
@@ -4695,6 +4720,7 @@
             parseInt(document.getElementById("promo-max-uses").value) || null,
           expiry: document.getElementById("promo-expiry").value,
           status: document.getElementById("promo-status").value,
+          applyToAll: document.getElementById("promo-apply-all").checked,
         };
         showLoading("Saving promo…");
         try {
@@ -5356,6 +5382,7 @@
               <td><div class="prod-name-block"><div class="name">${name}</div></div></td>
               <td>${o.phone || "—"}</td>
               <td style="font-size:12px">${o.wilaya || "—"}</td>
+              <td style="font-size:12px">${o.address || "—"}</td>
               <td style="text-align:center">${itemCount}</td>
               <td><strong>${Number(o.total).toLocaleString("fr-DZ")} DA</strong></td>
               <td><span style="font-size:11px;color:var(--g400);background:var(--g100);padding:2px 7px;border-radius:4px">${o.source || "—"}</span></td>
@@ -5396,6 +5423,7 @@
               <div><span class="order-detail-label">Phone</span><span>${o.phone || "—"}</span></div>
               <div><span class="order-detail-label">Wilaya</span><span>${o.wilaya || "—"}</span></div>
               <div><span class="order-detail-label">Commune</span><span>${o.commune || "—"}</span></div>
+              <div><span class="order-detail-label">Address</span><span>${o.address || "—"}</span></div>
               <div><span class="order-detail-label">Delivery Type</span><span>${o.deliveryType === "home" ? "🏠 Home Delivery" : "📦 Office Pickup"}</span></div>
               <div><span class="order-detail-label">Source</span><span>${o.source || "—"}</span></div>
             </div>

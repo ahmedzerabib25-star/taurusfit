@@ -13,10 +13,10 @@
       rel="stylesheet"
     />
     <link rel="icon" href="/images/favicon.ico" />
+    <link rel="stylesheet" href="/supplements/footer.css" />
     <script>
       (function () {
-        var SCRIPT_URL =
-          "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
+        var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYEJF3vwS5nZDP2zmVXiYputV_qSRmXGOnBtEOmhqAqFg9Tygg8g90Wplljynbrq2_rQ/exec";
         try {
           var cached = JSON.parse(
             localStorage.getItem("bybens_cache_getInitialData"),
@@ -775,6 +775,7 @@
       .cat-nav-inner {
         display: flex;
         align-items: center;
+        justify-content: center;
         height: var(--cat-h);
         gap: 2px;
         overflow: visible;
@@ -1330,15 +1331,15 @@
         flex-direction: column;
         gap: 6px;
       }
-      .form-group label {
+      .product-detail-section .form-group label {
         font-size: 12px;
         font-weight: 700;
         letter-spacing: 0.6px;
         text-transform: uppercase;
         color: var(--gray-600);
       }
-      .form-group input,
-      .form-group select {
+      .product-detail-section .form-group input,
+      .product-detail-section .form-group select {
         height: 44px;
         padding: 0 14px;
         border: 1.5px solid var(--gray-200);
@@ -1354,20 +1355,20 @@
         appearance: none;
         -webkit-appearance: none;
       }
-      .form-group input:focus,
-      .form-group select:focus {
+      .product-detail-section .form-group input:focus,
+      .product-detail-section .form-group select:focus {
         border-color: var(--red);
         background: var(--white);
         box-shadow: 0 0 0 3px rgba(173, 0, 0, 0.1);
       }
-      .form-group input::placeholder {
+      .product-detail-section .form-group input::placeholder {
         color: var(--gray-400);
       }
-      .form-group input.error,
-      .form-group select.error {
+      .product-detail-section .form-group input.error,
+      .product-detail-section .form-group select.error {
         border-color: var(--red);
       }
-      .form-group .error-msg {
+      .product-detail-section .form-group .error-msg {
         font-size: 11px;
         color: var(--red);
         margin-top: 2px;
@@ -2338,98 +2339,6 @@
       .atc-confirm-btn:hover {
         background: var(--red-hover);
       }
-      /* ─── FOOTER ───────────────────────────────────────────────── */
-      .site-footer {
-        background: var(--black);
-        color: var(--gray-400);
-        padding: 56px 0 0;
-        margin-top: 80px;
-      }
-      .footer-grid {
-        display: grid;
-        grid-template-columns: 2fr 1fr 1fr 1.2fr;
-        gap: 40px;
-        padding-bottom: 48px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-      }
-      .footer-brand p {
-        font-size: 13px;
-        line-height: 1.7;
-        max-width: 260px;
-        color: #6b6b6b;
-      }
-      .footer-social {
-        display: flex;
-        gap: 10px;
-        margin-top: 20px;
-      }
-      .footer-social a {
-        width: 36px;
-        height: 36px;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.06);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--gray-400);
-        transition:
-          background var(--transition),
-          color var(--transition);
-        text-decoration: none;
-      }
-      .footer-social a:hover {
-        background: var(--red);
-        color: var(--white);
-      }
-      .footer-col-title {
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 1.2px;
-        text-transform: uppercase;
-        color: var(--white);
-        margin-bottom: 16px;
-      }
-      .footer-links {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-      .footer-links a {
-        font-size: 13px;
-        color: #6b6b6b;
-        transition: color var(--transition);
-      }
-      .footer-links a:hover {
-        color: var(--white);
-      }
-      .footer-contact-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        font-size: 13px;
-        color: #6b6b6b;
-        margin-bottom: 12px;
-      }
-      .footer-contact-item svg {
-        flex-shrink: 0;
-        margin-top: 1px;
-        color: var(--red);
-      }
-      .footer-bottom {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 20px 0;
-        font-size: 12px;
-        color: #444;
-      }
-      .footer-bottom a {
-        color: #555;
-        transition: color var(--transition);
-      }
-      .footer-bottom a:hover {
-        color: var(--white);
-      }
 
       /* ─── RESPONSIVE ───────────────────────────────────────────── */
       @media (max-width: 900px) {
@@ -2471,8 +2380,15 @@
         .hamburger {
           display: flex;
         }
+        .top-nav {
+          position: relative;
+          justify-content: space-between;
+        }
         .logo {
-          margin-left: auto;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          margin: 0;
         }
         .lang-switch {
           display: none;
@@ -2496,6 +2412,139 @@
           text-align: center;
         }
       }
+      .site-footer { margin-top: 80px; }
+      
+      /* Quantity Adjustment Highlight */
+      @keyframes qtyAdjustPulse {
+        0% { color: var(--black); background: transparent; }
+        30% { color: var(--red); background: var(--red-light); transform: scale(1.15); }
+        100% { color: var(--black); background: transparent; transform: scale(1); }
+      }
+      .qty-adjusted { animation: qtyAdjustPulse 1s ease; }
+
+      /* RTL Layout Fixes */
+      html[dir="rtl"] {
+        .product-detail-section,
+        .also-like-section,
+        .breadcrumb { text-align: right; }
+        .product-detail-pricing { justify-content: flex-end; }
+        .wa-btn { right: auto; left: 24px; }
+        .breadcrumb .sep { transform: rotate(180deg); display: inline-block; }
+        .product-main-img .product-badge { left: auto; right: 16px; }
+        .btn-order svg, 
+        .btn-add-to-cart-detail svg,
+        .also-btn-buy svg { transform: scaleX(-1); }
+        .product-info-col { animation-name: slideInRTL; }
+        
+        @media (max-width: 900px) {
+          .product-detail-name,
+          .product-detail-brand,
+          .product-detail-flavor,
+          .product-detail-section .variant-label,
+          .product-detail-section .order-form-title { text-align: center; justify-content: center; }
+          .product-detail-pricing { justify-content: center; }
+          .product-detail-section .qty-stepper { margin: 0 auto; }
+        }
+      }
+
+      @keyframes slideInRTL {
+        from { opacity: 0; transform: translateX(-30px); }
+        to { opacity: 1; transform: translateX(0); }
+      }
+
+      /* ══ IMAGE POPUP ══ */
+      .img-popup-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 10000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        cursor: zoom-out;
+      }
+      .img-popup-overlay.open { display: flex; }
+      .img-popup-content {
+        max-width: 95%;
+        max-height: 95vh;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+        cursor: default;
+        animation: zoomIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      @keyframes zoomIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+      }
+      .img-popup-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: #fff;
+        font-size: 32px;
+      }
+      /* ══ BULK NOTICE ══ */
+      #bulkNotice {
+        display: none;
+        margin-top: 16px;
+        padding: 14px;
+        background: var(--white);
+        border: 1.5px solid var(--gray-100);
+        border-radius: 12px;
+        box-shadow: var(--shadow-sm);
+        transition: transform var(--transition), border-color var(--transition);
+        animation: fadeUp 0.3s ease both;
+      }
+      #bulkNotice:hover {
+        border-color: var(--red);
+        transform: translateY(-2px);
+      }
+      .bulk-notice-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: inherit;
+      }
+      .bulk-notice-icon {
+        width: 36px;
+        height: 36px;
+        background: #25d366;
+        color: #fff;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .bulk-notice-tag { display: block; font-size: 10px; font-weight: 800; color: var(--red); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+      .bulk-notice-msg { font-size: 13px; font-weight: 600; color: var(--black); line-height: 1.4; margin: 0; }
+      .popup-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 48px;
+        height: 48px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        transition: all 0.2s;
+        z-index: 10001;
+      }
+      .popup-nav:hover { background: rgba(255, 255, 255, 0.3); }
+      .popup-nav.prev { left: 20px; }
+      .popup-nav.next { right: 20px; }
+      @media (max-width: 600px) {
+        .popup-nav { width: 40px; height: 40px; }
+        .popup-nav.prev { left: 10px; }
+        .popup-nav.next { right: 10px; }
+      }
+      .product-main-img { cursor: zoom-in; }
       /* ══ CART DRAWER ══ */
       .cart-overlay {
         position: fixed;
@@ -2745,12 +2794,8 @@
         document.getElementById("pageLoader").style.display = "none";
       }
     </script>
-    <!-- ─── MARQUEE ─────────────────────────────────────────────── -->
-    <div class="marquee-bar">
-      <div class="marquee-track">
-        <span class="marquee-item">🚚 Free delivery over 15 000 DA</span>
-      </div>
-    </div>
+    <!-- Marquee Placeholder -->
+    <div id="marqueePlaceholder"></div>
 
     <!-- ─── HEADER ──────────────────────────────────────────────── -->
     <header id="site-header">
@@ -3122,7 +3167,7 @@
               <!-- Weight selector -->
               <div class="variant-group" id="weightGroup" style="display: none">
                 <div class="variant-label" data-i18n="detail.weight">
-                  Weight
+                  SIZE
                 </div>
                 <div class="variant-pills" id="weightPills"></div>
               </div>
@@ -3142,6 +3187,15 @@
                   <button class="qty-btn" onclick="changeQty(-1)">−</button>
                   <span class="qty-value" id="qtyValue">1</span>
                   <button class="qty-btn" onclick="changeQty(1)">+</button>
+                </div>
+                <div id="bulkNotice">
+                  <a href="https://wa.me/213662269449" target="_blank" class="bulk-notice-content">
+                    <div class="bulk-notice-icon"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
+                    <div>
+                      <span class="bulk-notice-tag" data-i18n="detail.bulkLabel">Wholesale</span>
+                      <p class="bulk-notice-msg" data-i18n="detail.bulkNotice">Ordering 5 or more? Contact us on WhatsApp for a special wholesale discount!</p>
+                    </div>
+                  </a>
                 </div>
               </div>
 
@@ -3325,6 +3379,13 @@
                     </div>
                   </div>
                   <span class="error-msg" id="communeErr"></span>
+                </div>
+              </div>
+
+              <div class="form-row single">
+                <div class="form-group">
+                  <label for="address" data-i18n="form.address">Address (Optional)</label>
+                  <input type="text" id="address" placeholder="Street name, building, apartment..." />
                 </div>
               </div>
 
@@ -3542,7 +3603,7 @@
           <div class="atc-options" id="atcFlavorOptions"></div>
         </div>
         <div class="atc-section" id="atcWeightSection">
-          <div class="atc-label">Size / Weight</div>
+          <div class="atc-label" data-i18n="detail.weight">SIZE</div>
           <div class="atc-options" id="atcWeightOptions"></div>
         </div>
         <div class="atc-section">
@@ -3561,179 +3622,19 @@
       </div>
     </div>
 
-    <!-- ─── FOOTER ─────────────────────────────────────────────── -->
-    <footer class="site-footer" role="contentinfo">
-      <div class="container">
-        <div class="footer-grid">
-          <div class="footer-brand">
-            <a
-              href="/supplements"
-              class="logo"
-              style="margin-bottom: 16px; display: inline-flex"
-            >
-              <img
-                src="/images/logo.png"
-                alt="ByBens"
-                style="height: 44px; width: auto; object-fit: contain"
-              />
-            </a>
-            <p data-i18n="footer.tagline">
-              Algeria's premier sports nutrition store. Authentic products, fast
-              delivery, and expert support to fuel your performance.
-            </p>
-            <div class="footer-social">
-              <a
-                href="https://www.facebook.com/bens.supplements?rdid=xz8wUzpQtBJiEMM9&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18TWJRV3hc%2F#"
-                aria-label="Facebook"
-                target="_blank"
-                rel="noopener"
-                ><svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path
-                    d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
-                  /></svg
-              ></a>
-              <a
-                href="https://www.instagram.com/bens.supplements?igsh=MTlpaGRnOGxsazBvbA=="
-                aria-label="Instagram"
-                ><svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <rect x="2" y="2" width="20" height="20" rx="5" />
-                  <circle cx="12" cy="12" r="5" />
-                  <circle
-                    cx="17.5"
-                    cy="6.5"
-                    r="1.5"
-                    fill="currentColor"
-                    stroke="none"
-                  /></svg
-              ></a>
-              <a href="https://wa.me/213662269449" aria-label="WhatsApp"
-                ><svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path
-                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
-                  /></svg
-              ></a>
-            </div>
-          </div>
-          <!-- Shop column -->
-          <div>
-            <div class="footer-col-title" data-i18n="footer.shop">Shop</div>
-            <div class="footer-links">
-              <a href="/supplements/products" data-i18n="footer.allProducts"
-                >All Products</a
-              >
-              <a
-                href="/supplements/products?cat=protein"
-                data-i18n="footer.protein"
-                >Protein</a
-              >
-              <a
-                href="/supplements/products?cat=preworkout"
-                data-i18n="footer.preworkout"
-                >Pre-Workout</a
-              >
-              <a
-                href="/supplements/products?cat=creatine"
-                data-i18n="footer.creatine"
-                >Creatine</a
-              >
-              <a
-                href="/supplements/products?cat=vitamins"
-                data-i18n="footer.vitamins"
-                >Vitamins</a
-              >
-            </div>
-          </div>
+    <!-- Image Popup Overlay -->
+    <div class="img-popup-overlay" id="imgPopupOverlay" onclick="closeImagePopup()">
+      <button class="img-popup-close" onclick="closeImagePopup()">&#x2715;</button>
+      <button class="popup-nav prev" id="popupPrev" onclick="navigatePopupImage(-1, event)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <img src="" alt="Product Large View" class="img-popup-content" id="imgPopupContent" onclick="event.stopPropagation()" />
+      <button class="popup-nav next" id="popupNext" onclick="navigatePopupImage(1, event)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+    </div>
 
-          <!-- Info column -->
-          <div>
-            <div class="footer-col-title" data-i18n="footer.info">
-              Information
-            </div>
-            <div class="footer-links">
-              <a href="#" data-i18n="footer.shipping">Shipping Policy</a>
-              <a href="#" data-i18n="footer.returns">Returns</a>
-              <a href="#" data-i18n="footer.faq">FAQ</a>
-            </div>
-          </div>
-
-          <!-- Contact column -->
-          <div>
-            <div class="footer-col-title" data-i18n="footer.contact">
-              Contact Us
-            </div>
-            <div class="footer-contact-item">
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
-                />
-              </svg>
-              <span>+213 662 269 449</span>
-            </div>
-            <div class="footer-contact-item">
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
-                />
-                <polyline points="22,6 12,13 2,6" />
-              </svg>
-              <span>contact@bybens.dz</span>
-            </div>
-            <div class="footer-contact-item">
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              <span data-i18n="footer.location">Algiers, Algeria</span>
-            </div>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <span
-            >© <span id="footerYear"></span> ByBens.
-            <span data-i18n="footer.rights">All rights reserved.</span></span
-          >
-          <span><a href="#">Privacy Policy</a> · <a href="#">Terms</a></span>
-        </div>
-      </div>
-    </footer>
+    <div id="footerPlaceholder"></div>
 
     <!-- Success overlay -->
     <div class="success-overlay" id="successOverlay">
@@ -3831,8 +3732,7 @@
       /* ══════════════════════════════════════════════════════
          CONFIG
       ══════════════════════════════════════════════════════ */
-      const SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
+      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYEJF3vwS5nZDP2zmVXiYputV_qSRmXGOnBtEOmhqAqFg9Tygg8g90Wplljynbrq2_rQ/exec";
 
       const PAGE_LOAD_TIME = Date.now(); // used for bot timing check
 
@@ -4061,6 +3961,15 @@
               renderProduct();
               // FIX: updateSummary AFTER renderProduct sets selectedVariantIndex & selectedFlavor
               updateSummary();
+
+              // ── Footer categories (max 6) ──
+              const footerList = document.getElementById("footerCategoryList");
+              if (footerList) {
+                footerList.innerHTML = _allCategories
+                  .slice(0, 6)
+                  .map((cat) => `<li><a href="/supplements/products?cat=${encodeURIComponent(cat.id)}">${cat.name}</a></li>`)
+                  .join("");
+              }
             }
             renderAlsoLike();
           }
@@ -4068,6 +3977,32 @@
           console.error("Failed to load product data:", err);
         }
         hideLoader();
+      }
+
+      /* ─────────────────────────────────────────────────────────────
+   CONTACT FORM
+───────────────────────────────────────────────────────────── */
+      async function handleContactForm(e) {
+        e.preventDefault();
+        const form = e.target;
+        const btn = form.querySelector("button[type=submit]");
+        const name = document.getElementById("contactName").value.trim();
+        const contact = document.getElementById("contactEmail").value.trim();
+        const message = document.getElementById("contactMsg").value.trim();
+        if (!name || !contact || !message) return;
+        btn.disabled = true;
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<span style="opacity:.7">Sending…</span>';
+        try {
+          await fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "submitContact", name, contact, message }),
+          });
+        } catch (_) {}
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+        form.reset();
+        showToast(i18n[currentLang]["toast.sent"] || "Message sent!");
       }
 
       function renderAlsoLike() {
@@ -4156,6 +4091,7 @@
 
         // Image
         const imgWrap = document.getElementById("productImgWrap");
+        imgWrap.onclick = openImagePopup;
         const thumbsEl = document.getElementById("galleryThumbs");
         const _imgs = Array.isArray(p.imageUrl)
           ? p.imageUrl
@@ -4447,8 +4383,67 @@
           .forEach((p) => p.classList.remove("active"));
         el.classList.add("active");
         renderFlavorPills(); // re-evaluate OOS flavors for this variant
+        // Clamp quantity to new variant stock
+        const max = Math.min(5, getCurrentStock());
+        let adjusted = false;
+        if (selectedQty > max) {
+          selectedQty = Math.max(1, max);
+          adjusted = true;
+        }
+        const valEl = document.getElementById("qtyValue");
+        valEl.textContent = selectedQty;
+        if (adjusted) {
+          valEl.classList.remove("qty-adjusted");
+          void valEl.offsetWidth; // trigger reflow
+          valEl.classList.add("qty-adjusted");
+        }
+
         updatePriceDisplay();
         updateSummary();
+      }
+
+      let currentPopupImgIdx = 0;
+      function openImagePopup() {
+        const p = selectedProduct;
+        if (!p) return;
+        const mainImg = document.getElementById("productMainImg");
+        if (!mainImg) return;
+        
+        const imgs = Array.isArray(p.imageUrl) ? p.imageUrl : (p.imageUrl ? [p.imageUrl] : []);
+        // Identify index of current main image
+        currentPopupImgIdx = imgs.indexOf(mainImg.getAttribute('src'));
+        if (currentPopupImgIdx === -1) {
+          currentPopupImgIdx = imgs.findIndex(url => mainImg.src.endsWith(url));
+          if (currentPopupImgIdx === -1) currentPopupImgIdx = 0;
+        }
+
+        const overlay = document.getElementById("imgPopupOverlay");
+        const content = document.getElementById("imgPopupContent");
+        content.src = imgs[currentPopupImgIdx];
+        overlay.classList.add("open");
+        document.body.style.overflow = "hidden";
+        updatePopupNav();
+      }
+
+      function navigatePopupImage(delta, e) {
+        if (e) e.stopPropagation();
+        const p = selectedProduct;
+        const imgs = Array.isArray(p.imageUrl) ? p.imageUrl : (p.imageUrl ? [p.imageUrl] : []);
+        currentPopupImgIdx = (currentPopupImgIdx + delta + imgs.length) % imgs.length;
+        document.getElementById("imgPopupContent").src = imgs[currentPopupImgIdx];
+      }
+
+      function updatePopupNav() {
+        const p = selectedProduct;
+        const imgs = Array.isArray(p.imageUrl) ? p.imageUrl : (p.imageUrl ? [p.imageUrl] : []);
+        const show = imgs.length > 1;
+        document.getElementById("popupPrev").style.display = show ? "flex" : "none";
+        document.getElementById("popupNext").style.display = show ? "flex" : "none";
+      }
+
+      function closeImagePopup() {
+        document.getElementById("imgPopupOverlay").classList.remove("open");
+        document.body.style.overflow = "";
       }
 
       function selectFlavor(el, f) {
@@ -4460,6 +4455,26 @@
         document.getElementById("productFlavor").textContent = f;
         selectedQty = 1;
         document.getElementById("qtyValue").textContent = 1;
+        // Clamp quantity to new flavor stock
+        const stock = getCurrentStock();
+        const max = Math.min(5, stock);
+        let adjusted = false;
+        if (selectedQty > max) {
+          selectedQty = Math.max(1, max);
+          adjusted = true;
+        }
+        const valEl = document.getElementById("qtyValue");
+        valEl.textContent = selectedQty;
+        if (adjusted) {
+          valEl.classList.remove("qty-adjusted");
+          void valEl.offsetWidth; // trigger reflow
+          valEl.classList.add("qty-adjusted");
+        }
+
+        // Update bulk notice based on the new selectedQty
+        const notice = document.getElementById("bulkNotice");
+        if (notice) notice.style.display = "none";
+
         updateSummary();
       }
 
@@ -4467,6 +4482,11 @@
         const maxQty = Math.min(5, getCurrentStock() || 5);
         selectedQty = Math.min(maxQty, Math.max(1, selectedQty + delta));
         document.getElementById("qtyValue").textContent = selectedQty;
+
+        // Show/hide bulk notice when qty reaches 3
+        const notice = document.getElementById("bulkNotice");
+        if (notice) notice.style.display = selectedQty >= 5 ? "flex" : "none";
+
         revalidateAppliedPromos();
         updateSummary();
       }
@@ -4631,7 +4651,8 @@
 
         // Product link check
         const p = selectedProduct;
-        if (p && p.promoCodeIds && p.promoCodeIds.length > 0) {
+        const isGlobalPromo = promo.applyToAll === true || String(promo.applyToAll).toUpperCase() === "TRUE";
+        if (!isGlobalPromo && p && p.promoCodeIds && p.promoCodeIds.length > 0) {
           if (!p.promoCodeIds.includes(promo.id)) {
             msgEl.style.color = "var(--red)";
             msgEl.textContent = "✗ This code is not valid for this product.";
@@ -6742,6 +6763,7 @@
         const firstName = document.getElementById("firstName").value.trim();
         const lastName = document.getElementById("lastName").value.trim();
         const phone = document.getElementById("phone").value.trim();
+        const address = document.getElementById("address").value.trim();
         const wilayaData = WILAYAS[selectedWilayaCode];
         const wilayaName = wilayaData ? wilayaData.name : selectedWilayaCode;
         const variants = parseField(p.variants);
@@ -6759,6 +6781,7 @@
             firstName,
             lastName,
             phone,
+            address,
             wilaya: selectedWilayaCode
               ? `${selectedWilayaCode} - ${wilayaName}`
               : "",
@@ -6801,7 +6824,7 @@
           "nav.home": "Home",
           "nav.products": "Products",
           "nav.contact": "Contact",
-          "detail.weight": "Weight",
+          "detail.weight": "SIZE",
           "detail.flavor": "Flavor",
           "detail.about": "About this product",
           "form.firstName": "First Name",
@@ -6810,6 +6833,7 @@
           "form.wilaya": "Wilaya",
           "form.commune": "Commune",
           "form.deliveryType": "Delivery Type",
+          "form.address": "Address (Optional)",
           "form.homeDelivery": "🏠 Home Delivery",
           "form.officePick": "📦 Office Pickup",
           "form.deliveredDoor": "Delivered to your door",
@@ -6825,8 +6849,33 @@
           "form.addToCart": "ADD TO CART",
           "form.confirmOrder": "CONFIRM ORDER",
           "section.alsoLike": "You May Also Like",
-          "footer.tagline":
-            "Algeria's premier sports nutrition store. Authentic products, fast delivery, and expert support to fuel your performance.",
+          "footer.brand.desc":
+            "Algeria's premier destination for authentic sports nutrition. We bring world-class supplements directly to your door.",
+          "footer.links": "Quick Links",
+          "footer.shipping": "Shipping Policy",
+          "footer.returns": "Returns",
+          "footer.categories": "Categories",
+          "footer.contact": "Send a Message",
+          "footer.rights": "All rights reserved.",
+          "form.name": "Your Name",
+          "form.email": "Email / Phone",
+          "form.message": "Message",
+          "form.send": "Send Message",
+          "shipping.title": "Shipping Policy",
+          "shipping.item1.title": "Nationwide Delivery",
+          "shipping.item1.text": "We deliver to all 58 wilayas across Algeria via Imir Logistics.",
+          "shipping.item2.title": "Free Delivery",
+          "shipping.item2.text": "Orders over 15,000 DA enjoy free delivery!",
+          "shipping.item3.title": "Standard Timing",
+          "shipping.item3.text": "Orders are processed within 24 hours.",
+          "returns.title": "Returns & Refunds",
+          "returns.item1.title": "Return Policy",
+          "returns.item1.text": "You have 1 day to return a product. Items must be unopened.",
+          "returns.item2.title": "Easy Process",
+          "returns.item2.text": "Contact us via WhatsApp or Instagram to initiate a return.",
+          "returns.item3.title": "Refund Method",
+          "returns.item3.text": "We offer exchanges for other products or store credit.",
+          "toast.sent": "Message sent! We'll reply soon.",
           "footer.shop": "Shop",
           "footer.allProducts": "All Products",
           "footer.protein": "Protein",
@@ -6844,19 +6893,22 @@
           "breadcrumb.home": "Home",
           "breadcrumb.products": "Products",
           "success.title": "Order Placed!",
+          "detail.bulkLabel": "Wholesale Pricing",
+          "detail.bulkNotice": "Ordering 5 or more? Contact us on WhatsApp for a special wholesale discount!",
           "success.back": "Back to Products",
         },
         fr: {
           "nav.home": "Accueil",
           "nav.products": "Produits",
           "nav.contact": "Contact",
-          "detail.weight": "Poids",
+          "detail.weight": "Taille",
           "detail.flavor": "Saveur",
           "detail.about": "À propos du produit",
           "form.firstName": "Prénom",
           "form.lastName": "Nom",
           "form.phone": "Numéro de téléphone",
           "form.wilaya": "Wilaya",
+          "form.address": "Adresse (Facultatif)",
           "form.commune": "Commune",
           "form.deliveryType": "Type de livraison",
           "form.homeDelivery": "🏠 Livraison à domicile",
@@ -6874,8 +6926,33 @@
           "form.addToCart": "AJOUTER AU PANIER",
           "form.confirmOrder": "CONFIRMER LA COMMANDE",
           "section.alsoLike": "Vous Aimerez Aussi",
-          "footer.tagline":
-            "La boutique de nutrition sportive de référence en Algérie.",
+          "footer.brand.desc":
+            "La première destination algérienne pour la nutrition sportive authentique.",
+          "footer.links": "Liens Rapides",
+          "footer.shipping": "Politique de livraison",
+          "footer.returns": "Retours",
+          "footer.categories": "Catégories",
+          "footer.contact": "Envoyer un Message",
+          "footer.rights": "Tous droits réservés.",
+          "form.name": "Votre Nom",
+          "form.email": "Email / Téléphone",
+          "form.message": "Message",
+          "form.send": "Envoyer",
+          "shipping.title": "Politique de livraison",
+          "shipping.item1.title": "Livraison Nationale",
+          "shipping.item1.text": "Nous livrons dans les 58 wilayas d'Algérie via Imir Logistics.",
+          "shipping.item2.title": "Livraison Gratuite",
+          "shipping.item2.text": "Les commandes de plus de 15 000 DA bénéficient de la livraison gratuite !",
+          "shipping.item3.title": "Délais Standards",
+          "shipping.item3.text": "Les commandes sont traitées sous 24h.",
+          "returns.title": "Retours & Remboursements",
+          "returns.item1.title": "Politique de Retour",
+          "returns.item1.text": "Vous avez 1 jour pour retourner un produit.",
+          "returns.item2.title": "Processus Facile",
+          "returns.item2.text": "Contactez-nous via WhatsApp or Instagram.",
+          "returns.item3.title": "Mode de Remboursement",
+          "returns.item3.text": "Nous proposons des échanges ou un avoir.",
+          "toast.sent": "Message envoyé!",
           "footer.shop": "Boutique",
           "footer.allProducts": "Tous les Produits",
           "footer.protein": "Protéine",
@@ -6892,6 +6969,8 @@
           "search.cancel": "Annuler",
           "breadcrumb.home": "Accueil",
           "breadcrumb.products": "Produits",
+          "detail.bulkLabel": "Prix de Gros",
+          "detail.bulkNotice": "Vous en commandez 3 ou plus ? Contactez-nous sur WhatsApp pour une remise spéciale !",
           "success.title": "Commande Passée !",
           "success.back": "Retour aux Produits",
         },
@@ -6899,13 +6978,14 @@
           "nav.home": "الرئيسية",
           "nav.products": "المنتجات",
           "nav.contact": "اتصل بنا",
-          "detail.weight": "الوزن",
+          "detail.weight": "الحجم",
           "detail.flavor": "النكهة",
           "detail.about": "عن هذا المنتج",
           "form.firstName": "الاسم الأول",
           "form.lastName": "اللقب",
           "form.phone": "رقم الهاتف",
           "form.wilaya": "الولاية",
+          "form.address": "العنوان (اختياري)",
           "form.commune": "البلدية",
           "form.deliveryType": "نوع التوصيل",
           "form.homeDelivery": "🏠 توصيل للمنزل",
@@ -6923,8 +7003,33 @@
           "form.addToCart": "أضف إلى السلة",
           "form.confirmOrder": "تأكيد الطلب",
           "section.alsoLike": "قد يعجبك أيضاً",
-          "footer.tagline":
-            "المتجر الأول للتغذية الرياضية في الجزائر. منتجات أصيلة، توصيل سريع.",
+          "footer.brand.desc":
+            "وجهتك الأولى في الجزائر للمكملات الرياضية الأصيلة.",
+          "footer.links": "روابط سريعة",
+          "footer.shipping": "سياسة الشحن",
+          "footer.returns": "الإرجاع",
+          "footer.categories": "الفئات",
+          "footer.contact": "أرسل رسالة",
+          "footer.rights": "جميع الحقوق محفوظة.",
+          "form.name": "اسمك",
+          "form.email": "البريد / الهاتف",
+          "form.message": "رسالتك",
+          "form.send": "إرسال",
+          "shipping.title": "سياسة الشحن",
+          "shipping.item1.title": "توصيل وطني",
+          "shipping.item1.text": "نوصّل إلى جميع الولايات الـ 58 في الجزائر عبر إيمير للوجستيك.",
+          "shipping.item2.title": "توصيل مجاني",
+          "shipping.item2.text": "الطلبات التي تتجاوز 15,000 دج تستفيد من توصيل مجاني!",
+          "shipping.item3.title": "التوقيت القياسي",
+          "shipping.item3.text": "يتم معالجة الطلبات خلال 24 ساعة.",
+          "returns.title": "الإرجاع والاسترداد",
+          "returns.item1.title": "سياسة الإرجاع",
+          "returns.item1.text": "لديك 1 أيام لإرجاع المنتج. يجب أن تكون المنتجات غير مفتوحة.",
+          "returns.item2.title": "عملية سهلة",
+          "returns.item2.text": "اتصل بنا عبر واتساب أو إنستغرام لبدء عملية الإرجاع.",
+          "returns.item3.title": "طريقة الاسترداد",
+          "returns.item3.text": "نقدم خيارات الاستبدال بمنتجات أخرى أو رصيد متجر.",
+          "toast.sent": "تم إرسال رسالتك!",
           "footer.shop": "المتجر",
           "footer.allProducts": "جميع المنتجات",
           "footer.protein": "البروتين",
@@ -6941,6 +7046,8 @@
           "search.cancel": "إلغاء",
           "breadcrumb.home": "الرئيسية",
           "breadcrumb.products": "المنتجات",
+          "detail.bulkLabel": "سعر الجملة",
+          "detail.bulkNotice": "هل تطلب 3 قطع أو أكثر؟ اتصل بنا عبر واتساب للحصول على خصم خاص للجملة!",
           "success.title": "تم تقديم الطلب!",
           "success.back": "العودة إلى المنتجات",
         },
@@ -6956,7 +7063,11 @@
         document.documentElement.dir = isAr ? "rtl" : "ltr";
         document.querySelectorAll("[data-i18n]").forEach((el) => {
           const key = el.getAttribute("data-i18n");
-          if (t[key] !== undefined) el.textContent = t[key];
+          if (t[key] !== undefined) {
+            if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+              el.placeholder = t[key];
+            } else el.textContent = t[key];
+          }
         });
         document.querySelectorAll(".lang-btn").forEach((btn) => {
           btn.classList.toggle("active", btn.dataset.lang === lang);
@@ -7355,8 +7466,7 @@
                   .toLowerCase()
                   .includes(q),
               ),
-          )
-          .slice(0, 8);
+          );
 
         if (!matches.length) {
           dropdown.innerHTML = `<div class="search-drop-empty">No results for "${query}"</div>`;
@@ -7421,6 +7531,35 @@
         document.body.style.overflow = "";
       }
 
+      /* ─────────────────────────────────────────────────────────────
+         CONTACT FORM
+      ───────────────────────────────────────────────────────────── */
+      async function handleContactForm(e) {
+        e.preventDefault();
+        const form = e.target;
+        const btn = form.querySelector("button[type=submit]");
+        const name = document.getElementById("contactName").value.trim();
+        const contact = document.getElementById("contactEmail").value.trim();
+        const message = document.getElementById("contactMsg").value.trim();
+        if (!name || !contact || !message) return;
+
+        btn.disabled = true;
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<span style="opacity:.7">Sending…</span>';
+
+        try {
+          await fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "submitContact", name, contact, message }),
+          });
+        } catch (_) {}
+
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+        form.reset();
+        showToast(i18n[currentLang]["toast.sent"] || "Message sent!");
+      }
+
       /* ── TOAST ── */
       let toastTimer;
       function showToast(msg) {
@@ -7452,9 +7591,15 @@
         cartUpdateBadge();
         populateWilayas();
         loadProductData();
-
-        const fy = document.getElementById("footerYear");
-        if (fy) fy.textContent = new Date().getFullYear();
+        
+        // Auto-fill from user account
+        const user = JSON.parse(localStorage.getItem('bybens_user'));
+        if (user) {
+          document.getElementById('firstName').value = user.firstName || '';
+          document.getElementById('lastName').value = user.lastName || '';
+          document.getElementById('phone').value = user.phone || '';
+          document.getElementById('address').value = user.address || '';
+        }
 
         const savedLang = localStorage.getItem("bybens_lang") || "en";
         if (savedLang !== "en") switchLang(savedLang);
@@ -7485,5 +7630,7 @@
         <button class="cart-checkout" onclick="cartCheckout()">Checkout</button>
       </div>
     </div>
+    <script src="/supplements/marquee.js"></script>
+    <script src="/supplements/footer.js"></script>
   </body>
 </html>

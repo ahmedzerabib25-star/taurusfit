@@ -14,10 +14,11 @@
       rel="stylesheet"
     />
     <link rel="icon" href="/images/favicon.ico" />
+    <link rel="stylesheet" href="/supplements/footer.css" />
     <script>
       // Kick off the API request as early as possible (parallel with HTML parsing)
-      (function () {
-        var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
+      (function () { 
+        var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYEJF3vwS5nZDP2zmVXiYputV_qSRmXGOnBtEOmhqAqFg9Tygg8g90Wplljynbrq2_rQ/exec";
         try {
           var cached = JSON.parse(localStorage.getItem("bybens_cache_getInitialData"));
           if (cached && Date.now() - cached.ts < 5 * 60 * 1000) {
@@ -2577,196 +2578,9 @@
         </div>
       </section>
 
-      <!-- CONTACT SECTION -->
-      <section
-        class="section-pad"
-        id="contact"
-        style="background: var(--off-white)"
-      >
-        <div class="container">
-          <div style="max-width: 600px; margin: 0 auto; text-align: center">
-            <p
-              class="section-label"
-              style="justify-content: center"
-              data-i18n="contact.label"
-            >
-              Get In Touch
-            </p>
-            <h2
-              class="section-title"
-              style="margin-bottom: 16px"
-              data-i18n="contact.title"
-            >
-              CONTACT US
-            </h2>
-            <p
-              style="
-                font-size: 15px;
-                color: var(--gray-600);
-                margin-bottom: 40px;
-              "
-              data-i18n="contact.desc"
-            >
-              Have questions? We're here to help. Reach out via the form below
-              or find us on social media.
-            </p>
-          </div>
-        </div>
-      </section>
     </main>
 
-    <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
-    <footer id="contact-footer">
-      <div class="container">
-        <div class="footer-grid">
-          <!-- Brand -->
-          <div class="footer-brand">
-            <a href="#" class="logo">
-              <img
-                src="/images/logo.png"
-                alt="ByBens Logo"
-                style="height: 70px; width: auto; object-fit: contain"
-              />
-            </a>
-            <p data-i18n="footer.brand.desc">
-              Algeria's premier destination for authentic sports nutrition. We
-              bring world-class supplements directly to your door.
-            </p>
-            <div class="social-links">
-              <a href="https://www.facebook.com/bens.supplements?rdid=xz8wUzpQtBJiEMM9&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18TWJRV3hc%2F#" class="social-link" aria-label="Facebook" target="_blank" rel="noopener">f</a>
-              <a
-                href="https://www.instagram.com/bens.supplements?igsh=MTlpaGRnOGxsazBvbA%3D%3D"
-                class="social-link"
-                aria-label="Instagram"
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <rect x="2" y="2" width="20" height="20" rx="5" />
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                </svg>
-              </a>
-              <a
-                href="https://api.whatsapp.com/send/?phone=213662269449&text&type=phone_number&app_absent=0"
-                class="social-link"
-                aria-label="WhatsApp"
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
-                  />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- Quick Links -->
-          <div class="footer-col">
-            <h4 data-i18n="footer.links">Quick Links</h4>
-            <ul>
-              <li><a href="#" data-i18n="nav.home">Home</a></li>
-              <li><a href="/supplements/products" data-i18n="nav.products">Products</a></li>
-            </ul>
-          </div>
-
-          <!-- Categories -->
-          <div class="footer-col">
-            <h4 data-i18n="footer.categories">Categories</h4>
-            <ul id="footerCategoryList"></ul>
-          </div>
-
-          <!-- Contact Form -->
-          <div class="footer-col">
-            <h4 data-i18n="footer.contact">Send a Message</h4>
-            <form
-              class="contact-form"
-              onsubmit="handleContactForm(event)"
-              novalidate
-            >
-              <div class="form-group">
-                <label
-                  class="form-label"
-                  for="contactName"
-                  data-i18n="form.name"
-                  >Your Name</label
-                >
-                <input
-                  class="form-input"
-                  type="text"
-                  id="contactName"
-                  placeholder="John doe"
-                  required
-                />
-              </div>
-              <div class="form-group">
-                <label
-                  class="form-label"
-                  for="contactEmail"
-                  data-i18n="form.email"
-                  >Email / Phone</label
-                >
-                <input
-                  class="form-input"
-                  type="text"
-                  id="contactEmail"
-                  placeholder="exemple@email.com or 0550…"
-                  required
-                />
-              </div>
-              <div class="form-group">
-                <label
-                  class="form-label"
-                  for="contactMsg"
-                  data-i18n="form.message"
-                  >Message</label
-                >
-                <textarea
-                  class="form-input form-textarea"
-                  id="contactMsg"
-                  placeholder="How can we help you?"
-                  required
-                ></textarea>
-              </div>
-              <button type="submit" class="btn-send">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="m22 2-7 20-4-9-9-4 20-7z" />
-                  <path d="M22 2 11 13" />
-                </svg>
-                <span data-i18n="form.send">Send Message</span>
-              </button>
-            </form>
-          </div>
-        </div>
-
-        <!-- Footer Bottom -->
-        <div class="footer-bottom">
-          <p>
-            © 2026 ByBen's Algeria.
-            <span data-i18n="footer.rights">All rights reserved.</span>
-          </p>
-        </div>
-      </div>
-    </footer>
+    <div id="footerPlaceholder"></div>
 
     <!-- Toast -->
     <div id="toast" role="alert" aria-live="polite">
@@ -2811,6 +2625,66 @@
       </svg>
     </a>
 
+    <!-- ══ ADD-TO-CART MODAL ══ -->
+    <div
+      class="atc-overlay"
+      id="atcOverlay"
+      onclick="if (event.target === this) closeAddToCartModal();"
+    >
+      <div class="atc-modal">
+        <button class="atc-close" onclick="closeAddToCartModal()">
+          &#x2715;
+        </button>
+        <div class="atc-modal-img" id="atcImg"></div>
+        <div class="atc-modal-name" id="atcName"></div>
+        <div class="atc-modal-price" id="atcPrice"></div>
+        <div class="atc-section" id="atcFlavorSection">
+          <div class="atc-label">Flavor</div>
+          <div class="atc-options" id="atcFlavorOptions"></div>
+        </div>
+        <div class="atc-section" id="atcWeightSection">
+          <div class="atc-label">Size / Weight</div>
+          <div class="atc-options" id="atcWeightOptions"></div>
+        </div>
+        <div class="atc-section">
+          <div class="atc-label">Quantity</div>
+          <div class="atc-qty-row">
+            <button class="atc-qty-btn" onclick="atcChangeQty(-1)">
+              &#8722;
+            </button>
+            <span class="atc-qty-val" id="atcQtyVal">1</span>
+            <button class="atc-qty-btn" onclick="atcChangeQty(1)">+</button>
+          </div>
+        </div>
+        <button class="atc-confirm-btn" onclick="confirmAddToCart()">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ CART DRAWER ══ -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+      <div class="cart-drawer-hd">
+        <span class="cart-drawer-title"
+          >Cart &nbsp;<span
+            id="cartDrawerCount"
+            style="font-size: 15px; font-weight: 600; color: var(--gray-400)"
+            >0 items</span
+          ></span
+        >
+        <button class="cart-drawer-x" onclick="toggleCart()">&#x2715;</button>
+      </div>
+      <div class="cart-drawer-body" id="cartDrawerBody"></div>
+      <div class="cart-drawer-ft">
+        <div class="cart-total">
+          <span class="cart-total-lbl">Total</span>
+          <span class="cart-total-num"><span id="cartDrawerTotal">0</span> DA</span>
+        </div>
+        <button class="cart-checkout" onclick="cartCheckout()">Checkout</button>
+      </div>
+    </div>
+
     <script src="./content.js" defer></script>
     <script>
       /* ─────────────────────────────────────────────────────────────
@@ -2823,6 +2697,7 @@
           "nav.home": "Home",
           "nav.products": "Products",
           "nav.contact": "Contact",
+          "nav.login": "Login",
           "hero.eyebrow": "Most Authentic Supplements Store",
           "hero.title": "FUEL YOUR<em>AMBITION</em>PERFORM",
           "hero.desc":
@@ -2858,6 +2733,8 @@
           "footer.brand.desc":
             "Algeria's premier destination for authentic sports nutrition. We bring world-class supplements directly to your door.",
           "footer.links": "Quick Links",
+          "footer.shipping": "Shipping Policy",
+          "footer.returns": "Returns",
           "footer.categories": "Categories",
           "footer.contact": "Send a Message",
           "footer.rights": "All rights reserved.",
@@ -2874,6 +2751,20 @@
           "about.order.title": "How to Order",
           "about.order.text": "Browse our products, choose your flavor and size, add to cart or click Buy Now. Fill in your name, phone, and delivery address — then confirm. We'll take care of the rest. Cash on delivery, no account needed.",
           "about.cta": "Shop Now",
+          "shipping.title": "Shipping Policy",
+          "shipping.item1.title": "Nationwide Delivery",
+          "shipping.item1.text": "We deliver to all 58 wilayas across Algeria via Imir Logistics. Quality sports nutrition delivered to your doorstep.",
+          "shipping.item2.title": "Free Delivery",
+          "shipping.item2.text": "Orders over 15,000 DA enjoy free delivery! For other orders, standard shipping rates apply depending on your location.",
+          "shipping.item3.title": "Standard Timing",
+          "shipping.item3.text": "Orders are processed within 24 hours. Delivery typically takes 2-3 business days for major cities and 4-6 days for remote areas.",
+          "returns.title": "Returns & Refunds",
+          "returns.item1.title": "Return Policy",
+          "returns.item1.text": "You have 7 days to return a product. Items must be unopened, in their original packaging, and with the original seal intact.",
+          "returns.item2.title": "Easy Process",
+          "returns.item2.text": "Contact us via WhatsApp or Instagram to initiate a return. We will guide you through the exchange or refund procedure.",
+          "returns.item3.title": "Refund Method",
+          "returns.item3.text": "Once the returned item is inspected, we offer exchanges for other products or store credit. Cash refunds are subject to evaluation.",
           "toast.added": "Added to cart!",
           "toast.sent": "Message sent! We'll reply soon.",
         },
@@ -2916,6 +2807,8 @@
           "footer.brand.desc":
             "La première destination algérienne pour la nutrition sportive authentique.",
           "footer.links": "Liens Rapides",
+          "footer.shipping": "Politique de livraison",
+          "footer.returns": "Retours",
           "footer.categories": "Catégories",
           "footer.contact": "Envoyer un Message",
           "footer.rights": "Tous droits réservés.",
@@ -2932,6 +2825,20 @@
           "about.order.title": "Comment Commander",
           "about.order.text": "Parcourez nos produits, choisissez votre goût et votre taille, ajoutez au panier ou cliquez sur Acheter. Renseignez votre nom, téléphone et adresse, puis confirmez. Paiement à la livraison, aucun compte requis.",
           "about.cta": "Commander Maintenant",
+          "shipping.title": "Politique de livraison",
+          "shipping.item1.title": "Livraison Nationale",
+          "shipping.item1.text": "Nous livrons dans les 58 wilayas d'Algérie via Imir Logistics. Une nutrition sportive de qualité livrée à votre porte.",
+          "shipping.item2.title": "Livraison Gratuite",
+          "shipping.item2.text": "Les commandes de plus de 15 000 DA bénéficient de la livraison gratuite ! Pour les autres, des tarifs standards s'appliquent.",
+          "shipping.item3.title": "Délais Standards",
+          "shipping.item3.text": "Les commandes sont traitées sous 24h. La livraison prend généralement 2-3 jours ouvrables pour les grandes villes.",
+          "returns.title": "Retours & Remboursements",
+          "returns.item1.title": "Politique de Retour",
+          "returns.item1.text": "Vous avez 7 jours pour retourner un produit. Les articles doivent être non ouverts, dans leur emballage d'origine.",
+          "returns.item2.title": "Processus Facile",
+          "returns.item2.text": "Contactez-nous via WhatsApp ou Instagram pour initier un retour. Nous vous guiderons étape par étape.",
+          "returns.item3.title": "Mode de Remboursement",
+          "returns.item3.text": "Une fois l'article inspecté, nous proposons des échanges ou un avoir. Les remboursements en espèces sont soumis à évaluation.",
           "toast.added": "Ajouté au panier!",
           "toast.sent": "Message envoyé!",
         },
@@ -2975,6 +2882,8 @@
           "footer.brand.desc":
             "وجهتك الأولى في الجزائر للمكملات الرياضية الأصيلة.",
           "footer.links": "روابط سريعة",
+          "footer.shipping": "سياسة الشحن",
+          "footer.returns": "الإرجاع",
           "footer.categories": "الفئات",
           "footer.contact": "أرسل رسالة",
           "footer.rights": "جميع الحقوق محفوظة.",
@@ -2991,13 +2900,26 @@
           "about.order.title": "كيف تطلب",
           "about.order.text": "تصفّح منتجاتنا، اختر نكهتك وحجمك، أضف إلى السلة أو اضغط اشتر الآن. أدخل اسمك ورقم هاتفك وعنوان التوصيل ثم أكّد الطلب. نحن نتكفل بالباقي. الدفع عند الاستلام، لا حاجة لحساب.",
           "about.cta": "تسوّق الآن",
+          "shipping.title": "سياسة الشحن",
+          "shipping.item1.title": "توصيل وطني",
+          "shipping.item1.text": "نوصّل إلى جميع الولايات الـ 58 في الجزائر عبر إيمير للوجستيك. مكملات رياضية عالية الجودة تصل إلى باب منزلك.",
+          "shipping.item2.title": "توصيل مجاني",
+          "shipping.item2.text": "الطلبات التي تتجاوز 15,000 دج تستفيد من توصيل مجاني! للطلبات الأخرى، تطبق أسعار الشحن القياسية.",
+          "shipping.item3.title": "التوقيت القياسي",
+          "shipping.item3.text": "يتم معالجة الطلبات خلال 24 ساعة. يستغرق التوصيل عادةً من يومين إلى 3 أيام عمل للمدن الكبرى.",
+          "returns.title": "الإرجاع والاسترداد",
+          "returns.item1.title": "سياسة الإرجاع",
+          "returns.item1.text": "لديك 7 أيام لإرجاع المنتج. يجب أن تكون المنتجات غير مفتوحة وفي غلافها الأصلي مع الختم الأصلي.",
+          "returns.item2.title": "عملية سهلة",
+          "returns.item2.text": "اتصل بنا عبر واتساب أو إنستغرام لبدء عملية الإرجاع. سنوجهك خلال خطوات الاستبدال أو الاسترداد.",
+          "returns.item3.title": "طريقة الاسترداد",
+          "returns.item3.text": "بمجرد فحص المنتج المرتجع، نقدم خيارات الاستبدال بمنتجات أخرى أو رصيد متجر. المبالغ النقدية تخضع للتقييم.",
           "toast.added": "تمت الإضافة للسلة!",
           "toast.sent": "تم إرسال رسالتك!",
         },
       };
 
-      const SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
+      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYEJF3vwS5nZDP2zmVXiYputV_qSRmXGOnBtEOmhqAqFg9Tygg8g90Wplljynbrq2_rQ/exec";
 
       const CACHE_TTL = 5 * 60 * 1000; // 5 minutes (matches server-side CacheService TTL)
       function cachedFetch(action) {
@@ -3124,6 +3046,10 @@
       function closeAddToCartModal() { document.getElementById("atcOverlay").classList.remove("open"); document.body.style.overflow = ""; }
       function openAboutModal() { document.getElementById("aboutOverlay").classList.add("open"); document.body.style.overflow = "hidden"; }
       function closeAboutModal() { document.getElementById("aboutOverlay").classList.remove("open"); document.body.style.overflow = ""; }
+      function openShippingModal() { document.getElementById("shippingOverlay").classList.add("open"); document.body.style.overflow = "hidden"; }
+      function closeShippingModal() { document.getElementById("shippingOverlay").classList.remove("open"); document.body.style.overflow = ""; }
+      function openReturnsModal() { document.getElementById("returnsOverlay").classList.add("open"); document.body.style.overflow = "hidden"; }
+      function closeReturnsModal() { document.getElementById("returnsOverlay").classList.remove("open"); document.body.style.overflow = ""; }
       function confirmAddToCart() {
         const p = _atcProduct; if (!p) return;
         if (_atcFlavorObjs.some(fo => fo.qty > 0)) { const fo = _atcFlavorObjs.find(f => f.name === _atcFlavor); if (!fo || fo.qty <= 0) return; }
@@ -3264,7 +3190,7 @@
           return;
         }
 
-        grid.innerHTML = products
+        grid.innerHTML = products.slice(0, 12)
           .map((p) => {
             // Pricing
             const baseVariant = p.variants && p.variants.length > 0 ? p.variants[0] : null;
@@ -3340,7 +3266,11 @@
         // Update all translatable text nodes
         document.querySelectorAll("[data-i18n]").forEach((el) => {
           const key = el.getAttribute("data-i18n");
-          if (t[key]) el.textContent = t[key];
+          if (t[key]) {
+            if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+              el.placeholder = t[key];
+            } else el.textContent = t[key];
+          }
         });
         document.querySelectorAll("[data-i18n-html]").forEach((el) => {
           const key = el.getAttribute("data-i18n-html");
@@ -3395,8 +3325,7 @@
             p.name.toLowerCase().includes(q) ||
             (p.brand || "").toLowerCase().includes(q) ||
             (p.flavors || []).some((f) => f.name.toLowerCase().includes(q))
-          )
-          .slice(0, 8);
+          );
 
         if (!matches.length) {
           dropdown.innerHTML = `<div class="search-drop-empty">No results for "${query}"</div>`;
@@ -3548,8 +3477,7 @@
 
           // ── Products ──
           products = res.products
-            .filter((p) => p.status === "active")
-            .slice(0, 10);
+            .filter((p) => p.status === "active" && Number(p.stock) > 0);
           renderProducts(currentLang);
 
           // ── Bundle banner ──
@@ -3557,7 +3485,7 @@
           if (bundle.bundleId) {
             _bundleId = bundle.bundleId;
             const product = res.products.find(
-              (p) => p.id === bundle.bundleId && p.status === "active",
+              (p) => p.id === bundle.bundleId && p.status === "active" && Number(p.stock) > 0,
             );
             if (product) {
               const img = document.getElementById("bundleBannerImg");
@@ -3723,91 +3651,71 @@
       }
     </script>
 
-    <!-- ══ ADD TO CART MODAL ══ -->
-    <div class="atc-overlay" id="atcOverlay" onclick="if(event.target===this)closeAddToCartModal()">
-      <div class="atc-modal">
-        <button class="atc-close" onclick="closeAddToCartModal()">&#x2715;</button>
-        <div class="atc-modal-img" id="atcImg"></div>
-        <div class="atc-modal-name" id="atcName"></div>
-        <div class="atc-modal-price" id="atcPrice"></div>
-        <div class="atc-section" id="atcFlavorSection">
-          <div class="atc-label">Flavor</div>
-          <div class="atc-options" id="atcFlavorOptions"></div>
-        </div>
-        <div class="atc-section" id="atcWeightSection">
-          <div class="atc-label">Size / Weight</div>
-          <div class="atc-options" id="atcWeightOptions"></div>
-        </div>
-        <div class="atc-section">
-          <div class="atc-label">Quantity</div>
-          <div class="atc-qty-row">
-            <button class="atc-qty-btn" onclick="atcChangeQty(-1)">&#8722;</button>
-            <span class="atc-qty-val" id="atcQtyVal">1</span>
-            <button class="atc-qty-btn" onclick="atcChangeQty(1)">+</button>
-          </div>
-        </div>
-        <button class="atc-confirm-btn" onclick="confirmAddToCart()">Add to Cart</button>
-      </div>
-    </div>
+    <script>
+      /* ── AUTH LOGIC ── */
+      function openAuthModal() { document.getElementById('authOverlay').classList.add('open'); }
+      function closeAuthModal() { document.getElementById('authOverlay').classList.remove('open'); }
+      function switchAuthTab(tab) {
+        document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+        event.target.classList.add('active');
+        document.getElementById(tab + 'Form').classList.add('active');
+      }
 
-    <!-- ══ ABOUT MODAL ══ -->
-    <div class="about-overlay" id="aboutOverlay" onclick="if(event.target===this)closeAboutModal()">
-      <div class="about-modal" role="dialog" aria-modal="true">
-        <button class="about-close" onclick="closeAboutModal()" aria-label="Close">&#x2715;</button>
-        <div class="about-header">
-          <div class="about-brand">BY<span>BEN'S</span></div>
-          <div class="about-sub">Supplements</div>
-        </div>
-        <div class="about-body">
-          <div class="about-card">
-            <div class="about-card-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
-            <div class="about-card-text">
-              <h4 data-i18n="about.who.title">Who We Are</h4>
-              <p data-i18n="about.who.text">ByBen's is a trusted supplements store in Algeria, built by athletes for athletes. We are passionate about sports nutrition and committed to delivering authentic, premium products at honest prices straight to your door.</p>
-            </div>
-          </div>
-          <div class="about-card">
-            <div class="about-card-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </div>
-            <div class="about-card-text">
-              <h4 data-i18n="about.offer.title">What We Offer</h4>
-              <p data-i18n="about.offer.text">Whey protein, creatine, pre-workouts, mass gainers, vitamins, and more — all 100% authentic, sourced directly from trusted international brands. Free delivery on orders over 15,000 DA, covering all 58 wilayas.</p>
-            </div>
-          </div>
-          <div class="about-card">
-            <div class="about-card-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-            </div>
-            <div class="about-card-text">
-              <h4 data-i18n="about.order.title">How to Order</h4>
-              <p data-i18n="about.order.text">Browse our products, choose your flavor and size, add to cart or click Buy Now. Fill in your name, phone, and delivery address — then confirm. We'll take care of the rest. Cash on delivery, no account needed.</p>
-            </div>
-          </div>
-        </div>
-        <div class="about-cta-wrap">
-          <a href="/supplements/products" class="about-cta" data-i18n="about.cta">Shop Now</a>
-        </div>
-      </div>
-    </div>
+      async function handleAuthSubmit(e, type) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
+        data.action = type === 'login' ? 'loginCustomer' : 'registerCustomer';
+        
+        const btn = e.target.querySelector('button');
+        btn.disabled = true;
+        btn.textContent = 'Processing...';
 
-    <!-- ══ CART DRAWER ══ -->
-    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
-    <div class="cart-drawer" id="cartDrawer">
-      <div class="cart-drawer-hd">
-        <span class="cart-drawer-title">Cart &nbsp;<span id="cartDrawerCount" style="font-size:15px;font-weight:600;color:var(--gray-400)">0 items</span></span>
-        <button class="cart-drawer-x" onclick="toggleCart()">&#x2715;</button>
-      </div>
-      <div class="cart-drawer-body" id="cartDrawerBody"></div>
-      <div class="cart-drawer-ft">
-        <div class="cart-total">
-          <span class="cart-total-lbl">Total</span>
-          <span class="cart-total-num"><span id="cartDrawerTotal">0</span> DA</span>
-        </div>
-        <button class="cart-checkout" onclick="cartCheckout()">Checkout</button>
-      </div>
-    </div>
+        try {
+          const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
+          const result = await res.json();
+          if (result.success) {
+            if (type === 'login') {
+              localStorage.setItem('bybens_user', JSON.stringify(result.user));
+              updateAuthUI();
+              closeAuthModal();
+              showToast('Welcome back!');
+            } else {
+              showToast('Account created! Please login.');
+              switchAuthTab('login');
+            }
+          } else {
+            alert(result.error || 'Authentication failed');
+          }
+        } catch (err) { alert('Connection error'); }
+        btn.disabled = false;
+        btn.textContent = type === 'login' ? 'Sign In' : 'Create Account';
+      }
+
+      function updateAuthUI() {
+        const user = JSON.parse(localStorage.getItem('bybens_user'));
+        if (user) {
+          document.getElementById('loginNavBtn').style.display = 'none';
+          document.getElementById('userInfo').style.display = 'flex';
+          document.getElementById('userNameDisplay').textContent = user.firstName;
+        } else {
+          document.getElementById('loginNavBtn').style.display = 'flex';
+          document.getElementById('userInfo').style.display = 'none';
+        }
+      }
+
+      function logoutCustomer() {
+        localStorage.removeItem('bybens_user');
+        updateAuthUI();
+        showToast('Logged out');
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        updateAuthUI();
+      });
+    </script>
+
+    <script src="/supplements/footer.js"></script>
   </body>
 </html>
