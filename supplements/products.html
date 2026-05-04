@@ -16,18 +16,42 @@
     <link rel="stylesheet" href="/supplements/footer.css" />
     <script>
       (function () {
-        var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
+        var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYEJF3vwS5nZDP2zmVXiYputV_qSRmXGOnBtEOmhqAqFg9Tygg8g90Wplljynbrq2_rQ/exec";
+        var CACHE_KEY = "bybens_cache_getInitialData";
         try {
-          var cached = JSON.parse(localStorage.getItem("bybens_cache_getInitialData"));
+          var cached = JSON.parse(localStorage.getItem(CACHE_KEY));
           if (cached && Date.now() - cached.ts < 5 * 60 * 1000) {
             window.__initialDataPromise = Promise.resolve(cached.data);
             window.__initialDataFromCache = true;
             return;
           }
         } catch (e) {}
-        window.__initialDataPromise = fetch(SCRIPT_URL + "?action=getInitialData")
-          .then(function (r) { return r.json(); })
-          .catch(function () { return null; });
+
+        function fetchWithTimeout(url, ms) {
+          var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+          var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, ms) : null;
+          return fetch(url, ctrl ? { signal: ctrl.signal } : {})
+            .then(function (r) {
+              if (timer) clearTimeout(timer);
+              return r.json();
+            });
+        }
+
+        function staleCache() {
+          try {
+            var c = JSON.parse(localStorage.getItem(CACHE_KEY));
+            return (c && c.data) ? c.data : null;
+          } catch (e) { return null; }
+        }
+
+        window.__initialDataPromise = fetchWithTimeout(SCRIPT_URL + "?action=getInitialData", 25000)
+          .catch(function () {
+            return new Promise(function (resolve) { setTimeout(resolve, 1000); })
+              .then(function () { return fetchWithTimeout(SCRIPT_URL + "?action=getInitialData", 25000); });
+          })
+          .catch(function () {
+            return staleCache();
+          });
       })();
     </script>
 
@@ -2903,7 +2927,7 @@
       /* ══════════════════════════════════════════════════════════════
    DATA — loaded from Google Sheets via Apps Script
 ══════════════════════════════════════════════════════════════ */
-      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec";
+      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYEJF3vwS5nZDP2zmVXiYputV_qSRmXGOnBtEOmhqAqFg9Tygg8g90Wplljynbrq2_rQ/exec";
 
       const CACHE_TTL = 5 * 60 * 1000; // 5 minutes (matches server-side CacheService TTL)
       function cachedFetch(action) {

@@ -17,24 +17,42 @@
     <script>
       (function () {
         var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYEJF3vwS5nZDP2zmVXiYputV_qSRmXGOnBtEOmhqAqFg9Tygg8g90Wplljynbrq2_rQ/exec";
+        var CACHE_KEY = "bybens_cache_getInitialData";
         try {
-          var cached = JSON.parse(
-            localStorage.getItem("bybens_cache_getInitialData"),
-          );
+          var cached = JSON.parse(localStorage.getItem(CACHE_KEY));
           if (cached && Date.now() - cached.ts < 5 * 60 * 1000) {
             window.__initialDataPromise = Promise.resolve(cached.data);
             window.__initialDataFromCache = true;
             return;
           }
         } catch (e) {}
-        window.__initialDataPromise = fetch(
-          SCRIPT_URL + "?action=getInitialData",
-        )
-          .then(function (r) {
-            return r.json();
+
+        function fetchWithTimeout(url, ms) {
+          var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+          var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, ms) : null;
+          return fetch(url, ctrl ? { signal: ctrl.signal } : {})
+            .then(function (r) {
+              if (timer) clearTimeout(timer);
+              return r.json();
+            });
+        }
+
+        function staleCache() {
+          try {
+            var c = JSON.parse(localStorage.getItem(CACHE_KEY));
+            return (c && c.data) ? c.data : null;
+          } catch (e) { return null; }
+        }
+
+        window.__initialDataPromise = fetchWithTimeout(SCRIPT_URL + "?action=getInitialData", 25000)
+          .catch(function () {
+            // Retry once after 1 second before giving up
+            return new Promise(function (resolve) { setTimeout(resolve, 1000); })
+              .then(function () { return fetchWithTimeout(SCRIPT_URL + "?action=getInitialData", 25000); });
           })
           .catch(function () {
-            return null;
+            // Fall back to stale cache (even if expired) rather than blank page
+            return staleCache();
           });
       })();
     </script>
@@ -3975,6 +3993,24 @@
           }
         } catch (err) {
           console.error("Failed to load product data:", err);
+          hideLoader();
+          var section = document.querySelector(".product-detail-section");
+          if (section) {
+            section.innerHTML = [
+              '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;',
+              'min-height:40vh;gap:16px;padding:40px 20px;text-align:center;">',
+              '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ad0000" stroke-width="1.5">',
+              '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>',
+              '<line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+              '<p style="font-family:var(--font-body);font-size:1rem;color:var(--gray-600);margin:0;">',
+              'Unable to load product. Please check your connection and try again.</p>',
+              '<button onclick="location.reload()" style="margin-top:8px;padding:12px 28px;',
+              'background:var(--red);color:#fff;border:none;border-radius:8px;',
+              'font-family:var(--font-body);font-size:0.95rem;font-weight:600;cursor:pointer;">',
+              'Try Again</button></div>'
+            ].join('');
+          }
+          return;
         }
         hideLoader();
       }
