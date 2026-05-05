@@ -890,12 +890,13 @@ function handleSubmitOrder(body) {
   let sheet = ss.getSheetByName("Orders");
   if (!sheet) {
     sheet = ss.insertSheet("Orders");
-    const hdrs = [
+const hdrs = [
       "id",
       "source",
       "firstName",
       "lastName",
       "phone",
+      "address",
       "wilaya",
       "commune",
       "deliveryType",
@@ -1112,8 +1113,8 @@ function _fetchOrders() {
       items: safeParseJSON(r[12], []),
       subtotal: Number(r[13]) || 0,
       total: Number(r[14]) || 0,
-      status: String(r[15] || "waiting"),
-      createdAt: r[15] ? String(r[15]) : "",
+status: String(r[15] || "waiting"),
+createdAt: r[16] ? String(r[16]) : "",
     };
   });
 }
@@ -1134,7 +1135,7 @@ function handleUpdateOrderStatus(body) {
       // Orders columns: id(0) source(1) firstName(2) lastName(3) phone(4)
       // wilaya(5) commune(6) deliveryType(7) deliveryCost(8) promoCode(9)
       // promoDiscount(10) items(11) subtotal(12) total(13) status(14) createdAt(15)
-      const oldStatus = String(data[i][14] || "waiting");
+      const oldStatus = String(data[i][15] || "waiting");
       const newStatus = body.status;
 
       const statusCol = data[0].indexOf("status");
@@ -1143,12 +1144,12 @@ function handleUpdateOrderStatus(body) {
 
       // Restore stock when admin cancels an order
       if (oldStatus !== "canceled" && newStatus === "canceled") {
-        const items = safeParseJSON(data[i][11], []);
+const items = safeParseJSON(data[i][11], []);
         _adjustStock(items, +1);
       }
       // Re-deduct stock if admin moves order back from canceled to active
       if (oldStatus === "canceled" && newStatus !== "canceled") {
-        const items = safeParseJSON(data[i][11], []);
+const items = safeParseJSON(data[i][12], []);
         _adjustStock(items, -1);
       }
 
