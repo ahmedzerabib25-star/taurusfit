@@ -5974,8 +5974,8 @@
         try {
           const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
           const data = await res.json().catch(() => ({ success: true }));
-          if (data.success === false) {
-            showToast(data.error || "Order failed. Please try again.");
+          if (!data || data.success === false) {
+            showToast((data && data.error) || "Order failed. Please try again.");
             return;
           }
           document.getElementById("successMsg").textContent =

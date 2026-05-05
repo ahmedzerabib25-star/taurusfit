@@ -290,9 +290,10 @@ function doPost(e) {
         return handleSaveBundle(body);
       case "updateSettings":
         return handleUpdateSettings(body);
-      case "submitCartOrder":
+case "submitCartOrder":
+          return handleSubmitOrder(body);
       case "registerCustomer":
-        return handleRegisterCustomer(body);
+          return handleRegisterCustomer(body);
       case "loginCustomer":
         return handleLoginCustomer(body);
       case "submitProductOrder":
