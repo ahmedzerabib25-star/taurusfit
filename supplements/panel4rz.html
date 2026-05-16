@@ -2666,15 +2666,34 @@
               Choose <strong>one product</strong> to feature as the bundle on
               your store.
             </p>
-            <div class="form-group" style="margin-bottom:16px">
-              <label>Bundle Description</label>
-              <textarea
-                id="bundle-description"
-                class="form-control"
-                rows="3"
-                placeholder="e.g. Get our most popular Whey Protein bundle at 30% off. Limited stock — order now!"
-                style="resize:vertical;min-height:72px"
-              ></textarea>
+            <!-- Banner Title -->
+            <div style="font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--g400);margin-bottom:12px;">Banner Title</div>
+            <div class="form-group" style="margin-bottom:12px">
+              <label>Title (English)</label>
+              <input id="bundle-title-en" class="form-control" type="text" placeholder="RAMP UP YOUR PERFORMANCE" />
+            </div>
+            <div class="form-group" style="margin-bottom:12px">
+              <label>Title (French)</label>
+              <input id="bundle-title-fr" class="form-control" type="text" placeholder="BOOSTEZ VOS PERFORMANCES" />
+            </div>
+            <div class="form-group" style="margin-bottom:20px">
+              <label>Title (Arabic)</label>
+              <input id="bundle-title-ar" class="form-control" type="text" placeholder="ارفع مستوى أدائك" dir="rtl" />
+            </div>
+
+            <!-- Banner Description -->
+            <div style="font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--g400);margin-bottom:12px;">Banner Description</div>
+            <div class="form-group" style="margin-bottom:12px">
+              <label>Description (English)</label>
+              <textarea id="bundle-description-en" class="form-control" rows="2" placeholder="Get our most popular bundle at 20% off. Limited stock — order now!" style="resize:vertical;min-height:60px"></textarea>
+            </div>
+            <div class="form-group" style="margin-bottom:12px">
+              <label>Description (French)</label>
+              <textarea id="bundle-description-fr" class="form-control" rows="2" placeholder="Obtenez notre bundle le plus populaire à -20%. Stock limité — commandez maintenant." style="resize:vertical;min-height:60px"></textarea>
+            </div>
+            <div class="form-group" style="margin-bottom:20px">
+              <label>Description (Arabic)</label>
+              <textarea id="bundle-description-ar" class="form-control" rows="2" placeholder="احصل على باقتنا الأكثر مبيعاً بخصم 20%. مخزون محدود — اطلب الآن." style="resize:vertical;min-height:60px" dir="rtl"></textarea>
             </div>
             <input
               class="search-box"
@@ -3621,7 +3640,16 @@
           case "getBundle": {
             const { data, error } = await sb.from("bundle").select("*").eq("id", 1).maybeSingle();
             if (error) throw error;
-            return { success: true, bundleId: data?.bundle_id || "", bundleDescription: data?.description_en || "" };
+            return {
+              success: true,
+              bundleId: data?.bundle_id || "",
+              titleEn: data?.title_en || "",
+              titleFr: data?.title_fr || "",
+              titleAr: data?.title_ar || "",
+              descriptionEn: data?.description_en || "",
+              descriptionFr: data?.description_fr || "",
+              descriptionAr: data?.description_ar || "",
+            };
           }
           case "getOrders": {
             const { data, error } = await sb.from("orders").select("*").order("created_at", { ascending: false });
@@ -3744,7 +3772,15 @@
           }
           // ── BUNDLE ──
           case "saveBundle": {
-            const { error } = await sb.from("bundle").update({ bundle_id: rest.bundleId || "", description_en: rest.bundleDescription || "" }).eq("id", 1);
+            const { error } = await sb.from("bundle").update({
+              bundle_id:      rest.bundleId || "",
+              title_en:       rest.titleEn || "",
+              title_fr:       rest.titleFr || "",
+              title_ar:       rest.titleAr || "",
+              description_en: rest.descriptionEn || "",
+              description_fr: rest.descriptionFr || "",
+              description_ar: rest.descriptionAr || "",
+            }).eq("id", 1);
             if (error) throw error;
             return { success: true };
           }
@@ -5441,9 +5477,19 @@
                 ? `Selected: <strong>${p.name}</strong>`
                 : `Selected: <strong>${r.bundleId}</strong>`;
           }
-          if (r.success && r.bundleDescription) {
-            const desc = document.getElementById("bundle-description");
-            if (desc) desc.value = r.bundleDescription;
+          if (r.success) {
+            const fields = {
+              "bundle-title-en":       r.titleEn,
+              "bundle-title-fr":       r.titleFr,
+              "bundle-title-ar":       r.titleAr,
+              "bundle-description-en": r.descriptionEn,
+              "bundle-description-fr": r.descriptionFr,
+              "bundle-description-ar": r.descriptionAr,
+            };
+            Object.entries(fields).forEach(([id, val]) => {
+              const el = document.getElementById(id);
+              if (el && val) el.value = val;
+            });
           }
         } catch (e) {
           /* silent */
@@ -5454,11 +5500,16 @@
       async function saveBundle() {
         showLoading("Saving bundle…");
         try {
-          const desc = document.getElementById("bundle-description");
+          const g = (id) => (document.getElementById(id) || {}).value?.trim() || "";
           const r = await apiPost({
-            action: "saveBundle",
-            bundleId: bundleSelectedId || "",
-            bundleDescription: desc ? desc.value.trim() : "",
+            action:        "saveBundle",
+            bundleId:      bundleSelectedId || "",
+            titleEn:       g("bundle-title-en"),
+            titleFr:       g("bundle-title-fr"),
+            titleAr:       g("bundle-title-ar"),
+            descriptionEn: g("bundle-description-en"),
+            descriptionFr: g("bundle-description-fr"),
+            descriptionAr: g("bundle-description-ar"),
           });
           if (r.success) showToast("Bundle saved!");
           else showToast("Error: " + (r.error || "Unknown"), "error");

@@ -43,12 +43,15 @@
   }
 
   function _remapBundle(b) {
-    if (!b) return { bundleId: "", bundleDescriptionAr: "", bundleDescriptionFr: "", bundleDescriptionEn: "" };
+    if (!b) return { bundleId: "", titleEn: "", titleFr: "", titleAr: "", descriptionEn: "", descriptionFr: "", descriptionAr: "" };
     return {
-      bundleId: b.bundle_id || "",
-      bundleDescriptionAr: b.description_ar || "",
-      bundleDescriptionFr: b.description_fr || "",
-      bundleDescriptionEn: b.description_en || "",
+      bundleId:      b.bundle_id || "",
+      titleEn:       b.title_en || "",
+      titleFr:       b.title_fr || "",
+      titleAr:       b.title_ar || "",
+      descriptionEn: b.description_en || "",
+      descriptionFr: b.description_fr || "",
+      descriptionAr: b.description_ar || "",
     };
   }
 

@@ -1348,7 +1348,9 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        min-width: 0;
       }
+      .banner-desc { max-width: 420px; overflow-wrap: break-word; }
       .banner-eyebrow {
         font-size: 11px;
         font-weight: 700;
@@ -2693,13 +2695,8 @@
             <p class="banner-eyebrow" data-i18n="banner.eyebrow">
               Limited Time Offer
             </p>
-            <h2 class="banner-title" data-i18n-html="banner.title">
-              RAMP UP YOUR<em>PERFORMANCE</em>
-            </h2>
-            <p class="banner-desc" data-i18n="banner.desc">
-              Get our most popular bundle at 20% off. Limited stock
-              — order now and fuel your next workout.
-            </p>
+            <h2 class="banner-title" id="bundleBannerTitle"></h2>
+            <p class="banner-desc" id="bundleBannerDesc"></p>
             <a href="#" class="btn-primary" id="bundleBannerLink">
               <span data-i18n="banner.cta">Grab the Deal</span>
               <svg
@@ -3270,6 +3267,19 @@
 ───────────────────────────────────────────────────────────── */
       let products = [];
       let _bundleId = null;
+      let _bundleText = { titleEn: "", titleFr: "", titleAr: "", descriptionEn: "", descriptionFr: "", descriptionAr: "" };
+
+      function updateBannerLang(lang) {
+        const titleEl = document.getElementById("bundleBannerTitle");
+        const descEl  = document.getElementById("bundleBannerDesc");
+        if (!titleEl || !descEl) return;
+        const titles = { en: _bundleText.titleEn, fr: _bundleText.titleFr, ar: _bundleText.titleAr };
+        const descs  = { en: _bundleText.descriptionEn, fr: _bundleText.descriptionFr, ar: _bundleText.descriptionAr };
+        const fallbackTitle = "RAMP UP YOUR<em>PERFORMANCE</em>";
+        const fallbackDesc  = "Get our most popular bundle at 20% off. Limited stock — order now and fuel your next workout.";
+        titleEl.innerHTML = titles[lang] || fallbackTitle;
+        descEl.textContent = descs[lang] || fallbackDesc;
+      }
       let _topSoldIds = [];
 
       function computeTopSoldIds(orders, prods) {
@@ -3411,6 +3421,9 @@
 
         // Re-render products with new button labels
         renderProducts(lang);
+
+        // Update bundle banner text
+        updateBannerLang(lang);
       }
 
       function buyNow(id) {
@@ -3582,6 +3595,15 @@
           const bundle = res.bundle || {};
           if (bundle.bundleId) {
             _bundleId = bundle.bundleId;
+            _bundleText = {
+              titleEn:       bundle.titleEn       || "",
+              titleFr:       bundle.titleFr       || "",
+              titleAr:       bundle.titleAr       || "",
+              descriptionEn: bundle.descriptionEn || "",
+              descriptionFr: bundle.descriptionFr || "",
+              descriptionAr: bundle.descriptionAr || "",
+            };
+            updateBannerLang(currentLang);
             const product = res.products.find(
               (p) => p.id === bundle.bundleId && p.status === "active" && Number(p.stock) > 0,
             );
