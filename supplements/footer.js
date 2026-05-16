@@ -4,13 +4,39 @@
  */
 
 (function() {
+
+  // Dark mode toggle — shared across all pages
+  function updateLogos(isDark) {
+    document.querySelectorAll('.logo img, .footer-brand img').forEach(function(img) {
+      img.src = isDark ? '/images/logo-dark.png' : '/images/logo.png';
+    });
+  }
+
+  window.toggleTheme = function() {
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('bybens_theme', 'light');
+      updateLogos(false);
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('bybens_theme', 'dark');
+      updateLogos(true);
+    }
+  };
+
+  // Sync logos on page load after DOM is ready
+  document.addEventListener('DOMContentLoaded', function() {
+    updateLogos(document.documentElement.getAttribute('data-theme') === 'dark');
+  });
+
   const footerHTML = `
     <footer class="site-footer" role="contentinfo">
       <div class="container">
         <div class="footer-grid">
           <div class="footer-brand">
             <a href="/supplements" class="logo" style="margin-bottom: 16px; display: inline-flex">
-              <img src="/images/logo.png" alt="ByBens Logo" width="140" height="70" style="height: 70px; width: auto; object-fit: contain;" />
+              <img src="/images/logo.png" alt="ByBens Logo" width="140" height="70" style="height: 70px; width: auto; object-fit: contain;" class="footer-brand-logo" />
             </a>
             <p data-i18n="footer.brand.desc">Algeria's premier destination for authentic sports nutrition. We bring world-class supplements directly to your door.</p>
             <div class="social-links">
@@ -26,10 +52,11 @@
           <div class="footer-col">
             <h4 data-i18n="footer.links">Quick Links</h4>
             <ul>
-              <li><a href="#" data-i18n="nav.home">Home</a></li>
+              <li><a href="/supplements" data-i18n="nav.home">Home</a></li>
               <li><a href="/supplements/products" data-i18n="nav.products">Products</a></li>
               <li><a href="#" data-i18n="footer.shipping" onclick="openShippingModal();return false;">Shipping Policy</a></li>
               <li><a href="#" data-i18n="footer.returns" onclick="openReturnsModal();return false;">Returns</a></li>
+              <li><a href="/supplements/privacy" data-i18n="footer.privacy">Privacy Policy</a></li>
             </ul>
           </div>
           <div class="footer-col">
@@ -185,9 +212,42 @@
   const placeholder = document.getElementById("footerPlaceholder");
   if (placeholder) placeholder.innerHTML = footerHTML;
   else document.body.insertAdjacentHTML('beforeend', footerHTML);
-  
+
+  // Sync footer logo immediately after injection
+  updateLogos(document.documentElement.getAttribute('data-theme') === 'dark');
+
   // Set Year
   const yearEl = document.getElementById("footerYear");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // Contact form — shared across all pages
+  window.handleContactForm = async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('button[type=submit]');
+    const name = (document.getElementById('contactName') || {}).value || '';
+    const contact = (document.getElementById('contactEmail') || {}).value || '';
+    const message = (document.getElementById('contactMsg') || {}).value || '';
+    if (!name.trim() || !contact.trim() || !message.trim()) return;
+    btn.disabled = true;
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<span style="opacity:.7">Sending…</span>';
+    try {
+      await fetch('https://qlvvarnujhlgalawojhi.supabase.co/functions/v1/submit-contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsdnZhcm51amhsZ2FsYXdvamhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3OTI3NjIsImV4cCI6MjA5NDM2ODc2Mn0.R7WVVZbDIWLD6W7RWIQVQYFDw62nGPFae-S0t-mW_rM',
+        },
+        body: JSON.stringify({ name: name.trim(), contact: contact.trim(), message: message.trim() }),
+      });
+    } catch (_) {}
+    btn.disabled = false;
+    btn.innerHTML = orig;
+    form.reset();
+    const lang = (window.currentLang) || 'en';
+    const msg = (window.i18n && window.i18n[lang] && window.i18n[lang]['toast.sent']) || 'Message sent!';
+    if (window.showToast) window.showToast(msg);
+  };
 
 })();

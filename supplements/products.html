@@ -6,52 +6,29 @@
     <title>Products – ByBens Sports Nutrition Algeria</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://script.google.com" />
-    <link rel="dns-prefetch" href="https://script.googleusercontent.com" />
+    <link rel="preconnect" href="https://qlvvarnujhlgalawojhi.supabase.co" />
     <link
       href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&display=swap"
       rel="stylesheet"
     />
     <link rel="icon" href="/images/favicon.ico" />
+    <script>if(localStorage.getItem('bybens_theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
     <link rel="stylesheet" href="/supplements/footer.css" />
     <script>
       (function () {
-        var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYEJF3vwS5nZDP2zmVXiYputV_qSRmXGOnBtEOmhqAqFg9Tygg8g90Wplljynbrq2_rQ/exec";
-        var CACHE_KEY = "bybens_cache_getInitialData";
-        try {
-          var cached = JSON.parse(localStorage.getItem(CACHE_KEY));
-          if (cached && Date.now() - cached.ts < 5 * 60 * 1000) {
-            window.__initialDataPromise = Promise.resolve(cached.data);
-            window.__initialDataFromCache = true;
-            return;
-          }
-        } catch (e) {}
-
-        function fetchWithTimeout(url, ms) {
-          var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
-          var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, ms) : null;
-          return fetch(url, ctrl ? { signal: ctrl.signal } : {})
-            .then(function (r) {
-              if (timer) clearTimeout(timer);
-              return r.json();
-            });
-        }
-
-        function staleCache() {
-          try {
-            var c = JSON.parse(localStorage.getItem(CACHE_KEY));
-            return (c && c.data) ? c.data : null;
-          } catch (e) { return null; }
-        }
-
-        window.__initialDataPromise = fetchWithTimeout(SCRIPT_URL + "?action=getInitialData", 25000)
-          .catch(function () {
-            return new Promise(function (resolve) { setTimeout(resolve, 1000); })
-              .then(function () { return fetchWithTimeout(SCRIPT_URL + "?action=getInitialData", 25000); });
-          })
-          .catch(function () {
-            return staleCache();
-          });
+        var SB_URL = "https://qlvvarnujhlgalawojhi.supabase.co";
+        var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsdnZhcm51amhsZ2FsYXdvamhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3OTI3NjIsImV4cCI6MjA5NDM2ODc2Mn0.R7WVVZbDIWLD6W7RWIQVQYFDw62nGPFae-S0t-mW_rM";
+        var h = { apikey: SB_KEY, Authorization: "Bearer " + SB_KEY };
+        function sf(path) { return fetch(SB_URL + "/rest/v1/" + path, { headers: h }).then(function (r) { return r.json(); }); }
+        window.__initialDataPromise = Promise.all([
+          sf("products?select=*&hidden=not.is.true"), sf("categories?select=*"), sf("sub_categories?select=*"),
+          sf("bundle?select=*&limit=1"), sf("promo_codes?select=*"),
+          sf("delivery_prices?select=*"), sf("orders?select=*"),
+        ]).then(function (results) {
+          return { products: results[0], categories: results[1], subCategories: results[2],
+            bundle: (results[3] || [])[0] || {}, promos: results[4],
+            deliveryPrices: results[5], orders: results[6] };
+        }).catch(function () { return null; });
       })();
     </script>
 
@@ -86,37 +63,64 @@
       }
 
       /* ─── PAGE LOADER ─────────────────────────────────────────── */
-      #pageLoader{position:fixed;inset:0;background:radial-gradient(ellipse at center,#1a0303 0%,#0a0000 50%,#050505 100%);display:flex;align-items:center;justify-content:center;z-index:99999;transition:opacity .6s ease,visibility .6s ease;overflow:hidden}
-      #pageLoader.hidden{opacity:0;visibility:hidden;pointer-events:none}
-      #pageLoader::before{content:"";position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,10,10,.08) 0%,transparent 60%);animation:ldrGlow 4s ease-in-out infinite;pointer-events:none}
-      @keyframes ldrGlow{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.15);opacity:1}}
-      .ldr-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:36px;z-index:1}
-      .ldr-ring-wrap{position:relative;width:160px;height:160px;display:flex;align-items:center;justify-content:center;animation:ldrFadeUp .6s cubic-bezier(.22,1,.36,1) both}
-      .ldr-ring{position:absolute;inset:0;width:100%;height:100%;animation:ldrRotate 1.8s linear infinite}
-      .ldr-ring circle{fill:none;stroke:url(#ldrGrad);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:120 220;filter:drop-shadow(0 0 6px rgba(255,10,10,.5))}
-      .ldr-ring-inner{position:absolute;inset:14px;border-radius:50%;border:1px solid rgba(255,255,255,.06)}
-      .ldr-brand{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;color:#fff;letter-spacing:.06em;line-height:1;animation:ldrPulse 2.4s ease-in-out infinite}
-      .ldr-brand-by{font-size:18px;letter-spacing:.32em;color:rgba(255,255,255,.55);margin-bottom:6px}
-      .ldr-brand-bens{font-size:38px;color:#fff}
-      .ldr-brand-bens em{color:#ff0a0a;font-style:normal;text-shadow:0 0 18px rgba(255,10,10,.65),0 0 36px rgba(255,10,10,.35)}
-      .ldr-tagline{font-family:"Bebas Neue",sans-serif;color:rgba(255,255,255,.45);letter-spacing:.42em;font-size:11px;text-align:center;display:flex;align-items:center;gap:6px;justify-content:center}
-      .ldr-tagline .ldr-word{opacity:0;transform:scale(0);animation:ldrPop .45s cubic-bezier(.175,.885,.32,1.275) forwards}
-      .ldr-tagline .ldr-word:nth-child(1){animation-delay:.4s}
-      .ldr-tagline .ldr-word:nth-child(3){animation-delay:.7s}
-      .ldr-tagline .ldr-word:nth-child(5){animation-delay:1s}
-      .ldr-tagline .ldr-sep{opacity:0;animation:ldrFadeIn .3s ease forwards}
-      .ldr-tagline .ldr-sep:nth-child(2){animation-delay:.55s}
-      .ldr-tagline .ldr-sep:nth-child(4){animation-delay:.85s}
-      @keyframes ldrPop{0%{opacity:0;transform:scale(0)}70%{opacity:1;transform:scale(1.3)}100%{opacity:1;transform:scale(1)}}
-      .ldr-dots{display:inline-flex;gap:4px;margin-left:8px;vertical-align:middle;opacity:0;animation:ldrFadeIn .3s ease 1.15s forwards}
-      .ldr-dots span{width:3px;height:3px;background:#ff0a0a;border-radius:50%;opacity:.3;animation:ldrDot 1.4s ease-in-out infinite}
-      .ldr-dots span:nth-child(2){animation-delay:.2s}
-      .ldr-dots span:nth-child(3){animation-delay:.4s}
-      @keyframes ldrDot{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-2px)}}
-      @keyframes ldrRotate{to{transform:rotate(360deg)}}
-      @keyframes ldrPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-      @keyframes ldrFadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-      @keyframes ldrFadeIn{to{opacity:1}}
+      #pageLoader{position:fixed;inset:0;background:#1c1c1c;display:flex;align-items:center;justify-content:center;z-index:99999;overflow:hidden;transition:transform .7s cubic-bezier(.76,0,.24,1)}
+      #pageLoader.wl-exit{transform:translateY(-100%)}
+      #pageLoader.hidden{visibility:hidden;pointer-events:none}
+      .bb-noanim #pageLoader{display:none!important}
+      #dataSpinner{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9998;background:rgba(255,255,255,0.92);pointer-events:none}
+      .ds-ring{width:44px;height:44px;border:3px solid rgba(173,0,0,0.15);border-top-color:#ad0000;border-radius:50%;animation:ds-spin .75s linear infinite}
+      @keyframes ds-spin{to{transform:rotate(360deg)}}
+      .wl-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(140,0,0,.28) 0%,rgba(30,0,0,.18) 45%,transparent 70%);animation:wlBgPulse 3s ease-in-out infinite}
+      @keyframes wlBgPulse{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.12)}}
+      .wl-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(173,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(173,0,0,.05) 1px,transparent 1px);background-size:50px 50px;animation:wlGridFade 1s ease .1s both}
+      @keyframes wlGridFade{0%{opacity:0}100%{opacity:1}}
+      .wl-rings{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+      .wl-ring{position:absolute;border-radius:50%;border:1px solid rgba(173,0,0,.5);left:50%;top:50%;transform:translate(-50%,-50%) scale(0);animation:wlRingExpand 2.2s ease-out infinite}
+      .wl-ring:nth-child(1){width:180px;height:180px;animation-delay:.4s}
+      .wl-ring:nth-child(2){width:300px;height:300px;animation-delay:.9s;border-color:rgba(173,0,0,.3)}
+      .wl-ring:nth-child(3){width:440px;height:440px;animation-delay:1.4s;border-color:rgba(173,0,0,.15)}
+      @keyframes wlRingExpand{0%{transform:translate(-50%,-50%) scale(0);opacity:1}100%{transform:translate(-50%,-50%) scale(1.6);opacity:0}}
+      .wl-flares{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+      .wl-flare{position:absolute;top:50%;left:50%;height:1px;width:0;background:linear-gradient(90deg,transparent,rgba(200,0,0,.7),rgba(255,80,80,.9),rgba(200,0,0,.7),transparent);transform-origin:left center}
+      .wl-flare:nth-child(1){transform:rotate(-38deg) translateX(-500px);animation:wlFlareIn .7s ease .35s both}
+      .wl-flare:nth-child(2){transform:rotate(38deg) translateX(-500px);animation:wlFlareIn .7s ease .45s both}
+      .wl-flare:nth-child(3){transform:rotate(-18deg) translateX(-500px);animation:wlFlareIn .5s ease .5s both;opacity:.5}
+      .wl-flare:nth-child(4){transform:rotate(18deg) translateX(-500px);animation:wlFlareIn .5s ease .55s both;opacity:.5}
+      @keyframes wlFlareIn{0%{width:0;opacity:0}40%{opacity:1}100%{width:700px;opacity:0}}
+      .wl-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+      .wl-p{position:absolute;border-radius:50%;background:#ff3333;animation:wlParticleUp linear infinite both}
+      .wl-p:nth-child(1){left:8%;bottom:-8px;width:3px;height:3px;animation-duration:3.2s;animation-delay:.8s}
+      .wl-p:nth-child(2){left:18%;bottom:-8px;width:2px;height:2px;opacity:.6;animation-duration:2.8s;animation-delay:1.3s}
+      .wl-p:nth-child(3){left:28%;bottom:-8px;width:3px;height:3px;animation-duration:3.5s;animation-delay:.5s}
+      .wl-p:nth-child(4){left:42%;bottom:-8px;width:2px;height:2px;opacity:.8;animation-duration:2.5s;animation-delay:.3s}
+      .wl-p:nth-child(5){left:52%;bottom:-8px;width:2px;height:2px;animation-duration:4s;animation-delay:1.6s}
+      .wl-p:nth-child(6){left:63%;bottom:-8px;width:2px;height:5px;border-radius:1px;animation-duration:3s;animation-delay:.7s}
+      .wl-p:nth-child(7){left:73%;bottom:-8px;width:2px;height:2px;opacity:.5;animation-duration:2.9s;animation-delay:1.1s}
+      .wl-p:nth-child(8){left:83%;bottom:-8px;width:3px;height:3px;animation-duration:3.3s;animation-delay:.9s}
+      .wl-p:nth-child(9){left:92%;bottom:-8px;width:2px;height:2px;animation-duration:2.7s;animation-delay:1.4s}
+      .wl-p:nth-child(10){left:5%;bottom:-8px;width:2px;height:2px;animation-duration:3.8s;animation-delay:.6s}
+      .wl-p:nth-child(11){left:37%;bottom:-8px;width:4px;height:4px;animation-duration:2.6s;animation-delay:1.8s;background:#ff6666}
+      .wl-p:nth-child(12){left:70%;bottom:-8px;width:2px;height:2px;animation-duration:3.6s;animation-delay:.4s}
+      @keyframes wlParticleUp{0%{transform:translateY(0) scale(1);opacity:1}80%{opacity:.8}100%{transform:translateY(-100vh) scale(.3);opacity:0}}
+      .wl-body{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px;z-index:1}
+      .wl-logo-wrap{position:relative;overflow:hidden;animation:wlLogoBurst .75s cubic-bezier(.34,1.56,.64,1) .3s both}
+      @keyframes wlLogoBurst{0%{opacity:0;transform:scale(0) rotate(-8deg);filter:brightness(6) blur(10px)}55%{filter:brightness(1.8) blur(0)}80%{transform:scale(1.07) rotate(.5deg)}100%{opacity:1;transform:scale(1) rotate(0);filter:brightness(1)}}
+      .wl-logo{display:block;width:220px;height:auto;filter:drop-shadow(0 0 25px rgba(173,0,0,.55)) drop-shadow(0 0 55px rgba(173,0,0,.25))}
+      .wl-logo-glow{position:absolute;inset:-25px;background:radial-gradient(ellipse at center,rgba(173,0,0,.45) 0%,transparent 65%);animation:wlGlowPulse 1.8s ease-in-out 1s infinite;pointer-events:none;z-index:-1}
+      @keyframes wlGlowPulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.18)}}
+      .wl-shine{position:absolute;top:-10%;left:-80%;width:40%;height:120%;background:linear-gradient(105deg,transparent 20%,rgba(255,255,255,.5) 50%,transparent 80%);transform:skewX(-20deg);animation:wlShine .55s ease-in-out 1s both;pointer-events:none}
+      .wl-shine2{position:absolute;top:-10%;left:-80%;width:20%;height:120%;background:linear-gradient(105deg,transparent 20%,rgba(255,180,180,.3) 50%,transparent 80%);transform:skewX(-20deg);animation:wlShine .4s ease-in-out 1.4s both;pointer-events:none}
+      @keyframes wlShine{0%{left:-80%;opacity:0}15%{opacity:1}100%{left:160%;opacity:.3}}
+      .wl-line{width:0;height:2px;background:linear-gradient(90deg,transparent,#ad0000,#ff3333,#ff6666,#ff3333,#ad0000,transparent);box-shadow:0 0 12px rgba(255,51,51,.9),0 0 32px rgba(173,0,0,.6),0 0 65px rgba(173,0,0,.3);animation:wlLineGrow .5s ease .9s both}
+      @keyframes wlLineGrow{0%{width:0;opacity:0}100%{width:220px;opacity:1}}
+      .wl-tagline{display:flex;align-items:center;gap:14px;font-family:"Bebas Neue",sans-serif;font-size:14px;letter-spacing:.35em;color:rgba(255,255,255,.75)}
+      .wl-word{display:inline-block;opacity:0;animation:wlWordIn .45s cubic-bezier(.34,1.56,.64,1) both}
+      .wl-word:nth-child(1){animation-delay:1.1s}
+      .wl-word:nth-child(2){animation-delay:1s;color:#ad0000}
+      .wl-word:nth-child(3){animation-delay:1.2s}
+      .wl-word:nth-child(4){animation-delay:1.1s;color:#ad0000}
+      .wl-word:nth-child(5){animation-delay:1.3s}
+      @keyframes wlWordIn{0%{opacity:0;transform:translateY(14px) scale(.75)}100%{opacity:1;transform:translateY(0) scale(1)}}
 
       /* ─── RESET ─────────────────────────────────────────────── */
       *,
@@ -718,6 +722,9 @@
         position: relative;
         overflow: hidden;
       }
+      html[data-theme="dark"] .page-hero { background: #0a0a0a; }
+      html[data-theme="dark"] .page-hero h1 { color: #ffffff; }
+      html[data-theme="dark"] .page-hero p { color: rgba(255,255,255,0.5); }
       .page-hero::before {
         content: "";
         position: absolute;
@@ -1811,9 +1818,12 @@
         }
         .logo {
           margin-left: auto;
+          position: relative;
+          left: 16px;
         }
         .footer-mini .logo {
           margin-left: 0;
+          left: 0;
         }
         .cat-nav {
           display: none;
@@ -1830,7 +1840,7 @@
         }
 
         .logo img {
-          max-width: 110px;
+          max-width: 100px;
         }
         .top-nav {
           gap: 10px;
@@ -1840,6 +1850,8 @@
         }
         #mobileProductSearchBtn {
           display: flex !important;
+          position: relative;
+          left: 16px;
         }
 
         .product-grid {
@@ -2247,32 +2259,31 @@
         background: var(--red-hover);
       }
     </style>
+    <script>if(sessionStorage.getItem('bb_wl'))document.documentElement.classList.add('bb-noanim');</script>
   </head>
   <body>
     <!-- PAGE LOADER -->
     <div id="pageLoader">
-      <div class="ldr-wrap">
-        <div class="ldr-ring-wrap">
-          <svg class="ldr-ring" viewBox="0 0 100 100" aria-hidden="true">
-            <defs>
-              <linearGradient id="ldrGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#ff1a1a"/>
-                <stop offset="50%" stop-color="#ad0000"/>
-                <stop offset="100%" stop-color="#3d0000"/>
-              </linearGradient>
-            </defs>
-            <circle cx="50" cy="50" r="46"/>
-          </svg>
-          <div class="ldr-ring-inner"></div>
-          <div class="ldr-brand">
-            <span class="ldr-brand-by">SUPPLEMENTS</span>
-            <span class="ldr-brand-bens">BY BEN<em>'</em>S</span>
-          </div>
+      <div class="wl-bg"></div>
+      <div class="wl-grid"></div>
+      <div class="wl-rings"><div class="wl-ring"></div><div class="wl-ring"></div><div class="wl-ring"></div></div>
+      <div class="wl-flares"><div class="wl-flare"></div><div class="wl-flare"></div><div class="wl-flare"></div><div class="wl-flare"></div></div>
+      <div class="wl-particles"><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div></div>
+      <div class="wl-body">
+        <div class="wl-logo-wrap">
+          <div class="wl-logo-glow"></div>
+          <img src="/images/logo.png" alt="ByBens" class="wl-logo" />
+          <div class="wl-shine"></div>
+          <div class="wl-shine2"></div>
         </div>
-        <div class="ldr-tagline"><span class="ldr-word">FUEL</span><span class="ldr-sep">·</span><span class="ldr-word">PERFORM</span><span class="ldr-sep">·</span><span class="ldr-word">DOMINATE</span><span class="ldr-dots"><span></span><span></span><span></span></span></div>
+        <div class="wl-line"></div>
+        <div class="wl-tagline">
+          <span class="wl-word">FUEL</span><span class="wl-word">·</span><span class="wl-word">PERFORM</span><span class="wl-word">·</span><span class="wl-word">DOMINATE</span>
+        </div>
       </div>
     </div>
-    <script>if(window.__initialDataFromCache){document.getElementById('pageLoader').style.display='none';}</script>
+    <!-- Data loading spinner -->
+    <div id="dataSpinner"><div class="ds-ring"></div></div>
     <!-- Marquee Placeholder -->
     <div id="marqueePlaceholder"></div>
 
@@ -2291,7 +2302,7 @@
           </button>
           <!-- Logo — single <a> tag, no nesting -->
           <a href="/supplements" class="logo" aria-label="ByBens Home">
-            <img src="/images/logo.png" alt="ByBens Logo" width="140" height="40" fetchpriority="high" decoding="async" />
+            <img src="/images/logo.png" alt="ByBens Logo" width="140" height="40" fetchpriority="high" decoding="async" style="height: auto; width: auto; max-width: 140px; object-fit: contain;" />
           </a>
 
           <!-- Supplements link (desktop only) -->
@@ -2367,6 +2378,11 @@
               </button>
             </div>
 
+            <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
+              <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+
             <button
               class="cart-btn"
               aria-label="Shopping cart"
@@ -2422,6 +2438,10 @@
         <button class="lang-btn" data-lang="ar" onclick="switchLang('ar')">
           AR
         </button>
+        <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode" style="margin-left:auto;">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
       </div>
     </nav>
 
@@ -2455,7 +2475,7 @@
               outline: none;
               font-family: var(--font-body);
             "
-            onkeydown="if(event.key==='Enter') submitMobileProductSearch()"
+            oninput="handleMobileProductSearch(this.value)"
           />
           <svg
             style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--gray-400);"
@@ -2465,25 +2485,7 @@
           </svg>
         </div>
         <button
-          onclick="submitMobileProductSearch()"
-          style="
-            flex-shrink: 0;
-            height: 48px;
-            padding: 0 18px;
-            background: var(--red);
-            color: var(--white);
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            font-family: var(--font-body);
-          "
-        >
-          Search
-        </button>
-        <button
-          onclick="closeMobileProductSearch(false)"
+          onclick="closeMobileProductSearch()"
           style="
             flex-shrink: 0;
             font-size: 15px;
@@ -2925,45 +2927,25 @@
       }
 
       /* ══════════════════════════════════════════════════════════════
-   DATA — loaded from Google Sheets via Apps Script
+   DATA — loaded from Supabase
 ══════════════════════════════════════════════════════════════ */
-      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYEJF3vwS5nZDP2zmVXiYputV_qSRmXGOnBtEOmhqAqFg9Tygg8g90Wplljynbrq2_rQ/exec";
+      const SUPABASE_URL = "https://qlvvarnujhlgalawojhi.supabase.co";
+      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsdnZhcm51amhsZ2FsYXdvamhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3OTI3NjIsImV4cCI6MjA5NDM2ODc2Mn0.R7WVVZbDIWLD6W7RWIQVQYFDw62nGPFae-S0t-mW_rM";
+      // getInitialData is provided by supabase-client.js
 
-      const CACHE_TTL = 5 * 60 * 1000; // 5 minutes (matches server-side CacheService TTL)
-      function cachedFetch(action) {
-        const key = `bybens_cache_${action}`;
-        try {
-          const cached = JSON.parse(localStorage.getItem(key));
-          if (cached && Date.now() - cached.ts < CACHE_TTL)
-            return Promise.resolve(cached.data);
-        } catch (e) {}
-        return fetch(`${SCRIPT_URL}?action=${action}`)
-          .then((r) => r.json())
-          .then((data) => {
-            try {
-              localStorage.setItem(
-                key,
-                JSON.stringify({ ts: Date.now(), data }),
-              );
-            } catch (e) {}
-            return data;
-          });
-      }
-      function getInitialData() {
-        if (window.__initialDataPromise) {
-          return window.__initialDataPromise.then(function (data) {
-            if (data && !window.__initialDataFromCache) {
-              try { localStorage.setItem("bybens_cache_getInitialData", JSON.stringify({ ts: Date.now(), data: data })); } catch (e) {}
-            }
-            return data;
-          });
-        }
-        return cachedFetch("getInitialData");
-      }
-
+      var _wlStart = Date.now();
       function hideLoader() {
-        var l = document.getElementById("pageLoader");
-        if (l) l.classList.add("hidden");
+        var s = document.getElementById('dataSpinner');
+        if (s) s.style.display = 'none';
+        var l = document.getElementById('pageLoader');
+        if (!l || l._exiting) return;
+        sessionStorage.setItem('bb_wl', '1');
+        var delay = Math.max(0, 1600 - (Date.now() - _wlStart));
+        setTimeout(function() {
+          l._exiting = true;
+          l.classList.add('wl-exit');
+          setTimeout(function() { l.classList.add('hidden'); }, 700);
+        }, delay);
       }
 
       let allProducts = [];
@@ -3658,59 +3640,26 @@
         setTimeout(() => document.getElementById("mobileProductSearchInput").focus(), 50);
       }
 
-      function closeMobileProductSearch(keepSearch) {
+      function closeMobileProductSearch() {
         const overlay = document.getElementById("mobileProductSearchOverlay");
         overlay.style.display = "none";
         document.body.style.overflow = "";
-        if (!keepSearch) {
-          document.getElementById("mobileProductSearchInput").value = "";
-          state.search = "";
-          state.page = 1;
-          refresh();
-        }
-      }
-
-      function submitMobileProductSearch() {
-        const query = document.getElementById("mobileProductSearchInput").value;
-        state.search = query;
+        document.getElementById("mobileProductSearchInput").value = "";
+        state.search = "";
         state.page = 1;
         refresh();
-        closeMobileProductSearch(true);
+      }
+
+      function handleMobileProductSearch(val) {
+        state.search = val.trim();
+        state.page = 1;
+        refresh();
       }
 
       function handleSort() {
         state.sort = document.getElementById("sortSelect").value;
         state.page = 1;
         renderProducts();
-      }
-
-      /* ─────────────────────────────────────────────────────────────
-   CONTACT FORM
-───────────────────────────────────────────────────────────── */
-      async function handleContactForm(e) {
-        e.preventDefault();
-        const form = e.target;
-        const btn = form.querySelector("button[type=submit]");
-        const name = document.getElementById("contactName").value.trim();
-        const contact = document.getElementById("contactEmail").value.trim();
-        const message = document.getElementById("contactMsg").value.trim();
-        if (!name || !contact || !message) return;
-
-        btn.disabled = true;
-        const originalHTML = btn.innerHTML;
-        btn.innerHTML = '<span style="opacity:.7">Sending…</span>';
-
-        try {
-          await fetch(SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify({ action: "submitContact", name, contact, message }),
-          });
-        } catch (_) {}
-
-        btn.disabled = false;
-        btn.innerHTML = originalHTML;
-        form.reset();
-        showToast(i18n[currentLang]["toast.sent"] || "Message sent!");
       }
 
       function refresh() {
@@ -4175,6 +4124,9 @@
       </div>
     </div>
     <script src="/supplements/marquee.js"></script>
+    <script src="/content.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/supplements/supabase-client.js"></script>
     <script src="/supplements/footer.js"></script>
   </body>
 </html>

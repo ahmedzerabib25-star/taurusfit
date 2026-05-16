@@ -1,12 +1,13 @@
 {
   "cleanUrls": true,
   "redirects": [
-    { "source": "/", "destination": "/supplements", "permanent": false },
+    { "source": "/", "destination": "/supplements", "permanent": true },
     { "source": "/products", "destination": "/supplements/products", "permanent": true },
     { "source": "/product-detail", "destination": "/supplements/product-detail", "permanent": true },
     { "source": "/checkout", "destination": "/supplements/checkout", "permanent": true },
     { "source": "/mgmt9kx", "destination": "/supplements/mgmt9kx", "permanent": false },
-    { "source": "/panel4rz", "destination": "/supplements/panel4rz", "permanent": false }
+    { "source": "/panel4rz", "destination": "/supplements/panel4rz", "permanent": false },
+    { "source": "/privacy", "destination": "/supplements/privacy", "permanent": true }
   ],
   "headers": [
     {

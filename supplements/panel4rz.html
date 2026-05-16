@@ -10,6 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/supplements/supabase-client.js"></script>
     <style>
       :root {
         --red: #ad0000;
@@ -650,6 +652,13 @@
         border: 1px solid var(--g100);
         overflow: hidden;
       }
+      .pag-wrap{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:#fff;border-top:1px solid var(--g100)}
+      .pag-info{font-size:12px;color:var(--g400)}
+      .pag-btns{display:flex;gap:4px;flex-wrap:wrap}
+      .pag-btn{min-width:32px;height:30px;padding:0 8px;border:1px solid var(--g100);background:#fff;color:var(--g600);font-size:13px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s,border-color .12s}
+      .pag-btn:hover:not(:disabled):not(.active){background:var(--g50,#f5f5f5);border-color:var(--g200,#e0e0e0)}
+      .pag-btn.active{background:var(--red,#ad0000);color:#fff;border-color:var(--red,#ad0000);font-weight:600}
+      .pag-btn:disabled{opacity:.35;cursor:not-allowed}
       .table-toolbar {
         padding: 14px 18px;
         border-bottom: 1px solid var(--g100);
@@ -2507,6 +2516,7 @@
               </thead>
               <tbody id="products-tbody"></tbody>
             </table>
+            <div id="products-pag"></div>
           </div>
         </div>
 
@@ -2534,6 +2544,7 @@
             <button class="act-btn" style="background:var(--g100);color:var(--g600)" onclick="_selClear('cat')">Cancel</button>
           </div>
           <div class="cat-tree" id="cat-tree"></div>
+          <div id="cat-pag"></div>
         </div>
 
         <!-- PROMOS -->
@@ -2624,6 +2635,7 @@
               </thead>
               <tbody id="delivery-tbody"></tbody>
             </table>
+            <div id="delivery-pag"></div>
           </div>
         </div>
 
@@ -2865,6 +2877,7 @@
                 <tr><td colspan="12"><div class="empty-state"><p>No orders yet</p></div></td></tr>
               </tbody>
             </table>
+            <div id="orders-pag"></div>
           </div>
         </div>
       </div>
@@ -3434,9 +3447,11 @@
 
     <script>
       // ════════════════════════════════════════════
-      // CONFIG
+      // CONFIG — SUPABASE_URL / SUPABASE_ANON_KEY set by supabase-client.js
       // ════════════════════════════════════════════
-      const API_URL = "https://script.google.com/macros/s/AKfycbzYEJF3vwS5nZDP2zmVXiYputV_qSRmXGOnBtEOmhqAqFg9Tygg8g90Wplljynbrq2_rQ/exec"; // ← YOUR DEPLOYED APPS SCRIPT WEB APP URL
+      const SUPABASE_URL = window.SUPABASE_URL;
+      const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY;
+      const sb = window.supabase;
       const CLOUDINARY_CLOUD = "dbxna1ipc";
       const CLOUDINARY_PRESET = "Bybens";
 
@@ -3465,72 +3480,310 @@
         deliveryPrices = [],
         orders = [],
         settings = {};
+      let ordersTotal = 0, productsTotal = 0;
+      let _dashOrders = [];
+      const _PAGE = 15;
+      let productPage = 1, catPage = 1, deliveryPage = 1, orderPage = 1;
+      let _prodFilter = "", _delFilter = "";
+      function _pagCtrl(total, cur, setFn) {
+        const totalPages = Math.ceil(total / _PAGE);
+        if (totalPages <= 1) return "";
+        const from = (cur - 1) * _PAGE + 1;
+        const to = Math.min(cur * _PAGE, total);
+        let btns = "";
+        if (cur > 1) btns += `<button class="pag-btn" onclick="${setFn}(${cur - 1})">&#8249;</button>`;
+        for (let i = 1; i <= totalPages; i++) {
+          if (i === 1 || i === totalPages || (i >= cur - 2 && i <= cur + 2)) {
+            btns += `<button class="pag-btn${i === cur ? " active" : ""}" onclick="${setFn}(${i})">${i}</button>`;
+          } else if (i === cur - 3 || i === cur + 3) {
+            btns += `<button class="pag-btn" style="cursor:default;pointer-events:none" disabled>&#8230;</button>`;
+          }
+        }
+        if (cur < totalPages) btns += `<button class="pag-btn" onclick="${setFn}(${cur + 1})">&#8250;</button>`;
+        return `<div class="pag-wrap"><span class="pag-info">Showing ${from}–${to} of ${total}</span><div class="pag-btns">${btns}</div></div>`;
+      }
+      function setProductPage(n) { productPage = n; renderProducts(_prodFilter); }
+      function setCatPage(n) { catPage = n; renderCats(); }
+      function setDeliveryPage(n) { deliveryPage = n; renderDelivery(_delFilter); }
+      function setOrderPage(n) { orderPage = n; _fetchOrdersPage().then(renderOrders).catch(() => renderOrders()); }
+
+      async function _fetchOrdersPage() {
+        const from = (orderPage - 1) * _PAGE;
+        const to = from + _PAGE - 1;
+        let q = sb.from("orders").select("*", { count: "exact" });
+        if (ordersFilter !== "all") q = q.eq("status", ordersFilter);
+        if (ordersSearch) {
+          q = q.or(
+            `first_name.ilike.%${ordersSearch}%,last_name.ilike.%${ordersSearch}%,phone.ilike.%${ordersSearch}%,wilaya.ilike.%${ordersSearch}%,commune.ilike.%${ordersSearch}%`
+          );
+        }
+        switch (ordersSort) {
+          case "date-asc":   q = q.order("created_at", { ascending: true }); break;
+          case "total-desc": q = q.order("total", { ascending: false }); break;
+          case "total-asc":  q = q.order("total", { ascending: true }); break;
+          case "name-asc":   q = q.order("first_name", { ascending: true }); break;
+          case "name-desc":  q = q.order("first_name", { ascending: false }); break;
+          default:           q = q.order("created_at", { ascending: false });
+        }
+        const { data, count, error } = await q.range(from, to);
+        if (error) throw error;
+        orders = (data || []).map(_remapOrderRow);
+        ordersTotal = count || 0;
+      }
+
+      async function _fetchDashOrders() {
+        const { data } = await sb.from("orders")
+          .select("id,status,total,created_at,items,first_name,last_name,phone,wilaya")
+          .order("created_at", { ascending: false });
+        _dashOrders = (data || []).map(o => ({
+          id: o.id, status: o.status, total: o.total,
+          createdAt: o.created_at, items: o.items || [],
+          firstName: o.first_name || "", lastName: o.last_name || "",
+          phone: o.phone || "", wilaya: o.wilaya || ""
+        }));
+      }
 
       // ════════════════════════════════════════════
-      // API HELPERS
+      // ROW MAPPERS (snake_case → camelCase)
+      // ════════════════════════════════════════════
+      function _remapProductRow(r) {
+        return { id: r.id, name: r.name, brand: r.brand, categoryIds: (r.category_ids || "").split(",").filter(Boolean), subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), description: r.description, imageUrl: r.image_url || [], variants: r.variants || [], flavors: r.flavors || [], stock: r.stock, discount: r.discount, allowPromo: r.allow_promo, promoCodeIds: (r.promo_code_ids || "").split(",").filter(Boolean), status: r.status, hidden: r.hidden || false, nutritionalFacts: r.nutritional_facts, benefits: r.benefits, createdAt: r.created_at };
+      }
+      function _remapCategoryRow(r) {
+        return { id: r.id, name: r.name, description: r.description, createdAt: r.created_at };
+      }
+      function _remapSubCategoryRow(r) {
+        return { id: r.id, name: r.name, categoryIds: (r.category_ids || "").split(",").filter(Boolean), createdAt: r.created_at };
+      }
+      function _remapPromoRow(r) {
+        return { id: r.id, code: r.code, type: r.type, value: r.value, minOrder: r.min_order, maxUses: r.max_uses, uses: r.uses, expiry: r.expiry, status: r.status, applyToAll: r.apply_to_all, createdAt: r.created_at };
+      }
+      function _remapDeliveryRow(r) {
+        return { id: r.id, wilaya: r.wilaya, homePrice: r.home_price, officePrice: r.office_price, createdAt: r.created_at };
+      }
+      function _remapOrderRow(r) {
+        return { id: r.id, source: r.source, firstName: r.first_name, lastName: r.last_name, phone: r.phone, address: r.address, wilaya: r.wilaya, commune: r.commune, deliveryType: r.delivery_type, deliveryCost: r.delivery_cost, promoCode: r.promo_code, promoDiscount: r.promo_discount, items: r.items || [], subtotal: r.subtotal, total: r.total, status: r.status, createdAt: r.created_at };
+      }
+      // ROW BUILDERS (camelCase → snake_case)
+      function _toProductRow(p) {
+        return { name: p.name, brand: p.brand || "", category_ids: (p.categoryIds || []).join(","), sub_category_ids: (p.subCategoryIds || []).join(","), description: p.description || "", image_url: p.imageUrl || [], variants: p.variants || [], flavors: p.flavors || [], stock: p.stock || 0, discount: p.discount || 0, allow_promo: p.allowPromo || false, promo_code_ids: (p.promoCodeIds || []).join(","), status: p.status || "active", hidden: p.hidden || false, nutritional_facts: p.nutritionalFacts || "", benefits: p.benefits || "" };
+      }
+      function _toPromoRow(p) {
+        return { code: (p.code || "").toUpperCase(), type: p.type, value: p.value || 0, min_order: p.minOrder || 0, max_uses: p.maxUses || null, expiry: p.expiry || "", status: p.status || "active", apply_to_all: p.applyToAll || false };
+      }
+
+      // ════════════════════════════════════════════
+      // API HELPERS (Supabase)
       // ════════════════════════════════════════════
       async function apiGet(action, params = {}) {
-        const url = new URL(API_URL);
-        url.searchParams.set("action", action);
-        for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
-        const res = await fetch(url.toString());
-        return res.json();
+        switch (action) {
+          case "getInitialData": {
+            const [
+              { data: prods, error: e1 }, { data: cats, error: e2 }, { data: subs, error: e3 },
+              { data: promoRows, error: e4 }, { data: dpRows, error: e5 },
+              { data: bndRow, error: e6 },
+            ] = await Promise.all([
+              sb.from("products").select("*").order("created_at", { ascending: false }),
+              sb.from("categories").select("*").order("created_at", { ascending: true }),
+              sb.from("sub_categories").select("*"),
+              sb.from("promo_codes").select("*").order("created_at", { ascending: false }),
+              sb.from("delivery_prices").select("*").order("wilaya", { ascending: true }),
+              sb.from("bundle").select("*").eq("id", 1).maybeSingle(),
+            ]);
+            if (e1 || e2 || e3 || e4 || e5 || e6) throw e1 || e2 || e3 || e4 || e5 || e6;
+            return { success: true, products: (prods || []).map(_remapProductRow), categories: (cats || []).map(_remapCategoryRow), subCategories: (subs || []).map(_remapSubCategoryRow), promos: (promoRows || []).map(_remapPromoRow), deliveryPrices: (dpRows || []).map(_remapDeliveryRow), bundle: bndRow ? { bundleId: bndRow.bundle_id, bundleDescription: bndRow.description_en } : {} };
+          }
+          case "getProducts": {
+            const { data, error } = await sb.from("products").select("*").order("created_at", { ascending: false });
+            if (error) throw error;
+            return { success: true, products: (data || []).map(_remapProductRow) };
+          }
+          case "getCategories": {
+            const { data, error } = await sb.from("categories").select("*").order("created_at", { ascending: true });
+            if (error) throw error;
+            return { success: true, categories: (data || []).map(_remapCategoryRow) };
+          }
+          case "getSubCategories": {
+            const { data, error } = await sb.from("sub_categories").select("*");
+            if (error) throw error;
+            return { success: true, subCategories: (data || []).map(_remapSubCategoryRow) };
+          }
+          case "getPromos": {
+            const { data, error } = await sb.from("promo_codes").select("*").order("created_at", { ascending: false });
+            if (error) throw error;
+            return { success: true, promos: (data || []).map(_remapPromoRow) };
+          }
+          case "getDeliveryPrices": {
+            const { data, error } = await sb.from("delivery_prices").select("*").order("wilaya", { ascending: true });
+            if (error) throw error;
+            return { success: true, deliveryPrices: (data || []).map(_remapDeliveryRow) };
+          }
+          case "getBundle": {
+            const { data, error } = await sb.from("bundle").select("*").eq("id", 1).maybeSingle();
+            if (error) throw error;
+            return { success: true, bundleId: data?.bundle_id || "", bundleDescription: data?.description_en || "" };
+          }
+          case "getOrders": {
+            const { data, error } = await sb.from("orders").select("*").order("created_at", { ascending: false });
+            if (error) throw error;
+            return { success: true, orders: (data || []).map(_remapOrderRow) };
+          }
+          case "getSettings": {
+            const { data, error } = await sb.from("settings").select("*");
+            if (error) throw error;
+            const s = {};
+            (data || []).forEach((row) => { s[row.key] = row.value; });
+            return { success: true, settings: s };
+          }
+          case "login": {
+            const { data: authData, error } = await sb.auth.signInWithPassword({ email: params.username, password: params.password });
+            return { success: !error && !!authData?.session };
+          }
+          default:
+            return { success: false, error: "Unknown action: " + action };
+        }
       }
+
       async function apiPost(body) {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify(body),
-        });
-        return res.json();
-      }
-      // ── Local cache for instant first paint (stale-while-revalidate) ──
-      const ADMIN_CACHE_KEY = "bybens_admin_cache";
-      // Server (Apps Script CacheService) caches GETs for ~5 min. After we mutate
-      // anything, GET responses will be stale until the cache expires. We track the
-      // last local-write timestamp so polling/refresh skips clobbering our state.
-      const SERVER_CACHE_TTL = 6 * 60 * 1000; // 6 minutes — slightly longer than server TTL
-      const LAST_WRITE_KEY = "bybens_admin_last_write";
-      function getLastWriteAt() {
-        try { return parseInt(localStorage.getItem(LAST_WRITE_KEY)) || 0; } catch (e) { return 0; }
-      }
-      function bustAdminCache() {
-        try { localStorage.setItem(LAST_WRITE_KEY, String(Date.now())); } catch (e) {}
-        // Persist the current in-memory state so reloads during the cooldown
-        // keep showing the user's local mutations rather than empty/stale data.
-        try {
-          const initial = {
-            success: true,
-            products: products,
-            categories: categories,
-            subCategories: subCategories,
-            promos: promos,
-            deliveryPrices: deliveryPrices,
-            orders: orders,
-            bundle: window._cachedBundle || {},
-          };
-          const settingsRes = { success: true, settings: settings };
-          writeAdminCache({ initial: initial, settingsRes: settingsRes });
-        } catch (e) {}
-      }
-      function isWriteCooldown() {
-        return Date.now() - getLastWriteAt() < SERVER_CACHE_TTL;
-      }
-      function readAdminCache() {
-        try { return JSON.parse(localStorage.getItem(ADMIN_CACHE_KEY)); } catch (e) { return null; }
-      }
-      function writeAdminCache(data) {
-        try { localStorage.setItem(ADMIN_CACHE_KEY, JSON.stringify({ ts: Date.now(), data: data })); } catch (e) {}
+        const { action, id, ...rest } = body;
+        switch (action) {
+          // ── PRODUCTS ──
+          case "addProduct": {
+            const row = _toProductRow(rest);
+            row.id = String(Date.now());
+            const { data, error } = await sb.from("products").insert(row).select().single();
+            if (error) throw error;
+            return { success: true, id: data.id };
+          }
+          case "updateProduct": {
+            const { error } = await sb.from("products").update(_toProductRow(rest)).eq("id", id);
+            if (error) throw error;
+            return { success: true };
+          }
+          case "deleteProduct": {
+            const { error } = await sb.from("products").delete().eq("id", id);
+            if (error) throw error;
+            return { success: true };
+          }
+          // ── CATEGORIES ──
+          case "addCategory": {
+            const catId = String(Date.now());
+            const { error: catErr } = await sb.from("categories").insert({ id: catId, name: rest.name, description: rest.description || "" });
+            if (catErr) throw catErr;
+            for (const subName of (rest.subCategories || [])) {
+              if (!subName) continue;
+              await new Promise((r) => setTimeout(r, 5));
+              await sb.from("sub_categories").insert({ id: String(Date.now()), name: subName, category_ids: catId });
+            }
+            return { success: true, id: catId };
+          }
+          case "updateCategory": {
+            const { error } = await sb.from("categories").update({ name: rest.name, description: rest.description || "" }).eq("id", id);
+            if (error) throw error;
+            for (const sub of (rest.subCategories || [])) {
+              if (sub.id) {
+                await sb.from("sub_categories").update({ name: sub.name }).eq("id", sub.id);
+              } else if (sub.name) {
+                await new Promise((r) => setTimeout(r, 5));
+                await sb.from("sub_categories").insert({ id: String(Date.now()), name: sub.name, category_ids: id });
+              }
+            }
+            return { success: true };
+          }
+          case "deleteCategory": {
+            await sb.from("sub_categories").delete().like("category_ids", "%" + id + "%");
+            const { error } = await sb.from("categories").delete().eq("id", id);
+            if (error) throw error;
+            return { success: true };
+          }
+          case "updateSubCategory": {
+            const { error } = await sb.from("sub_categories").update({ name: rest.name }).eq("id", id);
+            if (error) throw error;
+            return { success: true };
+          }
+          case "deleteSubCategory": {
+            const { error } = await sb.from("sub_categories").delete().eq("id", id);
+            if (error) throw error;
+            return { success: true };
+          }
+          // ── PROMOS ──
+          case "addPromo": {
+            const row = _toPromoRow(rest);
+            row.id = String(Date.now());
+            row.uses = 0;
+            const { data, error } = await sb.from("promo_codes").insert(row).select().single();
+            if (error) throw error;
+            return { success: true, id: data.id };
+          }
+          case "updatePromo": {
+            const { error } = await sb.from("promo_codes").update(_toPromoRow(rest)).eq("id", id);
+            if (error) throw error;
+            return { success: true };
+          }
+          case "deletePromo": {
+            const { error } = await sb.from("promo_codes").delete().eq("id", id);
+            if (error) throw error;
+            return { success: true };
+          }
+          // ── DELIVERY ──
+          case "addDeliveryPrice": {
+            const row = { id: String(Date.now()), wilaya: rest.wilaya, home_price: rest.homePrice, office_price: rest.officePrice };
+            const { data, error } = await sb.from("delivery_prices").insert(row).select().single();
+            if (error) throw error;
+            return { success: true, id: data.id };
+          }
+          case "updateDeliveryPrice": {
+            const { error } = await sb.from("delivery_prices").update({ wilaya: rest.wilaya, home_price: rest.homePrice, office_price: rest.officePrice }).eq("id", id);
+            if (error) throw error;
+            return { success: true };
+          }
+          case "deleteDeliveryPrice": {
+            const { error } = await sb.from("delivery_prices").delete().eq("id", id);
+            if (error) throw error;
+            return { success: true };
+          }
+          // ── BUNDLE ──
+          case "saveBundle": {
+            const { error } = await sb.from("bundle").update({ bundle_id: rest.bundleId || "", description_en: rest.bundleDescription || "" }).eq("id", 1);
+            if (error) throw error;
+            return { success: true };
+          }
+          // ── ORDERS ──
+          case "updateOrderStatus": {
+            const res = await fetch(SUPABASE_URL + "/functions/v1/update-order-status", {
+              method: "POST",
+              headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SUPABASE_ANON_KEY },
+              body: JSON.stringify({ id, status: rest.status }),
+            });
+            return res.json();
+          }
+          case "deleteOrder": {
+            const { error } = await sb.from("orders").delete().eq("id", id);
+            if (error) throw error;
+            return { success: true };
+          }
+          // ── SETTINGS ──
+          case "updateSettings": {
+            if (rest.updates) {
+              const upserts = Object.entries(rest.updates).map(([key, value]) => ({ key, value: String(value) }));
+              const { error } = await sb.from("settings").upsert(upserts, { onConflict: "key" });
+              if (error) throw error;
+            }
+            return { success: true };
+          }
+          default:
+            return { success: false, error: "Unknown action: " + action };
+        }
       }
       // Apply a getInitialData-shaped response to the in-memory state and re-render
       function applyInitialData(res, settingsRes) {
         if (!res) return;
-        if (Array.isArray(res.products)) products = res.products;
+        if (Array.isArray(res.products)) { products = res.products; productsTotal = products.length; }
         if (Array.isArray(res.categories)) categories = res.categories;
         if (Array.isArray(res.subCategories)) subCategories = res.subCategories;
         if (Array.isArray(res.promos)) promos = res.promos;
         if (Array.isArray(res.deliveryPrices)) deliveryPrices = res.deliveryPrices;
-        if (Array.isArray(res.orders)) orders = res.orders;
+        // orders are fetched separately via _fetchOrdersPage() / _fetchDashOrders()
         if (res.bundle && res.bundle.bundleId) {
           // mirror loadBundle() side effects without a network call
           window._cachedBundle = res.bundle;
@@ -3551,12 +3804,10 @@
         renderProducts();
         renderPromos();
         renderDelivery();
-        renderOrders();
         renderBundleList(document.getElementById("bundle-search")?.value || "");
         if (typeof renderBundleSelected === "function" && window._cachedBundle) {
           try { renderBundleSelected(window._cachedBundle); } catch (e) {}
         }
-        updateDashboard();
       }
       function showLoading(msg = "Loading…") {
         document.getElementById("loading-text").textContent = msg;
@@ -3663,18 +3914,14 @@
       }
 
       async function silentPollOrders() {
-        if (isWriteCooldown()) return;
         try {
-          const r = await apiGet("getOrders");
-          if (!r.success) return;
-          const fetched = r.orders || [];
-          // detect new order IDs
-          const newOnes = fetched.filter(o => o.id && !knownOrderIds.has(o.id));
+          await _fetchDashOrders();
+          const newOnes = _dashOrders.filter(o => o.id && !knownOrderIds.has(o.id));
           if (newOnes.length > 0 && knownOrderIds.size > 0) {
             showNewOrderAlert(newOnes);
           }
-          fetched.forEach(o => { if (o.id) knownOrderIds.add(o.id); });
-          orders = fetched;
+          _dashOrders.forEach(o => { if (o.id) knownOrderIds.add(o.id); });
+          await _fetchOrdersPage();
           renderOrders();
           updateDashboard();
           updateLastUpdated();
@@ -3682,7 +3929,6 @@
       }
 
       async function silentPollProducts() {
-        if (isWriteCooldown()) return;
         try {
           const [rProd, rPromo] = await Promise.all([
             apiGet("getProducts"),
@@ -3701,32 +3947,20 @@
       // INIT
       // ════════════════════════════════════════════
       document.addEventListener("DOMContentLoaded", async () => {
-        if (!API_URL) {
-          showToast("Set API_URL in the script!", "error");
+        if (!SUPABASE_URL || !sb) {
+          showToast("Supabase not configured!", "error");
           return;
         }
-        // 1) Instant first paint from cache (if any) — no spinner, no waiting
-        const cached = readAdminCache();
-        if (cached && cached.data) {
-          applyInitialData(cached.data.initial, cached.data.settingsRes);
-          orders.forEach(o => { if (o.id) knownOrderIds.add(o.id); });
-          updateLastUpdated();
-        } else {
-          showLoading("Loading dashboard…");
-        }
-        // 2) Refresh in background — 3 parallel calls instead of 9
+        showLoading("Loading dashboard…");
+        // Fetch fresh data from Supabase
         try {
           const [initRes, settingsRes, bundleRes] = await Promise.all([
             apiGet("getInitialData"),
             apiGet("getSettings"),
             apiGet("getBundle"),
           ]);
-          // If we just wrote locally, the server cache may still be stale.
-          // Skip the apply but keep the freshly loaded data only if no cooldown.
-          if (initRes && initRes.success && !isWriteCooldown()) {
+          if (initRes && initRes.success) {
             applyInitialData(initRes, settingsRes);
-            writeAdminCache({ initial: initRes, settingsRes: settingsRes });
-            // Apply bundle description (not part of getInitialData)
             if (bundleRes && bundleRes.success) {
               if (bundleRes.bundleId) {
                 bundleSelectedId = bundleRes.bundleId;
@@ -3742,7 +3976,10 @@
               }
               renderBundleList(document.getElementById("bundle-search")?.value || "");
             }
-            orders.forEach(o => { if (o.id) knownOrderIds.add(o.id); });
+            await Promise.all([_fetchDashOrders(), _fetchOrdersPage()]);
+            renderOrders();
+            updateDashboard();
+            _dashOrders.forEach(o => { if (o.id) knownOrderIds.add(o.id); });
             updateLastUpdated();
           } else if (!cached) {
             showToast("Failed to load data", "error");
@@ -3811,8 +4048,8 @@
       }
 
       function updateDashboard() {
-        document.getElementById("stat-products").textContent = products.length;
-        document.getElementById("stat-orders").textContent = orders.length;
+        document.getElementById("stat-products").textContent = productsTotal || products.length;
+        document.getElementById("stat-orders").textContent = _dashOrders.length;
         document.getElementById("stat-promos") &&
           (document.getElementById("stat-promos").textContent = promos.filter(
             (p) => p.status === "active",
@@ -3820,22 +4057,22 @@
 
         const now = new Date();
         const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
-        const weekOrders = orders.filter((o) => {
+        const weekOrders = _dashOrders.filter((o) => {
           if (!o.createdAt) return false;
           try { return new Date(o.createdAt) >= weekAgo; } catch (e) { return false; }
         });
 
         document.getElementById("stat-week-orders").textContent = weekOrders.length;
-        document.getElementById("stat-pending").textContent = orders.filter((o) => o.status === "waiting").length;
+        document.getElementById("stat-pending").textContent = _dashOrders.filter((o) => o.status === "waiting").length;
 
-        const totalRev = orders.reduce((s, o) => s + (Number(o.total) || 0), 0);
+        const totalRev = _dashOrders.reduce((s, o) => s + (Number(o.total) || 0), 0);
         const weekRev = weekOrders.reduce((s, o) => s + (Number(o.total) || 0), 0);
         document.getElementById("stat-revenue-total").textContent = fmtRevenue(totalRev);
         document.getElementById("stat-revenue-week").textContent = fmtRevenue(weekRev);
 
         const trendEl = document.getElementById("stat-week-trend");
         if (trendEl) {
-          const prevWeekOrders = orders.filter((o) => {
+          const prevWeekOrders = _dashOrders.filter((o) => {
             if (!o.createdAt) return false;
             try {
               const d = new Date(o.createdAt);
@@ -3853,7 +4090,7 @@
 
         // Top products from order items
         const productQty = {};
-        orders.forEach((o) => {
+        _dashOrders.forEach((o) => {
           (o.items || []).forEach((it) => {
             const name = (it.name || "Unknown").split(" (")[0].trim();
             productQty[name] = (productQty[name] || 0) + (Number(it.qty) || 1);
@@ -3880,9 +4117,7 @@
         // Recent orders (last 6)
         const recentEl = document.getElementById("recent-orders-list");
         if (recentEl) {
-          const recent = [...orders]
-            .sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""))
-            .slice(0, 6);
+          const recent = _dashOrders.slice(0, 6);
           recentEl.innerHTML = recent.length
             ? recent.map((o) => {
                 const name = `${o.firstName} ${o.lastName}`.trim() || "—";
@@ -3899,10 +4134,10 @@
         }
 
         // Status overview bar
-        const total = orders.length || 1;
+        const total = _dashOrders.length || 1;
         const statuses = ["waiting","confirmed","delivered","canceled"];
         const counts = {};
-        statuses.forEach(s => { counts[s] = orders.filter(o => o.status === s).length; });
+        statuses.forEach(s => { counts[s] = _dashOrders.filter(o => o.status === s).length; });
         const barEl = document.getElementById("status-ov-bar");
         if (barEl) {
           barEl.innerHTML = statuses
@@ -3965,6 +4200,7 @@
         if (window.innerWidth < 768) closeSidebar();
       }
       function doLogout() {
+        sb.auth.signOut();
         sessionStorage.removeItem("bb_admin_auth");
         sessionStorage.removeItem("bb_admin_name");
         window.location.href = "/supplements/mgmt9kx";
@@ -4069,12 +4305,15 @@
       // PRODUCTS
       // ════════════════════════════════════════════
       function filterProducts(q = "") {
-        renderProducts(q.toLowerCase());
+        productPage = 1;
+        _prodFilter = q.toLowerCase();
+        renderProducts(_prodFilter);
       }
 
       function renderProducts(filter = "") {
         _selReset("product");
         const tbody = document.getElementById("products-tbody");
+        const pag = document.getElementById("products-pag");
         const filtered = products.filter(
           (p) =>
             !filter ||
@@ -4083,9 +4322,11 @@
         );
         if (!filtered.length) {
           tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><p>No products</p></div></td></tr>`;
+          if (pag) pag.innerHTML = "";
           return;
         }
-        tbody.innerHTML = filtered
+        const pageItems = filtered.slice((productPage - 1) * _PAGE, productPage * _PAGE);
+        tbody.innerHTML = pageItems
           .map((p) => {
             const catNames = (p.categoryIds || [])
               .map((id) => {
@@ -4136,11 +4377,12 @@
           <td style="font-size:12px">${variantStr || "—"}</td>
           <td>${promoStr}</td>
           <td>${p.stock}</td>
-          <td><span class="badge badge-${p.status}">${cap(p.status)}</span></td>
-          <td><div class="action-group"><button class="act-btn act-edit" onclick="editProduct('${p.id}')">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('product','${p.id}')">Delete</button></div></td>
+          <td><span class="badge badge-${p.status}">${cap(p.status)}</span>${p.hidden ? '<span class="badge" style="margin-left:4px;background:#f3f4f6;color:#6b7280;border:1px solid #e5e7eb">Hidden</span>' : ''}</td>
+          <td><div class="action-group"><button class="act-btn act-edit" onclick="editProduct('${p.id}')">Edit</button><button class="act-btn ${p.hidden ? 'act-confirm' : ''}" style="gap:4px" onclick="toggleProductVisibility('${p.id}',${p.hidden})">${p.hidden ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Show' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>Hide'}</button><button class="act-btn act-delete" onclick="confirmDelete('product','${p.id}')">Delete</button></div></td>
         </tr>`;
           })
           .join("");
+        if (pag) pag.innerHTML = _pagCtrl(filtered.length, productPage, "setProductPage");
       }
 
       function refreshSubCatCheckboxes() {
@@ -4474,7 +4716,6 @@
             renderBundleList(document.getElementById("bundle-search")?.value || "");
             updateDashboard();
             // Silent background sync to pick up server-canonical IDs
-            bustAdminCache();
           } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {
           showToast("Error: " + e.message, "error");
@@ -4489,12 +4730,15 @@
       function renderCats() {
         _selReset("cat");
         const tree = document.getElementById("cat-tree");
+        const pag = document.getElementById("cat-pag");
         if (!categories.length) {
           tree.innerHTML =
             '<div class="empty-state"><p>No categories yet</p></div>';
+          if (pag) pag.innerHTML = "";
           return;
         }
-        tree.innerHTML = categories
+        const pageItems = categories.slice((catPage - 1) * _PAGE, catPage * _PAGE);
+        tree.innerHTML = pageItems
           .map((c) => {
             const subs = subCategories.filter((s) =>
               s.categoryIds && s.categoryIds.includes(c.id),
@@ -4502,6 +4746,7 @@
             return `<div class="cat-node"><div class="cat-row" id="cat-row-${c.id}" onclick="toggleCat('${c.id}',event)"><input type="checkbox" class="row-cb" data-sel-type="cat" data-sel-id="${c.id}" onclick="event.stopPropagation()" onchange="_selToggleCat('${c.id}',this.checked)" style="margin-right:8px;width:15px;height:15px;accent-color:var(--red);cursor:pointer;flex-shrink:0"><div class="cat-expand" id="cat-exp-${c.id}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div><div class="cat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div><div class="cat-name">${c.name}</div>${c.description ? `<span style="font-size:11px;color:var(--g400);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.description}</span>` : ""}${subs.length > 0 ? `<span class="cat-count">${subs.length} sub${subs.length !== 1 ? "s" : ""}</span>` : ""}<div class="action-group"><button class="act-btn act-edit" onclick="editCat('${c.id}');event.stopPropagation()">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('cat','${c.id}');event.stopPropagation()">Delete</button></div></div><div class="sub-cats" id="sub-cats-${c.id}">${subs.map((s) => `<div class="sub-node"><div class="sub-icon"></div><div class="sub-name">${s.name}</div><div class="sub-actions"><button class="act-btn act-edit" onclick="editSubCat('${s.id}')">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('subcat','${s.id}')">Delete</button></div></div>`).join("")}</div></div>`;
           })
           .join("");
+        if (pag) pag.innerHTML = _pagCtrl(categories.length, catPage, "setCatPage");
       }
 
       function _selToggleCat(id, checked) {
@@ -4573,7 +4818,6 @@
             }
             renderCats();
             updateDashboard();
-            bustAdminCache();
           } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {
           showToast("Error: " + e.message, "error");
@@ -4600,7 +4844,6 @@
             if (sIdx >= 0) subCategories[sIdx] = { ...subCategories[sIdx], name };
             editingSubCatId = null;
             renderCats();
-            bustAdminCache();
           } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {
           showToast("Error: " + e.message, "error");
@@ -4738,7 +4981,6 @@
             }
             renderPromos();
             updateDashboard();
-            bustAdminCache();
           } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {
           showToast("Error: " + e.message, "error");
@@ -4779,37 +5021,21 @@
         const cur = document.getElementById("set-cur-pass").value;
         const nw = document.getElementById("set-new-pass").value;
         const cf = document.getElementById("set-confirm-pass").value;
-        if (!cur) {
-          showToast("Enter current password", "error");
-          return;
-        }
-        if (nw.length < 4) {
-          showToast("Min 4 characters", "error");
-          return;
-        }
-        if (nw !== cf) {
-          showToast("Passwords do not match", "error");
-          return;
-        }
+        if (!cur) { showToast("Enter current password", "error"); return; }
+        if (nw.length < 4) { showToast("Min 4 characters", "error"); return; }
+        if (nw !== cf) { showToast("Passwords do not match", "error"); return; }
         showLoading("Verifying…");
         try {
-          const check = await apiGet("login", {
-            username: settings.admin_username,
-            password: cur,
-          });
-          if (!check.success) {
-            hideLoading();
-            showToast("Current password is wrong", "error");
-            return;
-          }
-          const r = await apiPost({
-            action: "updateSettings",
-            updates: { admin_password: nw },
-          });
-          if (r.success) {
-            ["set-cur-pass", "set-new-pass", "set-confirm-pass"].forEach(
-              (x) => (document.getElementById(x).value = ""),
-            );
+          const { data: { user } } = await sb.auth.getUser();
+          const email = user?.email;
+          if (!email) { hideLoading(); showToast("Session error — please re-login", "error"); return; }
+          const { error: verifyErr } = await sb.auth.signInWithPassword({ email, password: cur });
+          if (verifyErr) { hideLoading(); showToast("Current password is wrong", "error"); return; }
+          const { error: updateErr } = await sb.auth.updateUser({ password: nw });
+          if (updateErr) {
+            showToast("Error: " + updateErr.message, "error");
+          } else {
+            ["set-cur-pass", "set-new-pass", "set-confirm-pass"].forEach((x) => (document.getElementById(x).value = ""));
             showToast("Password updated!");
           }
         } catch (e) {
@@ -4853,28 +5079,24 @@
                 products = products.filter(p => p.id !== id);
                 renderProducts();
                 renderBundleList(document.getElementById("bundle-search")?.value || "");
-                bustAdminCache();
-              } else if (type === "cat") {
+                  } else if (type === "cat") {
                 categories = categories.filter(c => c.id !== id);
                 subCategories = subCategories.filter(s => !(s.categoryIds || []).includes(id));
                 renderCats();
-                bustAdminCache();
-              } else if (type === "subcat") {
+                  } else if (type === "subcat") {
                 subCategories = subCategories.filter(s => s.id !== id);
                 renderCats();
-                bustAdminCache();
-              } else if (type === "promo") {
+                  } else if (type === "promo") {
                 promos = promos.filter(p => p.id !== id);
                 renderPromos();
-                bustAdminCache();
-              } else if (type === "delivery") {
+                  } else if (type === "delivery") {
                 deliveryPrices = deliveryPrices.filter(d => d.id !== id);
                 renderDelivery();
-                bustAdminCache();
-              } else if (type === "order") {
-                orders = orders.filter((o) => o.id !== id);
-                renderOrders();
+                  } else if (type === "order") {
+                knownOrderIds.delete(id);
                 document.getElementById("order-detail-modal").classList.remove("open");
+                await Promise.all([_fetchDashOrders(), _fetchOrdersPage()]);
+                renderOrders();
               }
               updateDashboard();
             } else showToast("Error: " + (r.error || "Unknown"), "error");
@@ -4976,22 +5198,19 @@
             products = products.filter(p => !deletedSet.has(p.id));
             renderProducts();
             renderBundleList(document.getElementById("bundle-search")?.value || "");
-            bustAdminCache();
           } else if (type === "cat") {
             categories = categories.filter(c => !deletedSet.has(c.id));
             subCategories = subCategories.filter(s => !(s.categoryIds || []).some(cid => deletedSet.has(cid)));
             renderCats();
-            bustAdminCache();
           } else if (type === "promo") {
             promos = promos.filter(p => !deletedSet.has(p.id));
             renderPromos();
-            bustAdminCache();
           } else if (type === "delivery") {
             deliveryPrices = deliveryPrices.filter(d => !deletedSet.has(d.id));
             renderDelivery();
-            bustAdminCache();
           } else if (type === "order") {
-            orders = orders.filter(o => !deletedSet.has(o.id));
+            deletedIds.forEach(id => knownOrderIds.delete(id));
+            await Promise.all([_fetchDashOrders(), _fetchOrdersPage()]);
             renderOrders();
           }
           updateDashboard();
@@ -5037,24 +5256,30 @@
       // DELIVERY PRICES
       // ════════════════════════════════════════════
       function filterDelivery(q = "") {
-        renderDelivery(q.toLowerCase());
+        deliveryPage = 1;
+        _delFilter = q.toLowerCase();
+        renderDelivery(_delFilter);
       }
 
       function renderDelivery(filter = "") {
         _selReset("delivery");
         const tbody = document.getElementById("delivery-tbody");
+        const pag = document.getElementById("delivery-pag");
         const filtered = deliveryPrices.filter(
           (d) => !filter || d.wilaya.toLowerCase().includes(filter),
         );
         if (!filtered.length) {
           tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><p>No delivery prices added yet</p></div></td></tr>`;
+          if (pag) pag.innerHTML = "";
           return;
         }
-        tbody.innerHTML = filtered
+        const pageStart = (deliveryPage - 1) * _PAGE;
+        const pageItems = filtered.slice(pageStart, pageStart + _PAGE);
+        tbody.innerHTML = pageItems
           .map(
             (d, idx) => `<tr>
           <td class="cb-td"><input type="checkbox" class="row-cb" data-sel-type="delivery" data-sel-id="${d.id}" onchange="_selToggle('delivery','${d.id}',this.checked)"></td>
-          <td style="color:var(--g400);font-size:12px">${idx + 1}</td>
+          <td style="color:var(--g400);font-size:12px">${pageStart + idx + 1}</td>
           <td><strong>${d.wilaya}</strong></td>
           <td>${Number(d.homePrice).toLocaleString()} DA</td>
           <td>${Number(d.officePrice).toLocaleString()} DA</td>
@@ -5065,6 +5290,7 @@
         </tr>`,
           )
           .join("");
+        if (pag) pag.innerHTML = _pagCtrl(filtered.length, deliveryPage, "setDeliveryPage");
       }
 
       function openDeliveryModal(id = null) {
@@ -5131,7 +5357,6 @@
               deliveryPrices.push({ id: r.id || ("tmp_dp_" + Date.now()), wilaya, homePrice, officePrice });
             }
             renderDelivery();
-            bustAdminCache();
           } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {
           showToast("Error: " + e.message, "error");
@@ -5252,55 +5477,37 @@
 
       function searchOrders(val) {
         ordersSearch = val.trim().toLowerCase();
-        renderOrders();
+        orderPage = 1;
+        _fetchOrdersPage().then(renderOrders).catch(() => renderOrders());
       }
 
       function sortOrders(val) {
         ordersSort = val;
-        renderOrders();
-      }
-
-      function applySortToOrders(arr) {
-        return [...arr].sort((a, b) => {
-          switch (ordersSort) {
-            case "date-asc":
-              return (a.createdAt || "").localeCompare(b.createdAt || "");
-            case "date-desc":
-              return (b.createdAt || "").localeCompare(a.createdAt || "");
-            case "total-desc":
-              return (Number(b.total) || 0) - (Number(a.total) || 0);
-            case "total-asc":
-              return (Number(a.total) || 0) - (Number(b.total) || 0);
-            case "name-asc":
-              return `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`);
-            case "name-desc":
-              return `${b.firstName} ${b.lastName}`.localeCompare(`${a.firstName} ${a.lastName}`);
-            default:
-              return (b.createdAt || "").localeCompare(a.createdAt || "");
-          }
-        });
+        orderPage = 1;
+        _fetchOrdersPage().then(renderOrders).catch(() => renderOrders());
       }
 
       async function loadOrders() {
+        showLoading("Refreshing orders…");
         try {
-          const r = await apiGet("getOrders");
-          if (r.success) {
-            orders = r.orders || [];
-            renderOrders();
-            updateDashboard();
-          }
+          await Promise.all([_fetchDashOrders(), _fetchOrdersPage()]);
+          renderOrders();
+          updateDashboard();
+          showToast("Orders refreshed");
         } catch (e) {
-          // silent fail on initial load
+          showToast("Error: " + e.message, "error");
         }
+        hideLoading();
       }
 
       function filterOrders(f, btn) {
         ordersFilter = f;
+        orderPage = 1;
         document
           .querySelectorAll(".order-filter-btn")
           .forEach((b) => b.classList.remove("active"));
         if (btn) btn.classList.add("active");
-        renderOrders();
+        _fetchOrdersPage().then(renderOrders).catch(() => renderOrders());
       }
 
       function getOrderBadgeClass(status) {
@@ -5318,21 +5525,17 @@
         const tbody = document.getElementById("orders-tbody");
         if (!tbody) return;
 
-        // Apply status filter first for counts
-        const byStatus = ordersFilter === "all" ? orders : orders.filter((o) => o.status === ordersFilter);
-
-        // Update counts on filter buttons (based on search if active)
+        // Filter button counts come from the full lightweight dataset
         const searchBase = ordersSearch
-          ? orders.filter((o) => {
+          ? _dashOrders.filter((o) => {
               const q = ordersSearch;
               return (
                 `${o.firstName} ${o.lastName}`.toLowerCase().includes(q) ||
                 (o.phone || "").toLowerCase().includes(q) ||
-                (o.wilaya || "").toLowerCase().includes(q) ||
-                (o.commune || "").toLowerCase().includes(q)
+                (o.wilaya || "").toLowerCase().includes(q)
               );
             })
-          : orders;
+          : _dashOrders;
 
         document.querySelectorAll(".order-filter-btn").forEach((btn) => {
           const f = btn.dataset.filter;
@@ -5344,35 +5547,21 @@
               : searchBase.filter((o) => o.status === f).length;
         });
 
-        // Apply both filters then sort
-        let filtered = ordersSearch
-          ? byStatus.filter((o) => {
-              const q = ordersSearch;
-              return (
-                `${o.firstName} ${o.lastName}`.toLowerCase().includes(q) ||
-                (o.phone || "").toLowerCase().includes(q) ||
-                (o.wilaya || "").toLowerCase().includes(q) ||
-                (o.commune || "").toLowerCase().includes(q)
-              );
-            })
-          : byStatus;
-        filtered = applySortToOrders(filtered);
-
-        if (!filtered.length) {
+        if (!orders.length && ordersTotal === 0) {
           tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state"><p>${ordersSearch ? "No orders match your search" : "No orders"}</p></div></td></tr>`;
+          const pag = document.getElementById("orders-pag");
+          if (pag) pag.innerHTML = "";
           return;
         }
 
-        tbody.innerHTML = filtered
+        tbody.innerHTML = orders
           .map((o) => {
             const name = `${o.firstName} ${o.lastName}`.trim() || "—";
             const shortId = o.id ? o.id.slice(-8) : "—";
             const itemCount = Array.isArray(o.items) ? o.items.length : 0;
             let date = "—";
             if (o.createdAt) {
-              try {
-                date = new Date(o.createdAt).toLocaleDateString("en-GB");
-              } catch (e) {}
+              try { date = new Date(o.createdAt).toLocaleDateString("en-GB"); } catch (e) {}
             }
             const badgeClass = getOrderBadgeClass(o.status);
             const safeId = o.id.replace(/'/g, "\\'");
@@ -5392,6 +5581,8 @@
             </tr>`;
           })
           .join("");
+        const pag = document.getElementById("orders-pag");
+        if (pag) pag.innerHTML = _pagCtrl(ordersTotal, orderPage, "setOrderPage");
       }
 
       function openOrderDetail(id) {
@@ -5467,29 +5658,42 @@
         document.getElementById("order-detail-modal").classList.add("open");
       }
 
+      async function toggleProductVisibility(id, hidden) {
+        showLoading(hidden ? "Making visible…" : "Hiding product…");
+        try {
+          const { error } = await sb.from("products").update({ hidden: !hidden }).eq("id", id);
+          if (error) throw error;
+          const p = products.find(x => x.id === id);
+          if (p) p.hidden = !hidden;
+          renderProducts(_prodFilter);
+          showToast(hidden ? "Product is now visible on the store" : "Product hidden from the store");
+        } catch(e) {
+          showToast("Error: " + e.message, "error");
+        }
+        hideLoading();
+      }
+
       async function updateOrderStatus(id, status) {
         showLoading("Updating status…");
         try {
           const r = await apiPost({ action: "updateOrderStatus", id, status });
           if (r.success) {
+            // Update both caches optimistically
             const o = orders.find((x) => x.id === id);
             if (o) o.status = status;
+            const d = _dashOrders.find((x) => x.id === id);
+            if (d) d.status = status;
             // Update buttons in modal
             const safeId = id.replace(/'/g, "\\'");
-            const container = document.getElementById(
-              `order-status-btns-${safeId}`,
-            );
+            const container = document.getElementById(`order-status-btns-${safeId}`);
             if (container) {
               container.querySelectorAll(".status-btn").forEach((b) => {
                 b.classList.remove("active");
-                if (
-                  b.classList.contains(`status-${status}`)
-                ) {
-                  b.classList.add("active");
-                }
+                if (b.classList.contains(`status-${status}`)) b.classList.add("active");
               });
             }
             renderOrders();
+            updateDashboard();
             showToast("Status updated to " + cap(status) + "!");
           } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {

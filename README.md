@@ -1,19 +1,20 @@
 # ByBen's — Sports Nutrition E-Commerce
 
-A multilingual (Arabic / French / English) e-commerce storefront for sports supplements in Algeria, built entirely with static HTML/CSS/JS and Google Sheets as the backend database.
+A multilingual (Arabic / French / English) e-commerce storefront for sports supplements in Algeria. Built with static HTML/CSS/JS, backed by Supabase, and deployed on Vercel.
 
 ---
 
 ## Tech Stack
 
-| Layer          | Technology                                 |
-| -------------- | ------------------------------------------ |
-| Frontend       | Vanilla HTML, CSS, JavaScript              |
-| Database       | Google Sheets                              |
-| Backend / API  | Google Apps Script (deployed as Web App)   |
-| Image hosting  | Cloudinary CDN                             |
-| Location data  | Local JSON (`algeria_cities.json`)         |
-| Client storage | `localStorage` (cart, language, API cache) |
+| Layer            | Technology                                              |
+| ---------------- | ------------------------------------------------------- |
+| Frontend         | Vanilla HTML, CSS, JavaScript (no framework, no build)  |
+| Database         | Supabase (PostgreSQL)                                   |
+| Auth             | Supabase Auth (email + password, admin only)            |
+| Edge Functions   | Supabase Edge Functions (Deno/TypeScript)               |
+| Image hosting    | Cloudinary CDN                                          |
+| Deployment       | Vercel (static, clean URLs via `vercel.json`)           |
+| Client storage   | `localStorage` (cart, language, 5-min data cache)       |
 
 ---
 
@@ -21,106 +22,141 @@ A multilingual (Arabic / French / English) e-commerce storefront for sports supp
 
 ```
 bybens/
-├── index.html           # Homepage — hero, featured products, bundle banner
-├── products.html        # Product listing with filters (category, brand, price)
-├── product-detail.html  # Single product page — variants, flavors, quick order
-├── checkout.html        # Cart review & order form
-├── admin.html           # Admin panel (products, orders, promos, delivery prices)
-├── login.html           # Admin login
-├── code.gs              # Google Apps Script — REST-like API over Google Sheets
-├── algeria_cities.json  # All 48 wilayas + communes for delivery form
-├── script.txt           # Deployed Apps Script URL
-└── images/              # Local image assets
+├── supplements/
+│   ├── index.html          # Homepage — hero, featured products, bundle banner
+│   ├── products.html       # Product listing with category/brand/price filters
+│   ├── product-detail.html # Single product page — variants, flavors, quick order
+│   ├── checkout.html       # Cart review & order submission form
+│   ├── privacy.html        # Privacy policy (EN / FR / AR)
+│   ├── mgmt9kx.html        # Admin login
+│   ├── panel4rz.html       # Admin panel (products, orders, promos, delivery)
+│   ├── supabase-client.js  # Supabase client singleton (window.supabase)
+│   ├── shared-utils.js     # Cart, showToast, computeBadge, parseField
+│   ├── footer.js           # Injects footer HTML + shipping/returns/about modals
+│   ├── footer.css          # Footer + modal styles (shared across all pages)
+│   ├── marquee.js          # Injects promo bar into #marqueePlaceholder
+│   └── content.js          # i18n strings for EN / FR / AR
+├── supabase/
+│   └── functions/
+│       ├── submit-order/       # Creates order, deducts stock, validates promos
+│       ├── update-order-status/ # Changes order status, restores stock on cancel
+│       └── submit-contact/     # Stores contact form messages
+├── data/                   # CSV exports from Google Sheets (one-time import)
+├── images/                 # Static image assets
+├── import-data.js          # Node.js script — one-shot CSV → Supabase import
+├── code.gs                 # Legacy Google Apps Script (kept for reference)
+├── vercel.json             # Clean URLs, redirects, cache headers
+└── content.js              # i18n strings (root copy, loaded by all pages)
 ```
 
 ---
 
-## Google Sheets Structure
+## Supabase Database Schema
 
-The spreadsheet (`code.gs` line 14) has the following tabs:
+| Table              | Purpose                                                        |
+| ------------------ | -------------------------------------------------------------- |
+| `categories`       | Product categories                                             |
+| `sub_categories`   | Subcategories; `category_ids` is a comma-separated string      |
+| `products`         | Products with variants, flavors (JSON), stock, discount        |
+| `promo_codes`      | Discount codes — fixed or percentage, expiry, usage limits     |
+| `delivery_prices`  | Home & office delivery cost for each of the 58 wilayas         |
+| `bundle`           | Single-row config — featured bundle shown on the homepage      |
+| `orders`           | Customer orders with items (JSON), status, delivery details    |
 
-| Sheet            | Purpose                                                   |
-| ---------------- | --------------------------------------------------------- |
-| `Settings`       | Admin credentials (`admin_username`, `admin_password`)    |
-| `Categories`     | Product categories                                        |
-| `SubCategories`  | Subcategories with parent category links                  |
-| `Products`       | Products with variants, flavors, stock, discount          |
-| `PromoCodes`     | Discount codes (fixed / percentage, expiry, usage limits) |
-| `DeliveryPrices` | Home & office delivery cost per wilaya                    |
-| `Bundle`         | ID of the featured product shown in the homepage banner   |
-| `Orders`         | All customer orders with status tracking                  |
-
----
-
-## API Endpoints
-
-The Apps Script exposes a single URL with an `action` query param.
-
-**GET (read)**
-
-| Action              | Returns                           |
-| ------------------- | --------------------------------- |
-| `getProducts`       | All products                      |
-| `getCategories`     | All categories                    |
-| `getSubCategories`  | All subcategories                 |
-| `getDeliveryPrices` | Delivery prices per wilaya        |
-| `getPromos`         | Promo codes                       |
-| `getBundle`         | Featured bundle product ID        |
-| `getOrders`         | All orders (admin only)           |
-| `getDashboard`      | Summary stats for admin dashboard |
-| `getSettings`       | Admin settings                    |
-| `login`             | Validate admin credentials        |
-
-**POST (write)**
-
-`addProduct`, `updateProduct`, `deleteProduct`, `addCategory`, `deleteCategory`, `addSubCategory`, `deleteSubCategory`, `addPromo`, `updatePromo`, `deletePromo`, `addDeliveryPrice`, `updateDeliveryPrice`, `deleteDeliveryPrice`, `submitCartOrder`, `submitProductOrder`, `updateOrderStatus`, `saveBundle`, `updateSettings`
+IDs are millisecond timestamps stored as strings. JSON fields (`variants`, `flavors`, `image_url`, `items`) are stored as PostgreSQL `jsonb` columns. Comma-separated string columns (`category_ids`, `sub_category_ids`, `promo_code_ids`) are `text`.
 
 ---
 
-## Performance
+## Edge Functions
 
-API responses are cached in `localStorage` with a **10-minute TTL** using a shared `cachedFetch(action)` utility present in each page. On repeat visits, all data is served from cache instantly — no network request.
+All three functions run on Supabase Edge (Deno). They use the **service role key** (never exposed to the browser) for privileged database writes.
 
-A **page loader** (animated "By Ben's" splash screen) is shown while data fetches on a cold visit. On warm cache, the loader is suppressed synchronously before the first paint.
+| Function              | Trigger               | What it does                                                 |
+| --------------------- | --------------------- | ------------------------------------------------------------ |
+| `submit-order`        | Customer checkout     | Validates cart, applies promo, deducts stock, inserts order  |
+| `update-order-status` | Admin panel           | Updates order status; restores stock when status → cancelled |
+| `submit-contact`      | Footer contact form   | Stores name, contact, message                                |
+
+---
+
+## Data Flow
+
+### Customer-facing pages
+
+Every page fires a parallel Supabase REST fetch **before the DOM finishes parsing** (inline `<script>` in `<head>`):
 
 ```
-Cold visit:  loader shown → API fetch → render → loader hidden
+window.__initialDataPromise = Promise.all([
+  products, categories, sub_categories, bundle, promo_codes, delivery_prices, orders
+])
+```
+
+The page's main JS `await`s the promise once the DOM is ready. A **5-minute `localStorage` cache** (`bybens_cache_getInitialData`) means repeat visits skip the network entirely.
+
+```
+Cold visit:  loader shown → Supabase fetch → render → loader hidden
 Warm visit:  loader suppressed instantly → render from cache
 ```
 
+### Admin panel (`panel4rz.html`)
+
+Makes direct Supabase client calls for all CRUD. Order status changes go through the `update-order-status` Edge Function (needs service role for stock restoration). Admin session is stored in `sessionStorage` as `bb_admin_auth` after `supabase.auth.signInWithPassword`.
+
 ---
 
-## Admin Panel
+## Authentication
 
-Access via `login.html`. Session is stored in `sessionStorage` and cleared on logout.
-
-The admin panel supports:
-
-- Product management (add / edit / delete, image upload via Cloudinary)
-- Category & subcategory management
-- Promo code management
-- Delivery price configuration per wilaya
-- Order management with status updates
-- Bundle banner assignment
-- Account settings
+- **Admin**: Supabase Auth email/password. Login at `/supplements/mgmt9kx`. Session guard on every tab switch in the admin panel.
+- **Customers**: No accounts. Orders are anonymous — identified by phone number only.
 
 ---
 
 ## Languages
 
-The site supports three languages switchable at runtime:
+Three languages switchable at runtime via buttons in the nav:
 
-- English (`en`) — default
-- French (`fr`)
-- Arabic (`ar`) — RTL layout
+| Code | Language | Direction |
+| ---- | -------- | --------- |
+| `en` | English  | LTR       |
+| `fr` | French   | LTR       |
+| `ar` | Arabic   | RTL       |
 
-Language preference is persisted in `localStorage` under `bybens_lang`.
+Preference stored in `localStorage` as `bybens_lang`. Static UI strings use `data-i18n="key"` attributes and are populated from `window.BYBENS_CONTENT` (defined in `content.js`). Product names and descriptions are stored in one language only.
+
+---
+
+## Admin Panel Features
+
+Access at `/supplements/mgmt9kx` → `/supplements/panel4rz`.
+
+- Product management — add / edit / delete, Cloudinary image upload, stock tracking
+- Category & subcategory management
+- Promo code management (fixed / percentage, expiry, per-product or global)
+- Delivery price configuration per wilaya (home & office)
+- Order management — status updates, cancel (restores stock), delete
+- Bundle banner assignment (featured product on homepage)
+- Account settings — email / password change via Supabase Auth
+
+---
+
+## Vercel Configuration
+
+`vercel.json` handles:
+
+| Rule                     | Action                                         |
+| ------------------------ | ---------------------------------------------- |
+| `/`                      | Redirect → `/supplements`                      |
+| `/products`, `/checkout`, `/product-detail` | Redirect → `/supplements/*`  |
+| `/privacy`               | Redirect → `/supplements/privacy`              |
+| `/mgmt9kx`, `/panel4rz`  | Redirect → `/supplements/*`                    |
+| `/images/*`              | 1-year immutable cache                         |
+| `/*.html`                | No-cache (always fresh)                        |
 
 ---
 
 ## Local Development
 
-No build step required. Open any `.html` file directly in a browser or serve with any static file server:
+No build step. Serve with any static file server:
 
 ```bash
 npx serve .
@@ -128,4 +164,24 @@ npx serve .
 python -m http.server 8080
 ```
 
-To change the backend, deploy a new version of `code.gs` as a Google Apps Script Web App and update the `SCRIPT_URL` constant at the top of each HTML file.
+Open at `http://localhost:PORT/supplements/index.html` or just `http://localhost:PORT/`.
+
+---
+
+## Data Import
+
+The `import-data.js` script does a one-shot import from the original Google Sheets CSV exports into Supabase. Run once with Node 18+:
+
+```bash
+node import-data.js
+```
+
+Upserts in dependency order: `categories` → `sub_categories` → `products` → `promo_codes` → `delivery_prices`.
+
+---
+
+## Known Limitations
+
+- `handleDeletePromo` and `handleAddPromo` in the admin panel do not invalidate the client-side cache — promo changes take up to 5 minutes to appear on the storefront.
+- Same for `handleAddDeliveryPrice`, `handleUpdateDeliveryPrice`, `handleDeleteDeliveryPrice`.
+- Deleting an order directly (without cancelling first) does **not** restore stock. Always cancel before deleting.

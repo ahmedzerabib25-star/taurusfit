@@ -401,6 +401,7 @@
         }
       }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
   <body>
     <div class="bg-grid"></div>
@@ -437,13 +438,13 @@
         </div>
 
         <div class="field">
-          <label>Username</label>
+          <label>Email</label>
           <div class="input-wrap">
             <input
-              type="text"
+              type="email"
               id="loginUser"
-              placeholder="admin"
-              autocomplete="username"
+              placeholder="admin@email.com"
+              autocomplete="email"
             />
             <span class="input-icon">
               <svg
@@ -545,9 +546,11 @@
 
     <script>
       // ════════════════════════════════════════════
-      // CONFIG — SAME URL AS admin.html
+      // CONFIG
       // ════════════════════════════════════════════
-      const API_URL = "https://script.google.com/macros/s/AKfycbzpn2XVsL4he_jzZug9sJOYtNJb8eIjOVku8rmUFMhGp9ytYaFNcuFzDWhXGNG4rcdrXw/exec"; // ← YOUR DEPLOYED APPS SCRIPT WEB APP URL
+      const SUPABASE_URL = "https://qlvvarnujhlgalawojhi.supabase.co";
+      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsdnZhcm51amhsZ2FsYXdvamhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3OTI3NjIsImV4cCI6MjA5NDM2ODc2Mn0.R7WVVZbDIWLD6W7RWIQVQYFDw62nGPFae-S0t-mW_rM";
+      const _sbLogin = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
       // If already logged in, go straight to admin
       if (sessionStorage.getItem("bb_admin_auth") === "1") {
@@ -555,48 +558,33 @@
       }
 
       async function doLogin() {
-        const u = document.getElementById("loginUser").value.trim();
+        const email = document.getElementById("loginUser").value.trim();
         const p = document.getElementById("loginPass").value;
-        const err = document.getElementById("loginErr");
-        const errMsg = document.getElementById("loginErrMsg");
         const btn = document.getElementById("loginBtn");
 
-        if (!u || !p) {
-          showError("Please enter username and password");
+        if (!email || !p) {
+          showError("Please enter email and password");
           return;
         }
 
-        if (!API_URL) {
-          showError("API_URL not configured — check the script");
-          return;
-        }
-
-        // Show loading state
         btn.classList.add("loading");
         btn.disabled = true;
-        err.classList.remove("show");
+        document.getElementById("loginErr").classList.remove("show");
 
         try {
-          const url = new URL(API_URL);
-          url.searchParams.set("action", "login");
-          url.searchParams.set("username", u);
-          url.searchParams.set("password", p);
+          const { data: authData, error } = await _sbLogin.auth.signInWithPassword({ email, password: p });
 
-          const res = await fetch(url.toString());
-          const data = await res.json();
-
-          if (data.success) {
-            // Store auth + display name
+          if (!error && authData.session) {
             sessionStorage.setItem("bb_admin_auth", "1");
-            sessionStorage.setItem("bb_admin_name", data.displayName || u);
+            sessionStorage.setItem("bb_admin_name", authData.user?.email || email);
             window.location.href = "/supplements/panel4rz";
           } else {
-            showError("Invalid username or password");
+            showError("Invalid email or password");
             document.getElementById("loginPass").value = "";
             document.getElementById("loginPass").focus();
           }
         } catch (e) {
-          showError("Connection failed — check your API URL");
+          showError("Connection failed");
         }
 
         btn.classList.remove("loading");
