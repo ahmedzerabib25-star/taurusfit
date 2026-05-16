@@ -2837,6 +2837,35 @@
                 Update Password
               </button>
             </div>
+            <div class="settings-card" style="grid-column: 1 / -1">
+              <div class="settings-card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>Manage Users
+              </div>
+              <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px">
+                <div class="form-group" style="flex:1;min-width:200px;margin-bottom:0">
+                  <label>Email</label>
+                  <input type="email" class="form-control" id="new-user-email" placeholder="admin@example.com"/>
+                </div>
+                <div class="form-group" style="flex:1;min-width:200px;margin-bottom:0">
+                  <label>Password</label>
+                  <input type="password" class="form-control" id="new-user-pass" placeholder="Min 6 characters"/>
+                </div>
+                <div style="display:flex;align-items:flex-end">
+                  <button class="btn-primary" onclick="createAdminUser()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Create User
+                  </button>
+                </div>
+              </div>
+              <div id="users-list" style="display:flex;flex-direction:column;gap:8px">
+                <div style="color:var(--g400);font-size:13px">Loading users…</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -4233,6 +4262,7 @@
         document.getElementById("page-title").textContent =
           pageNames[name] || name;
         if (name === "orders") clearOrdersBadge();
+        if (name === "settings") loadAdminUsers();
         if (window.innerWidth < 768) closeSidebar();
       }
       function doLogout() {
@@ -5073,6 +5103,82 @@
           } else {
             ["set-cur-pass", "set-new-pass", "set-confirm-pass"].forEach((x) => (document.getElementById(x).value = ""));
             showToast("Password updated!");
+          }
+        } catch (e) {
+          showToast("Error: " + e.message, "error");
+        }
+        hideLoading();
+      }
+
+      // ════════════════════════════════════════════
+      // MANAGE USERS
+      // ════════════════════════════════════════════
+      let _adminUsers = [];
+
+      async function loadAdminUsers() {
+        const res = await fetch(SUPABASE_URL + "/functions/v1/manage-users", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SUPABASE_ANON_KEY },
+          body: JSON.stringify({ action: "list" }),
+        });
+        const r = await res.json();
+        if (!r.success) { document.getElementById("users-list").innerHTML = '<div style="color:var(--danger);font-size:13px">Failed to load users</div>'; return; }
+        _adminUsers = r.users;
+        const { data: { user: me } } = await sb.auth.getUser();
+        const list = document.getElementById("users-list");
+        if (!_adminUsers.length) { list.innerHTML = '<div style="color:var(--g400);font-size:13px">No users found</div>'; return; }
+        list.innerHTML = _adminUsers.map((u) => `
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--g50);border-radius:8px;border:1px solid var(--g100)">
+            <div>
+              <div style="font-size:14px;font-weight:500">${u.email}</div>
+              <div style="font-size:11px;color:var(--g400)">Created ${new Date(u.created_at).toLocaleDateString()}</div>
+            </div>
+            ${u.id !== me?.id ? `<button onclick="deleteAdminUser('${u.id}','${u.email}')" style="background:none;border:none;cursor:pointer;color:var(--danger);padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600" onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='none'">Delete</button>` : `<span style="font-size:11px;color:var(--g400);padding:4px 8px">You</span>`}
+          </div>`).join("");
+      }
+
+      async function createAdminUser() {
+        const email = document.getElementById("new-user-email").value.trim();
+        const password = document.getElementById("new-user-pass").value;
+        if (!email) { showToast("Email is required", "error"); return; }
+        if (!password) { showToast("Password is required", "error"); return; }
+        showLoading("Creating user…");
+        try {
+          const res = await fetch(SUPABASE_URL + "/functions/v1/manage-users", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SUPABASE_ANON_KEY },
+            body: JSON.stringify({ action: "create", email, password }),
+          });
+          const r = await res.json();
+          if (r.success) {
+            document.getElementById("new-user-email").value = "";
+            document.getElementById("new-user-pass").value = "";
+            showToast("User created!");
+            await loadAdminUsers();
+          } else {
+            showToast("Error: " + r.error, "error");
+          }
+        } catch (e) {
+          showToast("Error: " + e.message, "error");
+        }
+        hideLoading();
+      }
+
+      async function deleteAdminUser(uid, email) {
+        if (!confirm(`Delete user ${email}? This cannot be undone.`)) return;
+        showLoading("Deleting user…");
+        try {
+          const res = await fetch(SUPABASE_URL + "/functions/v1/manage-users", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SUPABASE_ANON_KEY },
+            body: JSON.stringify({ action: "delete", uid }),
+          });
+          const r = await res.json();
+          if (r.success) {
+            showToast("User deleted");
+            await loadAdminUsers();
+          } else {
+            showToast("Error: " + r.error, "error");
           }
         } catch (e) {
           showToast("Error: " + e.message, "error");
