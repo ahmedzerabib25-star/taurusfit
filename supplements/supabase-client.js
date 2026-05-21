@@ -114,7 +114,9 @@
       sf("bundle?select=*&limit=1"),
       sf("promo_codes?select=*"),
       sf("delivery_prices?select=*"),
-      sf("orders?select=*"),
+      // Fetch only items column from the 300 most recent orders — enough for top-sold
+      // calculation without transferring full order records to every visitor.
+      sf("orders?select=items&order=created_at.desc&limit=300"),
     ]).then(function (results) {
       return {
         products: results[0],
