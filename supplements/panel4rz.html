@@ -4004,8 +4004,8 @@
         } catch (e) { /* silent */ }
       }
       function startPolling() {
-        setInterval(silentPollOrders, 15000);
-        setInterval(silentPollProducts, 30000);
+        setInterval(silentPollOrders, 60000);
+        setInterval(silentPollProducts, 120000);
       }
 
       // ════════════════════════════════════════════
@@ -5384,6 +5384,49 @@
         ed.focus();
         document.execCommand(cmd, false, null);
       }
+
+      // Auto-upload pasted images in RTE fields to Cloudinary instead of embedding base64
+      async function _rteUploadPastedImage(file, editorEl) {
+        const fd = new FormData();
+        fd.append("file", file);
+        fd.append("upload_preset", CLOUDINARY_PRESET);
+        fd.append("folder", "bybens-nutritional-facts");
+        try {
+          const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: "POST", body: fd });
+          if (!res.ok) throw new Error();
+          const data = await res.json();
+          const img = document.createElement("img");
+          img.src = data.secure_url;
+          img.style.maxWidth = "100%";
+          const sel = window.getSelection();
+          if (sel.rangeCount) {
+            const range = sel.getRangeAt(0);
+            range.deleteContents();
+            range.insertNode(img);
+            range.setStartAfter(img);
+            range.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(range);
+          } else {
+            editorEl.appendChild(img);
+          }
+        } catch (e) {
+          showToast("Image upload failed", "error");
+        }
+      }
+
+      document.querySelectorAll(".rte-editor").forEach(function(ed) {
+        ed.addEventListener("paste", function(e) {
+          const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+          for (const item of items) {
+            if (item.type.startsWith("image/")) {
+              e.preventDefault();
+              _rteUploadPastedImage(item.getAsFile(), ed);
+              return;
+            }
+          }
+        });
+      });
 
       function showToast(msg, type = "success") {
         const t = document.getElementById("toast");

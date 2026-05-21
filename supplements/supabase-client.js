@@ -108,7 +108,7 @@
       return fetch(_URL + "/rest/v1/" + path, { headers: h }).then(function (r) { return r.json(); });
     }
     return Promise.all([
-      sf("products?select=*"),
+      sf("products?select=id,name,brand,category_ids,sub_category_ids,image_url,variants,flavors,stock,discount,allow_promo,promo_code_ids,status,created_at"),
       sf("categories?select=*"),
       sf("sub_categories?select=*"),
       sf("bundle?select=*&limit=1"),
