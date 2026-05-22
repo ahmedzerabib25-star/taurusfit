@@ -15,21 +15,9 @@
     <script>if(localStorage.getItem('bybens_theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
     <link rel="stylesheet" href="/supplements/footer.css" />
     <script>
-      (function () {
-        var SB_URL = "https://qlvvarnujhlgalawojhi.supabase.co";
-        var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsdnZhcm51amhsZ2FsYXdvamhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3OTI3NjIsImV4cCI6MjA5NDM2ODc2Mn0.R7WVVZbDIWLD6W7RWIQVQYFDw62nGPFae-S0t-mW_rM";
-        var h = { apikey: SB_KEY, Authorization: "Bearer " + SB_KEY };
-        function sf(path) { return fetch(SB_URL + "/rest/v1/" + path, { headers: h }).then(function (r) { return r.json(); }); }
-        window.__initialDataPromise = Promise.all([
-          sf("products?select=*&hidden=not.is.true"), sf("categories?select=*"), sf("sub_categories?select=*"),
-          sf("bundle?select=*&limit=1"), sf("promo_codes?select=*"),
-          sf("delivery_prices?select=*"), sf("orders?select=*"),
-        ]).then(function (results) {
-          return { products: results[0], categories: results[1], subCategories: results[2],
-            bundle: (results[3] || [])[0] || {}, promos: results[4],
-            deliveryPrices: results[5], orders: results[6] };
-        }).catch(function () { return null; });
-      })();
+      window.__initialDataPromise = fetch("/api/initial-data")
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .catch(function () { return null; });
     </script>
 
     <style>
