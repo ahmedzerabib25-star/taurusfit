@@ -85,7 +85,7 @@
 
   window.sbRemapInitialData = function (raw) {
     if (!raw) return null;
-    var prods = raw.products || [];
+    var prods = Array.isArray(raw.products) ? raw.products : [];
 
     var bundleRow = raw.bundle;
     if (Array.isArray(bundleRow)) bundleRow = bundleRow[0] || {};
@@ -93,41 +93,17 @@
     return {
       success: true,
       products: prods.map(_remapProduct),
-      categories: (raw.categories || []).map(_remapCategory),
-      subCategories: (raw.subCategories || raw.sub_categories || []).map(_remapSubCategory),
+      categories: (Array.isArray(raw.categories) ? raw.categories : []).map(_remapCategory),
+      subCategories: (Array.isArray(raw.subCategories) ? raw.subCategories : Array.isArray(raw.sub_categories) ? raw.sub_categories : []).map(_remapSubCategory),
       bundle: _remapBundle(bundleRow),
-      promos: (raw.promos || raw.promo_codes || []).map(_remapPromo),
-      deliveryPrices: (raw.deliveryPrices || raw.delivery_prices || []).map(_remapDeliveryPrice),
-      orders: (raw.orders || []).map(_remapOrder),
+      promos: (Array.isArray(raw.promos) ? raw.promos : Array.isArray(raw.promo_codes) ? raw.promo_codes : []).map(_remapPromo),
+      deliveryPrices: (Array.isArray(raw.deliveryPrices) ? raw.deliveryPrices : Array.isArray(raw.delivery_prices) ? raw.delivery_prices : []).map(_remapDeliveryPrice),
+      orders: (Array.isArray(raw.orders) ? raw.orders : []).map(_remapOrder),
     };
   };
 
   function _sbFetchAllTables() {
-    var h = { apikey: _KEY, Authorization: "Bearer " + _KEY };
-    function sf(path) {
-      return fetch(_URL + "/rest/v1/" + path, { headers: h }).then(function (r) { return r.json(); });
-    }
-    return Promise.all([
-      sf("products?select=id,name,brand,category_ids,sub_category_ids,image_url,variants,flavors,stock,discount,allow_promo,promo_code_ids,status,created_at"),
-      sf("categories?select=*"),
-      sf("sub_categories?select=*"),
-      sf("bundle?select=*&limit=1"),
-      sf("promo_codes?select=*"),
-      sf("delivery_prices?select=*"),
-      // Fetch only items column from the 300 most recent orders — enough for top-sold
-      // calculation without transferring full order records to every visitor.
-      sf("orders?select=items&order=created_at.desc&limit=300"),
-    ]).then(function (results) {
-      return {
-        products: results[0],
-        categories: results[1],
-        subCategories: results[2],
-        bundle: (results[3] || [])[0] || {},
-        promos: results[4],
-        deliveryPrices: results[5],
-        orders: results[6],
-      };
-    });
+    return fetch("/api/initial-data").then(function (r) { return r.json(); });
   }
 
   window.getInitialData = function () {

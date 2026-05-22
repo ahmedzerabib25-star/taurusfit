@@ -3793,41 +3793,38 @@
         btn.textContent = 'Processing...';
 
         try {
-          const sb = window.supabase;
-          let result;
+          const MANAGE_URL = window.SUPABASE_URL + '/functions/v1/manage-customers';
+          const authHeaders = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + window.SUPABASE_ANON_KEY };
           if (type === 'login') {
-            const { data: rows, error } = await sb.from('customers').select('*')
-              .eq('email', (data.email || '').trim().toLowerCase())
-              .eq('password', data.password || '')
-              .limit(1);
-            if (error || !rows || rows.length === 0) {
-              alert('Invalid email or password');
+            const res = await fetch(MANAGE_URL, {
+              method: 'POST', headers: authHeaders,
+              body: JSON.stringify({ action: 'login', email: (data.email || '').trim().toLowerCase(), password: data.password || '' }),
+            });
+            const result = await res.json();
+            if (!result.success) {
+              alert(result.error || 'Invalid email or password');
             } else {
-              const u = rows[0];
-              localStorage.setItem('bybens_user', JSON.stringify({ firstName: u.first_name, lastName: u.last_name, email: u.email, phone: u.phone, address: u.address }));
+              localStorage.setItem('bybens_user', JSON.stringify(result.user));
               updateAuthUI();
               closeAuthModal();
               showToast('Welcome back!');
             }
           } else {
-            const email = (data.email || '').trim().toLowerCase();
-            const { data: existing } = await sb.from('customers').select('id').eq('email', email).limit(1);
-            if (existing && existing.length > 0) {
-              alert('Email already registered');
-            } else {
-              const { error } = await sb.from('customers').insert({
-                id: 'CUS-' + Date.now(),
-                first_name: data.firstName || '',
-                last_name: data.lastName || '',
-                email,
+            const res = await fetch(MANAGE_URL, {
+              method: 'POST', headers: authHeaders,
+              body: JSON.stringify({
+                action: 'register',
+                email: (data.email || '').trim().toLowerCase(),
                 password: data.password || '',
+                firstName: data.firstName || '',
+                lastName: data.lastName || '',
                 phone: data.phone || '',
                 address: data.address || '',
-                created_at: new Date().toISOString(),
-              });
-              if (error) { alert(error.message); }
-              else { showToast('Account created! Please login.'); switchAuthTab('login'); }
-            }
+              }),
+            });
+            const result = await res.json();
+            if (!result.success) { alert(result.error || 'Registration failed'); }
+            else { showToast('Account created! Please login.'); switchAuthTab('login'); }
           }
         } catch (err) { alert('Connection error'); }
         btn.disabled = false;
