@@ -15,7 +15,7 @@ module.exports = async function handler(_req, res) {
   try {
     const [products, categories, subCategories, bundle, promos, deliveryPrices] = await Promise.all([
       sf(
-        "products?select=id,name,brand,category_ids,sub_category_ids,image_url,variants,flavors,stock,discount,allow_promo,promo_code_ids,status,created_at,hidden,nutritional_facts,benefits&hidden=not.is.true&order=created_at.asc"
+        "products?select=id,name,brand,category_ids,sub_category_ids,description,image_url,variants,flavors,stock,discount,allow_promo,promo_code_ids,status,created_at,hidden&hidden=not.is.true&order=created_at.asc"
       ),
       sf("categories?select=*&order=created_at.asc"),
       sf("sub_categories?select=*"),

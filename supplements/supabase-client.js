@@ -29,8 +29,6 @@
       promoCodeIds: (p.promo_code_ids || "").split(",").filter(Boolean),
       status: p.status || "active",
       createdAt: p.created_at,
-      nutritionalFacts: p.nutritional_facts || "",
-      benefits: p.benefits || "",
     };
   }
 
@@ -110,7 +108,7 @@
       return fetch(_URL + "/rest/v1/" + path, { headers: h }).then(function (r) { return r.json(); });
     }
     return Promise.all([
-      sf("products?select=id,name,brand,category_ids,sub_category_ids,image_url,variants,flavors,stock,discount,allow_promo,promo_code_ids,status,created_at,nutritional_facts,benefits&hidden=not.is.true"),
+      sf("products?select=id,name,brand,category_ids,sub_category_ids,description,image_url,variants,flavors,stock,discount,allow_promo,promo_code_ids,status,created_at&hidden=not.is.true"),
       sf("categories?select=*"),
       sf("sub_categories?select=*"),
       sf("bundle?select=*&limit=1"),
