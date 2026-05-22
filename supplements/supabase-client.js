@@ -102,12 +102,38 @@
     };
   };
 
+  // Direct Supabase fallback — used when /api/initial-data is unavailable.
+  // Orders intentionally excluded: anon no longer has SELECT on that table.
   function _sbFetchAllTables() {
-    return fetch("/api/initial-data").then(function (r) { return r.json(); });
+    var h = { apikey: _KEY, Authorization: "Bearer " + _KEY };
+    function sf(path) {
+      return fetch(_URL + "/rest/v1/" + path, { headers: h }).then(function (r) { return r.json(); });
+    }
+    return Promise.all([
+      sf("products?select=id,name,brand,category_ids,sub_category_ids,image_url,variants,flavors,stock,discount,allow_promo,promo_code_ids,status,created_at,nutritional_facts,benefits&hidden=not.is.true"),
+      sf("categories?select=*"),
+      sf("sub_categories?select=*"),
+      sf("bundle?select=*&limit=1"),
+      sf("promo_codes?select=*"),
+      sf("delivery_prices?select=*"),
+    ]).then(function (results) {
+      return {
+        products:       Array.isArray(results[0]) ? results[0] : [],
+        categories:     Array.isArray(results[1]) ? results[1] : [],
+        subCategories:  Array.isArray(results[2]) ? results[2] : [],
+        bundle:         (Array.isArray(results[3]) ? results[3][0] : null) || {},
+        promos:         Array.isArray(results[4]) ? results[4] : [],
+        deliveryPrices: Array.isArray(results[5]) ? results[5] : [],
+        orders:         [],
+      };
+    });
   }
 
   window.getInitialData = function () {
-    var src = window.__initialDataPromise ? window.__initialDataPromise : _sbFetchAllTables();
+    // Prefer the edge-cached /api/initial-data prefetch; fall back to direct calls.
+    var src = window.__initialDataPromise
+      ? window.__initialDataPromise.then(function (d) { return d || _sbFetchAllTables(); })
+      : _sbFetchAllTables();
     return src.then(function (rawData) {
       if (!rawData) return null;
       return window.sbRemapInitialData(rawData);
