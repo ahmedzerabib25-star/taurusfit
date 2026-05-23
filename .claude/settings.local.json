@@ -13,7 +13,10 @@
       "mcp__plugin_supabase_supabase__list_projects",
       "Bash(supabase projects *)",
       "Bash(supabase db *)",
-      "Bash(supabase functions *)"
+      "Bash(supabase functions *)",
+      "Bash(git commit -m 'perf: increase initial-data cache to 1 hour to reduce Supabase egress *)",
+      "Bash(git commit -m 'revert: cache back to 5 minutes *)",
+      "Bash(git commit -m 'perf: drop nutritional_facts and benefits from public cache *)"
     ]
   }
 }
