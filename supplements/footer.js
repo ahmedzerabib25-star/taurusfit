@@ -233,11 +233,11 @@
     const orig = btn.innerHTML;
     btn.innerHTML = '<span style="opacity:.7">Sending…</span>';
     try {
-      await fetch('https://qlvvarnujhlgalawojhi.supabase.co/functions/v1/submit-contact', {
+      await fetch('https://dbezrrzmcosxdoorbrgx.supabase.co/functions/v1/submit-contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsdnZhcm51amhsZ2FsYXdvamhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3OTI3NjIsImV4cCI6MjA5NDM2ODc2Mn0.R7WVVZbDIWLD6W7RWIQVQYFDw62nGPFae-S0t-mW_rM',
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiZXpycnptY29zeGRvb3Jicmd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MTgxMTksImV4cCI6MjA5NTI5NDExOX0.xTBBzmLVX6uuqs-oaPifj-DvpBWIEaPZgQIsMIqbRew',
         },
         body: JSON.stringify({ name: name.trim(), contact: contact.trim(), message: message.trim() }),
       });
