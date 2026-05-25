@@ -3,8 +3,8 @@
 // Wrapped in IIFE so const declarations don't collide with page scripts.
 
 (function () {
-  var _URL = "https://qlvvarnujhlgalawojhi.supabase.co";
-  var _KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsdnZhcm51amhsZ2FsYXdvamhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3OTI3NjIsImV4cCI6MjA5NDM2ODc2Mn0.R7WVVZbDIWLD6W7RWIQVQYFDw62nGPFae-S0t-mW_rM";
+  var _URL = "https://dbezrrzmcosxdoorbrgx.supabase.co";
+  var _KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiZXpycnptY29zeGRvb3Jicmd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MTgxMTksImV4cCI6MjA5NTI5NDExOX0.xTBBzmLVX6uuqs-oaPifj-DvpBWIEaPZgQIsMIqbRew";
 
   window.SUPABASE_URL = _URL;
   window.SUPABASE_ANON_KEY = _KEY;

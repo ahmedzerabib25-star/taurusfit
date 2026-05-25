@@ -16,7 +16,12 @@
       "Bash(supabase functions *)",
       "Bash(git commit -m 'perf: increase initial-data cache to 1 hour to reduce Supabase egress *)",
       "Bash(git commit -m 'revert: cache back to 5 minutes *)",
-      "Bash(git commit -m 'perf: drop nutritional_facts and benefits from public cache *)"
+      "Bash(git commit -m 'perf: drop nutritional_facts and benefits from public cache *)",
+      "mcp__plugin_supabase_supabase__list_tables",
+      "Bash(python3 *)",
+      "Bash(powershell *)",
+      "PowerShell([System.IO.File]::ReadAllText\\(\"C:\\\\Users\\\\Ahmed\\\\.claude\\\\projects\\\\C--Users-Ahmed-Desktop-byben-s-nutrition\\\\fbcd3fe7-f558-4bee-a44c-178f3d2cb4d4\\\\tool-results\\\\mcp-plugin_supabase_supabase-execute_sql-1779742993682.txt\"\\).Substring\\(0, 80000\\))",
+      "Bash(node *)"
     ]
   }
 }
