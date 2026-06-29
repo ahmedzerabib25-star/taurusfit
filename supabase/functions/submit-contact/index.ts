@@ -1,8 +1,8 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+﻿import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUPABASE_URL = "https://dbezrrzmcosxdoorbrgx.supabase.co";
+const SUPABASE_URL = "https://zuprsewbheqpahwrlwll.supabase.co";
 const SUPABASE_SERVICE_ROLE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiZXpycnptY29zeGRvb3Jicmd4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTcxODExOSwiZXhwIjoyMDk1Mjk0MTE5fQ.TJLVdjwyNCKhS0vyFlUnRW6LQLvotuuFqxUj6H2-JGs";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1cHJzZXdiaGVxcGFod3Jsd2xsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MjY5MDI3NywiZXhwIjoyMDk4MjY2Mjc3fQ.HssKXBhO6VmyihewDnl5rpIfceIIcCMTxQlTG6fzjsc";
 const TELEGRAM_BOT_TOKEN = "8597076283:AAEcCim85KCQZQC-5ik4SLXdS8xPvOJg__o";
 const TELEGRAM_CHAT_ID = "-1003790940322";
 
@@ -48,10 +48,10 @@ Deno.serve(async (req: Request) => {
     }
 
     await sendTelegram(
-      `✉️ <b>New Contact Message!</b>\n` +
-      `👤 ${String(name || "").trim()}\n` +
-      `📬 ${String(contact || "").trim()}\n\n` +
-      `💬 ${String(message || "").trim()}`
+      `âœ‰ï¸ <b>New Contact Message!</b>\n` +
+      `ðŸ‘¤ ${String(name || "").trim()}\n` +
+      `ðŸ“¬ ${String(contact || "").trim()}\n\n` +
+      `ðŸ’¬ ${String(message || "").trim()}`
     );
 
     return new Response(JSON.stringify({ success: true, id }), {

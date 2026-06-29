@@ -1,8 +1,8 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+﻿import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUPABASE_URL = "https://dbezrrzmcosxdoorbrgx.supabase.co";
+const SUPABASE_URL = "https://zuprsewbheqpahwrlwll.supabase.co";
 const SUPABASE_SERVICE_ROLE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiZXpycnptY29zeGRvb3Jicmd4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTcxODExOSwiZXhwIjoyMDk1Mjk0MTE5fQ.TJLVdjwyNCKhS0vyFlUnRW6LQLvotuuFqxUj6H2-JGs";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1cHJzZXdiaGVxcGFod3Jsd2xsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MjY5MDI3NywiZXhwIjoyMDk4MjY2Mjc3fQ.HssKXBhO6VmyihewDnl5rpIfceIIcCMTxQlTG6fzjsc";
 const TELEGRAM_BOT_TOKEN = "8597076283:AAEcCim85KCQZQC-5ik4SLXdS8xPvOJg__o";
 const TELEGRAM_CHAT_ID = "-1003790940322";
 
@@ -58,12 +58,12 @@ async function adjustStock(items: any[], direction: number) {
         v.flavorStock[itemFlavor] = Math.max(0, (Number(v.flavorStock[itemFlavor]) || 0) + direction * qty);
         v.stock = Object.values(v.flavorStock).reduce((s: number, q: any) => s + Number(q), 0);
         if (direction < 0 && v.flavorStock[itemFlavor] === 0) {
-          await sendTelegram(`⚠️ <b>Out of Stock!</b>\n📦 ${prod.name} – ${itemFlavor} (${itemVariantLabel}) is now out of stock.`);
+          await sendTelegram(`âš ï¸ <b>Out of Stock!</b>\nðŸ“¦ ${prod.name} â€“ ${itemFlavor} (${itemVariantLabel}) is now out of stock.`);
         }
       } else {
         v.stock = Math.max(0, (Number(v.stock) || 0) + direction * qty);
         if (direction < 0 && v.stock === 0) {
-          await sendTelegram(`⚠️ <b>Out of Stock!</b>\n📦 ${prod.name} (${itemVariantLabel}) is now out of stock.`);
+          await sendTelegram(`âš ï¸ <b>Out of Stock!</b>\nðŸ“¦ ${prod.name} (${itemVariantLabel}) is now out of stock.`);
         }
       }
       const newGlobal = variants.reduce((s: number, vv: any) => s + (typeof vv === "object" ? Number(vv.stock) || 0 : 0), 0);
@@ -90,7 +90,7 @@ async function adjustStock(items: any[], direction: number) {
     const newStock = Math.max(0, (Number(prod.stock) || 0) + direction * qty);
     await sb.from("products").update({ stock: newStock }).eq("id", item.productId);
     if (direction < 0 && newStock === 0) {
-      await sendTelegram(`⚠️ <b>Out of Stock!</b>\n📦 ${prod.name}${itemFlavor ? " – " + itemFlavor : ""} is now out of stock.`);
+      await sendTelegram(`âš ï¸ <b>Out of Stock!</b>\nðŸ“¦ ${prod.name}${itemFlavor ? " â€“ " + itemFlavor : ""} is now out of stock.`);
     }
   }
 }
@@ -183,28 +183,28 @@ Deno.serve(async (req: Request) => {
     // Telegram notification
     const orderItems: any[] = items || [];
     const itemLines = orderItems.map((it: any) =>
-      `  • ${it.name}${it.flavor ? " – " + it.flavor : ""}${it.variant ? " (" + it.variant + ")" : ""} x${it.qty}`
+      `  â€¢ ${it.name}${it.flavor ? " â€“ " + it.flavor : ""}${it.variant ? " (" + it.variant + ")" : ""} x${it.qty}`
     ).join("\n");
     const promoLine = promoCode
-      ? `🎟️ Promo: ${promoCode} (-${promoDiscount || 0} DA)\n`
-      : "🎟️ No promo code\n";
+      ? `ðŸŽŸï¸ Promo: ${promoCode} (-${promoDiscount || 0} DA)\n`
+      : "ðŸŽŸï¸ No promo code\n";
     const now = new Date();
     const timeStr = now.toLocaleString("fr-DZ", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
     const totalItems = orderItems.reduce((s: number, it: any) => s + (Number(it.qty) || 1), 0);
     await sendTelegram(
-      `🛒 <b>New Order!</b>\n` +
-      `🕐 ${timeStr}\n` +
-      `📱 Source: ${source === "checkout" ? "Cart" : "Product page"}\n` +
-      `👤 ${firstName || ""} ${lastName || ""}\n` +
-      `📞 ${phone || ""}\n` +
-      `📍 ${wilaya || ""} – ${commune || ""}\n` +
-      `📦 ${deliveryType || ""}\n` +
-      `🛍️ Items: ${totalItems}\n\n` +
+      `ðŸ›’ <b>New Order!</b>\n` +
+      `ðŸ• ${timeStr}\n` +
+      `ðŸ“± Source: ${source === "checkout" ? "Cart" : "Product page"}\n` +
+      `ðŸ‘¤ ${firstName || ""} ${lastName || ""}\n` +
+      `ðŸ“ž ${phone || ""}\n` +
+      `ðŸ“ ${wilaya || ""} â€“ ${commune || ""}\n` +
+      `ðŸ“¦ ${deliveryType || ""}\n` +
+      `ðŸ›ï¸ Items: ${totalItems}\n\n` +
       `${itemLines}\n\n` +
-      `🏷️ Products: ${subtotal || 0} DA\n` +
-      `🚚 Delivery: ${deliveryCost || 0} DA\n` +
+      `ðŸ·ï¸ Products: ${subtotal || 0} DA\n` +
+      `ðŸšš Delivery: ${deliveryCost || 0} DA\n` +
       promoLine +
-      `💰 Total: ${total || 0} DA`
+      `ðŸ’° Total: ${total || 0} DA`
     );
 
     return new Response(JSON.stringify({ success: true, id }), {
