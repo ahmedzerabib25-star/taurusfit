@@ -1,2974 +1,4 @@
-<!doctype html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Checkout – ByBens</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://dbezrrzmcosxdoorbrgx.supabase.co" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="icon" href="/images/favicon.ico" />
-    <script>if(localStorage.getItem('bybens_theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
-    <link rel="stylesheet" href="/supplements/footer.css" />
-    <script>
-      window.__initialDataPromise = fetch("/api/initial-data")
-        .then(function (r) { return r.ok ? r.json() : null; })
-        .catch(function () { return null; });
-    </script>
-
-    <style>
-      /* ─── VARIABLES ────────────────────────────────────────────── */
-      :root {
-        --red: #ad0000;
-        --red-hover: #8a0000;
-        --red-light: rgba(173, 0, 0, 0.08);
-        --white: #ffffff;
-        --off-white: #f7f7f5;
-        --gray-50: #f5f5f5;
-        --gray-100: #ebebeb;
-        --gray-200: #d9d9d9;
-        --gray-400: #9c9c9c;
-        --gray-600: #5a5a5a;
-        --gray-800: #1c1c1c;
-        --black: #0a0a0a;
-        --font-display: "Bebas Neue", sans-serif;
-        --font-body: "DM Sans", sans-serif;
-        --nav-h: 64px;
-        --cat-h: 44px;
-        --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-        --shadow-sm:
-          0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
-        --shadow-md:
-          0 4px 16px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.06);
-        --shadow-lg:
-          0 12px 40px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(0, 0, 0, 0.08);
-        --shadow-red: 0 4px 20px rgba(173, 0, 0, 0.3);
-      }
-
-      /* ─── PAGE LOADER ─────────────────────────────────────────── */
-      #pageLoader{position:fixed;inset:0;background:#1c1c1c;display:flex;align-items:center;justify-content:center;z-index:99999;overflow:hidden;transition:transform .7s cubic-bezier(.76,0,.24,1)}
-      #pageLoader.wl-exit{transform:translateY(-100%)}
-      #pageLoader.hidden{visibility:hidden;pointer-events:none}
-      .bb-noanim #pageLoader{display:none!important}
-      #dataSpinner{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9998;background:rgba(255,255,255,0.92);pointer-events:none}
-      .ds-ring{width:44px;height:44px;border:3px solid rgba(173,0,0,0.15);border-top-color:#ad0000;border-radius:50%;animation:ds-spin .75s linear infinite}
-      @keyframes ds-spin{to{transform:rotate(360deg)}}
-      .wl-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(140,0,0,.28) 0%,rgba(30,0,0,.18) 45%,transparent 70%);animation:wlBgPulse 3s ease-in-out infinite}
-      @keyframes wlBgPulse{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.12)}}
-      .wl-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(173,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(173,0,0,.05) 1px,transparent 1px);background-size:50px 50px;animation:wlGridFade 1s ease .1s both}
-      @keyframes wlGridFade{0%{opacity:0}100%{opacity:1}}
-      .wl-rings{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
-      .wl-ring{position:absolute;border-radius:50%;border:1px solid rgba(173,0,0,.5);left:50%;top:50%;transform:translate(-50%,-50%) scale(0);animation:wlRingExpand 2.2s ease-out infinite}
-      .wl-ring:nth-child(1){width:180px;height:180px;animation-delay:.4s}
-      .wl-ring:nth-child(2){width:300px;height:300px;animation-delay:.9s;border-color:rgba(173,0,0,.3)}
-      .wl-ring:nth-child(3){width:440px;height:440px;animation-delay:1.4s;border-color:rgba(173,0,0,.15)}
-      @keyframes wlRingExpand{0%{transform:translate(-50%,-50%) scale(0);opacity:1}100%{transform:translate(-50%,-50%) scale(1.6);opacity:0}}
-      .wl-flares{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-      .wl-flare{position:absolute;top:50%;left:50%;height:1px;width:0;background:linear-gradient(90deg,transparent,rgba(200,0,0,.7),rgba(255,80,80,.9),rgba(200,0,0,.7),transparent);transform-origin:left center}
-      .wl-flare:nth-child(1){transform:rotate(-38deg) translateX(-500px);animation:wlFlareIn .7s ease .35s both}
-      .wl-flare:nth-child(2){transform:rotate(38deg) translateX(-500px);animation:wlFlareIn .7s ease .45s both}
-      .wl-flare:nth-child(3){transform:rotate(-18deg) translateX(-500px);animation:wlFlareIn .5s ease .5s both;opacity:.5}
-      .wl-flare:nth-child(4){transform:rotate(18deg) translateX(-500px);animation:wlFlareIn .5s ease .55s both;opacity:.5}
-      @keyframes wlFlareIn{0%{width:0;opacity:0}40%{opacity:1}100%{width:700px;opacity:0}}
-      .wl-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-      .wl-p{position:absolute;border-radius:50%;background:#ff3333;animation:wlParticleUp linear infinite both}
-      .wl-p:nth-child(1){left:8%;bottom:-8px;width:3px;height:3px;animation-duration:3.2s;animation-delay:.8s}
-      .wl-p:nth-child(2){left:18%;bottom:-8px;width:2px;height:2px;opacity:.6;animation-duration:2.8s;animation-delay:1.3s}
-      .wl-p:nth-child(3){left:28%;bottom:-8px;width:3px;height:3px;animation-duration:3.5s;animation-delay:.5s}
-      .wl-p:nth-child(4){left:42%;bottom:-8px;width:2px;height:2px;opacity:.8;animation-duration:2.5s;animation-delay:.3s}
-      .wl-p:nth-child(5){left:52%;bottom:-8px;width:2px;height:2px;animation-duration:4s;animation-delay:1.6s}
-      .wl-p:nth-child(6){left:63%;bottom:-8px;width:2px;height:5px;border-radius:1px;animation-duration:3s;animation-delay:.7s}
-      .wl-p:nth-child(7){left:73%;bottom:-8px;width:2px;height:2px;opacity:.5;animation-duration:2.9s;animation-delay:1.1s}
-      .wl-p:nth-child(8){left:83%;bottom:-8px;width:3px;height:3px;animation-duration:3.3s;animation-delay:.9s}
-      .wl-p:nth-child(9){left:92%;bottom:-8px;width:2px;height:2px;animation-duration:2.7s;animation-delay:1.4s}
-      .wl-p:nth-child(10){left:5%;bottom:-8px;width:2px;height:2px;animation-duration:3.8s;animation-delay:.6s}
-      .wl-p:nth-child(11){left:37%;bottom:-8px;width:4px;height:4px;animation-duration:2.6s;animation-delay:1.8s;background:#ff6666}
-      .wl-p:nth-child(12){left:70%;bottom:-8px;width:2px;height:2px;animation-duration:3.6s;animation-delay:.4s}
-      @keyframes wlParticleUp{0%{transform:translateY(0) scale(1);opacity:1}80%{opacity:.8}100%{transform:translateY(-100vh) scale(.3);opacity:0}}
-      .wl-body{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px;z-index:1}
-      .wl-logo-wrap{position:relative;overflow:hidden;animation:wlLogoBurst .75s cubic-bezier(.34,1.56,.64,1) .3s both}
-      @keyframes wlLogoBurst{0%{opacity:0;transform:scale(0) rotate(-8deg);filter:brightness(6) blur(10px)}55%{filter:brightness(1.8) blur(0)}80%{transform:scale(1.07) rotate(.5deg)}100%{opacity:1;transform:scale(1) rotate(0);filter:brightness(1)}}
-      .wl-logo{display:block;width:220px;height:auto;filter:drop-shadow(0 0 25px rgba(173,0,0,.55)) drop-shadow(0 0 55px rgba(173,0,0,.25))}
-      .wl-logo-glow{position:absolute;inset:-25px;background:radial-gradient(ellipse at center,rgba(173,0,0,.45) 0%,transparent 65%);animation:wlGlowPulse 1.8s ease-in-out 1s infinite;pointer-events:none;z-index:-1}
-      @keyframes wlGlowPulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.18)}}
-      .wl-shine{position:absolute;top:-10%;left:-80%;width:40%;height:120%;background:linear-gradient(105deg,transparent 20%,rgba(255,255,255,.5) 50%,transparent 80%);transform:skewX(-20deg);animation:wlShine .55s ease-in-out 1s both;pointer-events:none}
-      .wl-shine2{position:absolute;top:-10%;left:-80%;width:20%;height:120%;background:linear-gradient(105deg,transparent 20%,rgba(255,180,180,.3) 50%,transparent 80%);transform:skewX(-20deg);animation:wlShine .4s ease-in-out 1.4s both;pointer-events:none}
-      @keyframes wlShine{0%{left:-80%;opacity:0}15%{opacity:1}100%{left:160%;opacity:.3}}
-      .wl-line{width:0;height:2px;background:linear-gradient(90deg,transparent,#ad0000,#ff3333,#ff6666,#ff3333,#ad0000,transparent);box-shadow:0 0 12px rgba(255,51,51,.9),0 0 32px rgba(173,0,0,.6),0 0 65px rgba(173,0,0,.3);animation:wlLineGrow .5s ease .9s both}
-      @keyframes wlLineGrow{0%{width:0;opacity:0}100%{width:220px;opacity:1}}
-      .wl-tagline{display:flex;align-items:center;gap:14px;font-family:"Bebas Neue",sans-serif;font-size:14px;letter-spacing:.35em;color:rgba(255,255,255,.75)}
-      .wl-word{display:inline-block;opacity:0;animation:wlWordIn .45s cubic-bezier(.34,1.56,.64,1) both}
-      .wl-word:nth-child(1){animation-delay:1.1s}
-      .wl-word:nth-child(2){animation-delay:1s;color:#ad0000}
-      .wl-word:nth-child(3){animation-delay:1.2s}
-      .wl-word:nth-child(4){animation-delay:1.1s;color:#ad0000}
-      .wl-word:nth-child(5){animation-delay:1.3s}
-      @keyframes wlWordIn{0%{opacity:0;transform:translateY(14px) scale(.75)}100%{opacity:1;transform:translateY(0) scale(1)}}
-
-      /* ─── RESET ────────────────────────────────────────────────── */
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      html {
-        scroll-behavior: smooth;
-        overflow-x: hidden;
-      }
-      body {
-        font-family: var(--font-body);
-        color: var(--black);
-        background: var(--white);
-        -webkit-font-smoothing: antialiased;
-        overflow-x: hidden;
-      }
-      img {
-        display: block;
-        max-width: 100%;
-      }
-      a {
-        text-decoration: none;
-        color: inherit;
-      }
-      button {
-        cursor: pointer;
-        border: none;
-        background: none;
-        font-family: inherit;
-      }
-      ul {
-        list-style: none;
-      }
-      input,
-      select,
-      textarea {
-        font-family: inherit;
-      }
-
-      /* ─── UTILITY ──────────────────────────────────────────────── */
-      .container {
-        width: 100%;
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 0 24px;
-      }
-
-      /* ─── ANIMATIONS ───────────────────────────────────────────── */
-      @keyframes fadeUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @keyframes pulse {
-        0%,
-        100% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.15);
-        }
-      }
-      @keyframes marqueeTick {
-        from { transform: translateX(0); }
-        to { transform: translateX(-50%); }
-      }
-      @keyframes lightning {
-        0%,100% { opacity: 1; text-shadow: 0 0 8px #fff, 0 0 20px #fff; }
-        10%      { opacity: 0.15; text-shadow: none; }
-        20%      { opacity: 1; text-shadow: 0 0 12px #fff, 0 0 30px #ffffffaa; }
-        30%      { opacity: 0.15; text-shadow: none; }
-        40%,90%  { opacity: 1; text-shadow: 0 0 8px #fff, 0 0 20px #fff; }
-      }
-      .marquee-item { animation: lightning 6s ease-in-out infinite; }
-      @keyframes slideIn {
-        from {
-          opacity: 0;
-          transform: translateX(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
-
-      /* ─── MARQUEE ──────────────────────────────────────────────── */
-      .marquee-bar {
-        background: var(--red);
-        color: var(--white);
-        overflow: hidden;
-        height: 36px;
-        display: flex;
-        align-items: center;
-      }
-      .marquee-track {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        white-space: nowrap;
-        width: 100%;
-      }
-      .marquee-item {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.8px;
-        padding: 0 32px;
-        text-transform: uppercase;
-      }
-      .marquee-sep {
-        opacity: 0.5;
-      }
-
-      /* ─── HEADER ───────────────────────────────────────────────── */
-      #site-header {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        background: var(--white);
-        border-bottom: 1px solid var(--gray-100);
-        transition: box-shadow var(--transition);
-      }
-      #site-header.scrolled {
-        box-shadow: var(--shadow-md);
-      }
-      .top-nav {
-        height: var(--nav-h);
-        display: flex;
-        align-items: center;
-        gap: 20px;
-      }
-      .logo {
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        text-decoration: none;
-      }
-      /* Search */
-      .search-wrap {
-        flex: 1;
-        max-width: 480px;
-        margin: 0 auto;
-        position: relative;
-      }
-      .search-wrap input {
-        width: 100%;
-        height: 40px;
-        padding: 0 44px 0 16px;
-        border: 1.5px solid var(--gray-200);
-        border-radius: 8px;
-        font-size: 14px;
-        color: var(--black);
-        background: var(--gray-50);
-        transition:
-          border-color var(--transition),
-          box-shadow var(--transition),
-          background var(--transition);
-        outline: none;
-      }
-      .search-wrap input::placeholder {
-        color: var(--gray-400);
-      }
-      .search-wrap input:focus {
-        border-color: var(--red);
-        background: var(--white);
-        box-shadow: 0 0 0 3px rgba(173, 0, 0, 0.1);
-      }
-      .search-btn {
-        position: absolute;
-        right: 2px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 6px;
-        color: var(--gray-400);
-        transition:
-          color var(--transition),
-          background var(--transition);
-      }
-      .search-btn:hover {
-        color: var(--red);
-        background: var(--red-light);
-      }
-      .search-dropdown {
-        display: none;
-        position: absolute;
-        top: calc(100% + 6px);
-        left: 0;
-        right: 0;
-        background: var(--white);
-        border: 1.5px solid var(--gray-200);
-        border-radius: 10px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-        z-index: 2000;
-        max-height: 360px;
-        overflow-y: auto;
-        padding: 6px 0;
-      }
-      .search-dropdown.open {
-        display: block;
-      }
-      .search-drop-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 10px 14px;
-        cursor: pointer;
-        transition: background var(--transition);
-      }
-      .search-drop-item:hover {
-        background: var(--gray-50);
-      }
-      .search-drop-thumb {
-        width: 42px;
-        height: 42px;
-        border-radius: 8px;
-        background: var(--gray-50);
-        border: 1px solid var(--gray-100);
-        flex-shrink: 0;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .search-drop-thumb img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-      .search-drop-info {
-        flex: 1;
-        min-width: 0;
-      }
-      .search-drop-brand {
-        font-size: 11px;
-        color: var(--gray-400);
-        font-weight: 600;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        margin: 0 0 1px;
-      }
-      .search-drop-name {
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--black);
-        margin: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .search-drop-price {
-        font-family: var(--font-display);
-        font-size: 16px;
-        color: var(--black);
-        flex-shrink: 0;
-        direction: ltr;
-      }
-      .search-drop-empty {
-        padding: 16px 14px;
-        font-size: 13px;
-        color: var(--gray-400);
-        text-align: center;
-      }
-
-      /* Nav right */
-      .nav-right {
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-      }
-      .nav-link {
-        display: flex;
-        align-items: center;
-        padding: 6px 12px;
-        font-size: 14px;
-        font-weight: 500;
-        color: var(--gray-600);
-        border-radius: 6px;
-        transition:
-          color var(--transition),
-          background var(--transition),
-          transform var(--transition);
-      }
-      .nav-link:hover {
-        color: var(--black);
-        background: var(--gray-50);
-        transform: translateY(-1px);
-      }
-      .nav-link.active {
-        color: var(--red);
-        border: 1.5px solid var(--red);
-        background: var(--red-light);
-      }
-      .nav-link.active:hover {
-        background: rgba(173,0,0,0.13);
-        transform: translateY(-1px);
-      }
-
-      /* Lang */
-      .lang-switch {
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        margin-left: 4px;
-      }
-      .lang-btn {
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        padding: 4px 8px;
-        border-radius: 5px;
-        color: var(--gray-400);
-        transition:
-          color var(--transition),
-          background var(--transition);
-      }
-      .lang-btn:hover {
-        color: var(--black);
-      }
-      .lang-btn.active {
-        background: var(--red);
-        color: var(--white);
-      }
-
-      /* Cart btn */
-      .cart-btn {
-        position: relative;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-left: 8px;
-        border-radius: 8px;
-        color: var(--black);
-        transition:
-          background var(--transition),
-          color var(--transition);
-      }
-      .cart-btn:hover {
-        background: var(--gray-50);
-        color: var(--red);
-      }
-      .cart-badge {
-        position: absolute;
-        top: 4px;
-        right: 4px;
-        width: 18px;
-        height: 18px;
-        background: var(--red);
-        color: #fff;
-        font-size: 10px;
-        font-weight: 700;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        animation: pulse 2s ease-in-out infinite;
-      }
-
-      /* Hamburger */
-      .hamburger {
-        display: none;
-        width: 40px;
-        height: 40px;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-        border-radius: 8px;
-        transition: background var(--transition);
-      }
-      .hamburger:hover {
-        background: var(--gray-50);
-      }
-      .hamburger span {
-        display: block;
-        width: 22px;
-        height: 2px;
-        background: var(--black);
-        border-radius: 2px;
-        transition:
-          transform var(--transition),
-          opacity var(--transition);
-      }
-      .hamburger.open span:nth-child(1) {
-        transform: translateY(7px) rotate(45deg);
-      }
-      .hamburger.open span:nth-child(2) {
-        opacity: 0;
-        transform: scaleX(0);
-      }
-      .hamburger.open span:nth-child(3) {
-        transform: translateY(-7px) rotate(-45deg);
-      }
-
-      /* ─── CATEGORY NAV ──────────────────────────────────────────── */
-      .cat-nav {
-        background: var(--white);
-        border-bottom: 1px solid var(--gray-100);
-        position: sticky;
-        top: var(--nav-h);
-        z-index: 999;
-      }
-      .cat-nav-inner {
-        display: flex;
-        align-items: center;
-        height: var(--cat-h);
-        gap: 2px;
-        overflow: visible;
-      }
-      .cat-item {
-        position: relative;
-      }
-      .cat-link {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        padding: 0 14px;
-        height: var(--cat-h);
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--gray-600);
-        white-space: nowrap;
-        transition: color var(--transition);
-        position: relative;
-      }
-      .cat-link::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        right: 50%;
-        height: 2px;
-        background: var(--red);
-        transition:
-          left var(--transition),
-          right var(--transition);
-      }
-      .cat-item:hover .cat-link {
-        color: var(--red);
-      }
-      .cat-item:hover .cat-link::after {
-        left: 14px;
-        right: 14px;
-      }
-      .cat-link svg {
-        width: 12px;
-        height: 12px;
-        transition: transform var(--transition);
-      }
-      .cat-item:hover .cat-link svg {
-        transform: rotate(180deg);
-      }
-
-      /* dropdown */
-      .dropdown {
-        position: absolute;
-        top: calc(100% + 4px);
-        left: 0;
-        background: var(--white);
-        border: 1px solid var(--gray-100);
-        border-radius: 10px;
-        box-shadow: var(--shadow-lg);
-        min-width: 200px;
-        padding: 8px;
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        transform: translateY(-6px);
-        transition:
-          opacity var(--transition),
-          transform var(--transition),
-          visibility var(--transition);
-        z-index: 1001;
-      }
-      .dropdown::before {
-        content: '';
-        position: absolute;
-        top: -12px;
-        left: 0;
-        right: 0;
-        height: 12px;
-      }
-      .cat-item:hover .dropdown {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: all;
-        transform: translateY(0);
-      }
-      .dropdown a {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 9px 12px;
-        font-size: 13px;
-        font-weight: 500;
-        color: var(--gray-600);
-        border-radius: 7px;
-        transition:
-          background var(--transition),
-          color var(--transition),
-          padding-left var(--transition);
-      }
-      .dropdown a:hover {
-        background: var(--red-light);
-        color: var(--red);
-        padding-left: 18px;
-      }
-      .dropdown a::before {
-        content: "→";
-        font-size: 11px;
-        opacity: 0;
-        transition: opacity var(--transition);
-      }
-      .dropdown a:hover::before {
-        opacity: 1;
-      }
-
-      /* ─── MOBILE ────────────────────────────────────────────────── */
-      .mobile-menu {
-        display: flex;
-        flex-direction: column;
-        position: fixed;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: min(300px, 85vw);
-        background: var(--white);
-        z-index: 1100;
-        padding: 24px;
-        overflow-y: auto;
-        transform: translateX(-100%);
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
-      }
-      .mobile-menu.open {
-        transform: translateX(0);
-      }
-      .mobile-overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.45);
-        z-index: 1099;
-      }
-      .mobile-overlay.open {
-        display: block;
-      }
-      .mobile-nav-links {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-      }
-      .mobile-nav-link {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 14px 16px;
-        border-radius: 10px;
-        font-size: 15px;
-        font-weight: 500;
-        color: var(--gray-800);
-        transition:
-          background var(--transition),
-          color var(--transition);
-      }
-      .mobile-nav-link:hover {
-        background: var(--gray-50);
-        color: var(--black);
-        transform: translateX(3px);
-      }
-      .mobile-nav-link.active {
-        color: var(--red);
-        background: var(--red-light);
-      }
-      .mobile-nav-link.active:hover {
-        background: rgba(173,0,0,0.13);
-      }
-      .m-cat-item {
-        border-bottom: 1px solid var(--gray-100);
-      }
-      .m-cat-toggle {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 14px 0;
-        font-size: 16px;
-        font-weight: 600;
-        color: var(--black);
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-family: var(--font-body);
-        transition: color var(--transition);
-      }
-      .m-cat-toggle:hover {
-        color: var(--red);
-      }
-      .m-arrow {
-        font-size: 18px;
-        transition: transform 0.25s ease;
-        display: inline-block;
-        color: var(--gray-400);
-      }
-      .m-cat-item.open .m-arrow {
-        transform: rotate(90deg);
-        color: var(--red);
-      }
-      .m-cat-item.open .m-cat-toggle {
-        color: var(--red);
-      }
-      .m-sub {
-        display: none;
-        flex-direction: column;
-        padding: 0 0 12px 16px;
-        gap: 2px;
-      }
-      .m-cat-item.open .m-sub {
-        display: flex;
-      }
-      .m-sub-link {
-        padding: 9px 12px;
-        font-size: 14px;
-        font-weight: 500;
-        color: var(--gray-600);
-        border-radius: 7px;
-        transition:
-          background var(--transition),
-          color var(--transition);
-      }
-      .m-sub-link:hover {
-        background: var(--red-light);
-        color: var(--red);
-      }
-
-      /* ─── BREADCRUMB ───────────────────────────────────────────── */
-      .breadcrumb {
-        padding: 16px 0 0;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 13px;
-        color: var(--gray-400);
-      }
-      .breadcrumb a {
-        color: var(--gray-400);
-        transition: color var(--transition);
-      }
-      .breadcrumb a:hover {
-        color: var(--red);
-      }
-      .breadcrumb .sep {
-        font-size: 10px;
-      }
-      .breadcrumb .current {
-        color: var(--gray-800);
-        font-weight: 500;
-      }
-
-      /* ─── FORM ─────────────────────────────────────────────────── */
-      .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-        margin-bottom: 14px;
-      }
-      .form-row.single {
-        grid-template-columns: 1fr;
-      }
-      .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-      }
-      .checkout-section .form-group label {
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.6px;
-        text-transform: uppercase;
-        color: var(--gray-600);
-      }
-      .checkout-section .form-group input,
-      .checkout-section .form-group select {
-        height: 44px;
-        padding: 0 14px;
-        border: 1.5px solid var(--gray-200);
-        border-radius: 8px;
-        font-size: 14px;
-        color: var(--black);
-        background: var(--gray-50);
-        transition:
-          border-color var(--transition),
-          box-shadow var(--transition),
-          background var(--transition);
-        outline: none;
-        appearance: none;
-        -webkit-appearance: none;
-      }
-      .checkout-section .form-group input:focus,
-      .checkout-section .form-group select:focus {
-        border-color: var(--red);
-        background: var(--white);
-        box-shadow: 0 0 0 3px rgba(173, 0, 0, 0.1);
-      }
-      .checkout-section .form-group input::placeholder {
-        color: var(--gray-400);
-      }
-      .checkout-section .form-group input.error,
-      .checkout-section .form-group select.error {
-        border-color: var(--red);
-      }
-      .checkout-section .form-group .error-msg {
-        font-size: 11px;
-        color: var(--red);
-        margin-top: 2px;
-      }
-
-      /* Delivery options */
-      .delivery-options {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-      }
-      .delivery-option {
-        border: 1.5px solid var(--gray-200);
-        border-radius: 10px;
-        padding: 14px 16px;
-        cursor: pointer;
-        transition: all var(--transition);
-        position: relative;
-      }
-      .delivery-option:hover {
-        border-color: var(--red);
-        background: var(--red-light);
-      }
-      .delivery-option.active {
-        border-color: var(--red);
-        background: var(--red-light);
-      }
-      .delivery-option input[type="radio"] {
-        position: absolute;
-        opacity: 0;
-        width: 0;
-        height: 0;
-      }
-      .delivery-option-top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 4px;
-      }
-      .delivery-option-name {
-        font-size: 13px;
-        font-weight: 700;
-        color: var(--black);
-      }
-      .delivery-option-check {
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        border: 2px solid var(--gray-200);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all var(--transition);
-        flex-shrink: 0;
-      }
-      .delivery-option.active .delivery-option-check {
-        border-color: var(--red);
-        background: var(--red);
-      }
-      .delivery-option-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #fff;
-      }
-      .delivery-option-price {
-        font-size: 14px;
-        font-weight: 700;
-        color: var(--red);
-        direction: ltr;
-      }
-      .delivery-option-desc {
-        font-size: 12px;
-        color: var(--gray-400);
-      }
-
-      /* Order summary */
-      .order-summary {
-        background: var(--gray-50);
-        border: 1px solid var(--gray-100);
-        border-radius: 12px;
-        padding: 20px;
-        margin-top: 20px;
-      }
-      .order-summary-title {
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.8px;
-        text-transform: uppercase;
-        color: var(--gray-600);
-        margin-bottom: 14px;
-      }
-      .order-summary-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px 0;
-      }
-      .order-summary-row + .order-summary-row {
-        border-top: 1px solid var(--gray-100);
-      }
-      .order-summary-label {
-        font-size: 13px;
-        color: var(--gray-600);
-      }
-      .order-summary-val {
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--black);
-        direction: ltr;
-      }
-      .order-summary-total {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 14px;
-        margin-top: 8px;
-        border-top: 2px solid var(--gray-200);
-      }
-      .order-summary-total-label {
-        font-size: 14px;
-        font-weight: 700;
-        color: var(--black);
-      }
-      .order-summary-total-price {
-        font-family: var(--font-display);
-        font-size: 28px;
-        letter-spacing: 1px;
-        color: var(--red);
-        direction: ltr;
-      }
-
-      /* Promo code */
-      .promo-wrap {
-        margin-top: 18px;
-        background: var(--gray-50);
-        border: 1.5px dashed var(--gray-200);
-        border-radius: 12px;
-        padding: 16px;
-      }
-      .promo-label {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        color: var(--gray-600);
-        margin-bottom: 10px;
-      }
-      .promo-label svg {
-        color: var(--red);
-        flex-shrink: 0;
-      }
-      .promo-input-row {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-      }
-      .promo-input-wrap {
-        flex: 1;
-        position: relative;
-        display: flex;
-        align-items: center;
-      }
-      .promo-input-wrap svg {
-        position: absolute;
-        left: 12px;
-        color: var(--gray-400);
-        pointer-events: none;
-        flex-shrink: 0;
-      }
-      .promo-input-wrap input {
-        width: 100%;
-        height: 44px;
-        padding: 0 12px 0 38px;
-        border: 1.5px solid var(--gray-200);
-        border-radius: 8px;
-        background: var(--white);
-        font-size: 13px;
-        font-weight: 600;
-        letter-spacing: 1.5px;
-        color: var(--black);
-        font-family: var(--font-display);
-        outline: none;
-        transition:
-          border-color 0.2s,
-          box-shadow 0.2s;
-      }
-      .promo-input-wrap input::placeholder {
-        color: var(--gray-400);
-        font-weight: 400;
-        letter-spacing: 0.5px;
-        font-family: var(--font-body, sans-serif);
-      }
-      .promo-input-wrap input:focus {
-        border-color: var(--red);
-        box-shadow: 0 0 0 3px rgba(173, 0, 0, 0.1);
-        background: var(--white);
-      }
-      .btn-apply-promo {
-        flex-shrink: 0;
-        padding: 0 18px;
-        height: 44px;
-        background: var(--black);
-        color: var(--white);
-        border: none;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 1px;
-        cursor: pointer;
-        transition:
-          background 0.2s,
-          transform 0.1s;
-        white-space: nowrap;
-      }
-      .btn-apply-promo:hover {
-        background: var(--red);
-      }
-      .btn-apply-promo:active {
-        transform: scale(0.97);
-      }
-      .promo-msg {
-        font-size: 12px;
-        margin-top: 8px;
-        display: block;
-        font-weight: 500;
-      }
-
-      /* Submit */
-      .btn-order {
-        width: 100%;
-        margin-top: 20px;
-        height: 52px;
-        background: var(--red);
-        color: #fff;
-        font-family: var(--font-display);
-        font-size: 18px;
-        letter-spacing: 2px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        transition:
-          background var(--transition),
-          box-shadow var(--transition),
-          transform var(--transition);
-        box-shadow: var(--shadow-red);
-      }
-      .btn-order:hover {
-        background: var(--red-hover);
-        transform: translateY(-1px);
-        box-shadow: 0 6px 24px rgba(173, 0, 0, 0.4);
-      }
-      .btn-order:active {
-        transform: translateY(0);
-      }
-
-      /* ─── CUSTOM DROPDOWN ──────────────────────────────────────── */
-      .custom-select-wrap {
-        position: relative;
-      }
-      .custom-select-trigger {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 44px;
-        padding: 0 14px;
-        border: 1.5px solid var(--gray-200);
-        border-radius: 8px;
-        font-size: 14px;
-        color: var(--gray-800);
-        background: var(--gray-50);
-        cursor: pointer;
-        transition:
-          border-color var(--transition),
-          box-shadow var(--transition),
-          background var(--transition);
-        user-select: none;
-      }
-      .custom-select-trigger:focus,
-      .custom-select-trigger.open {
-        border-color: var(--red);
-        background: var(--white);
-        box-shadow: 0 0 0 3px rgba(173, 0, 0, 0.1);
-        outline: none;
-      }
-      .custom-select-trigger.placeholder {
-        color: var(--gray-400);
-      }
-      .custom-select-trigger .caret {
-        width: 16px;
-        height: 16px;
-        flex-shrink: 0;
-        color: var(--gray-400);
-        transition: transform 0.2s ease;
-      }
-      .custom-select-trigger.open .caret {
-        transform: rotate(180deg);
-      }
-      .custom-select-trigger.error-field {
-        border-color: var(--red);
-      }
-      .custom-select-trigger[aria-disabled="true"] {
-        opacity: 0.5;
-        cursor: not-allowed;
-        pointer-events: none;
-      }
-
-      @keyframes dropdownOpen {
-        from {
-          opacity: 0;
-          transform: translateY(-6px) scale(0.98);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
-      }
-      .custom-dropdown-list {
-        display: none;
-        position: absolute;
-        top: calc(100% + 4px);
-        left: 0;
-        right: 0;
-        z-index: 500;
-        background: var(--white);
-        border: 1.5px solid var(--gray-100);
-        border-radius: 10px;
-        box-shadow: var(--shadow-lg);
-        max-height: 240px;
-        overflow-y: auto;
-        scrollbar-width: thin;
-        scrollbar-color: var(--gray-200) transparent;
-        animation: dropdownOpen 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
-      }
-      .custom-dropdown-list.open {
-        display: block;
-      }
-      .custom-dropdown-list::-webkit-scrollbar {
-        width: 5px;
-      }
-      .custom-dropdown-list::-webkit-scrollbar-thumb {
-        background: var(--gray-200);
-        border-radius: 4px;
-      }
-      .dropdown-option {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 11px 16px;
-        font-size: 14px;
-        color: var(--gray-800);
-        cursor: pointer;
-        transition:
-          background var(--transition),
-          color var(--transition);
-        border-bottom: 1px solid var(--gray-50);
-      }
-      .dropdown-option:last-child {
-        border-bottom: none;
-      }
-      .dropdown-option:hover {
-        background: var(--red-light);
-        color: var(--red);
-      }
-      .dropdown-option.selected {
-        background: var(--red-light);
-        color: var(--red);
-        font-weight: 600;
-      }
-      .dropdown-option .check-icon {
-        display: none;
-      }
-      .dropdown-option.selected .check-icon {
-        display: block;
-        color: var(--red);
-      }
-      .dropdown-search {
-        padding: 10px 12px 6px;
-        border-bottom: 1px solid var(--gray-100);
-        position: sticky;
-        top: 0;
-        background: var(--white);
-        z-index: 1;
-      }
-      .dropdown-search input {
-        width: 100%;
-        height: 34px;
-        padding: 0 10px;
-        border: 1.5px solid var(--gray-200);
-        border-radius: 6px;
-        font-size: 13px;
-        font-family: var(--font-body);
-        outline: none;
-        background: var(--gray-50);
-        color: var(--black);
-      }
-      .dropdown-search input:focus {
-        border-color: var(--red);
-      }
-      .dropdown-empty {
-        padding: 16px;
-        font-size: 13px;
-        color: var(--gray-400);
-        text-align: center;
-      }
-
-      /* ─── SUCCESS OVERLAY ──────────────────────────────────────── */
-      .success-overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        z-index: 2000;
-        background: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(4px);
-        align-items: center;
-        justify-content: center;
-      }
-      .success-overlay.show {
-        display: flex;
-      }
-      .success-card {
-        background: var(--white);
-        border-radius: 20px;
-        padding: 48px 40px;
-        text-align: center;
-        max-width: 420px;
-        width: 90%;
-        box-shadow: var(--shadow-lg);
-        animation: fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-      }
-      .success-icon {
-        width: 72px;
-        height: 72px;
-        background: #d1fae5;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 20px;
-      }
-      .success-icon svg {
-        color: #0a7c3e;
-      }
-      .success-title {
-        font-family: var(--font-display);
-        font-size: 32px;
-        letter-spacing: 2px;
-        margin-bottom: 8px;
-      }
-      .success-msg {
-        font-size: 14px;
-        color: var(--gray-600);
-        line-height: 1.6;
-        margin-bottom: 28px;
-      }
-      .success-close {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 12px 28px;
-        background: var(--red);
-        color: #fff;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 700;
-        transition: background var(--transition);
-      }
-      .success-close:hover {
-        background: var(--red-hover);
-        cursor: pointer;
-      }
-      .success-instagram {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 22px;
-        background: linear-gradient(135deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
-        color: #fff;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 600;
-        text-decoration: none;
-        margin-bottom: 16px;
-        transition: opacity 0.2s;
-      }
-      .success-instagram:hover { opacity: 0.88; }
-
-      /* ─── TOAST ────────────────────────────────────────────────── */
-      .toast {
-        position: fixed;
-        bottom: 28px;
-        left: 50%;
-        transform: translateX(-50%) translateY(20px);
-        background: var(--gray-800);
-        color: #fff;
-        padding: 12px 24px;
-        border-radius: 30px;
-        font-size: 13px;
-        font-weight: 500;
-        opacity: 0;
-        transition: all 0.3s;
-        pointer-events: none;
-        z-index: 3000;
-        white-space: nowrap;
-      }
-      .toast.show {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-      }
-
-      /* ─── SCROLL TOP ───────────────────────────────────────────── */
-      #scrollTop {
-        position: fixed;
-        bottom: 28px;
-        right: 28px;
-        z-index: 999;
-        width: 42px;
-        height: 42px;
-        background: var(--black);
-        color: #fff;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transform: translateY(12px);
-        pointer-events: none;
-        transition:
-          opacity 0.3s,
-          transform 0.3s;
-        box-shadow: var(--shadow-md);
-      }
-      #scrollTop.visible {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: all;
-      }
-      #scrollTop:hover {
-        background: var(--red);
-      }
-
-      /* ─── WHATSAPP ──────────────────────────────────────────────── */
-      @keyframes wa-float {
-        0%,
-        100% {
-          transform: translateY(0px);
-        }
-        50% {
-          transform: translateY(-10px);
-        }
-      }
-      @keyframes wa-pulse {
-        0% {
-          box-shadow:
-            0 4px 16px rgba(37, 211, 102, 0.4),
-            0 0 0 0 rgba(37, 211, 102, 0.5);
-        }
-        70% {
-          box-shadow:
-            0 4px 16px rgba(37, 211, 102, 0.4),
-            0 0 0 14px rgba(37, 211, 102, 0);
-        }
-        100% {
-          box-shadow:
-            0 4px 16px rgba(37, 211, 102, 0.4),
-            0 0 0 0 rgba(37, 211, 102, 0);
-        }
-      }
-      .wa-btn {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        width: 58px;
-        height: 58px;
-        background: #25d366;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
-        z-index: 9999;
-        animation:
-          wa-float 2.4s ease-in-out infinite,
-          wa-pulse 2.4s ease-in-out infinite;
-        transition:
-          transform 0.2s ease,
-          box-shadow 0.2s ease;
-      }
-      .wa-btn:hover {
-        animation: none;
-        transform: scale(1.12);
-        box-shadow: 0 8px 28px rgba(37, 211, 102, 0.6);
-      }
-
-      /* ─── CARD BADGES ──────────────────────────────────────────── */
-      .product-badge {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        padding: 3px 8px;
-        border-radius: 4px;
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: 0.8px;
-        text-transform: uppercase;
-        z-index: 1;
-      }
-      .badge-hot   { background: #ff6b00; color: #fff; }
-      .badge-bundle{ background: #0a7c3e; color: #fff; }
-      .badge-sale  { background: var(--red); color: #fff; }
-      .badge-promo { background: var(--red); color: #fff; }
-      .badge-new   { background: #000; color: #fff; }
-
-      /* ─── YOU MAY ALSO LIKE ───────────────────────────────────── */
-      .also-like-section {
-        padding: 64px 0 0;
-      }
-      .also-like-title {
-        font-size: 22px;
-        font-weight: 800;
-        color: var(--black);
-        margin-bottom: 28px;
-      }
-      .also-like-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-      }
-      @media (max-width: 1024px) {
-        .also-like-grid {
-          grid-template-columns: repeat(3, 1fr);
-        }
-      }
-      @media (max-width: 640px) {
-        .also-like-grid {
-          grid-template-columns: 1fr;
-          gap: 12px;
-        }
-      }
-      .also-card {
-        background: var(--white);
-        border: 1px solid var(--gray-100);
-        border-radius: 14px;
-        overflow: hidden;
-        cursor: pointer;
-        transition:
-          box-shadow var(--transition),
-          transform var(--transition);
-        display: flex;
-        flex-direction: column;
-      }
-      .also-card:hover {
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        transform: translateY(-4px);
-      }
-      .also-card-img {
-        aspect-ratio: 4/3;
-        background: linear-gradient(145deg, #f0f0f0, #fafafa);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        position: relative;
-      }
-      .also-card-img img.img-primary {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        transition: opacity 0.35s ease;
-      }
-      .also-card-img img.img-hover {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        opacity: 0;
-        transition: opacity 0.35s ease;
-      }
-      .also-card:hover .also-card-img:has(.img-hover) .img-primary { opacity: 0; }
-      .also-card:hover .also-card-img img.img-hover { opacity: 1; }
-      .also-card-body {
-        padding: 12px 14px 16px;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-      }
-      .also-card-name {
-        font-size: 14px;
-        font-weight: 700;
-        color: var(--black);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .also-card-price {
-        font-size: 15px;
-        font-weight: 800;
-        color: var(--red);
-      }
-      .also-card-actions { display: flex; gap: 8px; margin-top: 10px; }
-      .also-btn-cart { flex: 1; height: 34px; background: var(--gray-100); color: var(--black); border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; transition: background var(--transition); }
-      .also-btn-cart:hover { background: var(--gray-200); }
-      .also-btn-buy { flex: 1; height: 34px; background: var(--red); color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; transition: background var(--transition); }
-      .also-btn-buy:hover { background: var(--red-hover); }
-      /* ══ ADD-TO-CART MODAL ══ */
-      .atc-overlay{position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:9000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .22s,visibility .22s;}
-      .atc-overlay.open{opacity:1;visibility:visible;}
-      .atc-modal{background:#fff;border-radius:16px;padding:28px 24px 24px;width:90%;max-width:420px;position:relative;transform:translateY(20px);transition:transform .22s;max-height:90vh;overflow-y:auto;}
-      .atc-overlay.open .atc-modal{transform:translateY(0);}
-      .atc-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;background:var(--gray-100);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--black);transition:background .2s;}
-      .atc-close:hover{background:var(--gray-200);}
-      .atc-modal-img{width:100%;height:180px;background:var(--gray-50);border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:16px;}
-      .atc-modal-img img{width:100%;height:100%;object-fit:cover;}
-      .atc-modal-name{font-size:17px;font-weight:700;color:var(--black);margin-bottom:4px;}
-      .atc-modal-price{font-size:20px;font-weight:800;color:var(--red);margin-bottom:18px;font-family:var(--font-display);}
-      .atc-section{margin-bottom:16px;}
-      .atc-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--gray-400);margin-bottom:8px;}
-      .atc-options{display:flex;flex-wrap:wrap;gap:8px;}
-      .atc-option{padding:7px 14px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;background:#fff;color:var(--black);}
-      .atc-option:hover{border-color:var(--black);}
-      .atc-option.active{border-color:var(--red);background:var(--red-light);color:var(--red);}
-      .atc-qty-row{display:flex;align-items:center;gap:12px;}
-      .atc-qty-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid var(--gray-200);background:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s;line-height:1;}
-      .atc-qty-btn:hover{border-color:var(--black);}
-      .atc-qty-val{font-size:18px;font-weight:700;min-width:28px;text-align:center;}
-      .atc-confirm-btn{width:100%;padding:14px;background:var(--red);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;margin-top:20px;}
-      .atc-confirm-btn:hover{background:var(--red-hover);}
-
-      /* ─── CHECKOUT SPECIFIC ────────────────────────────────────── */
-      .checkout-section {
-        padding: 24px 0 60px;
-      }
-
-      .checkout-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 48px;
-        align-items: start;
-        margin-top: 24px;
-      }
-
-      .checkout-panel-title {
-        font-family: var(--font-display);
-        font-size: 22px;
-        letter-spacing: 1.5px;
-        margin-bottom: 18px;
-        color: var(--black);
-      }
-
-      /* Left: cart items panel */
-      .checkout-items-panel {
-        background: var(--gray-50);
-        border: 1px solid var(--gray-100);
-        border-radius: 16px;
-        padding: 28px;
-      }
-
-      .checkout-item {
-        display: flex;
-        gap: 14px;
-        padding: 14px 0;
-        border-bottom: 1px solid var(--gray-100);
-      }
-      .checkout-item:last-child {
-        border-bottom: none;
-      }
-
-      .checkout-item-img {
-        width: 64px;
-        height: 64px;
-        border-radius: 8px;
-        overflow: hidden;
-        flex-shrink: 0;
-        background: var(--gray-100);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .checkout-item-img img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .checkout-item-info {
-        flex: 1;
-        min-width: 0;
-      }
-      .checkout-item-name {
-        font-size: 14px;
-        font-weight: 700;
-        color: var(--black);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        margin-bottom: 2px;
-      }
-      .checkout-item-meta {
-        font-size: 12px;
-        color: var(--gray-400);
-        margin-bottom: 8px;
-      }
-      .checkout-item-selects {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-        margin-bottom: 8px;
-      }
-      .checkout-item-select {
-        font-family: var(--font-body);
-        font-size: 12px;
-        color: var(--black);
-        background: var(--gray-50);
-        border: 1.5px solid var(--gray-200);
-        border-radius: 6px;
-        padding: 4px 8px;
-        cursor: pointer;
-        outline: none;
-        transition: border-color 0.15s;
-        max-width: 130px;
-      }
-      .checkout-item-select:focus {
-        border-color: var(--black);
-      }
-
-      .checkout-item-bot {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .checkout-item-price {
-        margin-left: auto;
-        font-family: var(--font-display);
-        font-size: 15px;
-        font-weight: 700;
-        color: var(--black);
-        white-space: nowrap;
-      }
-
-      .checkout-item-del {
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: var(--gray-400);
-        padding: 2px;
-        transition: color 0.15s;
-        flex-shrink: 0;
-      }
-      .checkout-item-del:hover {
-        color: var(--red);
-      }
-
-      /* Inline qty stepper in checkout items */
-      .qty-stepper {
-        display: flex;
-        align-items: center;
-        width: fit-content;
-        border: 1.5px solid var(--gray-200);
-        border-radius: 8px;
-        overflow: hidden;
-      }
-      .qty-btn {
-        width: 32px;
-        height: 32px;
-        font-size: 18px;
-        font-weight: 400;
-        color: var(--gray-600);
-        background: var(--gray-50);
-        border: none;
-        cursor: pointer;
-        transition:
-          background var(--transition),
-          color var(--transition);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .qty-btn:hover {
-        background: var(--red-light);
-        color: var(--red);
-      }
-      .qty-value {
-        min-width: 36px;
-        text-align: center;
-        font-size: 14px;
-        font-weight: 700;
-        color: var(--black);
-        border-left: 1.5px solid var(--gray-200);
-        border-right: 1.5px solid var(--gray-200);
-        padding: 0 6px;
-        line-height: 32px;
-      }
-
-      .checkout-subtotal {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 16px;
-        margin-top: 4px;
-        border-top: 1px solid var(--gray-100);
-        font-size: 14px;
-        font-weight: 700;
-        color: var(--black);
-      }
-
-      .checkout-empty-state {
-        text-align: center;
-        padding: 40px 20px;
-        color: var(--gray-400);
-      }
-      .checkout-empty-state svg {
-        margin: 0 auto 12px;
-        opacity: 0.3;
-      }
-      .checkout-empty-state p {
-        font-size: 15px;
-        font-weight: 600;
-        margin-bottom: 16px;
-      }
-      .checkout-empty-state a {
-        display: inline-block;
-        padding: 10px 24px;
-        background: var(--red);
-        color: #fff;
-        border-radius: 8px;
-        font-size: 13px;
-        font-weight: 700;
-        transition: background var(--transition);
-      }
-      .checkout-empty-state a:hover {
-        background: var(--red-hover);
-      }
-
-      /* Right: form panel */
-      .checkout-form-panel {
-        position: sticky;
-        top: calc(var(--nav-h) + var(--cat-h) + 20px);
-      }
-
-      /* order form title */
-      .order-form-title {
-        font-family: var(--font-display);
-        font-size: 22px;
-        letter-spacing: 1.5px;
-        color: var(--black);
-        margin-bottom: 18px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .order-form-title svg {
-        color: var(--red);
-      }
-
-      /* ── CART DRAWER ── */
-      .cart-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 8000;
-        opacity: 0;
-        visibility: hidden;
-        transition:
-          opacity 0.25s,
-          visibility 0.25s;
-      }
-      .cart-overlay.open {
-        opacity: 1;
-        visibility: visible;
-      }
-      .cart-drawer {
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 380px;
-        max-width: 100vw;
-        height: 100%;
-        background: #fff;
-        z-index: 8100;
-        display: flex;
-        flex-direction: column;
-        transform: translateX(100%);
-        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: -8px 0 40px rgba(0, 0, 0, 0.12);
-      }
-      .cart-drawer.open {
-        transform: translateX(0);
-      }
-      .cart-drawer-hd {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 20px 20px 16px;
-        border-bottom: 1px solid var(--gray-100);
-        flex-shrink: 0;
-      }
-      .cart-drawer-title {
-        font-size: 18px;
-        font-weight: 800;
-        color: var(--black);
-      }
-      .cart-drawer-x {
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        background: var(--gray-100);
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-        transition: background 0.2s;
-      }
-      .cart-drawer-x:hover {
-        background: var(--gray-200);
-      }
-      .cart-drawer-body {
-        flex: 1;
-        overflow-y: auto;
-        padding: 0 20px;
-      }
-      .cart-empty-state {
-        text-align: center;
-        padding: 60px 20px;
-        color: var(--gray-400);
-      }
-      .cart-empty-state svg {
-        margin-bottom: 14px;
-        opacity: 0.3;
-      }
-      .cart-empty-state p {
-        font-size: 15px;
-        font-weight: 600;
-      }
-      .cart-row {
-        display: flex;
-        gap: 12px;
-        padding: 14px 0;
-        border-bottom: 1px solid var(--gray-100);
-      }
-      .cart-row-img {
-        width: 64px;
-        height: 64px;
-        border-radius: 8px;
-        background: var(--gray-50);
-        overflow: hidden;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .cart-row-img img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-      .cart-row-info {
-        flex: 1;
-        min-width: 0;
-      }
-      .cart-row-name {
-        font-size: 14px;
-        font-weight: 700;
-        color: var(--black);
-        margin-bottom: 2px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .cart-row-meta {
-        font-size: 12px;
-        color: var(--gray-400);
-        margin-bottom: 8px;
-      }
-      .cart-row-bot {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .ciq {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-      .ciq-btn {
-        width: 26px;
-        height: 26px;
-        border-radius: 6px;
-        border: 1.5px solid var(--gray-200);
-        background: #fff;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.15s;
-        line-height: 1;
-      }
-      .ciq-btn:hover {
-        border-color: var(--black);
-      }
-      .ciq-val {
-        font-size: 14px;
-        font-weight: 700;
-        min-width: 20px;
-        text-align: center;
-      }
-      .cart-row-price {
-        margin-left: auto;
-        font-size: 15px;
-        font-weight: 800;
-        color: var(--black);
-        font-family: var(--font-display);
-        white-space: nowrap;
-      }
-      .cart-row-del {
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: var(--gray-400);
-        padding: 2px;
-        transition: color 0.15s;
-        flex-shrink: 0;
-      }
-      .cart-row-del:hover {
-        color: var(--red);
-      }
-      .cart-drawer-ft {
-        padding: 16px 20px 20px;
-        border-top: 1px solid var(--gray-100);
-        flex-shrink: 0;
-      }
-      .cart-total {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        margin-bottom: 14px;
-      }
-      .cart-total-lbl {
-        font-size: 13px;
-        color: var(--gray-400);
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.6px;
-      }
-      .cart-total-num {
-        font-size: 22px;
-        font-weight: 800;
-        color: var(--black);
-        font-family: var(--font-display);
-      }
-      .cart-checkout {
-        width: 100%;
-        padding: 15px;
-        background: var(--red);
-        color: #fff;
-        border: none;
-        border-radius: 10px;
-        font-size: 15px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: background 0.2s;
-      }
-      .cart-checkout:hover {
-        background: var(--red-hover);
-      }
-
-      /* ─── RESPONSIVE ───────────────────────────────────────────── */
-      @media (max-width: 900px) {
-        .checkout-grid {
-          grid-template-columns: 1fr;
-          gap: 32px;
-        }
-        .checkout-form-panel {
-          position: static;
-        }
-        .form-row {
-          grid-template-columns: 1fr;
-        }
-        .footer-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-      }
-      @media (max-width: 768px) {
-        #desktopSearch {
-          display: none !important;
-        }
-        #mobileSearchBtn {
-          display: flex !important;
-        }
-        .nav-link {
-          display: none;
-        }
-        .cat-nav {
-          display: none;
-        }
-      }
-      @media (max-width: 600px) {
-        .container {
-          padding: 0 14px;
-        }
-        .hamburger {
-          display: flex;
-        }
-        .top-nav {
-          position: relative;
-          gap: 8px;
-        }
-        .logo {
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
-        }
-        .logo img {
-          max-width: 100px;
-        }
-        #mobileSearchBtn {
-          margin-left: auto;
-        }
-        .lang-switch {
-          display: none;
-        }
-        .cart-btn {
-          margin-left: 0;
-        }
-        .delivery-options {
-          grid-template-columns: 1fr;
-        }
-        .footer-grid {
-          grid-template-columns: 1fr;
-          gap: 28px;
-        }
-        .footer-bottom {
-          flex-direction: column;
-          gap: 8px;
-          text-align: center;
-        }
-      }
-      .site-footer { margin-top: 80px; }
-      /* ══ BULK NOTICE ══ */
-      #bulkNoticeInCart {
-        display: none;
-        margin: 16px 0;
-        padding: 14px;
-        background: var(--white);
-        border: 1.5px solid var(--red-light);
-        border-radius: 12px;
-        box-shadow: var(--shadow-sm);
-        transition: transform var(--transition), border-color var(--transition);
-        animation: fadeUp 0.3s ease both;
-      }
-      html[dir="rtl"] #bulkNoticeInCart {
-        text-align: right;
-      }
-      #bulkNoticeInCart:hover {
-        border-color: var(--red);
-        transform: translateY(-2px);
-      }
-      .bulk-notice-content {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        text-decoration: none;
-        color: inherit;
-      }
-      .bulk-notice-icon {
-        width: 36px;
-        height: 36px;
-        background: #25d366;
-        color: #fff;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-      .bulk-notice-tag { display: block; font-size: 10px; font-weight: 800; color: var(--red); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
-      .bulk-notice-msg { font-size: 13px; font-weight: 600; color: var(--black); line-height: 1.4; margin: 0; }
-
-      /* Quantity Adjustment Highlight */
-      @keyframes qtyAdjustPulse {
-        0% { color: var(--black); background: transparent; }
-        30% { color: var(--red); background: var(--red-light); transform: scale(1.15); }
-        100% { color: var(--black); background: transparent; transform: scale(1); }
-      }
-      .qty-adjusted { animation: qtyAdjustPulse 1s ease; }
-    </style>
-    <script>if(sessionStorage.getItem('bb_wl'))document.documentElement.classList.add('bb-noanim');</script>
-  </head>
-  <body>
-    <!-- PAGE LOADER -->
-    <div id="pageLoader">
-      <div class="wl-bg"></div>
-      <div class="wl-grid"></div>
-      <div class="wl-rings"><div class="wl-ring"></div><div class="wl-ring"></div><div class="wl-ring"></div></div>
-      <div class="wl-flares"><div class="wl-flare"></div><div class="wl-flare"></div><div class="wl-flare"></div><div class="wl-flare"></div></div>
-      <div class="wl-particles"><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div><div class="wl-p"></div></div>
-      <div class="wl-body">
-        <div class="wl-logo-wrap">
-          <div class="wl-logo-glow"></div>
-          <img src="/images/logo.png" alt="ByBens" class="wl-logo" />
-          <div class="wl-shine"></div>
-          <div class="wl-shine2"></div>
-        </div>
-        <div class="wl-line"></div>
-        <div class="wl-tagline">
-          <span class="wl-word">FUEL</span><span class="wl-word">·</span><span class="wl-word">PERFORM</span><span class="wl-word">·</span><span class="wl-word">DOMINATE</span>
-        </div>
-      </div>
-    </div>
-    <!-- Data loading spinner -->
-    <div id="dataSpinner"><div class="ds-ring"></div></div>
-    <!-- Marquee Placeholder -->
-    <div id="marqueePlaceholder"></div>
-
-    <!-- ─── HEADER ──────────────────────────────────────────────── -->
-    <header id="site-header">
-      <div class="container">
-        <nav class="top-nav" aria-label="Main navigation">
-          <button
-            class="hamburger"
-            id="hamburgerBtn"
-            aria-label="Toggle menu"
-            aria-expanded="false"
-            onclick="toggleMobileMenu()"
-          >
-            <span></span><span></span><span></span>
-          </button>
-          <a href="/supplements" class="logo" aria-label="ByBens Home">
-            <img
-              src="/images/logo.png"
-              alt="ByBens Logo"
-              style="height: auto; width: auto; max-width: 140px; object-fit: contain;"
-            />
-          </a>
-
-          <!-- Supplements link (desktop only) -->
-          <a href="/supplements/products" class="nav-link active" id="desktopSupplementsBtn">Supplements</a>
-
-          <div class="search-wrap" role="search" id="desktopSearch">
-            <input
-              type="search"
-              id="searchInput"
-              placeholder="Search supplements, proteins, vitamins…"
-              aria-label="Search products"
-              autocomplete="off"
-              oninput="handleSearch(this.value)"
-            />
-            <button
-              class="search-btn"
-              aria-label="Submit search"
-              onclick="
-                handleSearch(document.getElementById('searchInput').value)
-              "
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.35-4.35" />
-              </svg>
-            </button>
-            <div class="search-dropdown" id="searchDropdown"></div>
-          </div>
-
-          <button
-            id="mobileSearchBtn"
-            onclick="openMobileSearch()"
-            aria-label="Search"
-            style="
-              display: none;
-              width: 40px;
-              height: 40px;
-              align-items: center;
-              justify-content: center;
-              border-radius: 8px;
-              color: var(--black);
-              background: none;
-              border: none;
-              cursor: pointer;
-            "
-          >
-            <svg
-              width="22"
-              height="22"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
-            </svg>
-          </button>
-
-          <div class="nav-right">
-            <div
-              class="lang-switch"
-              role="group"
-              aria-label="Language switcher"
-            >
-              <button
-                class="lang-btn active"
-                data-lang="en"
-                onclick="switchLang('en')"
-              >
-                EN
-              </button>
-              <button
-                class="lang-btn"
-                data-lang="fr"
-                onclick="switchLang('fr')"
-              >
-                FR
-              </button>
-              <button
-                class="lang-btn"
-                data-lang="ar"
-                onclick="switchLang('ar')"
-              >
-                AR
-              </button>
-            </div>
-            <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
-              <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-              <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-            </button>
-            <button
-              class="cart-btn"
-              aria-label="Shopping cart"
-              onclick="toggleCart()"
-            >
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <path d="M16 10a4 4 0 0 1-8 0" />
-              </svg>
-              <span class="cart-badge" id="cartBadge" style="display: none"
-                >0</span
-              >
-            </button>
-          </div>
-        </nav>
-      </div>
-    </header>
-
-    <!-- Category Nav — populated by JS -->
-    <div class="cat-nav" aria-label="Product categories">
-      <div class="container">
-        <div class="cat-nav-inner" id="catNavInner"></div>
-      </div>
-    </div>
-
-    <!-- Mobile search overlay -->
-    <div
-      id="mobileSearchOverlay"
-      style="
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: var(--white);
-        z-index: 9998;
-        flex-direction: column;
-        padding: 20px 24px;
-      "
-    >
-      <div
-        style="
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-bottom: 24px;
-        "
-      >
-        <div style="position: relative; flex: 1">
-          <input
-            type="search"
-            id="mobileSearchInput"
-            placeholder="Search supplements, proteins…"
-            style="
-              width: 100%;
-              height: 48px;
-              padding: 0 48px 0 16px;
-              border: 1.5px solid var(--gray-200);
-              border-radius: 10px;
-              font-size: 16px;
-              background: var(--gray-50);
-              outline: none;
-              font-family: var(--font-body);
-            "
-            oninput="handleSearch(this.value)"
-          />
-          <svg
-            style="
-              position: absolute;
-              right: 14px;
-              top: 50%;
-              transform: translateY(-50%);
-              color: var(--gray-400);
-            "
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.35-4.35" />
-          </svg>
-        </div>
-        <button
-          onclick="closeMobileSearch()"
-          style="
-            flex-shrink: 0;
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--red);
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-family: var(--font-body);
-            padding: 8px 4px;
-          "
-          data-i18n="search.cancel"
-        >
-          Cancel
-        </button>
-      </div>
-      <div id="mobileSearchResults" style="flex: 1; overflow-y: auto">
-        <p
-          style="
-            font-size: 13px;
-            color: var(--gray-400);
-            text-align: center;
-            margin-top: 40px;
-          "
-        >
-          Start typing to search products…
-        </p>
-      </div>
-    </div>
-
-    <!-- Mobile menu -->
-    <div class="mobile-menu" id="mobileMenu">
-      <div class="mobile-nav-links">
-        <a class="mobile-nav-link active" href="/supplements/products">Supplements</a>
-      </div>
-      <div id="mobileCatItems"></div>
-      <div
-        style="
-          margin-top: 24px;
-          border-top: 1px solid var(--gray-100);
-          padding-top: 20px;
-        "
-      >
-        <div
-          style="
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--gray-400);
-            margin-bottom: 12px;
-          "
-        >
-          Language
-        </div>
-        <div style="display: flex; gap: 8px">
-          <button
-            class="lang-btn active"
-            data-lang="en"
-            onclick="
-              switchLang('en');
-              toggleMobileMenu();
-            "
-          >
-            EN
-          </button>
-          <button
-            class="lang-btn"
-            data-lang="fr"
-            onclick="
-              switchLang('fr');
-              toggleMobileMenu();
-            "
-          >
-            FR
-          </button>
-          <button
-            class="lang-btn"
-            data-lang="ar"
-            onclick="
-              switchLang('ar');
-              toggleMobileMenu();
-            "
-          >
-            AR
-          </button>
-          <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode" style="margin-left:auto;">
-            <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-            <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>
-    <div
-      class="mobile-overlay"
-      id="mobileOverlay"
-      onclick="toggleMobileMenu()"
-    ></div>
-
-    <!-- ─── MAIN ─────────────────────────────────────────────────── -->
-    <main>
-      <div class="container">
-        <nav class="breadcrumb" aria-label="Breadcrumb">
-          <a href="/supplements" data-i18n="breadcrumb.home">Home</a>
-          <span class="sep">›</span>
-          <a href="/supplements/products" data-i18n="breadcrumb.cart">Cart</a>
-          <span class="sep">›</span>
-          <span class="current" data-i18n="breadcrumb.checkout">Checkout</span>
-        </nav>
-
-        <section class="checkout-section">
-          <div class="checkout-grid">
-            <!-- LEFT: Cart Items -->
-            <div class="checkout-items-panel">
-              <div class="checkout-panel-title" data-i18n="checkout.yourOrder">
-                Your Order
-              </div>
-              <div id="checkoutItemsList">
-                <!-- populated by renderCheckoutItems() -->
-              </div>
-            </div>
-
-            <!-- RIGHT: Delivery Form -->
-            <div class="checkout-form-panel">
-              <div class="order-form-title">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
-                  />
-                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-                </svg>
-                <span data-i18n="form.deliveryDetails">Delivery Details</span>
-              </div>
-
-              <!-- honeypot: hidden from real users, bots fill it -->
-              <input type="text" id="hp_website" name="website" autocomplete="off" tabindex="-1"
-                style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;" aria-hidden="true">
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="firstName" data-i18n="form.firstName"
-                    >First Name</label
-                  >
-                  <input type="text" id="firstName" placeholder="John" />
-                  <span class="error-msg" id="firstNameErr"></span>
-                </div>
-                <div class="form-group">
-                  <label for="lastName" data-i18n="form.lastName"
-                    >Last Name</label
-                  >
-                  <input type="text" id="lastName" placeholder="Doe" />
-                  <span class="error-msg" id="lastNameErr"></span>
-                </div>
-              </div>
-
-              <div class="form-row single">
-                <div class="form-group">
-                  <label for="phone" data-i18n="form.phone">Phone Number</label>
-                  <input type="tel" id="phone" placeholder="0550 000 000" />
-                  <span class="error-msg" id="phoneErr"></span>
-                </div>
-              </div>
-
-              <div class="form-row single">
-                <div class="form-group">
-                  <label for="address" data-i18n="form.address">Address (Optional)</label>
-                  <input type="text" id="address" placeholder="Street name, building, apartment..." />
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label data-i18n="form.wilaya">Wilaya</label>
-                  <div class="custom-select-wrap" id="wilayaWrap">
-                    <div
-                      class="custom-select-trigger placeholder"
-                      id="wilayaTrigger"
-                      tabindex="0"
-                      role="combobox"
-                      aria-haspopup="listbox"
-                      aria-expanded="false"
-                      onclick="toggleCustomSelect('wilaya')"
-                      onkeydown="handleDropdownKey(event, 'wilaya')"
-                    >
-                      <span id="wilayaLabel" data-i18n="form.selectWilaya"
-                        >Select wilaya…</span
-                      >
-                      <svg
-                        class="caret"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2.5"
-                      >
-                        <path d="m6 9 6 6 6-6" />
-                      </svg>
-                    </div>
-                    <div
-                      class="custom-dropdown-list"
-                      id="wilayaDropdown"
-                      role="listbox"
-                    >
-                      <div class="dropdown-search">
-                        <input
-                          type="text"
-                          placeholder="Search wilaya…"
-                          oninput="filterDropdown('wilaya', this.value)"
-                          onclick="event.stopPropagation()"
-                        />
-                      </div>
-                      <div id="wilayaOptions"></div>
-                    </div>
-                  </div>
-                  <span class="error-msg" id="wilayaErr"></span>
-                </div>
-                <div class="form-group">
-                  <label data-i18n="form.commune">Commune</label>
-                  <div class="custom-select-wrap" id="communeWrap">
-                    <div
-                      class="custom-select-trigger placeholder"
-                      id="communeTrigger"
-                      tabindex="0"
-                      role="combobox"
-                      aria-haspopup="listbox"
-                      aria-expanded="false"
-                      aria-disabled="true"
-                      onclick="toggleCustomSelect('commune')"
-                      onkeydown="handleDropdownKey(event, 'commune')"
-                    >
-                      <span id="communeLabel" data-i18n="form.selectWilayaFirst"
-                        >Select wilaya first</span
-                      >
-                      <svg
-                        class="caret"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2.5"
-                      >
-                        <path d="m6 9 6 6 6-6" />
-                      </svg>
-                    </div>
-                    <div
-                      class="custom-dropdown-list"
-                      id="communeDropdown"
-                      role="listbox"
-                    >
-                      <div class="dropdown-search">
-                        <input
-                          type="text"
-                          placeholder="Search commune…"
-                          oninput="filterDropdown('commune', this.value)"
-                          onclick="event.stopPropagation()"
-                        />
-                      </div>
-                      <div id="communeOptions"></div>
-                    </div>
-                  </div>
-                  <span class="error-msg" id="communeErr"></span>
-                </div>
-              </div>
-
-              <div class="form-group" style="margin-bottom: 14px">
-                <label data-i18n="form.deliveryType">Delivery Type</label>
-                <div class="delivery-options">
-                  <div
-                    class="delivery-option active"
-                    id="deliveryHome"
-                    onclick="selectDelivery('home')"
-                  >
-                    <input type="radio" name="delivery" value="home" checked />
-                    <div class="delivery-option-top">
-                      <span
-                        class="delivery-option-name"
-                        data-i18n="form.homeDelivery"
-                        >🏠 Home Delivery</span
-                      >
-                      <div class="delivery-option-check">
-                        <div class="delivery-option-dot"></div>
-                      </div>
-                    </div>
-                    <div class="delivery-option-price">—</div>
-                    <div
-                      class="delivery-option-desc"
-                      data-i18n="form.deliveredDoor"
-                    >
-                      Delivered to your door
-                    </div>
-                  </div>
-                  <div
-                    class="delivery-option"
-                    id="deliveryOffice"
-                    onclick="selectDelivery('office')"
-                  >
-                    <input type="radio" name="delivery" value="office" />
-                    <div class="delivery-option-top">
-                      <span
-                        class="delivery-option-name"
-                        data-i18n="form.officePick"
-                        >📦 Office Pickup</span
-                      >
-                      <div class="delivery-option-check">
-                        <div class="delivery-option-dot"></div>
-                      </div>
-                    </div>
-                    <div class="delivery-option-price">—</div>
-                    <div
-                      class="delivery-option-desc"
-                      data-i18n="form.pickupOffice"
-                    >
-                      Pickup at nearest office
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Order Summary -->
-              <div class="order-summary">
-                <div class="order-summary-title" data-i18n="form.orderSummary">
-                  Order Summary
-                </div>
-                <div id="summaryItemsList">
-                  <!-- populated by updateOrderSummary() -->
-                </div>
-                <div class="order-summary-row" id="summarySubtotalRow">
-                  <span
-                    class="order-summary-label"
-                    data-i18n="checkout.subtotal"
-                    >Subtotal</span
-                  >
-                  <span class="order-summary-val" id="summarySubtotal"
-                    >0 DA</span
-                  >
-                </div>
-                <div class="order-summary-row">
-                  <span class="order-summary-label" data-i18n="form.delivery"
-                    >Delivery</span
-                  >
-                  <span class="order-summary-val" id="summaryDelivery"
-                    >+500 DA (Home)</span
-                  >
-                </div>
-                <div
-                  class="order-summary-row"
-                  id="summaryDiscountRow"
-                  style="display: none"
-                >
-                  <span class="order-summary-label" id="summaryDiscountLabel"
-                    >Discount</span
-                  >
-                  <span
-                    class="order-summary-val"
-                    id="summaryDiscountVal"
-                    style="color: var(--green, #0a7c3e)"
-                  ></span>
-                </div>
-                <div class="order-summary-total">
-                  <span class="order-summary-total-label" data-i18n="form.total"
-                    >Total</span
-                  >
-                  <span class="order-summary-total-price" id="summaryTotal"
-                    >0 DA</span
-                  >
-                </div>
-              </div>
-
-              <!-- Promo Code -->
-              <div class="promo-wrap">
-                <div class="promo-label">
-                  <svg
-                    width="13"
-                    height="13"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                  >
-                    <path
-                      d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
-                    />
-                    <line x1="7" y1="7" x2="7.01" y2="7" />
-                  </svg>
-                  Promo Code
-                </div>
-                <div class="promo-input-row">
-                  <div class="promo-input-wrap">
-                    <svg
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2.5"
-                    >
-                      <path
-                        d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
-                      />
-                      <line x1="7" y1="7" x2="7.01" y2="7" />
-                    </svg>
-                    <input
-                      type="text"
-                      id="promoCode"
-                      placeholder="Enter code…"
-                      oninput="this.value = this.value.toUpperCase()"
-                      onkeydown="
-                        if (event.key === 'Enter') {
-                          applyPromo();
-                          event.preventDefault();
-                        }
-                      "
-                    />
-                  </div>
-                  <button onclick="applyPromo()" class="btn-apply-promo">
-                    APPLY
-                  </button>
-                </div>
-                <div id="promoTagsCO" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
-                <span id="promoMsg" class="promo-msg"></span>
-              </div>
-
-              <button class="btn-order" id="submitOrderBtn" onclick="submitOrder()">
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-                <span data-i18n="form.confirmOrder">CONFIRM ORDER</span>
-              </button>
-            </div>
-
-          </div>
-        </section>
-      </div>
-    </main>
-
-    <!-- ─── YOU MAY ALSO LIKE ──────────────────────────────────── -->
-    <section class="also-like-section">
-      <div class="container">
-        <h2 class="also-like-title" data-i18n="section.alsoLike">
-          You May Also Like
-        </h2>
-        <div class="also-like-grid" id="alsoLikeGrid"></div>
-      </div>
-    </section>
-
-    <!-- ══ ADD-TO-CART MODAL ══ -->
-    <div class="atc-overlay" id="atcOverlay" onclick="if(event.target===this)closeAddToCartModal()">
-      <div class="atc-modal">
-        <button class="atc-close" onclick="closeAddToCartModal()">&#x2715;</button>
-        <div class="atc-modal-img" id="atcImg"></div>
-        <div class="atc-modal-name" id="atcName"></div>
-        <div class="atc-modal-price" id="atcPrice"></div>
-        <div class="atc-section" id="atcFlavorSection">
-          <div class="atc-label">Flavor</div>
-          <div class="atc-options" id="atcFlavorOptions"></div>
-        </div>
-        <div class="atc-section" id="atcWeightSection">
-          <div class="atc-label">Size / Weight</div>
-          <div class="atc-options" id="atcWeightOptions"></div>
-        </div>
-        <div class="atc-section">
-          <div class="atc-label">Quantity</div>
-          <div class="atc-qty-row">
-            <button class="atc-qty-btn" onclick="atcChangeQty(-1)">&#8722;</button>
-            <span class="atc-qty-val" id="atcQtyVal">1</span>
-            <button class="atc-qty-btn" onclick="atcChangeQty(1)">+</button>
-          </div>
-        </div>
-        <button class="atc-confirm-btn" onclick="confirmAddToCart()">Add to Cart</button>
-      </div>
-    </div>
-
-    <div id="footerPlaceholder"></div>
-
-    <!-- Success overlay -->
-    <div class="success-overlay" id="successOverlay">
-      <div class="success-card">
-        <div class="success-icon">
-          <svg
-            width="36"
-            height="36"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-          >
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
-        </div>
-        <div class="success-title" data-i18n="success.title">Order Placed!</div>
-        <div class="success-msg" id="successMsg">
-          Thank you! We'll call you shortly to confirm your order.
-        </div>
-        <a class="success-instagram" href="https://www.instagram.com/bens.supplements?igsh=MTlpaGRnOGxsazBvbA==" target="_blank" rel="noopener">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-          Visit our Instagram
-        </a>
-        <button class="success-close" onclick="closeSuccess()">
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-          >
-            <path d="m15 18-6-6 6-6" />
-          </svg>
-          <span data-i18n="success.back">Back to Products</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="toast" id="toast"><span id="toastMsg"></span></div>
-
-    <button
-      id="scrollTop"
-      onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
-      title="Back to top"
-    >
-      <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.5"
-      >
-        <path d="m18 15-6-6-6 6" />
-      </svg>
-    </button>
-
-    <a
-      href="https://wa.me/213662269449"
-      target="_blank"
-      class="wa-btn"
-      aria-label="WhatsApp"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="30"
-        height="30"
-        viewBox="0 0 24 24"
-        fill="white"
-      >
-        <path
-          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
-        />
-      </svg>
-    </a>
-
-    <!-- Cart drawer -->
-    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
-    <div class="cart-drawer" id="cartDrawer">
-      <div class="cart-drawer-hd">
-        <span class="cart-drawer-title"
-          >Cart &nbsp;<span
-            id="cartDrawerCount"
-            style="font-size: 15px; font-weight: 600; color: var(--gray-400)"
-            >0 items</span
-          ></span
-        >
-        <button class="cart-drawer-x" onclick="toggleCart()">&#x2715;</button>
-      </div>
-      <div class="cart-drawer-body" id="cartDrawerBody"></div>
-      <div class="cart-drawer-ft">
-        <div class="cart-total">
-          <span class="cart-total-lbl">Total</span>
-          <span class="cart-total-num"
-            ><span id="cartDrawerTotal">0</span> DA</span
-          >
-        </div>
-        <button class="cart-checkout" onclick="cartCheckout()">Checkout</button>
-      </div>
-    </div>
-
-    <script>
-      /* ══════════════════════════════════════════════════════
+﻿      /* ══════════════════════════════════════════════════════
          CONFIG
       ══════════════════════════════════════════════════════ */
       const SUPABASE_URL = "https://dbezrrzmcosxdoorbrgx.supabase.co";
@@ -3861,7 +891,7 @@
         if (!_cartOpen) toggleCart(); else _renderCartDrawer();
       }
 
-      const WILAYAS = {
+                        const WILAYAS = {
         "01": {
           name: "Adrar",
           communes: [
@@ -3889,7 +919,7 @@
             "Abou El Hassane",
             "Ain Merane",
             "Benairia",
-            "Beni Bouattab",
+            "Beni  Bouattab",
             "Beni Haoua",
             "Beni Rached",
             "Boukadir",
@@ -3926,30 +956,18 @@
         "03": {
           name: "Laghouat",
           communes: [
-            "Aflou",
             "Ain Madhi",
-            "Ain Sidi Ali",
             "Benacer Benchohra",
-            "Brida",
             "El Assafia",
-            "El Beidha",
-            "El Ghicha",
             "El Haouaita",
-            "Gueltat Sidi Saad",
-            "Hadj Mechri",
             "Hassi Delaa",
             "Hassi R'mel",
             "Kheneg",
             "Ksar El Hirane",
             "Laghouat",
-            "Oued M'zi",
-            "Oued Morra",
-            "Sebgag",
-            "Sidi Bouzid",
             "Sidi Makhlouf",
             "Tadjemout",
             "Tadjrouna",
-            "Taouiala",
           ],
         },
         "04": {
@@ -3993,11 +1011,8 @@
             "Ain Touta",
             "Ain Yagout",
             "Arris",
-            "Azil Abedelkader",
-            "Barika",
             "Batna",
             "Beni Foudhala El Hakania",
-            "Bitam",
             "Boulhilat",
             "Boumagueur",
             "Boumia",
@@ -4005,7 +1020,6 @@
             "Chemora",
             "Chir",
             "Djerma",
-            "Djezzar",
             "El Hassi",
             "El Madher",
             "Fesdis",
@@ -4021,7 +1035,6 @@
             "Larbaa",
             "Lazrou",
             "Lemcene",
-            "M Doukal",
             "Maafa",
             "Menaa",
             "Merouana",
@@ -4029,7 +1042,6 @@
             "Oued Chaaba",
             "Oued El Ma",
             "Oued Taga",
-            "Ouled Ammar",
             "Ouled Aouf",
             "Ouled Fadel",
             "Ouled Sellem",
@@ -4038,7 +1050,6 @@
             "Rahbat",
             "Ras El Aioun",
             "Sefiane",
-            "Seggana",
             "Seriana",
             "T Kout",
             "Talkhamt",
@@ -4047,13 +1058,12 @@
             "Teniet El Abed",
             "Tighanimine",
             "Tigharghar",
-            "Tilatou",
             "Timgad",
             "Zanet El Beida",
           ],
         },
         "06": {
-          name: "Béjaïa",
+          name: "Bejaia",
           communes: [
             "Adekar",
             "Ait R'zine",
@@ -4113,27 +1123,22 @@
           name: "Biskra",
           communes: [
             "Ain Naga",
-            "Ain Zaatout",
             "Biskra",
             "Bordj Ben Azzouz",
             "Bouchakroun",
-            "Branis",
             "Chetma",
-            "Djemorah",
             "El Feidh",
             "El Ghrous",
             "El Hadjab",
             "El Haouch",
-            "El Kantara",
-            "El Outaya",
             "Foughala",
             "Khenguet Sidi Nadji",
             "Lichana",
             "Lioua",
             "M'chouneche",
-            "M'lili",
             "Mekhadma",
             "Meziraa",
+            "M'lili",
             "Oumache",
             "Ourlal",
             "Sidi Okba",
@@ -4142,7 +1147,7 @@
           ],
         },
         "08": {
-          name: "Béchar",
+          name: "Bechar",
           communes: [
             "Abadla",
             "Bechar",
@@ -4180,7 +1185,7 @@
             "Larbaa",
             "Meftah",
             "Mouzaia",
-            "Oued Djer",
+            "Oued  Djer",
             "Oued El Alleug",
             "Ouled Slama",
             "Ouled Yaich",
@@ -4188,7 +1193,7 @@
             "Soumaa",
           ],
         },
-        10: {
+        "10": {
           name: "Bouira",
           communes: [
             "Aghbalou",
@@ -4235,22 +1240,27 @@
             "Sour El Ghozlane",
             "Taghzout",
             "Taguedite",
-            "Z'barbar",
+            "Z'barbar (El Isseri )",
           ],
         },
-        11: {
+        "11": {
           name: "Tamanrasset",
-          communes: ["Abelsa", "Ain Amguel", "Idles", "Tamanrasset", "Tazrouk"],
+          communes: [
+            "Abelsa",
+            "Ain Amguel",
+            "Idles",
+            "Tamanrasset",
+            "Tazrouk",
+          ],
         },
-        12: {
-          name: "Tébessa",
+        "12": {
+          name: "Tebessa",
           communes: [
             "Ain Zerga",
             "Bedjene",
             "Bekkaria",
             "Bir Dheheb",
             "Bir Mokkadem",
-            "Bir-El-Ater",
             "Boukhadra",
             "Boulhaf Dyr",
             "Cheria",
@@ -4259,14 +1269,11 @@
             "El Meridj",
             "El Mezeraa",
             "El Ogla",
-            "El Ogla El Malha",
             "El-Aouinet",
             "El-Houidjbet",
-            "Ferkane",
             "Guorriguer",
             "Hammamet",
             "Morsott",
-            "Negrine",
             "Ouenza",
             "Oum Ali",
             "Saf Saf El Ouesra",
@@ -4275,7 +1282,7 @@
             "Telidjen",
           ],
         },
-        13: {
+        "13": {
           name: "Tlemcen",
           communes: [
             "Ain Fetah",
@@ -4297,22 +1304,19 @@
             "Beni Snous",
             "Bensekrane",
             "Bouhlou",
-            "Bouihi",
             "Chetouane",
             "Dar Yaghmoracen",
             "Djebala",
-            "El Aricha",
             "El Fehoul",
-            "El Gor",
             "Fellaoucene",
             "Ghazaouet",
             "Hammam Boughrara",
             "Hennaya",
             "Honnaine",
-            "M'sirda Fouaga",
             "Maghnia",
             "Mansourah",
             "Marsa Ben M'hidi",
+            "M'sirda Fouaga",
             "Nedroma",
             "Oued Lakhdar",
             "Ouled Mimoun",
@@ -4322,7 +1326,6 @@
             "Sebbaa Chioukh",
             "Sebdou",
             "Sidi Abdelli",
-            "Sidi Djillali",
             "Sidi Medjahed",
             "Souahlia",
             "Souani",
@@ -4333,7 +1336,7 @@
             "Zenata",
           ],
         },
-        14: {
+        "14": {
           name: "Tiaret",
           communes: [
             "Ain Bouchekif",
@@ -4341,7 +1344,6 @@
             "Ain Dzarit",
             "Ain El Hadid",
             "Ain Kermes",
-            "Bougara",
             "Chehaima",
             "Dahmouni",
             "Djebilet Rosfa",
@@ -4349,8 +1351,6 @@
             "Faidja",
             "Frenda",
             "Guertoufa",
-            "Hamadia",
-            "Ksar Chellala",
             "Madna",
             "Mahdia",
             "Mechraa Safa",
@@ -4362,10 +1362,8 @@
             "Naima",
             "Oued Lilli",
             "Rahouia",
-            "Rechaiga",
             "Sebaine",
             "Sebt",
-            "Serghine",
             "Si Abdelghani",
             "Sidi Abderrahmane",
             "Sidi Ali Mellal",
@@ -4377,10 +1375,9 @@
             "Tiaret",
             "Tidda",
             "Tousnina",
-            "Zmalet El Emir Abdelkade",
           ],
         },
-        15: {
+        "15": {
           name: "Tizi Ouzou",
           communes: [
             "Abi-Youcef",
@@ -4427,12 +1424,12 @@
             "Imsouhal",
             "Irdjen",
             "Larbaa Nath Irathen",
-            "M'kira",
             "Maatkas",
             "Makouda",
             "Mechtras",
             "Mekla",
             "Mizrana",
+            "M'kira",
             "Ouacif",
             "Ouadhias",
             "Ouaguenoun",
@@ -4452,7 +1449,7 @@
             "Zekri",
           ],
         },
-        16: {
+        "16": {
           name: "Alger",
           communes: [
             "Ain Benian",
@@ -4514,48 +1511,30 @@
             "Zeralda",
           ],
         },
-        17: {
+        "17": {
           name: "Djelfa",
           communes: [
             "Ain Chouhada",
             "Ain El Ibel",
-            "Ain Fekka",
             "Ain Maabed",
-            "Ain Oussera",
-            "Amourah",
-            "Benhar",
             "Benyagoub",
-            "Birine",
-            "Bouira Lahdab",
             "Charef",
             "Dar Chioukh",
-            "Deldoul",
             "Djelfa",
             "Douis",
             "El Guedid",
             "El Idrissia",
-            "El Khemis",
-            "Faidh El Botma",
-            "Guernini",
-            "Guettara",
-            "Had Sahary",
             "Hassi Bahbah",
             "Hassi El Euch",
-            "Hassi Fedoul",
             "M'liliha",
-            "Messaad",
             "Moudjebara",
-            "Oum Laadham",
-            "Sed Rahal",
-            "Selmana",
             "Sidi Baizid",
-            "Sidi Laadjel",
             "Taadmit",
             "Zaafrane",
             "Zaccar",
           ],
         },
-        18: {
+        "18": {
           name: "Jijel",
           communes: [
             "Bordj T'har",
@@ -4588,8 +1567,8 @@
             "Ziama Mansouriah",
           ],
         },
-        19: {
-          name: "Sétif",
+        "19": {
+          name: "Setif",
           communes: [
             "Ain Abessa",
             "Ain Arnat",
@@ -4653,8 +1632,8 @@
             "Tizi N'bechar",
           ],
         },
-        20: {
-          name: "Saïda",
+        "20": {
+          name: "Saida",
           communes: [
             "Ain El Hadjar",
             "Ain Sekhouna",
@@ -4674,7 +1653,7 @@
             "Youb",
           ],
         },
-        21: {
+        "21": {
           name: "Skikda",
           communes: [
             "Ain Bouziane",
@@ -4717,14 +1696,14 @@
             "Zitouna",
           ],
         },
-        22: {
-          name: "Sidi Bel Abbès",
+        "22": {
+          name: "Sidi Bel Abbes",
           communes: [
+            "Ain- Adden",
             "Ain El Berd",
             "Ain Kada",
             "Ain Thrid",
             "Ain Tindamine",
-            "Ain-Adden",
             "Amarnas",
             "Bedrabine El Mokrani",
             "Belarbi",
@@ -4739,12 +1718,12 @@
             "Hassi Dahou",
             "Hassi Zahana",
             "Lamtar",
-            "M'cid",
             "Makedra",
             "Marhoum",
+            "M'cid",
             "Merine",
             "Mezaourou",
-            "Mostefa Ben Brahim",
+            "Mostefa  Ben Brahim",
             "Moulay Slissen",
             "Oued Sebaa",
             "Oued Sefioun",
@@ -4774,7 +1753,7 @@
             "Zerouala",
           ],
         },
-        23: {
+        "23": {
           name: "Annaba",
           communes: [
             "Ain El Berda",
@@ -4791,7 +1770,7 @@
             "Treat",
           ],
         },
-        24: {
+        "24": {
           name: "Guelma",
           communes: [
             "Ain Ben Beida",
@@ -4830,7 +1809,7 @@
             "Tamlouka",
           ],
         },
-        25: {
+        "25": {
           name: "Constantine",
           communes: [
             "Ain Abid",
@@ -4847,28 +1826,18 @@
             "Zighoud Youcef",
           ],
         },
-        26: {
-          name: "Médéa",
+        "26": {
+          name: "Medea",
           communes: [
-            "Ain Boucif",
-            "Ain Ouksir",
             "Aissaouia",
-            "Aziz",
             "Baata",
             "Ben Chicao",
             "Beni Slimane",
             "Berrouaghia",
             "Bir Ben Laabed",
-            "Boghar",
-            "Bouaiche",
             "Bouaichoune",
             "Bouchrahil",
-            "Boughzoul",
             "Bouskene",
-            "Chabounia",
-            "Chelalet El Adhaoura",
-            "Cheniguel",
-            "Derrag",
             "Djouab",
             "Draa Esmar",
             "El Azizia",
@@ -4876,12 +1845,8 @@
             "El Hamdania",
             "El Haoudane",
             "El Omaria",
-            "El Ouinet",
             "Hannacha",
-            "Kef Lakhdar",
             "Khams Djouamaa",
-            "Ksar El Boukhari",
-            "M'fatha",
             "Maghraoua",
             "Medea",
             "Medjebar",
@@ -4889,34 +1854,27 @@
             "Mihoub",
             "Ouamri",
             "Oued Harbil",
-            "Ouled Antar",
             "Ouled Bouachra",
             "Ouled Brahim",
             "Ouled Deid",
-            "Ouled Emaaraf",
-            "Ouled Hellal",
-            "Oum El Djellil",
             "Ouzera",
             "Rebaia",
-            "Saneg",
             "Sedraya",
             "Seghouane",
             "Si Mahdjoub",
-            "Sidi Demed",
             "Sidi Naamane",
             "Sidi Rabie",
             "Sidi Zahar",
             "Sidi Ziane",
             "Souagui",
             "Tablat",
-            "Tafraout",
             "Tamesguida",
             "Tizi Mahdi",
             "Tletat Ed Douair",
             "Zoubiria",
           ],
         },
-        27: {
+        "27": {
           name: "Mostaganem",
           communes: [
             "Achaacha",
@@ -4953,59 +1911,36 @@
             "Touahria",
           ],
         },
-        28: {
+        "28": {
           name: "M'Sila",
           communes: [
             "Ain El Hadjel",
-            "Ain El Melh",
-            "Ain Fares",
             "Ain Khadra",
-            "Ain Rich",
             "Belaiba",
-            "Ben Srour",
             "Beni Ilmane",
-            "Benzouh",
             "Berhoum",
-            "Bir Foda",
-            "Bou Saada",
             "Bouti Sayeh",
             "Chellal",
             "Dehahna",
             "Djebel Messaad",
-            "El Hamel",
             "El Houamed",
             "Hammam Dalaa",
             "Khettouti Sed-El-Jir",
             "Khoubana",
+            "Magra",
             "M'cif",
             "M'sila",
-            "M'tarfa",
-            "Maadid",
-            "Maarif",
-            "Magra",
-            "Medjedel",
-            "Menaa",
-            "Mohamed Boudiaf",
             "Ouanougha",
             "Ouled Addi Guebala",
             "Ouled Derradj",
             "Ouled Madhi",
             "Ouled Mansour",
-            "Ouled Sidi Brahim",
-            "Ouled Slimane",
-            "Oulteme",
             "Sidi Aissa",
-            "Sidi Ameur",
-            "Sidi Hadjeres",
-            "Sidi M'hamed",
-            "Slim",
             "Souamaa",
-            "Tamsa",
             "Tarmount",
-            "Zarzour",
           ],
         },
-        29: {
+        "29": {
           name: "Mascara",
           communes: [
             "Ain Fares",
@@ -5057,7 +1992,7 @@
             "Zelamta",
           ],
         },
-        30: {
+        "30": {
           name: "Ouargla",
           communes: [
             "Ain Beida",
@@ -5070,7 +2005,7 @@
             "Sidi Khouiled",
           ],
         },
-        31: {
+        "31": {
           name: "Oran",
           communes: [
             "Ain Biya",
@@ -5101,25 +2036,18 @@
             "Tafraoui",
           ],
         },
-        32: {
+        "32": {
           name: "El Bayadh",
           communes: [
             "Ain El Orak",
-            "Arbaouat",
             "Boualem",
             "Bougtoub",
-            "Boussemghoun",
-            "Brezina",
-            "Cheguig",
-            "Chellala",
             "El Bayadh",
             "El Bnoud",
             "El Kheiter",
             "El Mehara",
-            "Ghassoul",
             "Kef El Ahmar",
             "Krakda",
-            "Labiodh Sidi Cheikh",
             "Rogassa",
             "Sidi Ameur",
             "Sidi Slimane",
@@ -5128,11 +2056,16 @@
             "Tousmouline",
           ],
         },
-        33: {
+        "33": {
           name: "Illizi",
-          communes: ["Bordj Omar Driss", "Debdeb", "Illizi", "In Amenas"],
+          communes: [
+            "Bordj Omar Driss",
+            "Debdeb",
+            "Illizi",
+            "In Amenas",
+          ],
         },
-        34: {
+        "34": {
           name: "Bordj Bou Arreridj",
           communes: [
             "Ain Taghrout",
@@ -5148,8 +2081,8 @@
             "El Achir",
             "El Annasseur",
             "El Euch",
-            "El M'hir",
             "El Main",
+            "El M'hir",
             "Elhammadia",
             "Ghailasa",
             "Haraza",
@@ -5171,8 +2104,8 @@
             "Tixter",
           ],
         },
-        35: {
-          name: "Boumerdès",
+        "35": {
+          name: "Boumerdes",
           communes: [
             "Afir",
             "Ammal",
@@ -5208,7 +2141,7 @@
             "Zemmouri",
           ],
         },
-        36: {
+        "36": {
           name: "El Tarf",
           communes: [
             "Ain El Assel",
@@ -5237,8 +2170,14 @@
             "Zitouna",
           ],
         },
-        37: { name: "Tindouf", communes: ["Oum El Assel", "Tindouf"] },
-        38: {
+        "37": {
+          name: "Tindouf",
+          communes: [
+            "Oum El Assel",
+            "Tindouf",
+          ],
+        },
+        "38": {
           name: "Tissemsilt",
           communes: [
             "Ammari",
@@ -5265,7 +2204,7 @@
             "Youssoufia",
           ],
         },
-        39: {
+        "39": {
           name: "El Oued",
           communes: [
             "Bayadha",
@@ -5292,7 +2231,7 @@
             "Trifaoui",
           ],
         },
-        40: {
+        "40": {
           name: "Khenchela",
           communes: [
             "Ain Touila",
@@ -5318,7 +2257,7 @@
             "Yabous",
           ],
         },
-        41: {
+        "41": {
           name: "Souk Ahras",
           communes: [
             "Ain Soltane",
@@ -5329,8 +2268,8 @@
             "Hanencha",
             "Khedara",
             "Khemissa",
-            "M'daourouche",
             "Machroha",
+            "M'daourouche",
             "Merahna",
             "Oued Kebrit",
             "Ouillen",
@@ -5349,7 +2288,7 @@
             "Zouabi",
           ],
         },
-        42: {
+        "42": {
           name: "Tipaza",
           communes: [
             "Aghbal",
@@ -5382,7 +2321,7 @@
             "Tipaza",
           ],
         },
-        43: {
+        "43": {
           name: "Mila",
           communes: [
             "Ahmed Rachedi",
@@ -5419,8 +2358,8 @@
             "Zeghaia",
           ],
         },
-        44: {
-          name: "Aïn Defla",
+        "44": {
+          name: "Ain Defla",
           communes: [
             "Ain-Benian",
             "Ain-Bouyahia",
@@ -5432,8 +2371,8 @@
             "Bathia",
             "Belaas",
             "Ben Allal",
-            "Bir-Ould-Khelifa",
             "Birbouche",
+            "Bir-Ould-Khelifa",
             "Bordj-Emir-Khaled",
             "Boumedfaa",
             "Bourached",
@@ -5460,8 +2399,8 @@
             "Zeddine",
           ],
         },
-        45: {
-          name: "Naâma",
+        "45": {
+          name: "Naama",
           communes: [
             "Ain Ben Khelil",
             "Ain Sefra",
@@ -5477,8 +2416,8 @@
             "Tiout",
           ],
         },
-        46: {
-          name: "Aïn Témouchent",
+        "46": {
+          name: "Ain Temouchent",
           communes: [
             "Aghlal",
             "Ain El Arbaa",
@@ -5510,8 +2449,8 @@
             "Terga",
           ],
         },
-        47: {
-          name: "Ghardaïa",
+        "47": {
+          name: "Ghardaia",
           communes: [
             "Berriane",
             "Bounoura",
@@ -5525,7 +2464,7 @@
             "Zelfana",
           ],
         },
-        48: {
+        "48": {
           name: "Relizane",
           communes: [
             "Ain Rahma",
@@ -5537,8 +2476,8 @@
             "Beni Zentis",
             "Dar Ben Abdelah",
             "Djidiouia",
-            "El H'madna",
             "El Hassi",
+            "El H'madna",
             "El Ouldja",
             "El-Guettar",
             "El-Matmar",
@@ -5568,7 +2507,7 @@
             "Zemmoura",
           ],
         },
-        49: {
+        "49": {
           name: "Timimoun",
           communes: [
             "Aougrout",
@@ -5583,11 +2522,14 @@
             "Tinerkouk",
           ],
         },
-        50: {
+        "50": {
           name: "Bordj Badji Mokhtar",
-          communes: ["Bordj Badji Mokhtar", "Timiaouine"],
+          communes: [
+            "Bordj Badji Mokhtar",
+            "Timiaouine",
+          ],
         },
-        51: {
+        "51": {
           name: "Ouled Djellal",
           communes: [
             "Besbes",
@@ -5598,8 +2540,8 @@
             "Sidi Khaled",
           ],
         },
-        52: {
-          name: "Béni Abbès",
+        "52": {
+          name: "Beni Abbes",
           communes: [
             "Beni-Abbes",
             "Beni-Ikhlef",
@@ -5612,20 +2554,30 @@
             "Timoudi",
           ],
         },
-        53: {
+        "53": {
           name: "In Salah",
-          communes: ["Ain Salah", "Foggaret Ezzoua", "Inghar"],
+          communes: [
+            "Ain Salah",
+            "Foggaret Ezzoua",
+            "Inghar",
+          ],
         },
-        54: { name: "In Guezzam", communes: ["Ain Guezzam", "Tin Zouatine"] },
-        55: {
+        "54": {
+          name: "In Guezzam",
+          communes: [
+            "Ain Guezzam",
+            "Tin Zouatine",
+          ],
+        },
+        "55": {
           name: "Touggourt",
           communes: [
             "Benaceur",
             "Blidet Amor",
             "El Alia",
             "El-Hadjira",
-            "M'naguer",
             "Megarine",
+            "M'naguer",
             "Nezla",
             "Sidi Slimane",
             "Taibet",
@@ -5635,9 +2587,15 @@
             "Zaouia El Abidia",
           ],
         },
-        56: { name: "Djanet", communes: ["Bordj El Haouass", "Djanet"] },
-        57: {
-          name: "El Meghaier",
+        "56": {
+          name: "Djanet",
+          communes: [
+            "Bordj El Haouass",
+            "Djanet",
+          ],
+        },
+        "57": {
+          name: "El M'Ghair",
           communes: [
             "Djamaa",
             "El-M'ghaier",
@@ -5649,9 +2607,176 @@
             "Tenedla",
           ],
         },
-        58: {
-          name: "El Menia",
-          communes: ["El Meniaa", "Hassi Fehal", "Hassi Gara"],
+        "58": {
+          name: "El Meniaa",
+          communes: [
+            "El Meniaa",
+            "Hassi Fehal",
+            "Hassi Gara",
+          ],
+        },
+        "59": {
+          name: "Aflou",
+          communes: [
+            "Aflou",
+            "Ain Sidi Ali",
+            "Brida",
+            "El Beidha",
+            "El Ghicha",
+            "Gueltat Sidi Saad",
+            "Hadj Mechri",
+            "Oued Morra",
+            "Oued M'zi",
+            "Sebgag",
+            "Sidi Bouzid",
+            "Taouiala",
+          ],
+        },
+        "60": {
+          name: "El Abiodh Sidi Cheikh",
+          communes: [
+            "Arbaouat",
+            "Boussemghoun",
+            "Brezina",
+            "Cheguig",
+            "Chellala",
+            "Ghassoul",
+            "Labiodh Sidi Cheikh",
+          ],
+        },
+        "61": {
+          name: "El Aricha",
+          communes: [
+            "Bouihi",
+            "El Aricha",
+            "El Gor",
+            "Sidi Djillali",
+          ],
+        },
+        "62": {
+          name: "El Kantara",
+          communes: [
+            "Ain Zaatout",
+            "Branis",
+            "Djemorah",
+            "El Kantara",
+            "El Outaya",
+          ],
+        },
+        "63": {
+          name: "Barika",
+          communes: [
+            "Azil Abedelkader",
+            "Barika",
+            "Bitam",
+            "Djezzar",
+            "M Doukal",
+            "Ouled Ammar",
+            "Seggana",
+            "Tilatou",
+          ],
+        },
+        "64": {
+          name: "Bou Saada",
+          communes: [
+            "Ain El Melh",
+            "Ain Fares",
+            "Ain Rich",
+            "Ben Srour",
+            "Benzouh",
+            "Bir Foda",
+            "Bou Saada",
+            "El Hamel",
+            "Maadid",
+            "Maarif",
+            "Medjedel",
+            "Menaa",
+            "Mohamed Boudiaf",
+            "M'tarfa",
+            "Ouled Sidi Brahim",
+            "Ouled Slimane",
+            "Oulteme",
+            "Sidi Ameur",
+            "Sidi Hadjeres",
+            "Sidi M'hamed",
+            "Slim",
+            "Tamsa",
+            "Zarzour",
+          ],
+        },
+        "65": {
+          name: "Bir El Ater",
+          communes: [
+            "Bir-El-Ater",
+            "El Ogla El Malha",
+            "Ferkane",
+            "Negrine",
+          ],
+        },
+        "66": {
+          name: "Ksar El Boukhari",
+          communes: [
+            "Ain Boucif",
+            "Ain Ouksir",
+            "Aziz",
+            "Boghar",
+            "Bouaiche",
+            "Boughzoul",
+            "Chabounia",
+            "Chelalet El Adhaoura",
+            "Cheniguel",
+            "Derrag",
+            "El Ouinet",
+            "Kef Lakhdar",
+            "Ksar El Boukhari",
+            "M'fatha",
+            "Ouled Antar",
+            "Ouled Emaaraf",
+            "Ouled Hellal",
+            "Oum El Djellil",
+            "Saneg",
+            "Sidi Demed",
+            "Tafraout",
+          ],
+        },
+        "67": {
+          name: "Ksar Chellala",
+          communes: [
+            "Bougara",
+            "Hamadia",
+            "Ksar Chellala",
+            "Rechaiga",
+            "Serghine",
+            "Zmalet El Emir Abdelkade",
+          ],
+        },
+        "68": {
+          name: "Ain Oussara",
+          communes: [
+            "Ain Fekka",
+            "Ain Oussera",
+            "Benhar",
+            "Birine",
+            "Bouira Lahdab",
+            "El Khemis",
+            "Guernini",
+            "Had Sahary",
+            "Hassi Fedoul",
+            "Sidi Laadjel",
+          ],
+        },
+        "69": {
+          name: "Messaad",
+          communes: [
+            "Amourah",
+            "Deldoul",
+            "Faidh El Botma",
+            "Guettara",
+            "Messaad",
+            "Oum Laadham",
+            "Sed Rahal",
+            "Selmana",
+          ],
         },
       };
 
@@ -6425,11 +3550,3 @@
         }
         if (savedLang !== "en") switchLang(savedLang);
       });
-    </script>
-        <script src="/supplements/marquee.js"></script>
-    <script src="/content.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="/supplements/supabase-client.js"></script>
-    <script src="/supplements/footer.js"></script>
-  </body>
-</html>
