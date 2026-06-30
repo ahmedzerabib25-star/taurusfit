@@ -1,8 +1,8 @@
       // ════════════════════════════════════════════
       // CONFIG
       // ════════════════════════════════════════════
-      const SUPABASE_URL = "https://dbezrrzmcosxdoorbrgx.supabase.co";
-      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiZXpycnptY29zeGRvb3Jicmd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MTgxMTksImV4cCI6MjA5NTI5NDExOX0.xTBBzmLVX6uuqs-oaPifj-DvpBWIEaPZgQIsMIqbRew";
+      const SUPABASE_URL = "https://zuprsewbheqpahwrlwll.supabase.co";
+      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1cHJzZXdiaGVxcGFod3Jsd2xsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2OTAyNzcsImV4cCI6MjA5ODI2NjI3N30._Xyvx93Wj2kRoi4Drh_sDPBh24sU2Lcol6k27VuArnA";
       const _sbLogin = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
       // If already logged in, go straight to admin

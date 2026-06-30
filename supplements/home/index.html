@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ByBens – Premium Sports Nutrition Algeria</title>
+    <title>Luxury Secret – Exclusive Cosmetics & Makeup Algeria</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://dbezrrzmcosxdoorbrgx.supabase.co" />
-    <link rel="preload" as="image" href="/images/hero.png" fetchpriority="high" />
+    <link rel="preload" as="image" href="/images/luxury_cosmetics_hero.png" fetchpriority="high" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap"
       rel="stylesheet"
     />
     <link rel="icon" href="/images/favicon.ico" />
@@ -21,7 +21,7 @@
         .catch(function () { return null; });
     </script>
 
-    <link rel="stylesheet" href="/supplements/home/index.css" />
+    <link rel="stylesheet" href="/supplements/home/index.css?v=4" />
     <script>if(sessionStorage.getItem('bb_wl'))document.documentElement.classList.add('bb-noanim');</script>
   </head>
   <body>
@@ -35,13 +35,13 @@
       <div class="wl-body">
         <div class="wl-logo-wrap">
           <div class="wl-logo-glow"></div>
-          <img src="/images/logo.png" alt="ByBens" class="wl-logo" />
+          <span class="wl-logo-text">LUXURY SECRET</span>
           <div class="wl-shine"></div>
           <div class="wl-shine2"></div>
         </div>
         <div class="wl-line"></div>
         <div class="wl-tagline">
-          <span class="wl-word">FUEL</span><span class="wl-word">·</span><span class="wl-word">PERFORM</span><span class="wl-word">·</span><span class="wl-word">DOMINATE</span>
+          <span class="wl-word">DEFINE</span><span class="wl-word">·</span><span class="wl-word">REVEAL</span><span class="wl-word">·</span><span class="wl-word">GLOW</span>
         </div>
       </div>
     </div>
@@ -72,14 +72,14 @@
           <input
             type="search"
             id="mobileSearchInput"
-            placeholder="Search supplements, proteins…"
+            placeholder="Search makeup, skincare…"
             style="
               width: 100%;
               height: 48px;
               padding: 0 48px 0 16px;
-              border: 1.5px solid var(--gray-200);
-              border-radius: 10px;
-              font-size: 16px;
+              border: 1px solid var(--gray-200);
+              border-radius: 0px;
+              font-size: 15px;
               background: var(--gray-50);
               outline: none;
               font-family: var(--font-body);
@@ -99,7 +99,7 @@
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
+            stroke-width="1.5"
           >
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.35-4.35" />
@@ -109,14 +109,16 @@
           onclick="closeMobileSearch()"
           style="
             flex-shrink: 0;
-            font-size: 15px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 500;
             color: var(--red);
             background: none;
             border: none;
             cursor: pointer;
             font-family: var(--font-body);
             padding: 8px 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
           "
         >
           Cancel
@@ -139,7 +141,7 @@
     <!-- ═══ MARQUEE BANNER ════════════════════════════════════════ -->
     <div class="marquee-bar" role="marquee" aria-label="Promotions">
       <div class="marquee-track">
-        <span class="marquee-item">🚚 Free delivery over 15 000 DA CODE: FREEDELIVERY</span>
+        <span class="marquee-item">🚚 COMPLIMENTARY NATIONWIDE COURIER DELIVERY FOR ORDERS OVER 15,000 DA — CODE: FREEDELIVERY</span>
       </div>
     </div>
 
@@ -157,28 +159,22 @@
           >
             <span></span><span></span><span></span>
           </button>
+          
           <!-- Logo -->
-          <a href="#" class="logo" aria-label="ByBens Home">
-            <img
-              src="/images/logo.png"
-              alt="ByBens Logo"
-              width="140"
-              height="40"
-              fetchpriority="high"
-              decoding="async"
-              style="height: auto; width: auto; max-width: 140px; object-fit: contain;"
-            />
+          <a href="#" class="logo" aria-label="Luxury Secret Home">
+            <span class="logo-text">LUXURY <span class="logo-gold">SECRET</span></span>
+            <span class="logo-ar">لوكسري سيكرت</span>
           </a>
 
-          <!-- Supplements link (desktop only) -->
-          <a href="/supplements/products" class="nav-link active" id="desktopSupplementsBtn">Supplements</a>
+          <!-- Navigation Links (desktop only) -->
+          <a href="/supplements/products" class="nav-link active" id="desktopSupplementsBtn" data-i18n="nav.products">Cosmetics</a>
 
           <!-- Search (desktop only) -->
           <div class="search-wrap" role="search" id="desktopSearch">
             <input
               type="search"
               id="searchInput"
-              placeholder="Search supplements, proteins, vitamins…"
+              placeholder="Search lipsticks, foundation, skincare…"
               aria-label="Search products"
               autocomplete="off"
               oninput="handleSearch(this.value)"
@@ -189,12 +185,12 @@
               onclick="handleSearch(document.getElementById('searchInput').value)"
             >
               <svg
-                width="18"
-                height="18"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                stroke-width="1.5"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               >
@@ -216,7 +212,7 @@
               height: 40px;
               align-items: center;
               justify-content: center;
-              border-radius: 8px;
+              border-radius: 0px;
               color: var(--black);
               background: none;
               border: none;
@@ -225,12 +221,12 @@
             "
           >
             <svg
-              width="22"
-              height="22"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
+              stroke-width="1.5"
               stroke-linecap="round"
               stroke-linejoin="round"
             >
@@ -239,7 +235,7 @@
             </svg>
           </button>
 
-          <!-- Right -->
+          <!-- Right Controls -->
           <div class="nav-right">
             <div
               class="lang-switch"
@@ -270,8 +266,8 @@
             </div>
 
             <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
-              <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-              <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
             </button>
 
             <button
@@ -280,12 +276,12 @@
               onclick="toggleCart()"
             >
               <svg
-                width="22"
-                height="22"
+                width="20"
+                height="20"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                stroke-width="1.5"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               >
@@ -293,9 +289,8 @@
                 <line x1="3" y1="6" x2="21" y2="6" />
                 <path d="M16 10a4 4 0 0 1-8 0" />
               </svg>
-              <span class="cart-badge" id="cartBadge">3</span>
+              <span class="cart-badge" id="cartBadge">0</span>
             </button>
-
           </div>
         </nav>
       </div>
@@ -311,16 +306,15 @@
     </header>
 
     <!-- Mobile Menu -->
-    <!-- FIX: Removed the mobile search bar from inside the sidebar -->
     <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
       <a
         href="/supplements/products"
         class="m-link active"
         onclick="toggleMobileMenu()"
-        >Supplements</a
+        data-i18n="nav.products"
+        >Cosmetics</a
       >
-      <!-- Categories and subcategories are always in English, never translated -->
-      <!-- populated by loadCategories() -->
+      <!-- Categories and subcategories populated by loadCategories() -->
       <div id="mobileCatItems"></div>
       <div class="mobile-lang">
         <button
@@ -337,8 +331,8 @@
           AR
         </button>
         <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode" style="margin-left:auto;">
-          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
       </div>
     </nav>
@@ -350,57 +344,48 @@
     <!-- ═══ MAIN ══════════════════════════════════════════════════ -->
     <main>
       <!-- HERO -->
-      <section class="hero" aria-label="Hero section" style="position:relative;overflow:hidden;">
+      <section class="hero" aria-label="Hero section">
         <div class="hero-particles" id="heroParticles"></div>
-        <div class="hero-left">
-          <p class="hero-eyebrow animate-up" data-i18n="hero.eyebrow">
-            Your Premium Supplements Store
-</p>
-          <h1 class="hero-title animate-up delay-1" data-i18n-html="hero.title">
-            FUEL YOUR<em>AMBITION</em>PERFORM
-          </h1>
-          <p class="hero-desc animate-up delay-2" data-i18n="hero.desc">
-            Premium sports nutrition delivered across Algeria. Authentic
-            products, unbeatable prices, and certified quality for serious
-            athletes.
-          </p>
-          <div class="hero-ctas animate-up delay-3">
-            <a href="#products" class="btn-primary" data-i18n="hero.cta1">
-              Shop Now
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-              >
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-            </a>
-            <a href="#" class="btn-outline" data-i18n="hero.cta2" onclick="openAboutModal();return false;">Learn More</a>
-          </div>
-          <div class="hero-stats animate-up delay-4">
-            <div class="stat-item">
-              <span class="stat-num" data-count="300" data-suffix="+">0+</span>
-              <span class="stat-label" data-i18n="hero.stat1"
-                >Happy Customers</span
-              >
+        <div class="hero-inner">
+          <div class="hero-left">
+            <p class="hero-eyebrow animate-up" data-i18n="hero.eyebrow">
+              An Exclusive Collection of Haute Cosmetics
+            </p>
+            <h1 class="hero-title animate-up delay-1" data-i18n-html="hero.title">
+              THE ART OF<em>TIMELESS</em>BEAUTY
+            </h1>
+            <p class="hero-desc animate-up delay-2" data-i18n="hero.desc">
+              Luxury Secret is an editorial house of cosmetics and skincare. Explore high-performance formulas, rich pigments, and exquisite rituals designed to reveal your inner radiance.
+            </p>
+            <div class="hero-ctas animate-up delay-3">
+              <a href="#products" class="btn-primary" data-i18n="hero.cta1">
+                Shop Now
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </a>
+              <a href="#" class="btn-outline" data-i18n="hero.cta2" onclick="openAboutModal();return false;">Learn More</a>
             </div>
-            <div class="stat-item">
-              <span class="stat-num" data-count="60" data-suffix="+">0+</span>
-              <span class="stat-label" data-i18n="hero.stat2">Products</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-num" data-count="69" data-suffix="W">0W</span>
-              <span class="stat-label" data-i18n="hero.stat3">Delivery</span>
+            <div class="hero-stats animate-up delay-4">
+              <div class="stat-item">
+                <span class="stat-num" data-count="300" data-suffix="+">0+</span>
+                <span class="stat-label" data-i18n="hero.stat1">Happy Customers</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-num" data-count="60" data-suffix="+">0+</span>
+                <span class="stat-label" data-i18n="hero.stat2">Products</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-num" data-count="69" data-suffix="W">0W</span>
+                <span class="stat-label" data-i18n="hero.stat3">Delivery</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="hero-right" style="position:relative;">
-          <div class="hero-glow"></div>
-          <img src="/images/hero.png" alt="" fetchpriority="high" decoding="async" style="position:relative;z-index:1;" />
+          <div class="hero-right">
+            <div class="hero-glow"></div>
+            <img src="/images/luxury_cosmetics_hero.png" alt="Luxury Cosmetics Collection" fetchpriority="high" decoding="async" />
+          </div>
         </div>
       </section>
 
@@ -410,14 +395,7 @@
           <div class="trust-inner">
             <div class="trust-item reveal reveal-d1">
               <div class="trust-icon">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                   <rect x="1" y="3" width="15" height="13" />
                   <path d="M16 8h4l3 5v3h-7V8z" />
                   <circle cx="5.5" cy="18.5" r="2.5" />
@@ -425,117 +403,53 @@
                 </svg>
               </div>
               <div>
-                <strong
-                  style="display: block; font-size: 14px; color: var(--black)"
-                  data-i18n="trust.delivery"
-                  >Free Delivery</strong
-                >
-                <span style="font-size: 12px" data-i18n="trust.delivery.sub"
-                  >Orders over 15000 DA CODE: FREEDELIVERY</span
-                >
+                <strong style="display: block; font-size: 13px; color: var(--black)" data-i18n="trust.delivery">Complimentary Shipping</strong>
+                <span style="font-size: 11px; color: var(--gray-400)" data-i18n="trust.delivery.sub">On all orders above 15,000 DA</span>
               </div>
             </div>
             <div class="trust-item reveal reveal-d2">
               <div class="trust-icon">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 </svg>
               </div>
               <div>
-                <strong
-                  style="display: block; font-size: 14px; color: var(--black)"
-                  data-i18n="trust.authentic"
-                  >100% Authentic</strong
-                >
-                <span style="font-size: 12px" data-i18n="trust.authentic.sub"
-                  >Quality Guaranteed</span
-                >
+                <strong style="display: block; font-size: 13px; color: var(--black)" data-i18n="trust.authentic">Maison Guarantee</strong>
+                <span style="font-size: 11px; color: var(--gray-400)" data-i18n="trust.authentic.sub">100% certified authentic products</span>
               </div>
             </div>
             <div class="trust-item reveal reveal-d3">
               <div class="trust-icon">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                   <circle cx="12" cy="12" r="10" />
-                  <path
-                    d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"
-                  />
+                  <path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z" />
                 </svg>
               </div>
               <div>
-                <strong
-                  style="display: block; font-size: 14px; color: var(--black)"
-                  data-i18n="trust.wilayas"
-                  >All 69 Wilayas</strong
-                >
-                <span style="font-size: 12px" data-i18n="trust.wilayas.sub"
-                  >with Imir logistics</span
-                >
+                <strong style="display: block; font-size: 13px; color: var(--black)" data-i18n="trust.wilayas">Nationwide Delivery</strong>
+                <span style="font-size: 11px; color: var(--gray-400)" data-i18n="trust.wilayas.sub">Exquisite care to all 69 Wilayas</span>
               </div>
             </div>
             <div class="trust-item reveal reveal-d4">
               <div class="trust-icon">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
-                  />
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                 </svg>
               </div>
               <div>
-                <strong
-                  style="display: block; font-size: 14px; color: var(--black)"
-                  data-i18n="trust.payment"
-                  >Cash on Delivery</strong
-                >
-                <span style="font-size: 12px" data-i18n="trust.payment.sub"
-                  >Pay on Arrival</span
-                >
+                <strong style="display: block; font-size: 13px; color: var(--black)" data-i18n="trust.payment">Cash on Arrival</strong>
+                <span style="font-size: 11px; color: var(--gray-400)" data-i18n="trust.payment.sub">Seamless payment at your door</span>
               </div>
             </div>
-            <div class="trust-item">
+            <div class="trust-item reveal reveal-d5">
               <div class="trust-icon">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-                  />
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                 </svg>
               </div>
               <div>
-                <strong
-                  style="display: block; font-size: 14px; color: var(--black)"
-                  data-i18n="trust.support"
-                  >24/7 Support</strong
-                >
-                <span style="font-size: 12px" data-i18n="trust.support.sub"
-                  >Always Here to Help</span
-                >
+                <strong style="display: block; font-size: 13px; color: var(--black)" data-i18n="trust.support">Cosmetic Concierge</strong>
+                <span style="font-size: 11px; color: var(--gray-400)" data-i18n="trust.support.sub">24/7 bespoke advice &amp; care</span>
               </div>
             </div>
           </div>
@@ -547,12 +461,8 @@
         <div class="container">
           <div class="section-header">
             <div>
-              <p class="section-label" data-i18n="products.label">
-                Featured Products
-              </p>
-              <h2 class="section-title" data-i18n="products.title">
-                BEST SELLERS
-              </h2>
+              <p class="section-label" data-i18n="products.label">Curated Signatures</p>
+              <h2 class="section-title" data-i18n="products.title">THE ICONS</h2>
             </div>
             <a
               href="/supplements/products"
@@ -561,12 +471,12 @@
             >
               View All
               <svg
-                width="14"
-                height="14"
+                width="12"
+                height="12"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2.5"
+                stroke-width="2"
               >
                 <path d="m9 18 6-6-6-6" />
               </svg>
@@ -585,12 +495,12 @@
             >
               View All Products
               <svg
-                width="18"
-                height="18"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                stroke-width="1.5"
               >
                 <path d="m9 18 6-6-6-6" />
               </svg>
@@ -599,41 +509,41 @@
         </div>
       </section>
 
-      <!-- HOW IT WORKS -->
+      <!-- THE RITUAL (HOW IT WORKS) -->
       <section class="hiw-section">
         <div class="container">
-          <p class="hiw-label reveal">Simple Process</p>
-          <h2 class="hiw-title reveal reveal-d1">How It Works</h2>
-          <p class="hiw-sub reveal reveal-d2">Getting your supplements has never been easier. Three steps and we handle the rest.</p>
+          <p class="hiw-label reveal">The Order Process</p>
+          <h2 class="hiw-title reveal reveal-d1" data-i18n="about.order.title">The Order Ritual</h2>
+          <p class="hiw-sub reveal reveal-d2">Indulge in a seamless shopping experience tailored for modern luxury.</p>
           <div class="hiw-steps">
             <div class="hiw-step reveal reveal-d1">
               <div class="hiw-step-num">
                 <span class="hiw-badge">1</span>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
               </div>
               <div class="hiw-step-body">
-                <h3>Browse &amp; Choose</h3>
-                <p>Explore our full catalogue of authentic supplements. Filter by category, brand, or goal to find exactly what you need.</p>
+                <h3>Select Your Shade</h3>
+                <p>Browse our catalog of luxury skincare &amp; cosmetics. Find your perfect shade, color, or formula and add to vanity cart.</p>
               </div>
             </div>
             <div class="hiw-step reveal reveal-d2">
               <div class="hiw-step-num">
                 <span class="hiw-badge">2</span>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
               </div>
               <div class="hiw-step-body">
-                <h3>Order in 60 Seconds</h3>
-                <p>Add to cart, fill in your delivery details, and confirm. No account required — checkout is fast and hassle-free.</p>
+                <h3>Confirm In Moments</h3>
+                <p>Complete checkout by providing your delivery details. No tedious registration required — checkout is direct and private.</p>
               </div>
             </div>
             <div class="hiw-step reveal reveal-d3">
               <div class="hiw-step-num">
                 <span class="hiw-badge">3</span>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
               </div>
               <div class="hiw-step-body">
-                <h3>Delivered to Your Door</h3>
-                <p>We ship across all 58 wilayas. Track your order and receive your supplements right at home, packaged securely.</p>
+                <h3>White-Glove Delivery</h3>
+                <p>We deliver across all 69 Wilayas. Inspect your package and pay cash upon arrival directly to the courier.</p>
               </div>
             </div>
           </div>
@@ -644,20 +554,18 @@
       <section class="container" id="featuredBannerSection" style="display:none;">
         <div class="featured-banner">
           <div class="banner-left">
-            <p class="banner-eyebrow" data-i18n="banner.eyebrow">
-              Limited Time Offer
-            </p>
+            <p class="banner-eyebrow" data-i18n="banner.eyebrow">Maison Capsule</p>
             <h2 class="banner-title" id="bundleBannerTitle"></h2>
             <p class="banner-desc" id="bundleBannerDesc"></p>
             <a href="#" class="btn-primary" id="bundleBannerLink">
-              <span data-i18n="banner.cta">Grab the Deal</span>
+              <span data-i18n="banner.cta">Acquire Bundle</span>
               <svg
-                width="16"
-                height="16"
+                width="14"
+                height="14"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2.5"
+                stroke-width="2"
               >
                 <path d="m9 18 6-6-6-6" />
               </svg>
@@ -686,12 +594,12 @@
       onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
     >
       <svg
-        width="20"
-        height="20"
+        width="18"
+        height="18"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="2.5"
+        stroke-width="2"
       >
         <path d="m18 15-6-6-6 6" />
       </svg>
@@ -705,8 +613,8 @@
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="30"
-        height="30"
+        width="24"
+        height="24"
         viewBox="0 0 24 24"
         fill="white"
       >
@@ -730,11 +638,11 @@
         <div class="atc-modal-name" id="atcName"></div>
         <div class="atc-modal-price" id="atcPrice"></div>
         <div class="atc-section" id="atcFlavorSection">
-          <div class="atc-label">Flavor</div>
+          <div class="atc-label" data-i18n="modal.shade">Shade</div>
           <div class="atc-options" id="atcFlavorOptions"></div>
         </div>
         <div class="atc-section" id="atcWeightSection">
-          <div class="atc-label">Size / Weight</div>
+          <div class="atc-label" data-i18n="modal.size">Volume</div>
           <div class="atc-options" id="atcWeightOptions"></div>
         </div>
         <div class="atc-section">
@@ -760,7 +668,7 @@
         <span class="cart-drawer-title"
           >Cart &nbsp;<span
             id="cartDrawerCount"
-            style="font-size: 15px; font-weight: 600; color: var(--gray-400)"
+            style="font-size: 14px; font-weight: 500; color: var(--gray-400)"
             >0 items</span
           ></span
         >
@@ -777,7 +685,7 @@
     </div>
 
     <script src="/content.js" defer></script>
-    <script src="/supplements/home/index.js?v=2" defer></script>
+    <script src="/supplements/home/index.js?v=3" defer></script>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/supplements/supabase-client.js"></script>

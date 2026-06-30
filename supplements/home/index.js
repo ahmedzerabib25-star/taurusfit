@@ -6,43 +6,43 @@
 const i18n = {
   en: {
     "nav.home": "Home",
-    "nav.products": "Products",
+    "nav.products": "Cosmetics",
     "nav.contact": "Contact",
     "nav.login": "Login",
-    "hero.eyebrow": "Most Authentic Supplements Store",
-    "hero.title": "FUEL YOUR<em>AMBITION</em>PERFORM",
+    "hero.eyebrow": "An Exclusive Collection of Haute Cosmetics",
+    "hero.title": "THE ART OF<em>TIMELESS</em>BEAUTY",
     "hero.desc":
-      "Premium sports nutrition delivered across Algeria. Authentic products, unbeatable prices, and certified quality for serious athletes.",
+      "Luxury Secret is an editorial house of cosmetics and skincare. Explore high-performance formulas, rich pigments, and exquisite rituals designed to reveal your inner radiance.",
     "hero.cta1": "Shop Now",
     "hero.cta2": "Learn More",
     "hero.stat1": "Happy Customers",
-    "hero.stat2": "Products",
-    "hero.stat3": "Hour Delivery",
-    "trust.delivery": "Free Delivery",
-    "trust.delivery.sub": "Orders over 15000 DA CODE: FREEDELIVERY",
-    "trust.authentic": "100% Authentic",
-    "trust.authentic.sub": "Quality Guaranteed",
-    "trust.nationwide": "Nationwide",
-    "trust.nationwide.sub": "All 58 Wilayas",
-    "trust.payment": "Cash on Delivery",
-    "trust.payment.sub": "Pay on Arrival",
-    "trust.support": "24/7 Support",
-    "trust.support.sub": "Always Here to Help",
-    "products.label": "Featured Products",
-    "products.title": "BEST SELLERS",
+    "hero.stat2": "Signature Products",
+    "hero.stat3": "Nationwide Dispatch",
+    "trust.delivery": "Complimentary Shipping",
+    "trust.delivery.sub": "On all orders above 15,000 DA",
+    "trust.authentic": "Maison Guarantee",
+    "trust.authentic.sub": "100% certified authentic products",
+    "trust.wilayas": "Nationwide Delivery",
+    "trust.wilayas.sub": "Exquisite care to all 69 Wilayas",
+    "trust.payment": "Cash on Arrival",
+    "trust.payment.sub": "Seamless payment at your door",
+    "trust.support": "Cosmetic Concierge",
+    "trust.support.sub": "24/7 bespoke advice & care",
+    "products.label": "Curated Signatures",
+    "products.title": "THE ICONS",
     "products.viewall": "View All",
     "products.viewall.btn": "View All Products",
-    "banner.eyebrow": "Limited Time Offer",
-    "banner.title": "RAMP UP YOUR<em>PERFORMANCE</em>",
+    "banner.eyebrow": "Maison Capsule",
+    "banner.title": "REVEAL YOUR<em>INNER SECRET</em>",
     "banner.desc":
-      "Get our most popular bundle at 20% off. Limited stock — order now and fuel your next workout.",
-    "banner.cta": "Grab the Deal",
+      "Immerse yourself in our signature selection. A curated capsule of skincare and lip formulas, crafted for the modern connoisseur.",
+    "banner.cta": "Acquire Bundle",
     "contact.label": "Get In Touch",
     "contact.title": "CONTACT US",
     "contact.desc":
-      "Have questions? We're here to help. Reach out via the form below or find us on social media.",
+      "Have questions about our collections? Our cosmetic experts are available to guide you.",
     "footer.brand.desc":
-      "Algeria's premier destination for authentic sports nutrition. We bring world-class supplements directly to your door.",
+      "Algeria's premier destination for exclusive cosmetics and skincare. We bring world-class beauty formulations directly to your door.",
     "footer.links": "Quick Links",
     "footer.shipping": "Shipping Policy",
     "footer.returns": "Returns",
@@ -53,145 +53,148 @@ const i18n = {
     "form.email": "Email / Phone",
     "form.message": "Message",
     "form.send": "Send Message",
-    "btn.addcart": "Add to Cart",
-    "btn.buynow": "Buy Now",
-    "about.who.title": "Who We Are",
-    "about.who.text": "ByBen's is a trusted supplements store in Algeria, built by athletes for athletes. We are passionate about sports nutrition and committed to delivering authentic, premium products at honest prices straight to your door.",
-    "about.offer.title": "What We Offer",
-    "about.offer.text": "Whey protein, creatine, pre-workouts, mass gainers, vitamins, and more — all 100% authentic, sourced directly from trusted international brands. Free delivery on orders over 15,000 DA, covering all 58 wilayas.",
-    "about.order.title": "How to Order",
-    "about.order.text": "Browse our products, choose your flavor and size, add to cart or click Buy Now. Fill in your name, phone, and delivery address — then confirm. We'll take care of the rest. Cash on delivery, no account needed.",
-    "about.cta": "Shop Now",
-    "shipping.title": "Shipping Policy",
-    "shipping.item1.title": "Nationwide Delivery",
-    "shipping.item1.text": "We deliver to all 58 wilayas across Algeria via Imir Logistics. Quality sports nutrition delivered to your doorstep.",
-    "shipping.item2.title": "Free Delivery",
-    "shipping.item2.text": "Orders over 15,000 DA enjoy free delivery! For other orders, standard shipping rates apply depending on your location.",
-    "shipping.item3.title": "Standard Timing",
-    "shipping.item3.text": "Orders are processed within 24 hours. Delivery typically takes 2-3 business days for major cities and 4-6 days for remote areas.",
-    "returns.title": "Returns & Refunds",
-    "returns.item1.title": "Return Policy",
-    "returns.item1.text": "You have 7 days to return a product. Items must be unopened, in their original packaging, and with the original seal intact.",
-    "returns.item2.title": "Easy Process",
-    "returns.item2.text": "Contact us via WhatsApp or Instagram to initiate a return. We will guide you through the exchange or refund procedure.",
-    "returns.item3.title": "Refund Method",
-    "returns.item3.text": "Once the returned item is inspected, we offer exchanges for other products or store credit. Cash refunds are subject to evaluation.",
-    "toast.added": "Added to cart!",
-    "toast.sent": "Message sent! We'll reply soon.",
+    "btn.addcart": "Quick Shop",
+    "btn.buynow": "Discover",
+    "about.who.title": "Our Heritage",
+    "about.who.text": "Luxury Secret is an exclusive cosmetics house, dedicated to blending pure botanicals with sophisticated cosmetic science. We provide refined skincare and high-pigment makeup that serve as a testament to modern luxury.",
+    "about.offer.title": "Our Creations",
+    "about.offer.text": "From velvety foundations and rich lip formulas to advanced botanical serums, our creations are 100% authentic, sourced directly from the world's most prestigious cosmetic laboratories.",
+    "about.order.title": "The Order Ritual",
+    "about.order.text": "Select your shade and size, then add to your personal vanity cart. Complete your address details without registration, and enjoy white-glove Cash on Arrival delivery.",
+    "about.cta": "Shop Collection",
+    "shipping.title": "Courier & Shipping",
+    "shipping.item1.title": "Bespoke Delivery",
+    "shipping.item1.text": "We deliver to all 69 Wilayas across Algeria with exceptional care and speed via Imir Logistics.",
+    "shipping.item2.title": "Complimentary Courier",
+    "shipping.item2.text": "Orders exceeding 15,000 DA enjoy complimentary white-glove courier shipping. Standard rates apply otherwise.",
+    "shipping.item3.title": "Dispatch Timeline",
+    "shipping.item3.text": "Your beauty orders are processed within 24 hours. Delivery takes 2-4 business days for major metropolitan hubs.",
+    "returns.title": "Returns & Exchange",
+    "returns.item1.title": "Exchanges & Returns",
+    "returns.item1.text": "We offer a 7-day return policy for unopened items in their original custom packaging with intact security seals.",
+    "returns.item2.title": "Seamless Support",
+    "returns.item2.text": "Contact our Concierge via WhatsApp or Instagram to initiate a return. We will arrange the courier return for you.",
+    "returns.item3.title": "Maison Credit",
+    "returns.item3.text": "Following inspection, we issue store credit, exchanges, or refunds, ensuring your ultimate satisfaction.",
+    "toast.added": "Added to your vanity cart",
+    "toast.sent": "Your message has been sent to our concierge.",
+    "modal.shade": "Shade / Color",
+    "modal.size": "Size / Volume"
   },
   fr: {
     "nav.home": "Accueil",
-    "nav.products": "Produits",
+    "nav.products": "Cosmétiques",
     "nav.contact": "Contact",
-    "hero.eyebrow": "Le plus authentique Boutique de Suppléments Premium",
-    "hero.title": "ALIMENTEZ VOTRE<em>AMBITION</em>PERFORMEZ",
+    "hero.eyebrow": "Une Collection Exclusive de Haute Cosmétique",
+    "hero.title": "L'ART DE LA BEAUTÉ<em>INTEMPORELLE</em>",
     "hero.desc":
-      "Nutrition sportive premium livrée partout en Algérie. Produits authentiques, prix imbattables et qualité certifiée.",
-    "hero.cta1": "Commander",
+      "Luxury Secret est une maison d'édition de cosmétiques et de soins de la peau. Découvrez des formules haute performance, des pigments riches et des rituels exquis conçus pour révéler votre éclat intérieur.",
+    "hero.cta1": "Découvrir",
     "hero.cta2": "En savoir plus",
     "hero.stat1": "Clients Satisfaits",
-    "hero.stat2": "Produits",
-    "hero.stat3": "H Livraison",
-    "trust.delivery": "Livraison Gratuite",
-    "trust.delivery.sub": "Commandes +15000 DA",
-    "trust.authentic": "100% Authentique",
-    "trust.authentic.sub": "Qualité Garantie",
-    "trust.nationwide": "Partout en Algérie",
-    "trust.nationwide.sub": "69 Wilayas",
-    "trust.payment": "Paiement à Livraison",
-    "trust.payment.sub": "Payez à la réception",
-    "trust.support": "Support 24/7",
-    "trust.support.sub": "Toujours disponible",
-    "products.label": "Produits Vedettes",
-    "products.title": "MEILLEURES VENTES",
+    "hero.stat2": "Produits Signatures",
+    "hero.stat3": "Expédition Nationale",
+    "trust.delivery": "Livraison Offerte",
+    "trust.delivery.sub": "Pour toute commande supérieure à 15 000 DA",
+    "trust.authentic": "Garantie de la Maison",
+    "trust.authentic.sub": "Produits 100% certifiés authentiques",
+    "trust.wilayas": "Livraison Nationale",
+    "trust.wilayas.sub": "Livraison soignée dans les 69 wilayas",
+    "trust.payment": "Paiement à la Réception",
+    "trust.payment.sub": "Paiement en toute simplicité",
+    "trust.support": "Concierge Beauté",
+    "trust.support.sub": "Conseils personnalisés 24h/24",
+    "products.label": "Signatures de la Maison",
+    "products.title": "LES ICÔNES",
     "products.viewall": "Voir Tout",
     "products.viewall.btn": "Voir Tous les Produits",
-    "banner.eyebrow": "Offre Limitée",
-    "banner.title": "BOOSTEZ VOS<em>PERFORMANCES</em>",
+    "banner.eyebrow": "Coffret de la Maison",
+    "banner.title": "RÉVÉLEZ VOTRE<em>SECRET INTERNE</em>",
     "banner.desc":
-      "Obtenez notre bundle le plus populaire à -20%. Stock limité — commandez maintenant.",
-    "banner.cta": "Profiter de l'Offre",
-    "contact.label": "Contactez-nous",
+      "Plongez dans notre sélection emblématique. Un coffret raffiné de soins de la peau et de formules pour les lèvres, conçu pour l'esthète moderne.",
+    "banner.cta": "Acquérir le Coffret",
+    "contact.label": "Nous Contacter",
     "contact.title": "CONTACT",
     "contact.desc":
-      "Des questions ? Nous sommes là pour vous aider. Contactez-nous via le formulaire ci-dessous.",
+      "Des questions sur nos collections? Nos conseillers beauté sont à votre entière disposition.",
     "footer.brand.desc":
-      "La première destination algérienne pour la nutrition sportive authentique.",
-    "footer.links": "Liens Rapides",
-    "footer.shipping": "Politique de livraison",
+      "La première destination en Algérie pour des cosmétiques et soins exclusifs. Nous livrons la haute beauté directement à votre porte.",
+    "footer.links": "Liens rapides",
+    "footer.shipping": "Livraison",
     "footer.returns": "Retours",
     "footer.categories": "Catégories",
-    "footer.contact": "Envoyer un Message",
+    "footer.contact": "Envoyer un message",
     "footer.rights": "Tous droits réservés.",
-    "form.name": "Votre Nom",
+    "form.name": "Votre nom",
     "form.email": "Email / Téléphone",
     "form.message": "Message",
     "form.send": "Envoyer",
-    "btn.addcart": "Ajouter",
-    "btn.buynow": "Acheter",
-    "about.who.title": "Qui Sommes-Nous",
-    "about.who.text": "ByBen's est une boutique de suppléments de confiance en Algérie, créée par des sportifs pour des sportifs. Nous sommes passionnés par la nutrition sportive et nous nous engageons à vous livrer des produits authentiques et premium à des prix honnêtes.",
-    "about.offer.title": "Ce Que Nous Offrons",
-    "about.offer.text": "Whey protéine, créatine, pré-entraînements, gainers, vitamines et bien plus — 100% authentiques, sourcés directement auprès de marques internationales de confiance. Livraison gratuite dès 15 000 DA, partout en Algérie.",
-    "about.order.title": "Comment Commander",
-    "about.order.text": "Parcourez nos produits, choisissez votre goût et votre taille, ajoutez au panier ou cliquez sur Acheter. Renseignez votre nom, téléphone et adresse, puis confirmez. Paiement à la livraison, aucun compte requis.",
-    "about.cta": "Commander Maintenant",
-    "shipping.title": "Politique de livraison",
-    "shipping.item1.title": "Livraison Nationale",
-    "shipping.item1.text": "Nous livrons dans les 58 wilayas d'Algérie via Imir Logistics. Une nutrition sportive de qualité livrée à votre porte.",
-    "shipping.item2.title": "Livraison Gratuite",
-    "shipping.item2.text": "Les commandes de plus de 15 000 DA bénéficient de la livraison gratuite ! Pour les autres, des tarifs standards s'appliquent.",
-    "shipping.item3.title": "Délais Standards",
-    "shipping.item3.text": "Les commandes sont traitées sous 24h. La livraison prend généralement 2-3 jours ouvrables pour les grandes villes.",
-    "returns.title": "Retours & Remboursements",
+    "btn.addcart": "Achat Rapide",
+    "btn.buynow": "Découvrir",
+    "about.who.title": "Notre Héritage",
+    "about.who.text": "Luxury Secret est une maison de cosmétiques exclusive, dédiée à l'alliance de plantes pures et d'une science cosmétique sophistiquée. Nous proposons des soins raffinés et du maquillage hautement pigmenté, témoignages du luxe moderne.",
+    "about.offer.title": "Nos Créations",
+    "about.offer.text": "Des fonds de teint veloutés aux sérums botaniques avancés, nos créations sont 100% authentiques, sourcées auprès de laboratoires prestigieux.",
+    "about.order.title": "Le Rituel de Commande",
+    "about.order.text": "Sélectionnez votre teinte et votre taille, puis ajoutez-les à votre panier de beauté. Complétez vos coordonnées de livraison sans inscription préalable, et profitez d'une livraison soignée avec paiement à la réception.",
+    "about.cta": "Acheter la Collection",
+    "shipping.title": "Livraison & Expédition",
+    "shipping.item1.title": "Livraison Soignée",
+    "shipping.item1.text": "Nous livrons dans les 69 wilayas d'Algérie avec une attention particulière via Imir Logistics.",
+    "shipping.item2.title": "Livraison Offerte",
+    "shipping.item2.text": "Les commandes de plus de 15 000 DA bénéficient de la livraison offerte par coursier. Des tarifs standards s'appliquent sinon.",
+    "shipping.item3.title": "Délais de Livraison",
+    "shipping.item3.text": "Les commandes de beauté sont traitées sous 24h et livrées sous 2 à 4 jours ouvrables pour les grandes villes.",
+    "returns.title": "Retours & Échanges",
     "returns.item1.title": "Politique de Retour",
-    "returns.item1.text": "Vous avez 7 jours pour retourner un produit. Les articles doivent être non ouverts, dans leur emballage d'origine.",
-    "returns.item2.title": "Processus Facile",
-    "returns.item2.text": "Contactez-nous via WhatsApp ou Instagram pour initier un retour. Nous vous guiderons étape par étape.",
-    "returns.item3.title": "Mode de Remboursement",
-    "returns.item3.text": "Une fois l'article inspecté, nous proposons des échanges ou un avoir. Les remboursements en espèces sont soumis à évaluation.",
-    "toast.added": "Ajouté au panier!",
-    "toast.sent": "Message envoyé!",
+    "returns.item1.text": "Vous disposez de 7 jours pour retourner un produit non ouvert dans son emballage d'origine, avec scellé intact.",
+    "returns.item2.title": "Assistance Dédiée",
+    "returns.item2.text": "Contactez notre conciergerie via WhatsApp ou Instagram. Nous organiserons le retour par coursier à votre convenance.",
+    "returns.item3.title": "Avoir de la Maison",
+    "returns.item3.text": "Après vérification, nous procédons à un échange ou à l'émission d'un crédit boutique pour votre entière satisfaction.",
+    "toast.added": "Ajouté à votre panier de beauté",
+    "toast.sent": "Votre message a été transmis à la conciergerie.",
+    "modal.shade": "Teinte / Couleur",
+    "modal.size": "Taille / Volume"
   },
   ar: {
     "nav.home": "الرئيسية",
-    "nav.products": "المنتجات",
+    "nav.products": "مستحضرات التجميل",
     "nav.contact": "اتصل بنا",
-    /* Categories intentionally omitted — stay in English always */
-    "hero.eyebrow": "أوثق متجر للمكملات الرياضية",
-    "hero.title": "أشعل<em>طموحك</em>وتفوّق",
+    "hero.eyebrow": "مجموعة حصرية من مستحضرات التجميل الراقية",
+    "hero.title": "فن الجمال<em>السرمدي</em>",
     "hero.desc":
-      "تغذية رياضية متميزة تُوصَّل في كل أنحاء الجزائر. منتجات أصيلة وأسعار لا تُنافَس وجودة معتمدة.",
+      "لوكسري سيكرت هي دار حصرية لمستحضرات التجميل والعناية بالبشرة. اكتشف تركيبة عالية الأداء وألوانًا غنية وطقوسًا رائعة مصممة لتكشف عن إشراقكِ الداخلي.",
     "hero.cta1": "تسوّق الآن",
     "hero.cta2": "اكتشف المزيد",
     "hero.stat1": "عميل سعيد",
-    "hero.stat2": "منتج",
-    "hero.stat3": " توصيل",
-    "trust.delivery": "توصيل مجاني",
-    "trust.delivery.sub": "طلبات + 15000 دج",
-    "trust.authentic": "100% أصيل",
-    "trust.authentic.sub": "جودة مضمونة",
-    "trust.nationwide": "على المستوى الوطني",
-    "trust.nationwide.sub": "69 ولاية",
-    "trust.payment": "دفع عند الاستلام",
-    "trust.payment.sub": "ادفع عند الوصول",
-    "trust.support": "دعم 24/7",
-    "trust.support.sub": "دائماً في خدمتك",
-    "products.label": "المنتجات المميزة",
-    "products.title": "الأكثر مبيعاً",
+    "hero.stat2": "منتجاتنا الفريدة",
+    "hero.stat3": "شحن وطني سريع",
+    "trust.delivery": "شحن مجاني",
+    "trust.delivery.sub": "على جميع الطلبات التي تتعدى 15,000 دج",
+    "trust.authentic": "ضمان الدار",
+    "trust.authentic.sub": "منتجات أصيلة ومضمونة 100%",
+    "trust.wilayas": "توصيل وطني",
+    "trust.wilayas.sub": "عناية فائقة لجميع الولايات الـ 69",
+    "trust.payment": "الدفع عند الاستلام",
+    "trust.payment.sub": "الدفع بكل سهولة عند بابك",
+    "trust.support": "مستشار الجمال",
+    "trust.support.sub": "استشارات مخصصة على مدار الساعة",
+    "products.label": "روائع الدار المختارة",
+    "products.title": "الأيقونات",
     "products.viewall": "عرض الكل",
     "products.viewall.btn": "عرض جميع المنتجات",
-    "banner.eyebrow": "عرض محدود",
-    "banner.title": "ارفع <span> أداءك </span>للقمة",
+    "banner.eyebrow": "باقة الدار الخاصة",
+    "banner.title": "اكتشفي<em>سرّكِ الكامن</em>",
     "banner.desc":
-      "احصل على حزمة الأكثر مبيعاً بخصم 20%. مخزون محدود — اطلب الآن.",
-    "banner.cta": "اغتنم العرض",
+      "انغمسي في تشكيلة الأيقونات الخاصة بنا. باقة مختارة بعناية من مستحضرات العناية بالبشرة والشفاه المصممة خصيصًا لكِ.",
+    "banner.cta": "اقتناء الباقة",
     "contact.label": "تواصل معنا",
     "contact.title": "اتصل بنا",
     "contact.desc":
-      "هل لديك أسئلة؟ نحن هنا للمساعدة. تواصل معنا عبر النموذج أدناه.",
+      "هل لديكِ أي استفسار حول مجموعاتنا؟ خبراء التجميل لدينا في خدمتكِ دائماً.",
     "footer.brand.desc":
-      "وجهتك الأولى في الجزائر للمكملات الرياضية الأصيلة.",
+      "الوجهة الأولى في الجزائر لمستحضرات التجميل والعناية بالبشرة الحصرية. نوصل لكِ جمالكِ الراقي مباشرة إلى بابكِ.",
     "footer.links": "روابط سريعة",
     "footer.shipping": "سياسة الشحن",
     "footer.returns": "الإرجاع",
@@ -200,33 +203,35 @@ const i18n = {
     "footer.rights": "جميع الحقوق محفوظة.",
     "form.name": "اسمك",
     "form.email": "البريد / الهاتف",
-    "form.message": "رسالتك",
+    "form.message": "الرسالة",
     "form.send": "إرسال",
-    "btn.addcart": "أضف للسلة",
-    "btn.buynow": "اشتر الآن",
-    "about.who.title": "من نحن",
-    "about.who.text": "ByBen's متجر موثوق للمكملات الرياضية في الجزائر، أسسه رياضيون لرياضيين. نحن شغوفون بالتغذية الرياضية وملتزمون بتوصيل منتجات أصيلة وعالية الجودة بأسعار عادلة مباشرة إلى بابك.",
-    "about.offer.title": "ماذا نقدّم",
-    "about.offer.text": "بروتين واي، كرياتين، منتجات ما قبل التمرين، مكملات الكتلة العضلية، فيتامينات والمزيد — جميعها 100% أصيلة، مصدرها مباشرة من علامات تجارية عالمية موثوقة. توصيل مجاني للطلبات فوق 15,000 دج في 58 ولاية.",
-    "about.order.title": "كيف تطلب",
-    "about.order.text": "تصفّح منتجاتنا، اختر نكهتك وحجمك، أضف إلى السلة أو اضغط اشتر الآن. أدخل اسمك ورقم هاتفك وعنوان التوصيل ثم أكّد الطلب. نحن نتكفل بالباقي. الدفع عند الاستلام، لا حاجة لحساب.",
-    "about.cta": "تسوّق الآن",
-    "shipping.title": "سياسة الشحن",
-    "shipping.item1.title": "توصيل وطني",
-    "shipping.item1.text": "نوصّل إلى جميع الولايات الـ 58 في الجزائر عبر إيمير للوجستيك. مكملات رياضية عالية الجودة تصل إلى باب منزلك.",
-    "shipping.item2.title": "توصيل مجاني",
-    "shipping.item2.text": "الطلبات التي تتجاوز 15,000 دج تستفيد من توصيل مجاني! للطلبات الأخرى، تطبق أسعار الشحن القياسية.",
-    "shipping.item3.title": "التوقيت القياسي",
-    "shipping.item3.text": "يتم معالجة الطلبات خلال 24 ساعة. يستغرق التوصيل عادةً من يومين إلى 3 أيام عمل للمدن الكبرى.",
-    "returns.title": "الإرجاع والاسترداد",
+    "btn.addcart": "تسوق سريع",
+    "btn.buynow": "اكتشف",
+    "about.who.title": "إرثنا",
+    "about.who.text": "لوكسري سيكرت هي دار مستحضرات تجميل حصرية، متخصصة في دمج المكونات الطبيعية النقية مع علم التجميل المتطور. نقدم منتجات عناية بالبشرة ومكياج راقٍ يجسد الفخامة العصرية.",
+    "about.offer.title": "ابتكاراتنا",
+    "about.offer.text": "من كريم الأساس المخملي إلى سيروم العناية المتطور، ابتكاراتنا أصيلة 100% ومستوردة مباشرة من أرقى المختبرات التجميلية في العالم.",
+    "about.order.title": "طقوس الطلب",
+    "about.order.text": "اختاري درجة اللون والحجم المناسبين، ثم أضيفيهما إلى سلة التجميل الخاصة بكِ. أكملي تفاصيل العنوان دون تسجيل، واستمتعي بخدمة التوصيل والدفع عند الاستلام بكل فخامة.",
+    "about.cta": "تسوق المجموعة",
+    "shipping.title": "سياسة الشحن والتوصيل",
+    "shipping.item1.title": "توصيل راقٍ",
+    "shipping.item1.text": "نوصّل إلى جميع الولايات الـ 69 في الجزائر بعناية فائقة وسرعة مثالية عبر إيمير للوجستيك.",
+    "shipping.item2.title": "شحن مجاني",
+    "shipping.item2.text": "الطلبات التي تتجاوز 15,000 دج تستفيد من شحن مجاني فاخر! للطلبات الأخرى، تطبق أسعار الشحن القياسية.",
+    "shipping.item3.title": "مواعيد التوصيل",
+    "shipping.item3.text": "يتم معالجة الطلبات خلال 24 ساعة. يستغرق التوصيل عادةً من 2 إلى 4 أيام عمل للمدن الكبرى.",
+    "returns.title": "الإرجاع والاستبدال",
     "returns.item1.title": "سياسة الإرجاع",
-    "returns.item1.text": "لديك 7 أيام لإرجاع المنتج. يجب أن تكون المنتجات غير مفتوحة وفي غلافها الأصلي مع الختم الأصلي.",
-    "returns.item2.title": "عملية سهلة",
-    "returns.item2.text": "اتصل بنا عبر واتساب أو إنستغرام لبدء عملية الإرجاع. سنوجهك خلال خطوات الاستبدال أو الاسترداد.",
-    "returns.item3.title": "طريقة الاسترداد",
-    "returns.item3.text": "بمجرد فحص المنتج المرتجع، نقدم خيارات الاستبدال بمنتجات أخرى أو رصيد متجر. المبالغ النقدية تخضع للتقييم.",
-    "toast.added": "تمت الإضافة للسلة!",
-    "toast.sent": "تم إرسال رسالتك!",
+    "returns.item1.text": "لديكِ 7 أيام لإرجاع المنتجات غير المفتوحة وفي غلافها الأصلي مع سلامة الختم الأصلي.",
+    "returns.item2.title": "دعم متميز",
+    "returns.item2.text": "تواصلوا مع مستشارينا عبر واتساب أو إنستغرام لبدء عملية الإرجاع. سنتكفل بترتيب شحن المرتجع.",
+    "returns.item3.title": "رصيد الدار",
+    "returns.item3.text": "بمجرد فحص المنتج المرتجع، نقدم خيارات الاستبدال بمنتجات أخرى أو رصيد متجر لضمان رضاكِ الكامل.",
+    "toast.added": "تمت إضافتها لسلة التجميل الخاصة بكِ",
+    "toast.sent": "تم إرسال رسالتكِ إلى مستشارينا.",
+    "modal.shade": "درجة اللون",
+    "modal.size": "الحجم"
   },
 };
 
@@ -446,8 +451,8 @@ function updateBannerLang(lang) {
   if (!titleEl || !descEl) return;
   const titles = { en: _bundleText.titleEn, fr: _bundleText.titleFr, ar: _bundleText.titleAr };
   const descs  = { en: _bundleText.descriptionEn, fr: _bundleText.descriptionFr, ar: _bundleText.descriptionAr };
-  const fallbackTitle = "RAMP UP YOUR<em>PERFORMANCE</em>";
-  const fallbackDesc  = "Get our most popular bundle at 20% off. Limited stock — order now and fuel your next workout.";
+  const fallbackTitle = "REVEAL YOUR<em>INNER SECRET</em>";
+  const fallbackDesc  = "Immerse yourself in our signature selection. A curated capsule of skincare and lip formulas, crafted for the modern connoisseur.";
   titleEl.innerHTML = titles[lang] || fallbackTitle;
   descEl.textContent = descs[lang] || fallbackDesc;
 }
@@ -494,7 +499,7 @@ function renderProducts(lang) {
   const t = i18n[lang];
 
   if (products.length === 0) {
-    grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:var(--g400);padding:2rem;">No products available.</p>`;
+    grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:var(--gray-400);padding:2rem;">No products available.</p>`;
     return;
   }
 
@@ -510,7 +515,7 @@ function renderProducts(lang) {
 
       const badge = computeBadge(p, _bundleId, _topSoldIds);
 
-      // Flavor label
+      // Flavor label (represented as Shade in UI)
       const flavorLabel = p.flavors && p.flavors.length > 0 ? p.flavors[0].name : "";
 
       // Image
@@ -538,12 +543,11 @@ function renderProducts(lang) {
       ${Number(p.stock) <= 0
         ? `<button class="btn-cart" disabled style="flex:1;opacity:0.45;cursor:not-allowed">Out of Stock</button>`
         : `<button class="btn-cart" onclick="event.stopPropagation();openAddToCartModal('${p.id}')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         <span>${t["btn.addcart"]}</span>
       </button>
       <button class="btn-buy" onclick="event.stopPropagation();buyNow('${p.id}')">
-        <span>${t["btn.buynow"]}</span>
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9 18 6-6-6-6"/></svg>
       </button>`
       }
     </div>
@@ -554,12 +558,50 @@ function renderProducts(lang) {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   FOOTER & MODAL SANITIZER
+   - Dynamically changes static 'ByBen's' copyright, subtexts,
+     and logos in footer/modals injected by footer.js
+───────────────────────────────────────────────────────────── */
+function sanitizeFooterAndModals(lang) {
+  // Replace footer copyright text
+  const footerText = document.querySelector('.footer-bottom p');
+  if (footerText) {
+    const year = new Date().getFullYear();
+    if (lang === 'ar') {
+      footerText.innerHTML = `© ${year} لوكسري سيكرت الجزائر. جميع الحقوق محفوظة.`;
+    } else if (lang === 'fr') {
+      footerText.innerHTML = `© ${year} Luxury Secret Algérie. Tous droits réservés.`;
+    } else {
+      footerText.innerHTML = `© ${year} Luxury Secret Algeria. All rights reserved.`;
+    }
+  }
+
+  // Replace footer logo image with text logo
+  const footerLogo = document.querySelector('.footer-brand .logo');
+  if (footerLogo && !footerLogo.querySelector('.logo-text')) {
+    footerLogo.innerHTML = `
+      <span class="logo-text" style="font-family: var(--font-display); font-size: 18px; font-weight: 500; letter-spacing: 2px; color: var(--black); text-transform: uppercase; line-height: 1;">
+        LUXURY <span class="logo-gold" style="color: var(--gold);">SECRET</span>
+      </span>
+    `;
+  }
+
+  // Sanitize modal header texts
+  document.querySelectorAll('.about-brand').forEach(brand => {
+    if (brand.innerHTML.includes('BY') && brand.innerHTML.includes('BEN\'S')) {
+      brand.innerHTML = `LUXURY <span>SECRET</span>`;
+    }
+  });
+  document.querySelectorAll('.about-sub').forEach(sub => {
+    if (sub.textContent.includes('ByBen\'s') || sub.textContent.includes('Supplements')) {
+      sub.textContent = 'Luxury Secret';
+    }
+  });
+}
+
+/* ─────────────────────────────────────────────────────────────
    LANGUAGE SWITCHER
    - Switches UI text for elements with data-i18n / data-i18n-html
-   - Categories and subcategories have NO data-i18n, so they are
-     never touched and always remain in English
-   - In Arabic (RTL) mode, .product-pricing keeps direction:ltr
-     via CSS so prices always render correctly
 ───────────────────────────────────────────────────────────── */
 function switchLang(lang) {
   localStorage.setItem("bybens_lang", lang);
@@ -595,6 +637,9 @@ function switchLang(lang) {
 
   // Update bundle banner text
   updateBannerLang(lang);
+
+  // Sanitize footer and modals for correct brand naming
+  sanitizeFooterAndModals(lang);
 }
 
 function buyNow(id) {
@@ -706,7 +751,6 @@ function animateCounter(el) {
   function step(now) {
     const elapsed = now - start;
     const progress = Math.min(elapsed / duration, 1);
-    // Ease out cubic
     const eased = 1 - Math.pow(1 - progress, 3);
     const current = Math.round(eased * target);
     el.innerHTML = `${current}${suffix}`;
@@ -795,23 +839,25 @@ async function loadInitialData() {
 
     // ── Desktop cat-nav ──
     const desktopInner = document.getElementById("catNavInner");
-    desktopInner.innerHTML = categories
-      .map((cat) => {
-        const subs = subCategories.filter((s) =>
-          s.categoryIds.includes(cat.id),
-        );
-        if (subs.length === 0) {
-          return `<div class="cat-item"><a href="/supplements/products?cat=${encodeURIComponent(cat.id)}" class="cat-link">${cat.name}</a></div>`;
-        }
-        return `
-          <div class="cat-item">
-            <a href="/supplements/products?cat=${encodeURIComponent(cat.id)}" class="cat-link">${cat.name} ${chevron}</a>
-            <div class="dropdown" role="menu">
-              ${subs.map((s) => `<a href="/supplements/products?sub=${encodeURIComponent(s.id)}" role="menuitem">${s.name}</a>`).join("")}
-            </div>
-          </div>`;
-      })
-      .join("");
+    if (desktopInner) {
+      desktopInner.innerHTML = categories
+        .map((cat) => {
+          const subs = subCategories.filter((s) =>
+            s.categoryIds.includes(cat.id),
+          );
+          if (subs.length === 0) {
+            return `<div class="cat-item"><a href="/supplements/products?cat=${encodeURIComponent(cat.id)}" class="cat-link">${cat.name}</a></div>`;
+          }
+          return `
+            <div class="cat-item">
+              <a href="/supplements/products?cat=${encodeURIComponent(cat.id)}" class="cat-link">${cat.name} ${chevron}</a>
+              <div class="dropdown" role="menu">
+                ${subs.map((s) => `<a href="/supplements/products?sub=${encodeURIComponent(s.id)}" role="menuitem">${s.name}</a>`).join("")}
+              </div>
+            </div>`;
+        })
+        .join("");
+    }
 
     // ── Footer categories (max 6) ──
     const footerList = document.getElementById("footerCategoryList");
@@ -824,25 +870,27 @@ async function loadInitialData() {
 
     // ── Mobile menu categories ──
     const mobileContainer = document.getElementById("mobileCatItems");
-    mobileContainer.innerHTML = categories
-      .map((cat) => {
-        const subs = subCategories.filter((s) =>
-          s.categoryIds.includes(cat.id),
-        );
-        if (subs.length === 0) {
-          return `<a href="/supplements/products?cat=${encodeURIComponent(cat.id)}" class="m-link">${cat.name}</a>`;
-        }
-        return `
-          <div class="m-cat-item">
-            <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
-              ${cat.name} <span class="m-arrow">›</span>
-            </button>
-            <div class="m-sub">
-              ${subs.map((s) => `<a href="/supplements/products?sub=${encodeURIComponent(s.id)}" class="m-sub-link">${s.name}</a>`).join("")}
-            </div>
-          </div>`;
-      })
-      .join("");
+    if (mobileContainer) {
+      mobileContainer.innerHTML = categories
+        .map((cat) => {
+          const subs = subCategories.filter((s) =>
+            s.categoryIds.includes(cat.id),
+          );
+          if (subs.length === 0) {
+            return `<a href="/supplements/products?cat=${encodeURIComponent(cat.id)}" class="m-link">${cat.name}</a>`;
+          }
+          return `
+            <div class="m-cat-item">
+              <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
+                ${cat.name} <span class="m-arrow">›</span>
+              </button>
+              <div class="m-sub">
+                ${subs.map((s) => `<a href="/supplements/products?sub=${encodeURIComponent(s.id)}" class="m-sub-link">${s.name}</a>`).join("")}
+              </div>
+            </div>`;
+        })
+        .join("");
+    }
   } catch (err) {
     console.error("Failed to load initial data:", err);
   }
@@ -859,7 +907,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Merge content.js into i18n so static texts can be edited from that file
   if (window.BYBENS_CONTENT) {
     ["en", "fr", "ar"].forEach(function(lang) {
-      if (window.BYBENS_CONTENT[lang]) Object.assign(i18n[lang], window.BYBENS_CONTENT[lang]);
+      if (window.BYBENS_CONTENT[lang]) {
+        // Merge so that our local cosmetics translations override content.js
+        i18n[lang] = Object.assign({}, window.BYBENS_CONTENT[lang], i18n[lang]);
+      }
     });
   }
   switchLang(savedLang);
@@ -920,19 +971,19 @@ function handleMobileSearch(query) {
         const flavorLabel = p.flavors && p.flavors.length > 0 ? p.flavors[0].name : "";
         const _i0 = Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl;
         const imgEl = _i0
-          ? `<img src="${_i0}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" />`
+          ? `<img src="${_i0}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:0px;" />`
           : `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
         return `
-<div onclick="window.location.href='/supplements/products?search=${encodeURIComponent(p.name)}'" style="display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--gray-100); cursor:pointer;">
-  <div style="width:48px; height:48px; background:var(--gray-50); border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:1px solid var(--gray-100); overflow:hidden;">
+<div onclick="window.location.href='/supplements/products?search=${encodeURIComponent(p.name)}'" style="display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--gray-200); cursor:pointer;">
+  <div style="width:48px; height:48px; background:var(--gray-50); border-radius:0px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:1px solid var(--gray-200); overflow:hidden;">
     ${imgEl}
   </div>
   <div style="flex:1; min-width:0;">
-    <p style="font-size:13px; color:var(--gray-400); font-weight:600; letter-spacing:1px; text-transform:uppercase; margin:0 0 2px;">${p.brand || ""}</p>
-    <p style="font-size:15px; font-weight:600; color:var(--black); margin:0 0 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</p>
-    <p style="font-size:12px; color:var(--gray-400); margin:0;">${flavorLabel}</p>
+    <p style="font-size:11px; color:var(--gray-400); font-weight:600; letter-spacing:1px; text-transform:uppercase; margin:0 0 2px;">${p.brand || ""}</p>
+    <p style="font-size:14px; font-weight:500; color:var(--black); margin:0 0 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</p>
+    <p style="font-size:11px; color:var(--gray-400); margin:0;">${flavorLabel}</p>
   </div>
-  <span style="font-family:var(--font-display); font-size:18px; color:var(--black); flex-shrink:0; direction:ltr;">${price} DA</span>
+  <span style="font-size:15px; font-weight: 500; color:var(--black); flex-shrink:0; direction:ltr;">${price} DA</span>
 </div>`;
       },
     )
@@ -1029,6 +1080,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // 1. Scroll progress bar
 (function() {
   var bar = document.getElementById('scroll-progress');
+  if (!bar) return;
   window.addEventListener('scroll', function() {
     var scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
     bar.style.width = Math.min(scrolled, 100) + '%';
@@ -1039,19 +1091,22 @@ document.addEventListener('DOMContentLoaded', () => {
 (function() {
   var container = document.getElementById('heroParticles');
   if (!container) return;
-  var count = 22;
-  var colors = ['rgba(173,0,0,.75)', 'rgba(220,30,30,.6)', 'rgba(255,80,80,.5)'];
+  var count = 16;
+  var colors = ['rgba(163,132,91,.15)', 'rgba(197,168,128,.12)', 'rgba(43,37,35,.05)'];
   for (var i = 0; i < count; i++) {
     var span = document.createElement('span');
-    var size = Math.random() * 10 + 7;
+    var size = Math.random() * 8 + 5;
     var color = colors[Math.floor(Math.random() * colors.length)];
     span.style.cssText = [
+      'position: absolute',
+      'bottom: -20px',
       'left:' + Math.random() * 100 + '%',
       'width:' + size + 'px',
       'height:' + size + 'px',
       'background:' + color,
+      'border-radius: 50%',
       'box-shadow: 0 0 ' + (size * 2) + 'px ' + color,
-      'animation-duration:' + (Math.random() * 5 + 5) + 's',
+      'animation: wlParticleUp ' + (Math.random() * 8 + 8) + 's linear infinite',
       'animation-delay:' + (Math.random() * 7) + 's',
     ].join(';');
     container.appendChild(span);
@@ -1079,14 +1134,13 @@ document.addEventListener('DOMContentLoaded', () => {
       var cy = rect.top + rect.height / 2;
       var dx = (e.clientX - cx) / (rect.width / 2);
       var dy = (e.clientY - cy) / (rect.height / 2);
-      card.style.transform = 'perspective(600px) rotateY(' + (dx * 6) + 'deg) rotateX(' + (-dy * 6) + 'deg) translateY(-4px)';
+      card.style.transform = 'perspective(600px) rotateY(' + (dx * 4) + 'deg) rotateX(' + (-dy * 4) + 'deg) translateY(-2px)';
     });
     card.style.transformStyle = 'preserve-3d';
     card.addEventListener('mouseleave', function() {
       card.style.transform = '';
     });
   }
-  // Apply to existing + future cards
   document.querySelectorAll('.product-card').forEach(addTilt);
   var gridObs = new MutationObserver(function(muts) {
     muts.forEach(function(m) {
@@ -1111,7 +1165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     var r = document.createElement('span');
     var d = Math.max(rect.width, rect.height);
     r.className = 'ripple-wave';
-    r.style.cssText = 'width:' + d + 'px;height:' + d + 'px;left:' + (e.clientX - rect.left - d/2) + 'px;top:' + (e.clientY - rect.top - d/2) + 'px;';
+    r.style.cssText = 'position: absolute; border-radius: 50%; background: rgba(255,255,255,0.15); pointer-events: none; transform: scale(0); animation: ripple 0.6s linear; width:' + d + 'px;height:' + d + 'px;left:' + (e.clientX - rect.left - d/2) + 'px;top:' + (e.clientY - rect.top - d/2) + 'px;';
     btn.appendChild(r);
     r.addEventListener('animationend', function() { r.remove(); });
   });

@@ -1,4 +1,4 @@
-﻿      // ════════════════════════════════════════════
+      // ════════════════════════════════════════════
       // CONFIG — SUPABASE_URL / SUPABASE_ANON_KEY set by supabase-client.js
       // ════════════════════════════════════════════
       const SUPABASE_URL = window.SUPABASE_URL;
@@ -396,6 +396,7 @@
       // INIT
       // ════════════════════════════════════════════
       document.addEventListener("DOMContentLoaded", async () => {
+        let cached = false;
         if (!SUPABASE_URL || !sb) {
           showToast("Supabase not configured!", "error");
           return;
