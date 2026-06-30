@@ -13,7 +13,7 @@
   --gray-800: #2B2523;
   --font-display: "Cormorant Garamond", serif;
   --font-body: "Montserrat", sans-serif;
-  --nav-h: 70px;
+  --nav-h: 68px;
   --cat-h: 46px;
   --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --shadow-sm: 0 2px 8px rgba(43, 37, 35, 0.04);
@@ -276,28 +276,23 @@ input, textarea {
 /* Logo */
 .logo {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   text-decoration: none;
   line-height: 1;
 }
-.logo-text {
-  font-family: var(--font-display);
-  font-size: 21px;
-  font-weight: 500;
-  letter-spacing: 3px;
-  color: var(--black);
-  text-transform: uppercase;
+.logo-img {
+  height: 72px;
+  width: auto;
+  display: block;
 }
-.logo-gold {
-  color: var(--gold);
+.logo-img-dark {
+  display: none;
 }
-.logo-ar {
-  font-family: var(--font-body);
-  font-size: 10px;
-  letter-spacing: 0.5px;
-  color: var(--gray-400);
-  margin-top: 2px;
+html[data-theme="dark"] .logo-img-light {
+  display: none;
+}
+html[data-theme="dark"] .logo-img-dark {
+  display: block;
 }
 
 /* Search Bar */
@@ -495,17 +490,13 @@ input, textarea {
 .cat-nav {
   background: var(--white);
   border-bottom: 1px solid var(--gray-200);
+  overflow: visible;
 }
 .cat-nav-inner {
   display: flex;
   align-items: center;
   height: var(--cat-h);
   gap: 24px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.cat-nav-inner::-webkit-scrollbar {
-  display: none;
 }
 .cat-item {
   position: relative;
@@ -1621,6 +1612,16 @@ input, textarea {
   }
 }
 
+/* Mobile theme btn hidden on desktop */
+.mobile-theme-btn {
+  display: none;
+}
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 @media (max-width: 768px) {
   #desktopSupplementsBtn, #desktopSearch {
     display: none !important;
@@ -1628,8 +1629,27 @@ input, textarea {
   #mobileSearchBtn, .hamburger {
     display: flex !important;
   }
+  .mobile-theme-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+  }
+  .desktop-theme-btn {
+    display: none !important;
+  }
+  .nav-right .lang-switch {
+    display: none !important;
+  }
   .top-nav {
+    position: relative;
     justify-content: space-between;
+  }
+  .logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
   .cat-nav {
     display: none;
