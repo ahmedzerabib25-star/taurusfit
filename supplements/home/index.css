@@ -1901,6 +1901,21 @@ html[data-theme="dark"] .logo-img-dark {
   .banner-right {
     height: 300px;
   }
+  .hiw-steps {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .hiw-steps::before,
+  .hiw-steps::after {
+    display: none;
+  }
+  .hiw-step {
+    border: 1px solid var(--gray-200);
+    background: var(--off-white);
+  }
+  .hiw-step:hover {
+    transform: none;
+  }
 }
 
 /* Mobile theme btn hidden on desktop */
