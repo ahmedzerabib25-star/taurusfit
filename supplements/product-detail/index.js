@@ -185,13 +185,21 @@
           const params = new URLSearchParams(window.location.search);
           const productId = params.get("id");
 
-          const res = await getInitialData();
+          const [res, rawSettings] = await Promise.all([
+            getInitialData(),
+            fetch(SUPABASE_URL + "/rest/v1/settings?select=key,value", {
+              headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY }
+            }).then(r => r.json()).catch(() => []),
+          ]);
           if (!res || !res.success) throw new Error("getInitialData failed");
 
           _allCategories = res.categories || [];
           _allSubCategories = res.subCategories || [];
           _deliveryPrices = res.deliveryPrices || [];
-          _storeSettings = res.settings || {};
+          // Direct fetch bypasses edge cache — always up-to-date
+          _storeSettings = {};
+          if (Array.isArray(rawSettings)) rawSettings.forEach(r => { _storeSettings[r.key] = r.value; });
+          else _storeSettings = res.settings || {};
           const bundle = res.bundle || {};
           if (bundle.bundleId) _bundleId = bundle.bundleId;
 

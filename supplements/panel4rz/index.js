@@ -1223,19 +1223,20 @@
         const allFree = document.getElementById("all-free-delivery").checked;
         showLoading("Saving…");
         try {
-          const r = await apiPost({
-            action: "updateSettings",
-            updates: { free_delivery_threshold: String(threshold), all_free_delivery: String(allFree) },
-          });
-          if (r.success) {
-            settings.free_delivery_threshold = String(threshold);
-            settings.all_free_delivery = String(allFree);
-            showToast("Free delivery settings saved!");
-          }
+          const upserts = [
+            { key: "all_free_delivery", value: String(allFree) },
+            { key: "free_delivery_threshold", value: String(threshold) },
+          ];
+          const { error } = await sb.from("settings").upsert(upserts, { onConflict: "key" });
+          if (error) throw error;
+          settings.all_free_delivery = String(allFree);
+          settings.free_delivery_threshold = String(threshold);
+          showToast("Free delivery settings saved!");
         } catch (e) {
-          showToast("Error: " + e.message, "error");
+          showToast("Save failed: " + (e.message || e.details || JSON.stringify(e)), "error");
+        } finally {
+          hideLoading();
         }
-        hideLoading();
       }
 
       async function saveUsername() {
