@@ -3204,7 +3204,7 @@
         },
       };
 
-      let currentLang = "en";
+      let currentLang = "fr";
       function prodName(p) {
         if (!p) return "";
         const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
@@ -3288,12 +3288,12 @@
           document.getElementById('address').value = user.address || '';
         }
 
-        const savedLang = localStorage.getItem("bybens_lang") || "en";
+        const savedLang = localStorage.getItem("bybens_lang") || "fr";
         // Merge content.js into i18n
         if (window.BYBENS_CONTENT) {
           ["en", "fr"].forEach(function(lang) {
             if (window.BYBENS_CONTENT[lang]) Object.assign(i18n[lang], window.BYBENS_CONTENT[lang]);
           });
         }
-        if (savedLang !== "en") switchLang(savedLang);
+        if (savedLang !== "fr") switchLang(savedLang);
       });

@@ -2,7 +2,7 @@
         en: { "nav.home": "Home", "search.cancel": "Cancel" },
         fr: { "nav.home": "Accueil", "search.cancel": "Annuler" }
       };
-      let currentLang = "en";
+      let currentLang = "fr";
 
       function switchLang(lang) {
         currentLang = lang;
@@ -216,8 +216,8 @@
             if (window.BYBENS_CONTENT[lang]) Object.assign(i18n[lang], window.BYBENS_CONTENT[lang]);
           });
         }
-        const savedLang = localStorage.getItem("bybens_lang") || "en";
-        if (savedLang !== "en") switchLang(savedLang);
+        const savedLang = localStorage.getItem("bybens_lang") || "fr";
+        if (savedLang !== "fr") switchLang(savedLang);
         updateCartBadge();
 
         const SB_URL = "https://zuprsewbheqpahwrlwll.supabase.co";

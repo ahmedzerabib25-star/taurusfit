@@ -177,7 +177,7 @@ function hideLoader() {
   }, delay);
 }
 
-let currentLang = "en";
+let currentLang = "fr";
 function catName(item) {
   if (!item) return "";
   const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
@@ -845,7 +845,7 @@ async function loadInitialData() {
 document.addEventListener("DOMContentLoaded", () => {
   cartUpdateBadge();
   loadInitialData();
-  const savedLang = localStorage.getItem("bybens_lang") || "en";
+  const savedLang = localStorage.getItem("bybens_lang") || "fr";
   // Merge content.js into i18n so static texts can be edited from that file
   if (window.BYBENS_CONTENT) {
     ["en", "fr"].forEach(function(lang) {

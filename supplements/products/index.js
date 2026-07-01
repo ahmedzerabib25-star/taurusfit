@@ -125,7 +125,7 @@
         },
       };
 
-      let currentLang = "en";
+      let currentLang = "fr";
       function catName(item) {
         if (!item) return "";
         const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
@@ -1384,8 +1384,8 @@
       document.addEventListener("DOMContentLoaded", () => {
         cartUpdateBadge();
         loadData();
-        const savedLang = localStorage.getItem("bybens_lang") || "en";
-        if (savedLang !== "en") switchLang(savedLang);
+        const savedLang = localStorage.getItem("bybens_lang") || "fr";
+        if (savedLang !== "fr") switchLang(savedLang);
 
         document.addEventListener("click", (e) => {
           if (!e.target.closest("#desktopProductSearch")) {
