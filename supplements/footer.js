@@ -7,7 +7,7 @@
 
   // Dark mode toggle — shared across all pages
   function updateLogos(isDark) {
-    document.querySelectorAll('.logo img, .footer-brand img').forEach(function(img) {
+    document.querySelectorAll('.logo img').forEach(function(img) {
       img.src = isDark ? '/images/logo-dark.png' : '/images/logo.png';
     });
   }
@@ -36,7 +36,7 @@
         <div class="footer-grid">
           <div class="footer-brand">
             <a href="/" class="footer-logo-link">
-              <img src="/images/logo.png" alt="Luxury Secret" style="height: 70px; width: auto; object-fit: contain; display: block;" class="footer-brand-logo" />
+              <img src="/images/logo-dark.png" alt="Luxury Secret" class="footer-brand-logo" />
             </a>
             <p data-i18n="footer.brand.desc">Algeria's premier destination for exclusive cosmetics and skincare. We bring world-class beauty formulations directly to your door.</p>
             <div class="social-links">
