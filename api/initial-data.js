@@ -13,16 +13,19 @@ function sf(path) {
 
 module.exports = async function handler(_req, res) {
   try {
-    const [products, categories, subCategories, bundle, promos, deliveryPrices] = await Promise.all([
+    const [products, categories, subCategories, bundle, promos, deliveryPrices, settingsArr] = await Promise.all([
       sf(
-        "products?select=id,name,brand,category_ids,sub_category_ids,description,image_url,variants,flavors,stock,discount,allow_promo,promo_code_ids,status,created_at,hidden&hidden=not.is.true&order=created_at.asc"
+        "products?select=id,name,brand,category_ids,sub_category_ids,description,image_url,variants,flavors,stock,discount,allow_promo,promo_code_ids,free_delivery,status,created_at,hidden&hidden=not.is.true&order=created_at.asc"
       ),
       sf("categories?select=*&order=created_at.asc"),
       sf("sub_categories?select=*"),
       sf("bundle?select=*&limit=1"),
       sf("promo_codes?select=*&order=created_at.desc"),
       sf("delivery_prices?select=*&order=wilaya.asc"),
+      sf("settings?select=key,value"),
     ]);
+    const settings = {};
+    if (Array.isArray(settingsArr)) settingsArr.forEach(r => { settings[r.key] = r.value; });
 
     // 5-minute Vercel edge cache; stale-while-revalidate keeps the site fast during refresh
     res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=60");
@@ -34,6 +37,7 @@ module.exports = async function handler(_req, res) {
       bundle: Array.isArray(bundle) ? bundle[0] || {} : bundle || {},
       promos,
       deliveryPrices,
+      settings,
       orders: [], // orders are never exposed to public visitors
     });
   } catch (e) {
