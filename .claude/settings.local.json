@@ -21,7 +21,11 @@
       "Bash(python3 *)",
       "Bash(powershell *)",
       "PowerShell([System.IO.File]::ReadAllText\\(\"C:\\\\Users\\\\Ahmed\\\\.claude\\\\projects\\\\C--Users-Ahmed-Desktop-byben-s-nutrition\\\\fbcd3fe7-f558-4bee-a44c-178f3d2cb4d4\\\\tool-results\\\\mcp-plugin_supabase_supabase-execute_sql-1779742993682.txt\"\\).Substring\\(0, 80000\\))",
-      "Bash(node *)"
+      "Bash(node *)",
+      "mcp__plugin_supabase_supabase__apply_migration",
+      "Bash(git merge *)",
+      "mcp__plugin_supabase_supabase__list_edge_functions",
+      "mcp__plugin_supabase_supabase__deploy_edge_function"
     ]
   }
 }

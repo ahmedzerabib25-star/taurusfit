@@ -35,8 +35,8 @@
       <div class="container">
         <div class="footer-grid">
           <div class="footer-brand">
-            <a href="/supplements" class="logo" style="margin-bottom: 16px; display: inline-flex">
-              <img src="/images/logo.png" alt="ByBens Logo" width="140" height="70" style="height: 70px; width: auto; object-fit: contain;" class="footer-brand-logo" />
+            <a href="/" class="footer-logo-link">
+              <img src="/images/logo.png" alt="Luxury Secret" style="height: 70px; width: auto; object-fit: contain; display: block;" class="footer-brand-logo" />
             </a>
             <p data-i18n="footer.brand.desc">Algeria's premier destination for authentic sports nutrition. We bring world-class supplements directly to your door.</p>
             <div class="social-links">
@@ -52,11 +52,11 @@
           <div class="footer-col">
             <h4 data-i18n="footer.links">Quick Links</h4>
             <ul>
-              <li><a href="/supplements" data-i18n="nav.home">Home</a></li>
-              <li><a href="/supplements/products" data-i18n="nav.products">Products</a></li>
+              <li><a href="/" data-i18n="nav.home">Home</a></li>
+              <li><a href="/products" data-i18n="nav.products">Products</a></li>
               <li><a href="#" data-i18n="footer.shipping" onclick="openShippingModal();return false;">Shipping Policy</a></li>
               <li><a href="#" data-i18n="footer.returns" onclick="openReturnsModal();return false;">Returns</a></li>
-              <li><a href="/supplements/privacy" data-i18n="footer.privacy">Privacy Policy</a></li>
+              <li><a href="/privacy" data-i18n="footer.privacy">Privacy Policy</a></li>
             </ul>
           </div>
           <div class="footer-col">
@@ -194,7 +194,7 @@
           </div>
         </div>
         <div class="about-cta-wrap">
-          <a href="/supplements/products" class="about-cta" data-i18n="about.cta">Shop Now</a>
+          <a href="/products" class="about-cta" data-i18n="about.cta">Shop Now</a>
         </div>
       </div>
     </div>
@@ -233,11 +233,11 @@
     const orig = btn.innerHTML;
     btn.innerHTML = '<span style="opacity:.7">Sending…</span>';
     try {
-      await fetch('https://dbezrrzmcosxdoorbrgx.supabase.co/functions/v1/submit-contact', {
+      await fetch('https://zuprsewbheqpahwrlwll.supabase.co/functions/v1/submit-contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiZXpycnptY29zeGRvb3Jicmd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MTgxMTksImV4cCI6MjA5NTI5NDExOX0.xTBBzmLVX6uuqs-oaPifj-DvpBWIEaPZgQIsMIqbRew',
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1cHJzZXdiaGVxcGFod3Jsd2xsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2OTAyNzcsImV4cCI6MjA5ODI2NjI3N30._Xyvx93Wj2kRoi4Drh_sDPBh24sU2Lcol6k27VuArnA',
         },
         body: JSON.stringify({ name: name.trim(), contact: contact.trim(), message: message.trim() }),
       });

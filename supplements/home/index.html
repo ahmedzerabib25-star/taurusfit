@@ -21,7 +21,7 @@
         .catch(function () { return null; });
     </script>
 
-    <link rel="stylesheet" href="/supplements/home/index.css?v=5" />
+    <link rel="stylesheet" href="/supplements/home/index.css?v=7" />
     <script>if(sessionStorage.getItem('bb_wl'))document.documentElement.classList.add('bb-noanim');</script>
   </head>
   <body>
@@ -35,7 +35,7 @@
       <div class="wl-body">
         <div class="wl-logo-wrap">
           <div class="wl-logo-glow"></div>
-          <span class="wl-logo-text">LUXURY SECRET</span>
+          <img src="/images/logo.png" alt="Luxury Secret" class="wl-logo" />
           <div class="wl-shine"></div>
           <div class="wl-shine2"></div>
         </div>
@@ -138,12 +138,6 @@
       </div>
     </div>
 
-    <!-- ═══ MARQUEE BANNER ════════════════════════════════════════ -->
-    <div class="marquee-bar" role="marquee" aria-label="Promotions">
-      <div class="marquee-track">
-        <span class="marquee-item">🚚 COMPLIMENTARY NATIONWIDE COURIER DELIVERY FOR ORDERS OVER 15,000 DA — CODE: FREEDELIVERY</span>
-      </div>
-    </div>
 
     <!-- ═══ HEADER ════════════════════════════════════════════════ -->
     <header id="site-header">
@@ -173,7 +167,7 @@
           </a>
 
           <!-- Navigation Links (desktop only) -->
-          <a href="/supplements/products" class="nav-link active" id="desktopSupplementsBtn" data-i18n="nav.products">Cosmetics</a>
+          <a href="/products" class="nav-link active" id="desktopSupplementsBtn" data-i18n="nav.products">Cosmetics</a>
 
           <!-- Search (desktop only) -->
           <div class="search-wrap" role="search" id="desktopSearch">
@@ -304,7 +298,7 @@
     <!-- Mobile Menu -->
     <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
       <a
-        href="/supplements/products"
+        href="/products"
         class="m-link active"
         onclick="toggleMobileMenu()"
         data-i18n="nav.products"
@@ -457,7 +451,7 @@
               <h2 class="section-title" data-i18n="products.title">THE ICONS</h2>
             </div>
             <a
-              href="/supplements/products"
+              href="/products"
               class="view-all-link"
               data-i18n="products.viewall"
             >
@@ -481,7 +475,7 @@
 
           <div class="view-all-block">
             <a
-              href="/supplements/products"
+              href="/products"
               class="btn-view-all"
               data-i18n="products.viewall.btn"
             >
@@ -677,7 +671,7 @@
     </div>
 
     <script src="/content.js" defer></script>
-    <script src="/supplements/home/index.js?v=3" defer></script>
+    <script src="/supplements/home/index.js?v=4" defer></script>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/supplements/supabase-client.js"></script>

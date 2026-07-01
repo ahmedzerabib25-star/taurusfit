@@ -50,19 +50,19 @@
             return ids.includes(cat.id);
           });
           if (catSubs.length > 0) {
-            dHTML += '<div class="cat-item"><a href="/supplements/products" class="cat-link">' + cat.name +
+            dHTML += '<div class="cat-item"><a href="/products" class="cat-link">' + cat.name +
               '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></a>' +
               '<div class="dropdown">' + catSubs.map(function(s) {
-                return '<a href="/supplements/products?sub=' + encodeURIComponent(s.name) + '">' + s.name + '</a>';
+                return '<a href="/products?sub=' + encodeURIComponent(s.name) + '">' + s.name + '</a>';
               }).join("") + '</div></div>';
             mHTML += '<div class="m-cat-item"><button class="m-cat-toggle" onclick="toggleMobileCat(this)">' +
               cat.name + ' <span class="m-arrow">›</span></button><div class="m-sub">' +
               catSubs.map(function(s) {
-                return '<a href="/supplements/products?sub=' + encodeURIComponent(s.name) + '" class="m-sub-link">' + s.name + '</a>';
+                return '<a href="/products?sub=' + encodeURIComponent(s.name) + '" class="m-sub-link">' + s.name + '</a>';
               }).join("") + '</div></div>';
           } else {
-            dHTML += '<div class="cat-item"><a href="/supplements/products" class="cat-link">' + cat.name + '</a></div>';
-            mHTML += '<a href="/supplements/products" class="mobile-nav-link">' + cat.name + '</a>';
+            dHTML += '<div class="cat-item"><a href="/products" class="cat-link">' + cat.name + '</a></div>';
+            mHTML += '<a href="/products" class="mobile-nav-link">' + cat.name + '</a>';
           }
         });
         inner.innerHTML = dHTML;
@@ -70,7 +70,7 @@
         const footerList = document.getElementById("footerCategoryList");
         if (footerList) {
           footerList.innerHTML = cats.slice(0, 6).map(function(cat) {
-            return '<li><a href="/supplements/products?cat=' + encodeURIComponent(cat.id) + '">' + cat.name + '</a></li>';
+            return '<li><a href="/products?cat=' + encodeURIComponent(cat.id) + '">' + cat.name + '</a></li>';
           }).join("");
         }
       }
@@ -117,7 +117,7 @@
           var _t = Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl;
           var thumb = _t ? '<img src="' + _t + '" alt="' + p.name + '" />' : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>';
           var flavorLabel = Array.isArray(p.flavors) && p.flavors.length ? p.flavors[0].name : "";
-          return '<div class="search-drop-item" onclick="closeSearchDropdown();window.location.href=\'/supplements/product-detail?id=' + p.id + '\'">' +
+          return '<div class="search-drop-item" onclick="closeSearchDropdown();window.location.href=\'/product-detail?id=' + p.id + '\'">' +
             '<div class="search-drop-thumb">' + thumb + '</div>' +
             '<div class="search-drop-info">' +
               '<p class="search-drop-brand">' + (p.brand || "") + '</p>' +
@@ -181,7 +181,7 @@
           var _i = Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl;
           var imgEl = _i ? '<img src="' + _i + '" alt="' + p.name + '" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" />' : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>';
           var flavorLabel = Array.isArray(p.flavors) && p.flavors.length ? p.flavors[0].name : "";
-          return '<div onclick="closeMobileSearch();window.location.href=\'/supplements/product-detail?id=' + p.id + '\'" style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--gray-100);cursor:pointer;">' +
+          return '<div onclick="closeMobileSearch();window.location.href=\'/product-detail?id=' + p.id + '\'" style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--gray-100);cursor:pointer;">' +
             '<div style="width:48px;height:48px;background:var(--gray-50);border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1px solid var(--gray-100);overflow:hidden;">' + imgEl + '</div>' +
             '<div style="flex:1;min-width:0;">' +
               '<p style="font-size:13px;color:var(--gray-400);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin:0 0 2px;">' + (p.brand || "") + '</p>' +
@@ -222,17 +222,17 @@
         if (savedLang !== "en") switchLang(savedLang);
         updateCartBadge();
 
-        const SB_URL = "https://dbezrrzmcosxdoorbrgx.supabase.co";
-        const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiZXpycnptY29zeGRvb3Jicmd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MTgxMTksImV4cCI6MjA5NTI5NDExOX0.xTBBzmLVX6uuqs-oaPifj-DvpBWIEaPZgQIsMIqbRew";
+        const SB_URL = "https://zuprsewbheqpahwrlwll.supabase.co";
+        const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1cHJzZXdiaGVxcGFod3Jsd2xsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2OTAyNzcsImV4cCI6MjA5ODI2NjI3N30._Xyvx93Wj2kRoi4Drh_sDPBh24sU2Lcol6k27VuArnA";
         const h = { apikey: SB_KEY, Authorization: "Bearer " + SB_KEY };
-        fetch(SB_URL + "/rest/v1/products?select=id,name,brand,price,variants,flavors,imageUrl", { headers: h })
+        fetch(SB_URL + "/rest/v1/products?select=id,name,brand,variants,flavors,image_url", { headers: h })
           .then(function(r) { return r.json(); })
           .then(function(rows) {
             if (!Array.isArray(rows)) return;
             products = rows.map(function(p) {
               try { p.variants = typeof p.variants === "string" ? JSON.parse(p.variants) : (p.variants || []); } catch(e) { p.variants = []; }
               try { p.flavors = typeof p.flavors === "string" ? JSON.parse(p.flavors) : (p.flavors || []); } catch(e) { p.flavors = []; }
-              try { p.imageUrl = typeof p.imageUrl === "string" && p.imageUrl[0] === "[" ? JSON.parse(p.imageUrl) : p.imageUrl; } catch(e) {}
+              try { p.imageUrl = typeof p.image_url === "string" && p.image_url[0] === "[" ? JSON.parse(p.image_url) : p.image_url; } catch(e) { p.imageUrl = p.image_url; }
               return p;
             });
             var inp = document.getElementById("searchInput");

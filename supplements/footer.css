@@ -57,6 +57,9 @@
 .about-card-text h4 { font-size: 13px; font-weight: 700; color: var(--black); margin-bottom: 5px; text-transform: uppercase; letter-spacing: .6px; }
 .about-card-text p { font-size: 13.5px; color: var(--gray-600); line-height: 1.65; margin: 0; }
 
+.footer-brand { display: flex; flex-direction: column; }
+.footer-logo-link { display: block; margin-bottom: 16px; }
+
 @media (max-width: 768px) {
   .footer-grid { grid-template-columns: 1fr; gap: 32px; }
   .nav-right .theme-btn { display: none; }

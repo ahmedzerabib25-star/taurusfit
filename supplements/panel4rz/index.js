@@ -11,13 +11,12 @@
       // AUTH GUARD — redirect to login if not authenticated
       // ════════════════════════════════════════════
       if (sessionStorage.getItem("bb_admin_auth") !== "1") {
-        window.location.href = "/supplements/mgmt9kx";
+        window.location.href = "/mgmt9kx";
       }
 
       // ── STATE ──
       let sidebarCollapsed = false;
       let editingProductId = null;
-      let editingPromoId = null;
       let editingDeliveryId = null;
       let editingCatId = null;
       let editingSubCatId = null;
@@ -25,7 +24,6 @@
       let categories = [],
         subCategories = [],
         products = [],
-        promos = [],
         deliveryPrices = [],
         orders = [],
         settings = {};
@@ -96,7 +94,7 @@
       // ROW MAPPERS (snake_case → camelCase)
       // ════════════════════════════════════════════
       function _remapProductRow(r) {
-        return { id: r.id, name: r.name, brand: r.brand, categoryIds: (r.category_ids || "").split(",").filter(Boolean), subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), description: r.description, imageUrl: r.image_url || [], variants: r.variants || [], flavors: r.flavors || [], stock: r.stock, discount: r.discount, allowPromo: r.allow_promo, promoCodeIds: (r.promo_code_ids || "").split(",").filter(Boolean), status: r.status, hidden: r.hidden || false, nutritionalFacts: r.nutritional_facts, benefits: r.benefits, createdAt: r.created_at };
+        return { id: r.id, name: r.name, brand: r.brand, categoryIds: (r.category_ids || "").split(",").filter(Boolean), subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), description: r.description, imageUrl: r.image_url || [], variants: r.variants || [], flavors: r.flavors || [], stock: r.stock, discount: r.discount, status: r.status, hidden: r.hidden || false, createdAt: r.created_at };
       }
       function _remapCategoryRow(r) {
         return { id: r.id, name: r.name, description: r.description, createdAt: r.created_at };
@@ -104,23 +102,16 @@
       function _remapSubCategoryRow(r) {
         return { id: r.id, name: r.name, categoryIds: (r.category_ids || "").split(",").filter(Boolean), createdAt: r.created_at };
       }
-      function _remapPromoRow(r) {
-        return { id: r.id, code: r.code, type: r.type, value: r.value, minOrder: r.min_order, maxUses: r.max_uses, uses: r.uses, expiry: r.expiry, status: r.status, applyToAll: r.apply_to_all, createdAt: r.created_at };
-      }
       function _remapDeliveryRow(r) {
         return { id: r.id, wilaya: r.wilaya, homePrice: r.home_price, officePrice: r.office_price, createdAt: r.created_at };
       }
       function _remapOrderRow(r) {
-        return { id: r.id, source: r.source, firstName: r.first_name, lastName: r.last_name, phone: r.phone, address: r.address, wilaya: r.wilaya, commune: r.commune, deliveryType: r.delivery_type, deliveryCost: r.delivery_cost, promoCode: r.promo_code, promoDiscount: r.promo_discount, items: r.items || [], subtotal: r.subtotal, total: r.total, status: r.status, createdAt: r.created_at };
+        return { id: r.id, source: r.source, firstName: r.first_name, lastName: r.last_name, phone: r.phone, address: r.address, wilaya: r.wilaya, commune: r.commune, deliveryType: r.delivery_type, deliveryCost: r.delivery_cost, items: r.items || [], subtotal: r.subtotal, total: r.total, status: r.status, createdAt: r.created_at };
       }
       // ROW BUILDERS (camelCase → snake_case)
       function _toProductRow(p) {
-        return { name: p.name, brand: p.brand || "", category_ids: (p.categoryIds || []).join(","), sub_category_ids: (p.subCategoryIds || []).join(","), description: p.description || "", image_url: p.imageUrl || [], variants: p.variants || [], flavors: p.flavors || [], stock: p.stock || 0, discount: p.discount || 0, allow_promo: p.allowPromo || false, promo_code_ids: (p.promoCodeIds || []).join(","), status: p.status || "active", hidden: p.hidden || false, nutritional_facts: p.nutritionalFacts || "", benefits: p.benefits || "" };
+        return { name: p.name, brand: p.brand || "", category_ids: (p.categoryIds || []).join(","), sub_category_ids: (p.subCategoryIds || []).join(","), description: p.description || "", image_url: p.imageUrl || [], variants: p.variants || [], flavors: p.flavors || [], stock: p.stock || 0, discount: p.discount || 0, status: p.status || "active", hidden: p.hidden || false };
       }
-      function _toPromoRow(p) {
-        return { code: (p.code || "").toUpperCase(), type: p.type, value: p.value || 0, min_order: p.minOrder || 0, max_uses: p.maxUses || null, expiry: p.expiry || "", status: p.status || "active", apply_to_all: p.applyToAll || false };
-      }
-
       // ════════════════════════════════════════════
       // API HELPERS (Supabase)
       // ════════════════════════════════════════════
@@ -129,18 +120,17 @@
           case "getInitialData": {
             const [
               { data: prods, error: e1 }, { data: cats, error: e2 }, { data: subs, error: e3 },
-              { data: promoRows, error: e4 }, { data: dpRows, error: e5 },
+              { data: dpRows, error: e5 },
               { data: bndRow, error: e6 },
             ] = await Promise.all([
               sb.from("products").select("*").order("created_at", { ascending: false }),
               sb.from("categories").select("*").order("created_at", { ascending: true }),
               sb.from("sub_categories").select("*"),
-              sb.from("promo_codes").select("*").order("created_at", { ascending: false }),
               sb.from("delivery_prices").select("*").order("wilaya", { ascending: true }),
               sb.from("bundle").select("*").eq("id", 1).maybeSingle(),
             ]);
-            if (e1 || e2 || e3 || e4 || e5 || e6) throw e1 || e2 || e3 || e4 || e5 || e6;
-            return { success: true, products: (prods || []).map(_remapProductRow), categories: (cats || []).map(_remapCategoryRow), subCategories: (subs || []).map(_remapSubCategoryRow), promos: (promoRows || []).map(_remapPromoRow), deliveryPrices: (dpRows || []).map(_remapDeliveryRow), bundle: bndRow ? { bundleId: bndRow.bundle_id, bundleDescription: bndRow.description_en } : {} };
+            if (e1 || e2 || e3 || e5 || e6) throw e1 || e2 || e3 || e5 || e6;
+            return { success: true, products: (prods || []).map(_remapProductRow), categories: (cats || []).map(_remapCategoryRow), subCategories: (subs || []).map(_remapSubCategoryRow), deliveryPrices: (dpRows || []).map(_remapDeliveryRow), bundle: bndRow ? { bundleId: bndRow.bundle_id, bundleDescription: bndRow.description_en } : {} };
           }
           case "getProducts": {
             const { data, error } = await sb.from("products").select("*").order("created_at", { ascending: false });
@@ -156,11 +146,6 @@
             const { data, error } = await sb.from("sub_categories").select("*");
             if (error) throw error;
             return { success: true, subCategories: (data || []).map(_remapSubCategoryRow) };
-          }
-          case "getPromos": {
-            const { data, error } = await sb.from("promo_codes").select("*").order("created_at", { ascending: false });
-            if (error) throw error;
-            return { success: true, promos: (data || []).map(_remapPromoRow) };
           }
           case "getDeliveryPrices": {
             const { data, error } = await sb.from("delivery_prices").select("*").order("wilaya", { ascending: true });
@@ -264,25 +249,6 @@
             if (error) throw error;
             return { success: true };
           }
-          // ── PROMOS ──
-          case "addPromo": {
-            const row = _toPromoRow(rest);
-            row.id = String(Date.now());
-            row.uses = 0;
-            const { data, error } = await sb.from("promo_codes").insert(row).select().single();
-            if (error) throw error;
-            return { success: true, id: data.id };
-          }
-          case "updatePromo": {
-            const { error } = await sb.from("promo_codes").update(_toPromoRow(rest)).eq("id", id);
-            if (error) throw error;
-            return { success: true };
-          }
-          case "deletePromo": {
-            const { error } = await sb.from("promo_codes").delete().eq("id", id);
-            if (error) throw error;
-            return { success: true };
-          }
           // ── DELIVERY ──
           case "addDeliveryPrice": {
             const row = { id: String(Date.now()), wilaya: rest.wilaya, home_price: rest.homePrice, office_price: rest.officePrice };
@@ -347,7 +313,6 @@
         if (Array.isArray(res.products)) { products = res.products; productsTotal = products.length; }
         if (Array.isArray(res.categories)) categories = res.categories;
         if (Array.isArray(res.subCategories)) subCategories = res.subCategories;
-        if (Array.isArray(res.promos)) promos = res.promos;
         if (Array.isArray(res.deliveryPrices)) deliveryPrices = res.deliveryPrices;
         // orders are fetched separately via _fetchOrdersPage() / _fetchDashOrders()
         if (res.bundle && res.bundle.bundleId) {
@@ -368,7 +333,6 @@
         }
         renderCats();
         renderProducts();
-        renderPromos();
         renderDelivery();
         renderBundleList(document.getElementById("bundle-search")?.value || "");
         if (typeof renderBundleSelected === "function" && window._cachedBundle) {
@@ -460,13 +424,6 @@
           renderBundleList(document.getElementById("bundle-search")?.value || "");
         }
       }
-      async function loadPromos() {
-        const r = await apiGet("getPromos");
-        if (r.success) {
-          promos = r.promos;
-          renderPromos();
-        }
-      }
       async function loadDeliveryPrices() {
         const r = await apiGet("getDeliveryPrices");
         if (r.success) {
@@ -498,10 +455,6 @@
       function updateDashboard() {
         document.getElementById("stat-products").textContent = productsTotal || products.length;
         document.getElementById("stat-orders").textContent = _dashOrders.length;
-        document.getElementById("stat-promos") &&
-          (document.getElementById("stat-promos").textContent = promos.filter(
-            (p) => p.status === "active",
-          ).length);
 
         const now = new Date();
         const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
@@ -627,7 +580,6 @@
         dashboard: "Dashboard",
         products: "Products",
         categories: "Categories",
-        promos: "Promo Codes",
         delivery: "Delivery Prices",
         bundle: "Bundle",
         orders: "Orders",
@@ -652,7 +604,7 @@
         sb.auth.signOut();
         sessionStorage.removeItem("bb_admin_auth");
         sessionStorage.removeItem("bb_admin_name");
-        window.location.href = "/supplements/mgmt9kx";
+        window.location.href = "/mgmt9kx";
       }
 
       // ════════════════════════════════════════════
@@ -798,22 +750,6 @@
                   `${v.weight}${v.unit} — ${Number(v.price).toLocaleString()} DA`,
               )
               .join("<br>");
-            const promoNames = (p.promoCodeIds || [])
-              .map((id) => {
-                const pr = promos.find((x) => x.id === id);
-                return pr ? pr.code : "";
-              })
-              .filter(Boolean);
-            const promoStr = p.allowPromo
-              ? promoNames.length
-                ? promoNames
-                    .map(
-                      (c) =>
-                        `<span class="code-tag" style="margin:1px">${c}</span>`,
-                    )
-                    .join(" ")
-                : '<span class="badge badge-active">All</span>'
-              : '<span class="badge badge-inactive">No</span>';
             const _firstImg = Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl;
             const imgHtml = _firstImg
               ? `<img src="${_firstImg}" alt="" />`
@@ -824,7 +760,6 @@
           <td><span style="font-size:12px">${catNames}${subNames ? '<br><span style="color:var(--g400)">' + subNames + "</span>" : ""}</span></td>
           <td style="font-size:12px;color:var(--g600)">${flavorStr || "—"}</td>
           <td style="font-size:12px">${variantStr || "—"}</td>
-          <td>${promoStr}</td>
           <td>${p.stock}</td>
           <td><span class="badge badge-${p.status}">${cap(p.status)}</span>${p.hidden ? '<span class="badge" style="margin-left:4px;background:#f3f4f6;color:#6b7280;border:1px solid #e5e7eb">Hidden</span>' : ''}</td>
           <td><div class="action-group"><button class="act-btn act-edit" onclick="editProduct('${p.id}')">Edit</button><button class="act-btn ${p.hidden ? 'act-confirm' : ''}" style="gap:4px" onclick="toggleProductVisibility('${p.id}',${p.hidden})">${p.hidden ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Show' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>Hide'}</button><button class="act-btn act-delete" onclick="confirmDelete('product','${p.id}')">Delete</button></div></td>
@@ -847,13 +782,6 @@
         buildCheckboxGroup("pm-subcategories", filteredSubs, validSubIds);
       }
 
-      function togglePromoSection() {
-        const on = document.getElementById("pm-promo-toggle").checked;
-        document.getElementById("pm-promo-section").style.display = on
-          ? ""
-          : "none";
-      }
-
       function openProductModal(id = null) {
         editingProductId = id;
         currentImageUrls = [];
@@ -870,13 +798,9 @@
             document.getElementById("pm-name").value = p.name;
             document.getElementById("pm-brand").value = p.brand || "";
             document.getElementById("pm-desc").innerHTML = p.description || "";
-            document.getElementById("pm-nutritional").innerHTML = p.nutritionalFacts || "";
-            document.getElementById("pm-benefits").innerHTML = p.benefits || "";
             document.getElementById("pm-stock").value = p.stock;
             document.getElementById("pm-discount").value = p.discount;
             document.getElementById("pm-status").value = p.status;
-            document.getElementById("pm-promo-toggle").checked =
-              p.allowPromo !== false;
             currentImageUrls = Array.isArray(p.imageUrl) ? [...p.imageUrl] : (p.imageUrl ? [p.imageUrl] : []);
             renderImageGrid();
             buildCheckboxGroup(
@@ -896,15 +820,6 @@
                 p.subCategoryIds || [],
               );
             }, 30);
-            const activePromos = promos.filter((pr) => pr.status === "active");
-            buildCheckboxGroup(
-              "pm-promo-codes",
-              activePromos.map((pr) => ({ 
-                id: pr.id, 
-                name: pr.code + ( (pr.applyToAll===true || String(pr.applyToAll).toUpperCase()==="TRUE") ? " (Global)" : "" ) 
-              })),
-              p.promoCodeIds || [],
-            );
             document.getElementById("variants-list").innerHTML = "";
             document.getElementById("flavors-list").innerHTML = "";
             (p.variants || []).forEach((v) => addVariant(v));
@@ -916,8 +831,6 @@
             (x) => (document.getElementById(x).value = ""),
           );
           document.getElementById("pm-desc").innerHTML = "";
-          document.getElementById("pm-nutritional").innerHTML = "";
-          document.getElementById("pm-benefits").innerHTML = "";
           document.getElementById("variants-list").innerHTML = "";
           document.getElementById("flavors-list").innerHTML = "";
           document.getElementById("stock-matrix-section").style.display = "none";
@@ -925,7 +838,6 @@
           document.getElementById("pm-stock").readOnly = false;
           document.getElementById("pm-stock-hint").style.display = "none";
           document.getElementById("pm-status").value = "active";
-          document.getElementById("pm-promo-toggle").checked = true;
           buildCheckboxGroup(
             "pm-categories",
             categories,
@@ -933,19 +845,9 @@
             "refreshSubCatCheckboxes",
           );
           buildCheckboxGroup("pm-subcategories", [], []);
-          const activePromos = promos.filter((pr) => pr.status === "active");
-          buildCheckboxGroup(
-            "pm-promo-codes",
-            activePromos.map((pr) => ({ 
-              id: pr.id, 
-              name: pr.code + ( (pr.applyToAll===true || String(pr.applyToAll).toUpperCase()==="TRUE") ? " (Global)" : "" ) 
-            })),
-            [],
-          );
           addVariant();
           addFlavor();
         }
-        togglePromoSection();
         openModal("product-modal");
       }
 
@@ -1085,9 +987,6 @@
         }
         const categoryIds = getCheckedValues("pm-categories");
         const subCategoryIds = getCheckedValues("pm-subcategories");
-        const promoCodeIds = document.getElementById("pm-promo-toggle").checked
-          ? getCheckedValues("pm-promo-codes")
-          : [];
         const showMatrix = document.getElementById("stock-matrix-section").style.display !== "none";
         const showVStock = document.getElementById("variant-stock-section").style.display !== "none";
 
@@ -1133,15 +1032,11 @@
           categoryIds,
           subCategoryIds,
           description: document.getElementById("pm-desc").innerHTML.trim(),
-          nutritionalFacts: document.getElementById("pm-nutritional").innerHTML.trim(),
-          benefits: document.getElementById("pm-benefits").innerHTML.trim(),
           imageUrl: currentImageUrls,
           variants,
           flavors,
           stock: globalStock,
           discount: parseInt(document.getElementById("pm-discount").value) || 0,
-          allowPromo: document.getElementById("pm-promo-toggle").checked,
-          promoCodeIds,
           status: document.getElementById("pm-status").value,
         };
         document.getElementById("pm-save-btn").disabled = true;
@@ -1301,143 +1196,6 @@
       }
 
       // ════════════════════════════════════════════
-      // PROMOS
-      // ════════════════════════════════════════════
-      function renderPromos() {
-        _selReset("promo");
-        const tbody = document.getElementById("promos-tbody");
-        if (!promos.length) {
-          tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><p>No promo codes</p></div></td></tr>`;
-          return;
-        }
-        tbody.innerHTML = promos
-          .map((p) => {
-            const typeLabel =
-              p.type === "percent"
-                ? "Percentage"
-                : p.type === "fixed"
-                  ? "Fixed"
-                  : "Free Delivery";
-            const valStr =
-              p.type === "free_delivery"
-                ? "—"
-                : p.type === "percent"
-                  ? p.value + "%"
-                  : p.value.toLocaleString() + " DA";
-            const appliesToAll = p.applyToAll === true || String(p.applyToAll).toUpperCase() === "TRUE";
-            const targetStr = appliesToAll
-              ? '<span class="badge badge-active" style="margin-top:4px">All Products</span>' 
-              : '<span class="badge badge-inactive" style="margin-top:4px">Specific Only</span>';
-            return `<tr><td class="cb-td"><input type="checkbox" class="row-cb" data-sel-type="promo" data-sel-id="${p.id}" onchange="_selToggle('promo','${p.id}',this.checked)"></td>
-          <td><span class="code-tag">${p.code}</span><br>${targetStr}</td>
-          <td>${typeLabel}</td><td><strong>${valStr}</strong></td><td>${p.minOrder ? p.minOrder.toLocaleString() + " DA" : "—"}</td><td>${p.uses}${p.maxUses ? " / " + p.maxUses : ""}</td><td style="font-size:12px;color:var(--g600)">${p.expiry || "—"}</td><td><span class="badge badge-${p.status}">${cap(p.status)}</span></td><td><div class="action-group"><button class="act-btn act-edit" onclick="editPromo('${p.id}')">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('promo','${p.id}')">Delete</button></div></td></tr>`;
-          })
-          .join("");
-      }
-      function updatePromoValueLabel() {
-        const t = document.getElementById("promo-type").value;
-        const row = document.getElementById("promo-value-row");
-        if (t === "free_delivery") {
-          row.style.display = "none";
-        } else {
-          row.style.display = "";
-          document.getElementById("promo-value-label").textContent =
-            t === "percent" ? "Percentage (%) *" : "Amount (DA) *";
-        }
-      }
-      function openPromoModal(id = null) {
-        editingPromoId = id;
-        document.getElementById("promo-modal-title").textContent = id
-          ? "Edit Promo Code"
-          : "New Promo Code";
-        if (id) {
-          const p = promos.find((x) => x.id === id);
-          if (p) {
-            document.getElementById("promo-code").value = p.code;
-            document.getElementById("promo-type").value = p.type;
-            document.getElementById("promo-value").value = p.value || "";
-            document.getElementById("promo-min").value = p.minOrder || "";
-            document.getElementById("promo-max-uses").value = p.maxUses || "";
-            document.getElementById("promo-expiry").value = p.expiry || "";
-            document.getElementById("promo-status").value = p.status;
-            document.getElementById("promo-apply-all").checked = p.applyToAll === true || String(p.applyToAll).toUpperCase() === "TRUE";
-          }
-        } else {
-          [
-            "promo-code",
-            "promo-value",
-            "promo-min",
-            "promo-max-uses",
-            "promo-expiry",
-          ].forEach((x) => (document.getElementById(x).value = ""));
-          document.getElementById("promo-type").value = "percent";
-          document.getElementById("promo-status").value = "active";
-          document.getElementById("promo-apply-all").checked = false;
-        }
-        updatePromoValueLabel();
-        openModal("promo-modal");
-      }
-      function editPromo(id) {
-        openPromoModal(id);
-      }
-      async function savePromo() {
-        const code = document
-          .getElementById("promo-code")
-          .value.trim()
-          .toUpperCase();
-        const type = document.getElementById("promo-type").value;
-        const value =
-          type === "free_delivery"
-            ? 0
-            : parseFloat(document.getElementById("promo-value").value);
-        if (!code) {
-          showToast("Code required", "error");
-          return;
-        }
-        if (type !== "free_delivery" && !value) {
-          showToast("Value required", "error");
-          return;
-        }
-        const duplicate = promos.find(p => p.code.toUpperCase() === code && p.id !== editingPromoId);
-        if (duplicate) {
-          showToast("A promo code with this name already exists", "error");
-          return;
-        }
-        const payload = {
-          code,
-          type,
-          value,
-          minOrder: parseFloat(document.getElementById("promo-min").value) || 0,
-          maxUses:
-            parseInt(document.getElementById("promo-max-uses").value) || null,
-          expiry: document.getElementById("promo-expiry").value,
-          status: document.getElementById("promo-status").value,
-          applyToAll: document.getElementById("promo-apply-all").checked,
-        };
-        showLoading("Saving promo…");
-        try {
-          payload.action = editingPromoId ? "updatePromo" : "addPromo";
-          if (editingPromoId) payload.id = editingPromoId;
-          const r = await apiPost(payload);
-          if (r.success) {
-            showToast(editingPromoId ? "Promo updated!" : "Promo created!");
-            closeModal("promo-modal");
-            if (editingPromoId) {
-              const idx = promos.findIndex(p => p.id === editingPromoId);
-              if (idx >= 0) promos[idx] = { ...promos[idx], ...payload, id: editingPromoId, uses: promos[idx].uses || 0 };
-            } else {
-              promos.push({ ...payload, id: r.id || ("tmp_promo_" + Date.now()), uses: 0 });
-            }
-            renderPromos();
-            updateDashboard();
-          } else showToast("Error: " + (r.error || "Unknown"), "error");
-        } catch (e) {
-          showToast("Error: " + e.message, "error");
-        }
-        hideLoading();
-      }
-
-      // ════════════════════════════════════════════
       // SETTINGS
       // ════════════════════════════════════════════
       async function saveUsername() {
@@ -1577,7 +1335,6 @@
           product: "This product will be permanently deleted.",
           cat: "This category and its sub-categories will be removed.",
           subcat: "This sub-category will be removed.",
-          promo: "This promo code will be deleted.",
           delivery: "This delivery price will be permanently deleted.",
           order: "This order will be permanently deleted and cannot be recovered.",
         };
@@ -1591,7 +1348,6 @@
             if (type === "product") action = "deleteProduct";
             else if (type === "cat") action = "deleteCategory";
             else if (type === "subcat") action = "deleteSubCategory";
-            else if (type === "promo") action = "deletePromo";
             else if (type === "delivery") action = "deleteDeliveryPrice";
             else if (type === "order") action = "deleteOrder";
             const r = await apiPost({ action, id });
@@ -1611,9 +1367,6 @@
                   } else if (type === "subcat") {
                 subCategories = subCategories.filter(s => s.id !== id);
                 renderCats();
-                  } else if (type === "promo") {
-                promos = promos.filter(p => p.id !== id);
-                renderPromos();
                   } else if (type === "delivery") {
                 deliveryPrices = deliveryPrices.filter(d => d.id !== id);
                 renderDelivery();
@@ -1639,7 +1392,7 @@
       // MULTI-SELECT DELETE
       // ════════════════════════════════════════════
       const _sel = {
-        product: new Set(), cat: new Set(), promo: new Set(),
+        product: new Set(), cat: new Set(),
         delivery: new Set(), order: new Set()
       };
 
@@ -1698,14 +1451,14 @@
         const ids = [..._sel[type]];
         if (!ids.length) return;
         const n = ids.length;
-        const labels = { product: "product", cat: "category", promo: "promo code", delivery: "delivery price", order: "order" };
+        const labels = { product: "product", cat: "category", delivery: "delivery price", order: "order" };
         const typeLabel = labels[type] || type;
         document.getElementById("confirm-msg").textContent =
           "Delete " + n + " selected " + typeLabel + (n !== 1 ? "s" : "") + "? This cannot be undone.";
         document.getElementById("confirm-ok").onclick = async () => {
           closeConfirm();
           showLoading("Deleting " + n + " items…");
-          const actionMap = { product: "deleteProduct", cat: "deleteCategory", promo: "deletePromo", delivery: "deleteDeliveryPrice", order: "deleteOrder" };
+          const actionMap = { product: "deleteProduct", cat: "deleteCategory", delivery: "deleteDeliveryPrice", order: "deleteOrder" };
           const action = actionMap[type];
           let failed = 0;
           const deletedIds = [];
@@ -1726,9 +1479,6 @@
             categories = categories.filter(c => !deletedSet.has(c.id));
             subCategories = subCategories.filter(s => !(s.categoryIds || []).some(cid => deletedSet.has(cid)));
             renderCats();
-          } else if (type === "promo") {
-            promos = promos.filter(p => !deletedSet.has(p.id));
-            renderPromos();
           } else if (type === "delivery") {
             deliveryPrices = deliveryPrices.filter(d => !deletedSet.has(d.id));
             renderDelivery();
@@ -2183,10 +1933,6 @@
           )
           .join("");
 
-        const promoRow = o.promoCode
-          ? `<div class="summary-row"><span>Promo (${o.promoCode})</span><span style="color:var(--green)">-${Number(o.promoDiscount || 0).toLocaleString("fr-DZ")} DA</span></div>`
-          : "";
-
         document.getElementById("order-detail-body").innerHTML = `
           <div class="order-detail-section">
             <div class="order-detail-title">Customer Info</div>
@@ -2216,7 +1962,6 @@
             <div class="order-detail-title">Summary</div>
             <div class="order-detail-summary">
               <div class="summary-row"><span>Subtotal</span><span>${Number(o.subtotal || 0).toLocaleString("fr-DZ")} DA</span></div>
-              ${promoRow}
               <div class="summary-row"><span>Delivery (${o.deliveryType === "home" ? "Home" : "Office"})</span><span>${Number(o.deliveryCost || 0).toLocaleString("fr-DZ")} DA</span></div>
               <div class="summary-row total-row"><span>Total</span><strong>${Number(o.total || 0).toLocaleString("fr-DZ")} DA</strong></div>
             </div>

@@ -1,22 +1,22 @@
 {
   "cleanUrls": true,
   "redirects": [
-    { "source": "/", "destination": "/supplements", "permanent": true },
-    { "source": "/products", "destination": "/supplements/products", "permanent": true },
-    { "source": "/product-detail", "destination": "/supplements/product-detail", "permanent": true },
-    { "source": "/checkout", "destination": "/supplements/checkout", "permanent": true },
-    { "source": "/mgmt9kx", "destination": "/supplements/mgmt9kx", "permanent": false },
-    { "source": "/panel4rz", "destination": "/supplements/panel4rz", "permanent": false },
-    { "source": "/privacy", "destination": "/supplements/privacy", "permanent": true }
+    { "source": "/supplements", "destination": "/", "permanent": true },
+    { "source": "/supplements/products", "destination": "/products", "permanent": true },
+    { "source": "/supplements/product-detail", "destination": "/product-detail", "permanent": true },
+    { "source": "/supplements/checkout", "destination": "/checkout", "permanent": true },
+    { "source": "/supplements/mgmt9kx", "destination": "/mgmt9kx", "permanent": false },
+    { "source": "/supplements/panel4rz", "destination": "/panel4rz", "permanent": false },
+    { "source": "/supplements/privacy", "destination": "/privacy", "permanent": true }
   ],
   "rewrites": [
-    { "source": "/supplements", "destination": "/supplements/home" },
-    { "source": "/supplements/checkout", "destination": "/supplements/checkout" },
-    { "source": "/supplements/products", "destination": "/supplements/products" },
-    { "source": "/supplements/product-detail", "destination": "/supplements/product-detail" },
-    { "source": "/supplements/mgmt9kx", "destination": "/supplements/mgmt9kx" },
-    { "source": "/supplements/panel4rz", "destination": "/supplements/panel4rz" },
-    { "source": "/supplements/privacy", "destination": "/supplements/privacy" }
+    { "source": "/", "destination": "/supplements/home" },
+    { "source": "/products", "destination": "/supplements/products" },
+    { "source": "/product-detail", "destination": "/supplements/product-detail" },
+    { "source": "/checkout", "destination": "/supplements/checkout" },
+    { "source": "/mgmt9kx", "destination": "/supplements/mgmt9kx" },
+    { "source": "/panel4rz", "destination": "/supplements/panel4rz" },
+    { "source": "/privacy", "destination": "/supplements/privacy" }
   ],
   "headers": [
     {

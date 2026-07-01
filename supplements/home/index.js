@@ -436,7 +436,7 @@ function cartRemove(idx) {
   const items = cartGet(); items.splice(idx, 1);
   cartSave(items); cartUpdateBadge(); _renderCartDrawer();
 }
-function cartCheckout() { window.location.href = "/supplements/checkout"; }
+function cartCheckout() { window.location.href = "/checkout"; }
 
 /* ─────────────────────────────────────────────────────────────
    PRODUCTS DATA — loaded from Supabase
@@ -525,7 +525,7 @@ function renderProducts(lang) {
         : `<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
 
       return `
-<article class="product-card" onclick="window.location.href='/supplements/product-detail?id=${p.id}'" style="cursor:pointer">
+<article class="product-card" onclick="window.location.href='/product-detail?id=${p.id}'" style="cursor:pointer">
   <div class="product-img">
     ${imgEl}
     ${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ''}
@@ -576,15 +576,6 @@ function sanitizeFooterAndModals(lang) {
     }
   }
 
-  // Replace footer logo image with text logo
-  const footerLogo = document.querySelector('.footer-brand .logo');
-  if (footerLogo && !footerLogo.querySelector('.logo-text')) {
-    footerLogo.innerHTML = `
-      <span class="logo-text" style="font-family: var(--font-display); font-size: 18px; font-weight: 500; letter-spacing: 2px; color: var(--black); text-transform: uppercase; line-height: 1;">
-        LUXURY <span class="logo-gold" style="color: var(--gold);">SECRET</span>
-      </span>
-    `;
-  }
 
   // Sanitize modal header texts
   document.querySelectorAll('.about-brand').forEach(brand => {
@@ -643,7 +634,7 @@ function switchLang(lang) {
 }
 
 function buyNow(id) {
-  window.location.href = `/supplements/product-detail?id=${id}`;
+  window.location.href = `/product-detail?id=${id}`;
 }
 
 function toggleWishlist(btn) {
@@ -697,7 +688,7 @@ function handleSearch(query) {
       ? `<img src="${_t0}" alt="${p.name}" />`
       : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
     return `
-      <div class="search-drop-item" onclick="closeSearchDropdown(); window.location.href='/supplements/products?search=${encodeURIComponent(p.name)}'">
+      <div class="search-drop-item" onclick="closeSearchDropdown(); window.location.href='/products?search=${encodeURIComponent(p.name)}'">
         <div class="search-drop-thumb">${thumb}</div>
         <div class="search-drop-info">
           <p class="search-drop-brand">${p.brand || ""}</p>
@@ -825,7 +816,7 @@ async function loadInitialData() {
         const link = document.getElementById("bundleBannerLink");
         const _bundleImg0 = Array.isArray(product.imageUrl) ? product.imageUrl[0] : product.imageUrl;
         if (img && _bundleImg0) { img.src = _bundleImg0; img.style.display = ""; }
-        if (link) link.href = `/supplements/product-detail?id=${product.id}`;
+        if (link) link.href = `/product-detail?id=${product.id}`;
         const section = document.getElementById("featuredBannerSection");
         if (section) section.style.display = "";
       }
@@ -846,13 +837,13 @@ async function loadInitialData() {
             s.categoryIds.includes(cat.id),
           );
           if (subs.length === 0) {
-            return `<div class="cat-item"><a href="/supplements/products?cat=${encodeURIComponent(cat.id)}" class="cat-link">${cat.name}</a></div>`;
+            return `<div class="cat-item"><a href="/products?cat=${encodeURIComponent(cat.id)}" class="cat-link">${cat.name}</a></div>`;
           }
           return `
             <div class="cat-item">
-              <a href="/supplements/products?cat=${encodeURIComponent(cat.id)}" class="cat-link">${cat.name} ${chevron}</a>
+              <a href="/products?cat=${encodeURIComponent(cat.id)}" class="cat-link">${cat.name} ${chevron}</a>
               <div class="dropdown" role="menu">
-                ${subs.map((s) => `<a href="/supplements/products?sub=${encodeURIComponent(s.id)}" role="menuitem">${s.name}</a>`).join("")}
+                ${subs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.id)}" role="menuitem">${s.name}</a>`).join("")}
               </div>
             </div>`;
         })
@@ -864,7 +855,7 @@ async function loadInitialData() {
     if (footerList) {
       footerList.innerHTML = categories
         .slice(0, 6)
-        .map((cat) => `<li><a href="/supplements/products?cat=${encodeURIComponent(cat.id)}">${cat.name}</a></li>`)
+        .map((cat) => `<li><a href="/products?cat=${encodeURIComponent(cat.id)}">${cat.name}</a></li>`)
         .join("");
     }
 
@@ -877,7 +868,7 @@ async function loadInitialData() {
             s.categoryIds.includes(cat.id),
           );
           if (subs.length === 0) {
-            return `<a href="/supplements/products?cat=${encodeURIComponent(cat.id)}" class="m-link">${cat.name}</a>`;
+            return `<a href="/products?cat=${encodeURIComponent(cat.id)}" class="m-link">${cat.name}</a>`;
           }
           return `
             <div class="m-cat-item">
@@ -885,7 +876,7 @@ async function loadInitialData() {
                 ${cat.name} <span class="m-arrow">›</span>
               </button>
               <div class="m-sub">
-                ${subs.map((s) => `<a href="/supplements/products?sub=${encodeURIComponent(s.id)}" class="m-sub-link">${s.name}</a>`).join("")}
+                ${subs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.id)}" class="m-sub-link">${s.name}</a>`).join("")}
               </div>
             </div>`;
         })
@@ -974,7 +965,7 @@ function handleMobileSearch(query) {
           ? `<img src="${_i0}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:0px;" />`
           : `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
         return `
-<div onclick="window.location.href='/supplements/products?search=${encodeURIComponent(p.name)}'" style="display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--gray-200); cursor:pointer;">
+<div onclick="window.location.href='/products?search=${encodeURIComponent(p.name)}'" style="display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--gray-200); cursor:pointer;">
   <div style="width:48px; height:48px; background:var(--gray-50); border-radius:0px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:1px solid var(--gray-200); overflow:hidden;">
     ${imgEl}
   </div>

@@ -1,8 +1,8 @@
 ﻿      /* ══════════════════════════════════════════════════════
          CONFIG
       ══════════════════════════════════════════════════════ */
-      const SUPABASE_URL = "https://dbezrrzmcosxdoorbrgx.supabase.co";
-      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiZXpycnptY29zeGRvb3Jicmd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MTgxMTksImV4cCI6MjA5NTI5NDExOX0.xTBBzmLVX6uuqs-oaPifj-DvpBWIEaPZgQIsMIqbRew";
+      const SUPABASE_URL = "https://zuprsewbheqpahwrlwll.supabase.co";
+      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1cHJzZXdiaGVxcGFod3Jsd2xsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2OTAyNzcsImV4cCI6MjA5ODI2NjI3N30._Xyvx93Wj2kRoi4Drh_sDPBh24sU2Lcol6k27VuArnA";
       const PAGE_LOAD_TIME = Date.now(); // used for bot timing check
       // getInitialData is provided by supabase-client.js
 
@@ -91,9 +91,6 @@
         }
         return { home: 0, office: 0 };
       }
-      let _allPromos = [];
-      let appliedPromos = []; // all validated promo objects (stacked)
-
       /* ── HELPERS ── */
       /**
        * Safely parse a value that might be:
@@ -146,12 +143,12 @@
           if (catSubs.length > 0) {
             // With dropdown — wrapped in .cat-item for hover to work
             dHTML += `<div class="cat-item">
-              <a href="/supplements/products" class="cat-link">
+              <a href="/products" class="cat-link">
                 ${cat.name}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
               </a>
               <div class="dropdown">
-                ${catSubs.map((s) => `<a href="/supplements/products?sub=${encodeURIComponent(s.name)}">${s.name}</a>`).join("")}
+                ${catSubs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.name)}">${s.name}</a>`).join("")}
               </div>
             </div>`;
             mHTML += `<div class="m-cat-item">
@@ -159,13 +156,13 @@
                 ${cat.name} <span class="m-arrow">›</span>
               </button>
               <div class="m-sub">
-                ${catSubs.map((s) => `<a href="/supplements/products?sub=${encodeURIComponent(s.name)}" class="m-sub-link">${s.name}</a>`).join("")}
+                ${catSubs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.name)}" class="m-sub-link">${s.name}</a>`).join("")}
               </div>
             </div>`;
           } else {
             // No sub-categories — still wrap in .cat-item for consistent hover underline
-            dHTML += `<div class="cat-item"><a href="/supplements/products" class="cat-link">${cat.name}</a></div>`;
-            mHTML += `<a href="/supplements/products" class="mobile-nav-link">${cat.name}</a>`;
+            dHTML += `<div class="cat-item"><a href="/products" class="cat-link">${cat.name}</a></div>`;
+            mHTML += `<a href="/products" class="mobile-nav-link">${cat.name}</a>`;
           }
         });
 
@@ -185,7 +182,6 @@
           _allCategories = res.categories || [];
           _allSubCategories = res.subCategories || [];
           _deliveryPrices = res.deliveryPrices || [];
-          _allPromos = res.promos || [];
           const bundle = res.bundle || {};
           if (bundle.bundleId) _bundleId = bundle.bundleId;
 
@@ -200,18 +196,16 @@
               (productId ? products.find((x) => x.id === productId) : null) ||
               products[0];
             if (p) {
-              // Fetch heavy text fields (description, benefits, nutritional_facts) for this product only
+              // Fetch description for this product only
               try {
                 const detailRes = await fetch(
-                  `${SUPABASE_URL}/rest/v1/products?select=description,benefits,nutritional_facts&id=eq.${p.id}`,
+                  `${SUPABASE_URL}/rest/v1/products?select=description&id=eq.${p.id}`,
                   { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY } }
                 );
                 if (detailRes.ok) {
                   const detail = await detailRes.json();
                   if (detail && detail[0]) {
                     p.description = detail[0].description || "";
-                    p.benefits = detail[0].benefits || "";
-                    p.nutritionalFacts = detail[0].nutritional_facts || "";
                   }
                 }
               } catch (e) { /* non-critical, page still works */ }
@@ -225,7 +219,7 @@
               if (footerList) {
                 footerList.innerHTML = _allCategories
                   .slice(0, 6)
-                  .map((cat) => `<li><a href="/supplements/products?cat=${encodeURIComponent(cat.id)}">${cat.name}</a></li>`)
+                  .map((cat) => `<li><a href="/products?cat=${encodeURIComponent(cat.id)}">${cat.name}</a></li>`)
                   .join("");
               }
             }
@@ -288,7 +282,7 @@
               : `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
             const badge = computeBadge(p, _bundleId, _topSoldIds);
             return `
-            <div class="also-card" onclick="window.location.href='/supplements/product-detail?id=${p.id}'" style="cursor:pointer">
+            <div class="also-card" onclick="window.location.href='/product-detail?id=${p.id}'" style="cursor:pointer">
               <div class="also-card-img">${img}${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ""}</div>
               <div class="also-card-body">
                 <div class="also-card-name">${p.name}</div>
@@ -302,7 +296,7 @@
                     Add to Cart
                   </button>`
                   }
-                  <button class="also-btn-buy" onclick="event.stopPropagation();window.location.href='/supplements/product-detail?id=${p.id}'">
+                  <button class="also-btn-buy" onclick="event.stopPropagation();window.location.href='/product-detail?id=${p.id}'">
                     Buy Now
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
                   </button>
@@ -393,26 +387,6 @@
         document.getElementById("productDescription").innerHTML =
           p.description ||
           `${p.name} by ${p.brand} — a premium sports nutrition product.`;
-
-        // Nutritional Facts (optional)
-        const nutBox = document.getElementById("productNutritionalFactsBox");
-        const nutEl = document.getElementById("productNutritionalFacts");
-        if (p.nutritionalFacts && p.nutritionalFacts.trim()) {
-          nutEl.innerHTML = p.nutritionalFacts;
-          nutBox.style.display = "";
-        } else {
-          nutBox.style.display = "none";
-        }
-
-        // Benefits (optional)
-        const benBox = document.getElementById("productBenefitsBox");
-        const benEl = document.getElementById("productBenefits");
-        if (p.benefits && p.benefits.trim()) {
-          benEl.innerHTML = p.benefits;
-          benBox.style.display = "";
-        } else {
-          benBox.style.display = "none";
-        }
 
         // ── VARIANTS (weight/size) pills ──
         const weightGroup = document.getElementById("weightGroup");
@@ -517,13 +491,6 @@
           if (oosNotice) oosNotice.style.display = "none";
         }
 
-        // ── PROMO CODE field: show only if allowPromo is truthy ──
-        const allowPromo =
-          p.allowPromo === true ||
-          String(p.allowPromo).toUpperCase() === "TRUE";
-        document.getElementById("promoSection").style.display = allowPromo
-          ? ""
-          : "none";
       }
 
       /* ── Update just the price display (not summary) ── */
@@ -737,32 +704,7 @@
         const notice = document.getElementById("bulkNotice");
         if (notice) notice.style.display = selectedQty >= 5 ? "flex" : "none";
 
-        revalidateAppliedPromos();
         updateSummary();
-      }
-
-      function revalidateAppliedPromos() {
-        if (!appliedPromos.length) return;
-        const p = selectedProduct;
-        if (!p) return;
-        const variantPrice = getProductPrice(p, selectedVariantIndex);
-        const subtotal = variantPrice * selectedQty;
-        const removed = [];
-        appliedPromos = appliedPromos.filter((pr) => {
-          if (pr.minOrder && subtotal < pr.minOrder) {
-            removed.push(pr.code);
-            return false;
-          }
-          return true;
-        });
-        if (removed.length) {
-          renderPromoTagsPD();
-          const msgEl = document.getElementById("promoMsg");
-          if (msgEl) {
-            msgEl.style.color = "var(--red)";
-            msgEl.textContent = `✗ ${removed.join(", ")} removed — order total is below the minimum.`;
-          }
-        }
       }
 
       /* ── DELIVERY ── */
@@ -809,144 +751,11 @@
             : "Select wilaya";
 
         const subtotal = variantPrice * selectedQty;
-        const { discount, freeDelivery } = getPromoDiscount(subtotal, cost);
-        const deliveryCharge = selectedWilayaCode
-          ? freeDelivery
-            ? 0
-            : cost
-          : 0;
-        const total = subtotal + deliveryCharge - discount;
+        const deliveryCharge = selectedWilayaCode ? cost : 0;
+        const total = subtotal + deliveryCharge;
 
-        if (freeDelivery) {
-          document.getElementById("summaryDelivery").textContent = "FREE 🎉";
-        }
-
-        let promoLabel = "";
-        if (appliedPromos.length && discount > 0) {
-          promoLabel = `(−${discount.toLocaleString("fr-DZ")} DA) `;
-        }
         document.getElementById("summaryTotal").textContent =
-          promoLabel + total.toLocaleString("fr-DZ") + " DA";
-      }
-
-      /* ── PROMO CODE ── */
-      function renderPromoTagsPD() {
-        const container = document.getElementById("promoTagsPD");
-        if (!container) return;
-        container.innerHTML = appliedPromos
-          .map((pr) => {
-            let label = pr.code;
-            if (pr.type === "percent") label += ` (${pr.value}% off)`;
-            else if (pr.type === "fixed")
-              label += ` (−${pr.value.toLocaleString("fr-DZ")} DA)`;
-            else if (pr.type === "free_delivery") label += " (Free delivery)";
-            return `<span style="display:inline-flex;align-items:center;gap:5px;background:#e6f4ec;color:#0a7c3e;border:1px solid #b2dfcc;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:600;">
-            ${label}
-            <button onclick="removePromoPD('${pr.id}')" style="background:none;border:none;cursor:pointer;color:#0a7c3e;font-size:14px;line-height:1;padding:0;margin-left:2px;">×</button>
-          </span>`;
-          })
-          .join("");
-      }
-
-      function removePromoPD(id) {
-        appliedPromos = appliedPromos.filter((pr) => pr.id !== id);
-        renderPromoTagsPD();
-        const msgEl = document.getElementById("promoMsg");
-        if (msgEl) msgEl.textContent = "";
-        updateSummary();
-      }
-
-      function applyPromo() {
-        const input = document.getElementById("promoCode");
-        const code = input.value.trim().toUpperCase();
-        const msgEl = document.getElementById("promoMsg");
-        if (!code) {
-          msgEl.style.color = "var(--red)";
-          msgEl.textContent = "Please enter a promo code.";
-          return;
-        }
-
-        // Already applied?
-        if (appliedPromos.some((pr) => pr.code.toUpperCase() === code)) {
-          msgEl.style.color = "var(--red)";
-          msgEl.textContent = "✗ This code is already applied.";
-          return;
-        }
-
-        const promo = _allPromos.find((pr) => pr.code.toUpperCase() === code);
-        if (!promo) {
-          msgEl.style.color = "var(--red)";
-          msgEl.textContent = "✗ Invalid promo code.";
-          return;
-        }
-        if (promo.status !== "active") {
-          msgEl.style.color = "var(--red)";
-          msgEl.textContent = "✗ This promo code is no longer active.";
-          return;
-        }
-        if (promo.expiry) {
-          const expiry = new Date(promo.expiry);
-          expiry.setHours(23, 59, 59, 999);
-          if (expiry < new Date()) {
-            msgEl.style.color = "var(--red)";
-            msgEl.textContent = "✗ This promo code has expired.";
-            return;
-          }
-        }
-        if (promo.maxUses && promo.uses >= promo.maxUses) {
-          msgEl.style.color = "var(--red)";
-          msgEl.textContent = "✗ This promo code has reached its usage limit.";
-          return;
-        }
-
-        // Product link check
-        const p = selectedProduct;
-        const isGlobalPromo = promo.applyToAll === true || String(promo.applyToAll).toUpperCase() === "TRUE";
-        if (!isGlobalPromo && p && p.promoCodeIds && p.promoCodeIds.length > 0) {
-          if (!p.promoCodeIds.includes(promo.id)) {
-            msgEl.style.color = "var(--red)";
-            msgEl.textContent = "✗ This code is not valid for this product.";
-            return;
-          }
-        }
-
-        // Min order check
-        const variantPrice = getProductPrice(p, selectedVariantIndex);
-        const subtotal = variantPrice * selectedQty;
-        if (promo.minOrder && subtotal < promo.minOrder) {
-          msgEl.style.color = "var(--red)";
-          msgEl.textContent = `✗ Minimum order of ${promo.minOrder.toLocaleString("fr-DZ")} DA required.`;
-          return;
-        }
-
-        // All checks passed — add to stack
-        appliedPromos.push(promo);
-        input.value = "";
-        msgEl.style.color = "#0a7c3e";
-        if (promo.type === "percent")
-          msgEl.textContent = `✓ Code applied! ${promo.value}% off`;
-        else if (promo.type === "fixed")
-          msgEl.textContent = `✓ Code applied! −${promo.value.toLocaleString("fr-DZ")} DA`;
-        else if (promo.type === "free_delivery")
-          msgEl.textContent = "✓ Code applied! Free delivery";
-        renderPromoTagsPD();
-        updateSummary();
-      }
-
-      function getPromoDiscount(subtotal, deliveryCost) {
-        if (!appliedPromos.length) return { discount: 0, freeDelivery: false };
-        let discount = 0;
-        let freeDelivery = false;
-        for (const pr of appliedPromos) {
-          if (pr.type === "percent")
-            discount += Math.round(subtotal * (pr.value / 100));
-          else if (pr.type === "fixed")
-            discount += Math.min(pr.value, subtotal);
-          else if (pr.type === "free_delivery") freeDelivery = true;
-        }
-        // Cap discount at subtotal so total never goes negative
-        discount = Math.min(discount, subtotal);
-        return { discount, freeDelivery };
+          total.toLocaleString("fr-DZ") + " DA";
       }
 
       /* ══════════════════════════════════════════════════════
@@ -3101,9 +2910,8 @@
         const cost = getDeliveryCost()[selectedDelivery];
         const variantPrice = getProductPrice(p, selectedVariantIndex);
         const subtotal = variantPrice * selectedQty;
-        const { discount, freeDelivery } = getPromoDiscount(subtotal, cost);
-        const deliveryCharge = freeDelivery ? 0 : cost;
-        const totalNum = subtotal + deliveryCharge - discount;
+        const deliveryCharge = cost;
+        const totalNum = subtotal + deliveryCharge;
         const total = totalNum.toLocaleString("fr-DZ");
         const firstName = document.getElementById("firstName").value.trim();
         const lastName = document.getElementById("lastName").value.trim();
@@ -3134,8 +2942,6 @@
             commune: selectedCommuneName,
             deliveryType: selectedDelivery,
             deliveryCost: deliveryCharge,
-            promoCode: appliedPromos.map((pr) => pr.code).join(","),
-            promoDiscount: discount,
             items: [
               {
                 productId: p.id,
@@ -3159,7 +2965,7 @@
 
       function closeSuccess() {
         document.getElementById("successOverlay").classList.remove("show");
-        window.location.href = "/supplements/products";
+        window.location.href = "/products";
       }
 
       /* ══════════════════════════════════════════════════════
@@ -3557,7 +3363,7 @@
         _renderCartDrawer();
       }
       function cartCheckout() {
-        window.location.href = "/supplements/checkout";
+        window.location.href = "/checkout";
       }
       function addToCartFromDetail() {
         if (!selectedProduct) return;
@@ -3828,7 +3634,7 @@
               ? `<img src="${_t0}" alt="${p.name}" />`
               : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
             return `
-            <div class="search-drop-item" onclick="closeSearchDropdown(); window.location.href='/supplements/product-detail?id=${encodeURIComponent(p.id)}'">
+            <div class="search-drop-item" onclick="closeSearchDropdown(); window.location.href='/product-detail?id=${encodeURIComponent(p.id)}'">
               <div class="search-drop-thumb">${thumb}</div>
               <div class="search-drop-info">
                 <p class="search-drop-brand">${p.brand || ""}</p>
@@ -3859,7 +3665,7 @@
             const q = e.target.value.trim();
             if (q) {
               closeSearchDropdown();
-              window.location.href = `/supplements/products?q=${encodeURIComponent(q)}`;
+              window.location.href = `/products?q=${encodeURIComponent(q)}`;
             }
           }
         });
@@ -3906,7 +3712,7 @@
           const thumb = _t0
             ? `<img src="${_t0}" alt="${p.name}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;flex-shrink:0;" />`
             : `<div style="width:48px;height:48px;border-radius:8px;background:var(--gray-100);flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg></div>`;
-          return `<div onclick="closeMobileSearch(); window.location.href='/supplements/product-detail?id=${encodeURIComponent(p.id)}'"
+          return `<div onclick="closeMobileSearch(); window.location.href='/product-detail?id=${encodeURIComponent(p.id)}'"
             style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-100);cursor:pointer;">
             ${thumb}
             <div style="flex:1;min-width:0;">
@@ -3923,7 +3729,7 @@
           mobileInput.addEventListener("keydown", (e) => {
             if (e.key === "Enter") {
               const v = e.target.value.trim();
-              if (v) { closeMobileSearch(); window.location.href = `/supplements/products?q=${encodeURIComponent(v)}`; }
+              if (v) { closeMobileSearch(); window.location.href = `/products?q=${encodeURIComponent(v)}`; }
             }
             if (e.key === "Escape") closeMobileSearch();
           });

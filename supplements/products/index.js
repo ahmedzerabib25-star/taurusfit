@@ -423,7 +423,7 @@
           if (footerList) {
             footerList.innerHTML = allCategories
               .slice(0, 6)
-              .map((cat) => `<li><a href="/supplements/products?cat=${encodeURIComponent(cat.id)}">${cat.name}</a></li>`)
+              .map((cat) => `<li><a href="/products?cat=${encodeURIComponent(cat.id)}">${cat.name}</a></li>`)
               .join("");
           }
         } catch (err) {
@@ -690,7 +690,7 @@
               : `<svg class="placeholder-icon" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
 
             return `
-        <article class="product-card${oos ? " is-oos" : ""}" style="animation-delay:${i * 0.05}s;cursor:pointer" onclick="window.location.href='/supplements/product-detail?id=${p.id}'">
+        <article class="product-card${oos ? " is-oos" : ""}" style="animation-delay:${i * 0.05}s;cursor:pointer" onclick="window.location.href='/product-detail?id=${p.id}'">
           <div class="product-img">
             ${imgEl}
             ${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ''}
@@ -712,7 +712,7 @@
                 </svg>
                 ${oos ? "Out of Stock" : t["btn.addcart"]}
               </button>
-              <button class="btn-buy" onclick="event.stopPropagation();window.location.href='/supplements/product-detail?id=${p.id}'">
+              <button class="btn-buy" onclick="event.stopPropagation();window.location.href='/product-detail?id=${p.id}'">
                 ${t["btn.buynow"]}
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <path d="m9 18 6-6-6-6"/>
@@ -947,7 +947,7 @@
           const thumb = _t0
             ? `<img src="${_t0}" alt="${p.name}" />`
             : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
-          return `<div class="search-drop-item" onclick="closeSearchDropdown(); window.location.href='/supplements/product-detail?id=${encodeURIComponent(p.id)}'">
+          return `<div class="search-drop-item" onclick="closeSearchDropdown(); window.location.href='/product-detail?id=${encodeURIComponent(p.id)}'">
             <div class="search-drop-thumb">${thumb}</div>
             <div class="search-drop-info">
               <p class="search-drop-brand">${p.brand || ""}</p>
@@ -1007,7 +1007,7 @@
           const thumb = _t0
             ? `<img src="${_t0}" alt="${p.name}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;flex-shrink:0;" />`
             : `<div style="width:48px;height:48px;border-radius:8px;background:var(--gray-100);flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg></div>`;
-          return `<div onclick="closeMobileProductSearch(); window.location.href='/supplements/product-detail?id=${encodeURIComponent(p.id)}'"
+          return `<div onclick="closeMobileProductSearch(); window.location.href='/product-detail?id=${encodeURIComponent(p.id)}'"
             style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-100);cursor:pointer;">
             ${thumb}
             <div style="flex:1;min-width:0;">
@@ -1348,7 +1348,7 @@
         _renderCartDrawer();
       }
       function cartCheckout() {
-        window.location.href = "/supplements/checkout";
+        window.location.href = "/checkout";
       }
 
       /* ── WISHLIST ── */
