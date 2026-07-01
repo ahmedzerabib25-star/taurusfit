@@ -1224,31 +1224,14 @@
         const allFree = document.getElementById("all-free-delivery").checked;
         showLoading("Saving…");
         try {
-          const { data: sd } = await sb.auth.getSession();
-          const token = sd?.session?.access_token || SUPABASE_ANON_KEY;
-
-          const upserts = [
-            { key: "all_free_delivery", value: String(allFree) },
-            { key: "free_delivery_threshold", value: String(threshold) },
-          ];
-          const controller = new AbortController();
-          const tid = setTimeout(() => controller.abort(), 10000);
-          const res = await fetch(SUPABASE_URL + "/rest/v1/settings", {
-            method: "POST",
-            signal: controller.signal,
-            headers: {
-              "Content-Type": "application/json",
-              "apikey": SUPABASE_ANON_KEY,
-              "Authorization": "Bearer " + token,
-              "Prefer": "resolution=merge-duplicates",
+          const r = await apiPost({
+            action: "updateSettings",
+            updates: {
+              all_free_delivery: String(allFree),
+              free_delivery_threshold: String(threshold),
             },
-            body: JSON.stringify(upserts),
           });
-          clearTimeout(tid);
-          if (!res.ok) {
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err.message || "HTTP " + res.status);
-          }
+          if (!r.success) throw new Error(r.error || "Unknown error");
           settings.all_free_delivery = String(allFree);
           settings.free_delivery_threshold = String(threshold);
           showToast("Free delivery settings saved!");
