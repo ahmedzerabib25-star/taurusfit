@@ -16,7 +16,7 @@
         .then(function (r) { return r.ok ? r.json() : null; })
         .catch(function () { return null; });
     </script>
-    <link rel="stylesheet" href="/supplements/checkout/index.css?v=3" />
+    <link rel="stylesheet" href="/supplements/checkout/index.css?v=4" />
     <script>if(sessionStorage.getItem('bb_wl'))document.documentElement.classList.add('bb-noanim');</script>
   </head>
   <body>
@@ -144,6 +144,24 @@
           <span class="current" data-i18n="breadcrumb.checkout">Checkout</span>
         </nav>
 
+        <!-- Checkout progress -->
+        <div class="checkout-steps">
+          <div class="checkout-step done">
+            <div class="step-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="step-label" data-i18n="checkout.stepCart">Cart</span>
+          </div>
+          <div class="step-connector filled"></div>
+          <div class="checkout-step active">
+            <div class="step-circle">2</div>
+            <span class="step-label" data-i18n="checkout.stepDelivery">Delivery</span>
+          </div>
+          <div class="step-connector"></div>
+          <div class="checkout-step">
+            <div class="step-circle">3</div>
+            <span class="step-label" data-i18n="checkout.stepConfirm">Confirmed</span>
+          </div>
+        </div>
+
         <section class="checkout-section">
           <div class="checkout-grid">
 
@@ -162,6 +180,8 @@
 
               <!-- honeypot -->
               <input type="text" id="hp_website" name="website" autocomplete="off" tabindex="-1" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;" aria-hidden="true" />
+
+              <div class="form-section-label"><span>Personal Information</span></div>
 
               <div class="form-row">
                 <div class="form-group">
@@ -183,6 +203,8 @@
                   <span class="error-msg" id="phoneErr"></span>
                 </div>
               </div>
+
+              <div class="form-section-label"><span>Delivery Location</span></div>
 
               <div class="form-row single">
                 <div class="form-group">
@@ -228,7 +250,7 @@
                   <div class="delivery-option active" id="deliveryHome" onclick="selectDelivery('home')">
                     <input type="radio" name="delivery" value="home" checked />
                     <div class="delivery-option-top">
-                      <span class="delivery-option-name" data-i18n="form.homeDelivery">🏠 Home Delivery</span>
+                      <span class="delivery-option-name" data-i18n="form.homeDelivery"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Home Delivery</span>
                       <div class="delivery-option-check"><div class="delivery-option-dot"></div></div>
                     </div>
                     <div class="delivery-option-price">—</div>
@@ -237,7 +259,7 @@
                   <div class="delivery-option" id="deliveryOffice" onclick="selectDelivery('office')">
                     <input type="radio" name="delivery" value="office" />
                     <div class="delivery-option-top">
-                      <span class="delivery-option-name" data-i18n="form.officePick">📦 Office Pickup</span>
+                      <span class="delivery-option-name" data-i18n="form.officePick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 6v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> Office Pickup</span>
                       <div class="delivery-option-check"><div class="delivery-option-dot"></div></div>
                     </div>
                     <div class="delivery-option-price">—</div>
@@ -268,6 +290,20 @@
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 <span data-i18n="form.confirmOrder">CONFIRM ORDER</span>
               </button>
+              <div class="trust-strip">
+                <div class="trust-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  <span>Secure Checkout</span>
+                </div>
+                <div class="trust-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span>Buyer Protection</span>
+                </div>
+                <div class="trust-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 6v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                  <span>Fast Delivery</span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
