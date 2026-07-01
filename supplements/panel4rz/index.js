@@ -1224,12 +1224,8 @@
         const allFree = document.getElementById("all-free-delivery").checked;
         showLoading("Saving…");
         try {
-          // Get auth token directly from localStorage (Supabase v2 storage key)
-          let token = SUPABASE_ANON_KEY;
-          try {
-            const raw = localStorage.getItem("sb-" + SUPABASE_URL.split("//")[1].split(".")[0] + "-auth-token");
-            if (raw) token = JSON.parse(raw).access_token || token;
-          } catch (_) {}
+          const { data: sd } = await sb.auth.getSession();
+          const token = sd?.session?.access_token || SUPABASE_ANON_KEY;
 
           const upserts = [
             { key: "all_free_delivery", value: String(allFree) },
