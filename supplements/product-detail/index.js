@@ -70,6 +70,15 @@
       let _productFlavorObjs = [];
       let selectedDelivery = "home";
       let selectedQty = 1;
+      let _storeSettings = {};
+
+      function isFreeDelivery(subtotal) {
+        if (_storeSettings.all_free_delivery === "true") return true;
+        if (selectedProduct && selectedProduct.freeDelivery) return true;
+        const threshold = parseFloat(_storeSettings.free_delivery_threshold);
+        if (!isNaN(threshold) && threshold > 0 && subtotal >= threshold) return true;
+        return false;
+      }
 
       function getDeliveryCost() {
         if (selectedWilayaCode && _deliveryPrices.length) {
@@ -182,6 +191,7 @@
           _allCategories = res.categories || [];
           _allSubCategories = res.subCategories || [];
           _deliveryPrices = res.deliveryPrices || [];
+          _storeSettings = res.settings || {};
           const bundle = res.bundle || {};
           if (bundle.bundleId) _bundleId = bundle.bundleId;
 
@@ -328,7 +338,7 @@
         p.categoryIds = parseField(p.categoryIds);
         p.subCategoryIds = parseField(p.subCategoryIds);
 
-        document.title = `${p.name} – ByBens`;
+        document.title = `${p.name} – Luxury Secret`;
         document.getElementById("breadcrumbName").textContent = p.name;
         document.getElementById("productBrand").textContent = p.brand || "";
         document.getElementById("productName").textContent = p.name;
@@ -386,7 +396,7 @@
         // Description
         document.getElementById("productDescription").innerHTML =
           p.description ||
-          `${p.name} by ${p.brand} — a premium sports nutrition product.`;
+          `${p.name} by ${p.brand} — a luxury cosmetics product.`;
 
         // ── VARIANTS (weight/size) pills ──
         const weightGroup = document.getElementById("weightGroup");
@@ -743,14 +753,22 @@
         document.getElementById("summaryPrice").textContent =
           `${variantPrice.toLocaleString("fr-DZ")} DA × ${selectedQty}`;
 
-        const deliveryCosts = getDeliveryCost();
-        const cost = deliveryCosts[selectedDelivery];
-        document.getElementById("summaryDelivery").textContent =
-          selectedWilayaCode
-            ? `+${cost.toLocaleString("fr-DZ")} DA (${selectedDelivery === "home" ? "Home" : "Office"})`
-            : "Select wilaya";
-
         const subtotal = variantPrice * selectedQty;
+        const deliveryCosts = getDeliveryCost();
+        const rawCost = deliveryCosts[selectedDelivery];
+        const freeShip = isFreeDelivery(subtotal);
+        const cost = freeShip ? 0 : rawCost;
+        const deliveryEl = document.getElementById("summaryDelivery");
+        if (deliveryEl) {
+          if (!selectedWilayaCode) {
+            deliveryEl.textContent = "Select wilaya";
+          } else if (freeShip) {
+            deliveryEl.innerHTML = `<span style="color:#22a06b;font-weight:600">FREE</span>`;
+          } else {
+            deliveryEl.textContent = `+${cost.toLocaleString("fr-DZ")} DA (${selectedDelivery === "home" ? "Home" : "Office"})`;
+          }
+        }
+
         const deliveryCharge = selectedWilayaCode ? cost : 0;
         const total = subtotal + deliveryCharge;
 
@@ -2907,10 +2925,11 @@
         }
 
         const p = selectedProduct;
-        const cost = getDeliveryCost()[selectedDelivery];
         const variantPrice = getProductPrice(p, selectedVariantIndex);
         const subtotal = variantPrice * selectedQty;
-        const deliveryCharge = cost;
+        const rawCost = getDeliveryCost()[selectedDelivery];
+        const deliveryCharge = isFreeDelivery(subtotal) ? 0 : rawCost;
+        const cost = deliveryCharge;
         const totalNum = subtotal + deliveryCharge;
         const total = totalNum.toLocaleString("fr-DZ");
         const firstName = document.getElementById("firstName").value.trim();
@@ -3002,7 +3021,7 @@
           "form.confirmOrder": "CONFIRM ORDER",
           "section.alsoLike": "You May Also Like",
           "footer.brand.desc":
-            "Algeria's premier destination for authentic sports nutrition. We bring world-class supplements directly to your door.",
+            "Algeria's premier destination for exclusive cosmetics and skincare. We bring world-class beauty formulations directly to your door.",
           "footer.links": "Quick Links",
           "footer.shipping": "Shipping Policy",
           "footer.returns": "Returns",
@@ -3030,10 +3049,10 @@
           "toast.sent": "Message sent! We'll reply soon.",
           "footer.shop": "Shop",
           "footer.allProducts": "All Products",
-          "footer.protein": "Protein",
-          "footer.preworkout": "Pre-Workout",
-          "footer.creatine": "Creatine",
-          "footer.vitamins": "Vitamins",
+          "footer.protein": "Foundation & Concealer",
+          "footer.preworkout": "Lipstick & Lip Gloss",
+          "footer.creatine": "Skincare & Serums",
+          "footer.vitamins": "Perfumes & Fragrances",
           "footer.info": "Information",
           "footer.shipping": "Shipping Policy",
           "footer.returns": "Returns",
@@ -3079,7 +3098,7 @@
           "form.confirmOrder": "CONFIRMER LA COMMANDE",
           "section.alsoLike": "Vous Aimerez Aussi",
           "footer.brand.desc":
-            "La première destination algérienne pour la nutrition sportive authentique.",
+            "La première destination algérienne pour les cosmétiques et soins de luxe exclusifs.",
           "footer.links": "Liens Rapides",
           "footer.shipping": "Politique de livraison",
           "footer.returns": "Retours",
@@ -3107,10 +3126,10 @@
           "toast.sent": "Message envoyé!",
           "footer.shop": "Boutique",
           "footer.allProducts": "Tous les Produits",
-          "footer.protein": "Protéine",
-          "footer.preworkout": "Pré-Entraînement",
-          "footer.creatine": "Créatine",
-          "footer.vitamins": "Vitamines",
+          "footer.protein": "Fond de Teint & Correcteur",
+          "footer.preworkout": "Rouge à Lèvres & Gloss",
+          "footer.creatine": "Soins & Sérums",
+          "footer.vitamins": "Parfums & Fragrances",
           "footer.info": "Informations",
           "footer.shipping": "Politique de livraison",
           "footer.returns": "Retours",
@@ -3156,7 +3175,7 @@
           "form.confirmOrder": "تأكيد الطلب",
           "section.alsoLike": "قد يعجبك أيضاً",
           "footer.brand.desc":
-            "وجهتك الأولى في الجزائر للمكملات الرياضية الأصيلة.",
+            "وجهتك الأولى في الجزائر لمستحضرات التجميل الفاخرة والعناية بالبشرة الحصرية.",
           "footer.links": "روابط سريعة",
           "footer.shipping": "سياسة الشحن",
           "footer.returns": "الإرجاع",
@@ -3184,10 +3203,10 @@
           "toast.sent": "تم إرسال رسالتك!",
           "footer.shop": "المتجر",
           "footer.allProducts": "جميع المنتجات",
-          "footer.protein": "البروتين",
-          "footer.preworkout": "ما قبل التمرين",
-          "footer.creatine": "الكرياتين",
-          "footer.vitamins": "الفيتامينات",
+          "footer.protein": "كريم الأساس والكونسيلر",
+          "footer.preworkout": "أحمر الشفاه والغلوس",
+          "footer.creatine": "العناية بالبشرة والسيروم",
+          "footer.vitamins": "العطور والفراغنس",
           "footer.info": "معلومات",
           "footer.shipping": "سياسة الشحن",
           "footer.returns": "الإرجاع",
@@ -3392,6 +3411,7 @@
             flavor: selectedFlavor || "",
             unitPrice,
             qty: selectedQty,
+            freeDelivery: p.freeDelivery || false,
             imageUrl:
               (Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl) || "",
           });
@@ -3570,6 +3590,7 @@
             qty: _atcQty,
             flavor: _atcFlavor,
             variant: variantLabel,
+            freeDelivery: p.freeDelivery || false,
           });
         }
         cartSave(items);

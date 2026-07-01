@@ -37,7 +37,16 @@
       let _allSubCategories = [];
       let _bundleId = null;
       let _topSoldIds = [];
+      let _storeSettings = {};
       const dropdownState = { wilaya: false, commune: false };
+
+      function isFreeDelivery(subtotal, items) {
+        if (_storeSettings.all_free_delivery === "true") return true;
+        if (items && items.some(i => i.freeDelivery)) return true;
+        const threshold = parseFloat(_storeSettings.free_delivery_threshold);
+        if (!isNaN(threshold) && threshold > 0 && subtotal >= threshold) return true;
+        return false;
+      }
 
       function computeTopSoldIds(orders, prods) {
         const qty = {};
@@ -310,7 +319,9 @@
         const totalEl = document.getElementById("summaryTotal");
 
         const subtotal = items.reduce((s, i) => s + i.unitPrice * i.qty, 0);
-        const deliveryCost = getDeliveryCost()[selectedDelivery];
+        const rawDeliveryCost = getDeliveryCost()[selectedDelivery];
+        const freeShip = selectedWilayaCode && isFreeDelivery(subtotal, items);
+        const deliveryCost = freeShip ? 0 : rawDeliveryCost;
         const deliveryCharge = selectedWilayaCode ? deliveryCost : 0;
         const total = subtotal + deliveryCharge;
 
@@ -334,9 +345,13 @@
           subtotalEl.textContent = subtotal.toLocaleString("fr-DZ") + " DA";
 
         if (deliveryEl) {
-          deliveryEl.textContent = selectedWilayaCode
-            ? `+${deliveryCost.toLocaleString("fr-DZ")} DA (${selectedDelivery === "home" ? "Home" : "Office"})`
-            : "Select wilaya";
+          if (!selectedWilayaCode) {
+            deliveryEl.textContent = "Select wilaya";
+          } else if (freeShip) {
+            deliveryEl.innerHTML = `<span style="color:#22a06b;font-weight:600">FREE</span>`;
+          } else {
+            deliveryEl.textContent = `+${deliveryCost.toLocaleString("fr-DZ")} DA (${selectedDelivery === "home" ? "Home" : "Office"})`;
+          }
         }
 
         if (totalEl)
@@ -525,6 +540,7 @@
           _allSubCategories = res.subCategories || [];
           _deliveryPrices = res.deliveryPrices || [];
           _allProducts = res.products || [];
+          _storeSettings = res.settings || {};
           const bundle = res.bundle || {};
           // Max quantity is 5 for individual items, regardless of stock
           if (bundle.bundleId) _bundleId = bundle.bundleId;
@@ -2846,8 +2862,8 @@
         const address = document.getElementById("address").value.trim();
         const wilayaData = WILAYAS[selectedWilayaCode];
         const wilayaName = wilayaData ? wilayaData.name : selectedWilayaCode;
-        const deliveryCost = getDeliveryCost()[selectedDelivery];
         const subtotal = items.reduce((s, i) => s + i.unitPrice * i.qty, 0);
+        const deliveryCost = isFreeDelivery(subtotal, items) ? 0 : getDeliveryCost()[selectedDelivery];
         const total = subtotal + deliveryCost;
 
         const payload = {
@@ -3077,13 +3093,13 @@
           "detail.bulkNotice": "Ordering 5 or more? Contact us on WhatsApp for a special wholesale discount!",
           "section.alsoLike": "You May Also Like",
           "footer.tagline":
-            "Algeria's premier sports nutrition store. Authentic products, fast delivery, and expert support to fuel your performance.",
+            "Algeria's premier cosmetics destination. Authentic luxury beauty products, fast delivery, and expert concierge support.",
           "footer.shop": "Shop",
           "footer.allProducts": "All Products",
-          "footer.protein": "Protein",
-          "footer.preworkout": "Pre-Workout",
-          "footer.creatine": "Creatine",
-          "footer.vitamins": "Vitamins",
+          "footer.protein": "Foundation & Concealer",
+          "footer.preworkout": "Lipstick & Lip Gloss",
+          "footer.creatine": "Skincare & Serums",
+          "footer.vitamins": "Perfumes & Fragrances",
           "footer.info": "Information",
           "footer.shipping": "Shipping Policy",
           "footer.returns": "Returns",
@@ -3129,7 +3145,7 @@
           "detail.bulkNotice": "Vous en commandez 5 ou plus ? Contactez-nous sur WhatsApp pour une remise spéciale !",
           "section.alsoLike": "Vous Aimerez Aussi",
           "footer.brand.desc":
-            "La première destination algérienne pour la nutrition sportive authentique.",
+            "La première destination algérienne pour les cosmétiques et soins de luxe exclusifs.",
           "footer.links": "Liens Rapides",
           "footer.shipping": "Politique de livraison",
           "footer.returns": "Retours",
@@ -3141,7 +3157,7 @@
           "form.send": "Envoyer",
           "shipping.title": "Politique de livraison",
           "shipping.item1.title": "Livraison Nationale",
-          "shipping.item1.text": "Nous livrons dans les 58 wilayas d'Algérie via Imir Logistics. Une nutrition sportive de qualité livrée à votre porte.",
+          "shipping.item1.text": "Nous livrons dans les 58 wilayas d'Algérie via Imir Logistics. Des produits de beauté premium livrés à votre porte.",
           "shipping.item2.title": "Livraison Gratuite",
           "shipping.item2.text": "Les commandes de plus de 15 000 DA bénéficient de la livraison gratuite ! Pour les autres, des tarifs standards s'appliquent.",
           "shipping.item3.title": "Délais Standards",
@@ -3156,10 +3172,10 @@
           "toast.sent": "Message envoyé!",
           "footer.shop": "Boutique",
           "footer.allProducts": "Tous les Produits",
-          "footer.protein": "Protéine",
-          "footer.preworkout": "Pré-Entraînement",
-          "footer.creatine": "Créatine",
-          "footer.vitamins": "Vitamines",
+          "footer.protein": "Fond de Teint & Correcteur",
+          "footer.preworkout": "Rouge à Lèvres & Gloss",
+          "footer.creatine": "Soins & Sérums",
+          "footer.vitamins": "Parfums & Fragrances",
           "footer.info": "Informations",
           "footer.shipping": "Politique de livraison",
           "footer.returns": "Retours",
@@ -3205,7 +3221,7 @@
           "detail.bulkNotice": "هل تطلب 5 قطع أو أكثر؟ اتصل بنا عبر واتساب للحصول على خصم خاص للجملة!",
           "section.alsoLike": "قد يعجبك أيضاً",
           "footer.brand.desc":
-            "وجهتك الأولى في الجزائر للمكملات الرياضية الأصيلة.",
+            "وجهتك الأولى في الجزائر لمستحضرات التجميل الفاخرة والعناية بالبشرة الحصرية.",
           "footer.links": "روابط سريعة",
           "footer.shipping": "سياسة الشحن",
           "footer.returns": "الإرجاع",
@@ -3217,7 +3233,7 @@
           "form.send": "إرسال",
           "shipping.title": "سياسة الشحن",
           "shipping.item1.title": "توصيل وطني",
-          "shipping.item1.text": "نوصّل إلى جميع الولايات الـ 58 في الجزائر عبر إيمير للوجستيك. مكملات رياضية عالية الجودة تصل إلى باب منزلك.",
+          "shipping.item1.text": "نوصّل إلى جميع الولايات الـ 58 في الجزائر عبر إيمير للوجستيك. منتجات تجميل راقية تصل إلى باب منزلك.",
           "shipping.item2.title": "توصيل مجاني",
           "shipping.item2.text": "الطلبات التي تتجاوز 15,000 دج تستفيد من توصيل مجاني! للطلبات الأخرى، تطبق أسعار الشحن القياسية.",
           "shipping.item3.title": "التوقيت القياسي",
@@ -3232,10 +3248,10 @@
           "toast.sent": "تم إرسال رسالتك!",
           "footer.shop": "المتجر",
           "footer.allProducts": "جميع المنتجات",
-          "footer.protein": "البروتين",
-          "footer.preworkout": "ما قبل التمرين",
-          "footer.creatine": "الكرياتين",
-          "footer.vitamins": "الفيتامينات",
+          "footer.protein": "كريم الأساس والكونسيلر",
+          "footer.preworkout": "أحمر الشفاه والغلوس",
+          "footer.creatine": "العناية بالبشرة والسيروم",
+          "footer.vitamins": "العطور والفراغنس",
           "footer.info": "معلومات",
           "footer.shipping": "سياسة الشحن",
           "footer.returns": "الإرجاع",

@@ -20,6 +20,9 @@
       let editingDeliveryId = null;
       let editingCatId = null;
       let editingSubCatId = null;
+      let editingOrderId = null;
+      let editingOrderItems = [];
+      let _editAddProductId = null;
       let currentImageUrls = [];
       let categories = [],
         subCategories = [],
@@ -94,7 +97,7 @@
       // ROW MAPPERS (snake_case → camelCase)
       // ════════════════════════════════════════════
       function _remapProductRow(r) {
-        return { id: r.id, name: r.name, brand: r.brand, categoryIds: (r.category_ids || "").split(",").filter(Boolean), subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), description: r.description, imageUrl: r.image_url || [], variants: r.variants || [], flavors: r.flavors || [], stock: r.stock, discount: r.discount, status: r.status, hidden: r.hidden || false, createdAt: r.created_at };
+        return { id: r.id, name: r.name, brand: r.brand, categoryIds: (r.category_ids || "").split(",").filter(Boolean), subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), description: r.description, imageUrl: r.image_url || [], variants: r.variants || [], flavors: r.flavors || [], stock: r.stock, discount: r.discount, freeDelivery: r.free_delivery === true || r.free_delivery === "true", status: r.status, hidden: r.hidden || false, createdAt: r.created_at };
       }
       function _remapCategoryRow(r) {
         return { id: r.id, name: r.name, description: r.description, createdAt: r.created_at };
@@ -110,7 +113,7 @@
       }
       // ROW BUILDERS (camelCase → snake_case)
       function _toProductRow(p) {
-        return { name: p.name, brand: p.brand || "", category_ids: (p.categoryIds || []).join(","), sub_category_ids: (p.subCategoryIds || []).join(","), description: p.description || "", image_url: p.imageUrl || [], variants: p.variants || [], flavors: p.flavors || [], stock: p.stock || 0, discount: p.discount || 0, status: p.status || "active", hidden: p.hidden || false };
+        return { name: p.name, brand: p.brand || "", category_ids: (p.categoryIds || []).join(","), sub_category_ids: (p.subCategoryIds || []).join(","), description: p.description || "", image_url: p.imageUrl || [], variants: p.variants || [], flavors: p.flavors || [], stock: p.stock || 0, discount: p.discount || 0, free_delivery: p.freeDelivery || false, status: p.status || "active", hidden: p.hidden || false };
       }
       // ════════════════════════════════════════════
       // API HELPERS (Supabase)
@@ -330,6 +333,17 @@
           if (sb) sb.textContent = name;
           var av = document.querySelector(".sb-avatar");
           if (av) av.textContent = name[0].toUpperCase();
+          // Free delivery settings
+          var thr = document.getElementById("free-delivery-threshold");
+          var afd = document.getElementById("all-free-delivery");
+          if (thr) thr.value = settings.free_delivery_threshold || "";
+          if (afd) {
+            afd.checked = settings.all_free_delivery === "true";
+            var afdTrack = document.getElementById("afd-track");
+            var afdLabel = document.getElementById("afd-label");
+            if (afdTrack) afdTrack.classList.toggle("active", afd.checked);
+            if (afdLabel) afdLabel.textContent = afd.checked ? "Enabled" : "Disabled";
+          }
         }
         renderCats();
         renderProducts();
@@ -562,6 +576,22 @@
       // ════════════════════════════════════════════
       // SIDEBAR & NAV
       // ════════════════════════════════════════════
+      function toggleAllFreeDelivery() {
+        const cb = document.getElementById("all-free-delivery");
+        const track = document.getElementById("afd-track");
+        const label = document.getElementById("afd-label");
+        cb.checked = !cb.checked;
+        track.classList.toggle("active", cb.checked);
+        if (label) label.textContent = cb.checked ? "Enabled" : "Disabled";
+      }
+
+      function togglePmFreeDelivery() {
+        const cb = document.getElementById("pm-free-delivery");
+        const track = document.getElementById("pm-fd-track");
+        cb.checked = !cb.checked;
+        track.classList.toggle("active", cb.checked);
+      }
+
       function toggleSidebar() {
         if (window.innerWidth < 768) {
           const isOpen = document.getElementById("sidebar").classList.toggle("mobile-open");
@@ -745,10 +775,11 @@
               .join(", ");
             const flavorStr = (p.flavors || []).map((f) => f.name).join(", ");
             const variantStr = (p.variants || [])
-              .map(
-                (v) =>
-                  `${v.weight}${v.unit} — ${Number(v.price).toLocaleString()} DA`,
-              )
+              .map((v) => {
+                const lbl = v.label || (v.weight ? `${v.weight}${v.unit || ''}` : '');
+                return lbl ? `${lbl} — ${Number(v.price).toLocaleString()} DA` : '';
+              })
+              .filter(Boolean)
               .join("<br>");
             const _firstImg = Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl;
             const imgHtml = _firstImg
@@ -801,6 +832,8 @@
             document.getElementById("pm-stock").value = p.stock;
             document.getElementById("pm-discount").value = p.discount;
             document.getElementById("pm-status").value = p.status;
+            const fdEl = document.getElementById("pm-free-delivery");
+            if (fdEl) fdEl.checked = p.freeDelivery || false;
             currentImageUrls = Array.isArray(p.imageUrl) ? [...p.imageUrl] : (p.imageUrl ? [p.imageUrl] : []);
             renderImageGrid();
             buildCheckboxGroup(
@@ -838,6 +871,8 @@
           document.getElementById("pm-stock").readOnly = false;
           document.getElementById("pm-stock-hint").style.display = "none";
           document.getElementById("pm-status").value = "active";
+          const fdElNew = document.getElementById("pm-free-delivery");
+          if (fdElNew) fdElNew.checked = false;
           buildCheckboxGroup(
             "pm-categories",
             categories,
@@ -861,7 +896,8 @@
         div.className = "variant-row";
         if (v && v.flavorStock) div.dataset.flavorStock = JSON.stringify(v.flavorStock);
         if (v && v.stock !== undefined) div.dataset.varStock = String(v.stock);
-        div.innerHTML = `<div class="form-group"><label>Weight</label><input type="number" class="form-control" placeholder="e.g. 908" value="${v ? v.weight : ""}" oninput="refreshStockMatrix()" /></div><div class="form-group"><label>Unit</label><select class="form-control form-select" onchange="refreshStockMatrix()"><option ${v && v.unit === "g" ? "selected" : ""}>g</option><option ${v && v.unit === "kg" ? "selected" : ""}>kg</option><option ${v && v.unit === "caps" ? "selected" : ""}>caps</option><option ${v && v.unit === "ml" ? "selected" : ""}>ml</option><option ${v && v.unit === "L" ? "selected" : ""}>L</option><option ${v && v.unit === "pcs" ? "selected" : ""}>pcs</option></select></div><div class="form-group"><label>Price (DA)</label><input type="number" class="form-control" placeholder="0" value="${v ? v.price : ""}" /></div><button class="btn-remove-variant" onclick="this.closest('.variant-row').remove();refreshStockMatrix()">×</button>`;
+        const existingLabel = v ? (v.label || (v.weight ? `${v.weight}${v.unit || ''}` : '')) : '';
+        div.innerHTML = `<div class="form-group" style="flex:2"><label>Label</label><input type="text" class="form-control variant-label-input" placeholder="e.g. 30ml, Full Size, 1er Choix, Matte…" value="${existingLabel}" oninput="refreshStockMatrix()" /></div><div class="form-group"><label>Price (DA)</label><input type="number" class="form-control" placeholder="0" value="${v ? v.price : ""}" /></div><button class="btn-remove-variant" onclick="this.closest('.variant-row').remove();refreshStockMatrix()">×</button>`;
         list.appendChild(div);
         refreshStockMatrix();
       }
@@ -870,7 +906,7 @@
         const list = document.getElementById("flavors-list");
         const div = document.createElement("div");
         div.className = "flavor-row";
-        div.innerHTML = `<div class="form-group"><label>Flavor Name</label><input type="text" class="form-control flavor-name-input" placeholder="e.g. Chocolate" value="${f ? f.name : ""}" oninput="refreshStockMatrix()" /></div><div class="form-group flavor-qty-cell"><label>Qty (no variants)</label><input type="number" class="form-control flavor-qty-input" placeholder="0" value="${f && f.qty ? f.qty : ""}" min="0" oninput="refreshStockMatrix()" /></div><button class="btn-remove-variant" onclick="this.closest('.flavor-row').remove();refreshStockMatrix()">×</button>`;
+        div.innerHTML = `<div class="form-group" style="flex:2"><label>Shade / Color / Option</label><input type="text" class="form-control flavor-name-input" placeholder="e.g. Red No.5, Nude Beige, Matte Finish…" value="${f ? f.name : ""}" oninput="refreshStockMatrix()" /></div><div class="form-group flavor-qty-cell"><label>Qty (no variants)</label><input type="number" class="form-control flavor-qty-input" placeholder="0" value="${f && f.qty ? f.qty : ""}" min="0" oninput="refreshStockMatrix()" /></div><button class="btn-remove-variant" onclick="this.closest('.flavor-row').remove();refreshStockMatrix()">×</button>`;
         list.appendChild(div);
         refreshStockMatrix();
       }
@@ -913,9 +949,9 @@
           pmStock.readOnly = true; pmHint.style.display = "";
 
           const varMeta = variantRows.map((row, vi) => {
-            const ins = row.querySelectorAll("input,select");
-            const w = ins[0]?.value || ""; const u = ins[1]?.value || "";
-            return { vi, label: w ? `${w}${u}` : `V${vi+1}`, fs: JSON.parse(row.dataset.flavorStock || "{}") };
+            const labelEl = row.querySelector(".variant-label-input");
+            const lbl = labelEl?.value.trim() || `V${vi+1}`;
+            return { vi, label: lbl, fs: JSON.parse(row.dataset.flavorStock || "{}") };
           });
 
           let head = "<tr><th>Variant</th>";
@@ -944,9 +980,8 @@
           pmStock.readOnly = true; pmHint.style.display = "";
 
           document.getElementById("variant-stock-list").innerHTML = variantRows.map((row, vi) => {
-            const ins = row.querySelectorAll("input,select");
-            const w = ins[0]?.value || ""; const u = ins[1]?.value || "";
-            const label = w ? `${w}${u}` : `V${vi+1}`;
+            const labelEl = row.querySelector(".variant-label-input");
+            const label = labelEl?.value.trim() || `V${vi+1}`;
             const stock = vstockVals[String(vi)] !== undefined ? vstockVals[String(vi)] : (parseInt(row.dataset.varStock) || 0);
             return `<div class="vstock-row"><span class="vstock-label">${label}</span><input type="number" class="form-control vstock-input" data-vi="${vi}" value="${stock}" min="0" placeholder="0" oninput="refreshStockTotal()"></div>`;
           }).join("");
@@ -992,8 +1027,10 @@
 
         const variants = Array.from(document.querySelectorAll("#variants-list .variant-row"))
           .map((r, vi) => {
-            const ins = r.querySelectorAll("input,select");
-            const v = { weight: ins[0].value, unit: ins[1].value, price: parseFloat(ins[2].value) || 0 };
+            const labelEl = r.querySelector(".variant-label-input");
+            const priceEl = r.querySelectorAll("input")[1];
+            const label = labelEl?.value.trim() || "";
+            const v = { label, price: parseFloat(priceEl?.value) || 0 };
             if (showMatrix) {
               v.flavorStock = {};
               document.querySelectorAll(`#stock-matrix-body input[data-vi="${vi}"]`).forEach(inp => {
@@ -1006,7 +1043,7 @@
             }
             return v;
           })
-          .filter((v) => v.weight);
+          .filter((v) => v.label);
 
         const flavors = Array.from(document.querySelectorAll("#flavors-list .flavor-row"))
           .map((r) => {
@@ -1037,6 +1074,7 @@
           flavors,
           stock: globalStock,
           discount: parseInt(document.getElementById("pm-discount").value) || 0,
+          freeDelivery: document.getElementById("pm-free-delivery")?.checked || false,
           status: document.getElementById("pm-status").value,
         };
         document.getElementById("pm-save-btn").disabled = true;
@@ -1198,6 +1236,26 @@
       // ════════════════════════════════════════════
       // SETTINGS
       // ════════════════════════════════════════════
+      async function saveFreeDeliverySettings() {
+        const threshold = parseFloat(document.getElementById("free-delivery-threshold").value) || 0;
+        const allFree = document.getElementById("all-free-delivery").checked;
+        showLoading("Saving…");
+        try {
+          const r = await apiPost({
+            action: "updateSettings",
+            updates: { free_delivery_threshold: String(threshold), all_free_delivery: String(allFree) },
+          });
+          if (r.success) {
+            settings.free_delivery_threshold = String(threshold);
+            settings.all_free_delivery = String(allFree);
+            showToast("Free delivery settings saved!");
+          }
+        } catch (e) {
+          showToast("Error: " + e.message, "error");
+        }
+        hideLoading();
+      }
+
       async function saveUsername() {
         const u = document.getElementById("set-username").value.trim();
         const d = document.getElementById("set-displayname").value.trim();
@@ -1521,7 +1579,7 @@
         const fd = new FormData();
         fd.append("file", file);
         fd.append("upload_preset", CLOUDINARY_PRESET);
-        fd.append("folder", "bybens-nutritional-facts");
+        fd.append("folder", "luxury-secret-products");
         try {
           const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: "POST", body: fd });
           if (!res.ok) throw new Error();
@@ -1924,7 +1982,7 @@
           .map(
             (it) => `<tr>
             <td>${it.name || "—"}</td>
-            <td>${it.flavor || "—"}</td>
+            <td>${it.flavor || it.shade || "—"}</td>
             <td>${it.variant || "—"}</td>
             <td style="text-align:center">${it.qty || 1}</td>
             <td>${Number(it.unitPrice || 0).toLocaleString("fr-DZ")} DA</td>
@@ -1946,16 +2004,21 @@
               <div><span class="order-detail-label">Source</span><span>${o.source || "—"}</span></div>
             </div>
           </div>
-          <div class="order-detail-section">
-            <div class="order-detail-title">Ordered Items</div>
-            <div class="table-wrap" style="margin-top:8px">
-              <table>
-                <thead><tr>
-                  <th>Product</th><th>Flavor</th><th>Variant</th>
-                  <th style="text-align:center">Qty</th><th>Unit Price</th><th>Line Total</th>
-                </tr></thead>
-                <tbody>${itemsHtml || '<tr><td colspan="6" style="text-align:center;color:var(--g400)">No items</td></tr>'}</tbody>
-              </table>
+          <div class="order-detail-section" id="order-items-section">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+              <div class="order-detail-title" style="margin-bottom:0">Ordered Items</div>
+              <button class="act-btn act-edit" onclick="openEditOrderItems('${safeId}')" style="font-size:12px;padding:5px 12px">Edit Items</button>
+            </div>
+            <div id="order-items-view">
+              <div class="table-wrap" style="margin-top:0">
+                <table>
+                  <thead><tr>
+                    <th>Product</th><th>Shade / Color</th><th>Variant</th>
+                    <th style="text-align:center">Qty</th><th>Unit Price</th><th>Line Total</th>
+                  </tr></thead>
+                  <tbody>${itemsHtml || '<tr><td colspan="6" style="text-align:center;color:var(--g400)">No items</td></tr>'}</tbody>
+                </table>
+              </div>
             </div>
           </div>
           <div class="order-detail-section">
@@ -1982,6 +2045,217 @@
         document.getElementById("order-detail-id").textContent =
           `Order #${id.slice(-8)}`;
         document.getElementById("order-detail-modal").classList.add("open");
+      }
+
+      // ════════════════════════════════════════════
+      // EDIT ORDER ITEMS
+      // ════════════════════════════════════════════
+      function openEditOrderItems(id) {
+        const o = orders.find(x => x.id === id);
+        if (!o) return;
+        editingOrderId = id;
+        editingOrderItems = (o.items || []).map(it => ({ ...it }));
+        _editAddProductId = null;
+        _renderEditOrderItems();
+      }
+
+      function _renderEditOrderItems() {
+        const section = document.getElementById('order-items-section');
+        if (!section) return;
+
+        const rowsHtml = editingOrderItems.map((it, idx) => `
+          <tr>
+            <td style="font-weight:600;font-size:13px">${it.name || '—'}</td>
+            <td style="font-size:12px;color:var(--g400)">${it.flavor || it.shade || '—'}</td>
+            <td style="font-size:12px;color:var(--g400)">${it.variant || '—'}</td>
+            <td style="text-align:center">
+              <div class="eoi-qty-wrap">
+                <button class="eoi-qty-btn" onclick="changeEditItemQty(${idx},-1)">−</button>
+                <span class="eoi-qty-val">${it.qty || 1}</span>
+                <button class="eoi-qty-btn" onclick="changeEditItemQty(${idx},1)">+</button>
+              </div>
+            </td>
+            <td style="font-size:13px">${Number(it.unitPrice||0).toLocaleString('fr-DZ')} DA</td>
+            <td style="font-size:13px;font-weight:600">${Number(it.lineTotal||0).toLocaleString('fr-DZ')} DA</td>
+            <td><button class="eoi-del-btn" onclick="removeEditItem(${idx})" title="Remove">×</button></td>
+          </tr>`).join('');
+
+        // Add product search UI
+        const prod = _editAddProductId ? products.find(p => p.id === _editAddProductId) : null;
+        const variantOptions = prod && prod.variants && prod.variants.length
+          ? prod.variants.map((v,i) => `<option value="${i}">${v.label || v.weight+v.unit} — ${Number(v.price||0).toLocaleString('fr-DZ')} DA</option>`).join('')
+          : '';
+        const flavorOptions = prod && prod.flavors && prod.flavors.length
+          ? ['<option value="">No shade</option>', ...prod.flavors.map(f => `<option value="${f.name||f}">${f.name||f}</option>`)].join('')
+          : '';
+
+        section.innerHTML = `
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div class="order-detail-title" style="margin-bottom:0">Edit Items</div>
+          </div>
+          <div class="table-wrap" style="margin-top:0">
+            <table>
+              <thead><tr>
+                <th>Product</th><th>Flavor</th><th>Variant</th>
+                <th style="text-align:center">Qty</th><th>Unit Price</th><th>Total</th><th></th>
+              </tr></thead>
+              <tbody>${rowsHtml || '<tr><td colspan="7" style="text-align:center;color:var(--g400);padding:16px">No items — add products below</td></tr>'}</tbody>
+            </table>
+          </div>
+
+          <div class="eoi-add-section">
+            <div class="eoi-add-title">Add a Product</div>
+            <div class="eoi-search-wrap">
+              <input class="form-control" id="eoi-product-search" type="text" placeholder="Search product by name…"
+                oninput="onEditProductSearch(this.value)" autocomplete="off" />
+              <div class="eoi-search-drop" id="eoi-search-drop"></div>
+            </div>
+            ${prod ? `
+            <div class="eoi-product-opts" id="eoi-product-opts">
+              <div class="eoi-product-name">${prod.name}${prod.brand ? ' <span style="color:var(--g400);font-weight:400">· '+prod.brand+'</span>' : ''}</div>
+              <div class="eoi-opts-row">
+                ${variantOptions ? `<div class="eoi-opt-group"><label>Variant</label><select class="form-control" id="eoi-variant-sel">${variantOptions}</select></div>` : ''}
+                ${flavorOptions ? `<div class="eoi-opt-group"><label>Shade / Color</label><select class="form-control" id="eoi-flavor-sel">${flavorOptions}</select></div>` : ''}
+                <div class="eoi-opt-group"><label>Qty</label><input type="number" class="form-control" id="eoi-add-qty" value="1" min="1" style="width:70px" /></div>
+                <button class="act-btn act-confirm" onclick="addItemToEditOrder()" style="align-self:flex-end;padding:8px 16px;font-size:13px">Add</button>
+              </div>
+            </div>` : ''}
+          </div>
+
+          <div class="eoi-actions">
+            <button class="act-btn act-confirm" onclick="saveOrderItems()" style="padding:9px 24px;font-size:13px;font-weight:600">Save Changes</button>
+            <button class="act-btn" onclick="cancelEditOrderItems()" style="padding:9px 16px;font-size:13px">Cancel</button>
+          </div>`;
+      }
+
+      function onEditProductSearch(val) {
+        const drop = document.getElementById('eoi-search-drop');
+        if (!drop) return;
+        const q = val.trim().toLowerCase();
+        if (!q) { drop.innerHTML = ''; drop.classList.remove('open'); return; }
+        const matches = products.filter(p => !p.hidden && p.status === 'active' &&
+          ((p.name||'').toLowerCase().includes(q) || (p.brand||'').toLowerCase().includes(q))
+        ).slice(0, 8);
+        if (!matches.length) { drop.innerHTML = '<div class="eoi-drop-empty">No products found</div>'; drop.classList.add('open'); return; }
+        drop.innerHTML = matches.map(p =>
+          `<div class="eoi-drop-item" onclick="selectEditProduct('${p.id.replace(/'/g,"\\'")}')">
+            <span class="eoi-drop-name">${p.name}</span>
+            ${p.brand ? `<span class="eoi-drop-brand">${p.brand}</span>` : ''}
+          </div>`
+        ).join('');
+        drop.classList.add('open');
+      }
+
+      function selectEditProduct(id) {
+        _editAddProductId = id;
+        const drop = document.getElementById('eoi-search-drop');
+        if (drop) { drop.innerHTML = ''; drop.classList.remove('open'); }
+        const input = document.getElementById('eoi-product-search');
+        const p = products.find(x => x.id === id);
+        if (input && p) input.value = p.name;
+        _renderEditOrderItems();
+        // re-populate search input after re-render
+        const inp2 = document.getElementById('eoi-product-search');
+        if (inp2 && p) inp2.value = p.name;
+      }
+
+      function addItemToEditOrder() {
+        const prod = _editAddProductId ? products.find(p => p.id === _editAddProductId) : null;
+        if (!prod) { showToast('Select a product first', 'error'); return; }
+        const variantSel = document.getElementById('eoi-variant-sel');
+        const flavorSel = document.getElementById('eoi-flavor-sel');
+        const qtyInput = document.getElementById('eoi-add-qty');
+        const qty = Math.max(1, parseInt(qtyInput?.value) || 1);
+
+        let variantLabel = '';
+        let unitPrice = 0;
+        if (variantSel && prod.variants && prod.variants.length) {
+          const v = prod.variants[parseInt(variantSel.value) || 0];
+          variantLabel = v ? (v.label || (v.weight + v.unit)) : '';
+          unitPrice = v ? (Number(v.price) || 0) : 0;
+        } else if (prod.variants && prod.variants.length) {
+          const v = prod.variants[0];
+          variantLabel = v ? (v.label || (v.weight + v.unit)) : '';
+          unitPrice = v ? (Number(v.price) || 0) : 0;
+        }
+
+        // Apply discount if product has one
+        if (prod.discount && Number(prod.discount) > 0) {
+          unitPrice = unitPrice - (unitPrice * Number(prod.discount) / 100);
+        }
+
+        const flavorName = flavorSel ? flavorSel.value : '';
+
+        editingOrderItems.push({
+          name: prod.name,
+          brand: prod.brand || '',
+          productId: prod.id,
+          variant: variantLabel,
+          flavor: flavorName,
+          qty,
+          unitPrice,
+          lineTotal: unitPrice * qty,
+        });
+
+        _editAddProductId = null;
+        _renderEditOrderItems();
+        showToast('Product added');
+      }
+
+      function changeEditItemQty(idx, delta) {
+        const item = editingOrderItems[idx];
+        if (!item) return;
+        item.qty = Math.max(1, (item.qty || 1) + delta);
+        item.lineTotal = item.unitPrice * item.qty;
+        _renderEditOrderItems();
+      }
+
+      function removeEditItem(idx) {
+        editingOrderItems.splice(idx, 1);
+        _renderEditOrderItems();
+      }
+
+      async function saveOrderItems() {
+        if (!editingOrderId) return;
+        const o = orders.find(x => x.id === editingOrderId);
+        if (!o) return;
+        showLoading('Saving order…');
+        try {
+          const subtotal = editingOrderItems.reduce((s, it) => s + (it.lineTotal || 0), 0);
+          const total = subtotal + (o.deliveryCost || 0) - (o.promoDiscount || 0);
+          const { error } = await sb.from('orders').update({
+            items: editingOrderItems,
+            subtotal,
+            total,
+          }).eq('id', editingOrderId);
+          if (error) throw error;
+          // Update local cache
+          o.items = editingOrderItems;
+          o.subtotal = subtotal;
+          o.total = total;
+          const d = _dashOrders.find(x => x.id === editingOrderId);
+          if (d) { d.items = editingOrderItems; d.total = total; }
+          const savedId = editingOrderId;
+          editingOrderId = null;
+          editingOrderItems = [];
+          _editAddProductId = null;
+          renderOrders();
+          updateDashboard();
+          openOrderDetail(savedId);
+          showToast('Order updated!');
+        } catch (e) {
+          showToast('Error: ' + e.message, 'error');
+        }
+        hideLoading();
+      }
+
+      function cancelEditOrderItems() {
+        if (!editingOrderId) return;
+        const id = editingOrderId;
+        editingOrderId = null;
+        editingOrderItems = [];
+        _editAddProductId = null;
+        openOrderDetail(id);
       }
 
       async function toggleProductVisibility(id, hidden) {

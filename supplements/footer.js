@@ -38,7 +38,7 @@
             <a href="/" class="footer-logo-link">
               <img src="/images/logo.png" alt="Luxury Secret" style="height: 70px; width: auto; object-fit: contain; display: block;" class="footer-brand-logo" />
             </a>
-            <p data-i18n="footer.brand.desc">Algeria's premier destination for authentic sports nutrition. We bring world-class supplements directly to your door.</p>
+            <p data-i18n="footer.brand.desc">Algeria's premier destination for exclusive cosmetics and skincare. We bring world-class beauty formulations directly to your door.</p>
             <div class="social-links">
               <a href="https://www.facebook.com/bens.supplements" class="social-link" aria-label="Facebook" target="_blank" rel="noopener">f</a>
               <a href="https://www.instagram.com/bens.supplements" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">
@@ -82,7 +82,7 @@
           </div>
         </div>
         <div class="footer-bottom">
-          <p>© <span id="footerYear"></span> ByBen's Algeria. <span data-i18n="footer.rights">All rights reserved.</span></p>
+          <p>© <span id="footerYear"></span> Luxury Secret Algeria. <span data-i18n="footer.rights">All rights reserved.</span></p>
         </div>
       </div>
     </footer>
@@ -93,7 +93,7 @@
         <button class="about-close" onclick="closeShippingModal()" aria-label="Close">&#x2715;</button>
         <div class="about-header">
           <div class="about-brand" data-i18n="shipping.title">Shipping Policy</div>
-          <div class="about-sub">ByBen's Supplements</div>
+          <div class="about-sub">Luxury Secret</div>
         </div>
         <div class="about-body">
           <div class="about-card">
@@ -132,7 +132,7 @@
         <button class="about-close" onclick="closeReturnsModal()" aria-label="Close">&#x2715;</button>
         <div class="about-header">
           <div class="about-brand" data-i18n="returns.title">Returns & Refunds</div>
-          <div class="about-sub">ByBen's Supplements</div>
+          <div class="about-sub">Luxury Secret</div>
         </div>
         <div class="about-body">
           <div class="about-card">
@@ -170,8 +170,8 @@
       <div class="about-modal" role="dialog" aria-modal="true">
         <button class="about-close" onclick="closeAboutModal()" aria-label="Close">&#x2715;</button>
         <div class="about-header">
-          <div class="about-brand">BY<span>BEN'S</span></div>
-          <div class="about-sub">Supplements</div>
+          <div class="about-brand">LUXURY<span>SECRET</span></div>
+          <div class="about-sub">Beauty & Cosmetics</div>
         </div>
         <div class="about-body">
           <div class="about-card">
@@ -180,7 +180,7 @@
             </div>
             <div class="about-card-text">
               <h4 data-i18n="about.who.title">Who We Are</h4>
-              <p data-i18n="about.who.text">Trusted supplements store in Algeria.</p>
+              <p data-i18n="about.who.text">Algeria's premier luxury cosmetics destination.</p>
             </div>
           </div>
           <div class="about-card">

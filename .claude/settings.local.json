@@ -25,7 +25,18 @@
       "mcp__plugin_supabase_supabase__apply_migration",
       "Bash(git merge *)",
       "mcp__plugin_supabase_supabase__list_edge_functions",
-      "mcp__plugin_supabase_supabase__deploy_edge_function"
+      "mcp__plugin_supabase_supabase__deploy_edge_function",
+      "Bash(npx serve *)",
+      "Bash(serve --version)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/mgmt9kx)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/products)",
+      "Bash(kill %1)",
+      "Bash(npx kill-port *)",
+      "Bash(curl -s -o /dev/null -w \"/ → %{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"/mgmt9kx → %{http_code}\\\\n\" http://localhost:3000/mgmt9kx)",
+      "Bash(curl -s -o /dev/null -w \"/panel4rz → %{http_code}\\\\n\" http://localhost:3000/panel4rz)",
+      "Bash(curl -s -o /dev/null -w \"/products → %{http_code}\\\\n\" http://localhost:3000/products)"
     ]
   }
 }

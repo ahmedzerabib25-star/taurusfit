@@ -1731,6 +1731,30 @@
       .status-delivered { background: var(--blue-l); color: #1e3a5f; border-color: var(--blue); }
       .status-canceled  { background: #fee2e2; color: #7f1d1d; border-color: #dc2626; }
 
+      /* ── Edit Order Items ───────────────── */
+      .eoi-qty-wrap { display: inline-flex; align-items: center; gap: 6px; }
+      .eoi-qty-btn { width: 24px; height: 24px; border-radius: 6px; border: 1px solid var(--g200); background: var(--g50); color: var(--black); font-size: 15px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background var(--tr); }
+      .eoi-qty-btn:hover { background: var(--g100); }
+      .eoi-qty-val { min-width: 22px; text-align: center; font-size: 13px; font-weight: 600; color: var(--black); }
+      .eoi-del-btn { width: 26px; height: 26px; border-radius: 6px; border: none; background: #fee2e2; color: #dc2626; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background var(--tr); }
+      .eoi-del-btn:hover { background: #fecaca; }
+      .eoi-add-section { border-top: 1px solid var(--g100); margin-top: 16px; padding-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+      .eoi-add-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--g400); font-family: var(--font-b); }
+      .eoi-search-wrap { position: relative; }
+      .eoi-search-drop { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: var(--white); border: 1px solid var(--g200); border-radius: 10px; box-shadow: var(--shadow-md); z-index: 50; display: none; max-height: 240px; overflow-y: auto; }
+      .eoi-search-drop.open { display: block; }
+      .eoi-drop-item { padding: 10px 14px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 8px; transition: background var(--tr); }
+      .eoi-drop-item:hover { background: var(--g50); }
+      .eoi-drop-name { font-size: 13px; font-weight: 600; color: var(--black); }
+      .eoi-drop-brand { font-size: 11.5px; color: var(--g400); }
+      .eoi-drop-empty { padding: 12px 14px; font-size: 13px; color: var(--g400); text-align: center; }
+      .eoi-product-opts { background: var(--g50); border: 1px solid var(--g100); border-radius: 10px; padding: 14px; }
+      .eoi-product-name { font-size: 13.5px; font-weight: 600; color: var(--black); margin-bottom: 12px; }
+      .eoi-opts-row { display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; }
+      .eoi-opt-group { display: flex; flex-direction: column; gap: 5px; }
+      .eoi-opt-group label { font-size: 11px; font-weight: 600; color: var(--g400); text-transform: uppercase; letter-spacing: 0.5px; font-family: var(--font-b); }
+      .eoi-actions { display: flex; gap: 10px; padding-top: 8px; border-top: 1px solid var(--g100); margin-top: 8px; }
+
       /* ══════════════════════════════════════
          DASHBOARD PANELS
       ══════════════════════════════════════ */
@@ -1926,3 +1950,18 @@
         .order-filter-btn { font-size: 11px; padding: 5px 10px; }
         .sec-title { font-size: 18px; }
       }
+
+      /* ── Free Delivery Toggle ── */
+      .fd-toggle-track {
+        width: 44px; height: 24px; border-radius: 12px;
+        background: var(--g200); position: relative; cursor: pointer;
+        transition: background 0.22s ease; flex-shrink: 0;
+      }
+      .fd-toggle-track.active { background: var(--red); }
+      .fd-toggle-thumb {
+        width: 18px; height: 18px; border-radius: 50%;
+        background: #fff; position: absolute; top: 3px; left: 3px;
+        transition: transform 0.22s ease;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+      }
+      .fd-toggle-track.active .fd-toggle-thumb { transform: translateX(20px); }

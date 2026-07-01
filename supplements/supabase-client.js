@@ -27,6 +27,7 @@
       discount: Number(p.discount) || 0,
       allowPromo: p.allow_promo === true || p.allow_promo === "true",
       promoCodeIds: (p.promo_code_ids || "").split(",").filter(Boolean),
+      freeDelivery: p.free_delivery === true || p.free_delivery === "true",
       status: p.status || "active",
       createdAt: p.created_at,
     };
@@ -97,6 +98,7 @@
       promos: (Array.isArray(raw.promos) ? raw.promos : Array.isArray(raw.promo_codes) ? raw.promo_codes : []).map(_remapPromo),
       deliveryPrices: (Array.isArray(raw.deliveryPrices) ? raw.deliveryPrices : Array.isArray(raw.delivery_prices) ? raw.delivery_prices : []).map(_remapDeliveryPrice),
       orders: (Array.isArray(raw.orders) ? raw.orders : []).map(_remapOrder),
+      settings: (raw.settings && typeof raw.settings === "object" && !Array.isArray(raw.settings)) ? raw.settings : {},
     };
   };
 
@@ -108,13 +110,17 @@
       return fetch(_URL + "/rest/v1/" + path, { headers: h }).then(function (r) { return r.json(); });
     }
     return Promise.all([
-      sf("products?select=id,name,brand,category_ids,sub_category_ids,description,image_url,variants,flavors,stock,discount,allow_promo,promo_code_ids,status,created_at&hidden=not.is.true"),
+      sf("products?select=id,name,brand,category_ids,sub_category_ids,description,image_url,variants,flavors,stock,discount,allow_promo,promo_code_ids,free_delivery,status,created_at&hidden=not.is.true"),
       sf("categories?select=*"),
       sf("sub_categories?select=*"),
       sf("bundle?select=*&limit=1"),
       sf("promo_codes?select=*"),
       sf("delivery_prices?select=*"),
+      sf("settings?select=key,value"),
     ]).then(function (results) {
+      var settingsArr = Array.isArray(results[6]) ? results[6] : [];
+      var settingsMap = {};
+      settingsArr.forEach(function(row) { settingsMap[row.key] = row.value; });
       return {
         products:       Array.isArray(results[0]) ? results[0] : [],
         categories:     Array.isArray(results[1]) ? results[1] : [],
@@ -122,6 +128,7 @@
         bundle:         (Array.isArray(results[3]) ? results[3][0] : null) || {},
         promos:         Array.isArray(results[4]) ? results[4] : [],
         deliveryPrices: Array.isArray(results[5]) ? results[5] : [],
+        settings:       settingsMap,
         orders:         [],
       };
     });
