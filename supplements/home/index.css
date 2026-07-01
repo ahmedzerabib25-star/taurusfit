@@ -804,6 +804,164 @@ html[data-theme="dark"] .logo-img-dark {
   pointer-events: none;
 }
 
+/* ─── HERO BACKGROUND ANIMATION ──────────────────────────── */
+.hero-bg-anim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.hero-bg-anim::before {
+  content: "";
+  position: absolute;
+  inset: -80%;
+  background: conic-gradient(
+    from 0deg at 25% 55%,
+    transparent 0deg,
+    rgba(163,132,91,0.07) 70deg,
+    transparent 150deg,
+    rgba(197,168,128,0.05) 230deg,
+    transparent 310deg
+  );
+  animation: heroBgSpin 50s linear infinite;
+}
+@keyframes heroBgSpin {
+  to { transform: rotate(360deg); }
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(72px);
+  pointer-events: none;
+}
+.hero-orb-1 {
+  width: 620px; height: 620px;
+  background: radial-gradient(circle at center, rgba(163,132,91,0.16) 0%, transparent 65%);
+  top: -200px; left: -180px;
+  animation: heroOrbDrift1 24s ease-in-out infinite;
+}
+.hero-orb-2 {
+  width: 480px; height: 480px;
+  background: radial-gradient(circle at center, rgba(197,168,128,0.12) 0%, transparent 65%);
+  bottom: -120px; left: 15%;
+  animation: heroOrbDrift2 30s ease-in-out infinite;
+}
+.hero-orb-3 {
+  width: 360px; height: 360px;
+  background: radial-gradient(circle at center, rgba(240,228,208,0.14) 0%, transparent 65%);
+  top: 5%; left: 28%;
+  animation: heroOrbDrift3 20s ease-in-out infinite;
+}
+@keyframes heroOrbDrift1 {
+  0%, 100% { transform: translate(0, 0); }
+  33%       { transform: translate(90px, 60px); }
+  66%       { transform: translate(40px, 110px); }
+}
+@keyframes heroOrbDrift2 {
+  0%, 100% { transform: translate(0, 0); }
+  40%       { transform: translate(-70px, -80px); }
+  72%       { transform: translate(55px, -45px); }
+}
+@keyframes heroOrbDrift3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%       { transform: translate(60px, 50px) scale(1.35); }
+}
+
+.hero-scan {
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(197,168,128,0.10) 25%,
+    rgba(163,132,91,0.20) 50%,
+    rgba(197,168,128,0.10) 75%,
+    transparent 100%
+  );
+  transform: skewX(-12deg);
+  filter: blur(5px);
+  animation: heroScanRay 18s ease-in-out infinite;
+}
+.hero-scan::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -28px;
+  width: 60px; height: 100%;
+  background: linear-gradient(to right, transparent, rgba(197,168,128,0.06), transparent);
+  filter: blur(10px);
+}
+@keyframes heroScanRay {
+  0%   { left: -40%; opacity: 0; }
+  6%   { opacity: 1; }
+  82%  { opacity: 0.5; }
+  100% { left: 130%; opacity: 0; }
+}
+
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* ─── HERO PARTICLE KEYFRAMES ─────────────────────────────── */
+@keyframes heroSparkleUp {
+  0%   { transform: translateY(0)     rotate(0deg)   scale(0);   opacity: 0; }
+  8%   { transform: translateY(-5vh)  rotate(45deg)  scale(1);   opacity: 1; }
+  88%  { transform: translateY(-78vh) rotate(315deg) scale(0.4); opacity: 0.25; }
+  100% { transform: translateY(-86vh) rotate(360deg) scale(0);   opacity: 0; }
+}
+@keyframes heroParticleUp {
+  0%   { transform: translateY(0)     scale(0);   opacity: 0; }
+  8%   { transform: translateY(-4vh)  scale(1);   opacity: 1; }
+  88%  { transform: translateY(-74vh) scale(0.5); opacity: 0.2; }
+  100% { transform: translateY(-82vh) scale(0);   opacity: 0; }
+}
+
+/* ─── HERO DECORATIVE RING ────────────────────────────────── */
+.hero-ring-deco {
+  position: absolute;
+  width: 520px; height: 520px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(163,132,91,0.18);
+  z-index: 1;
+  pointer-events: none;
+  animation: heroRingPulse 8s ease-in-out infinite;
+}
+.hero-ring-inner {
+  position: absolute;
+  inset: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(197,168,128,0.12);
+  animation: heroRingPulse 8s ease-in-out infinite reverse;
+}
+@keyframes heroRingPulse {
+  0%, 100% { transform: scale(1);    opacity: 1; }
+  50%       { transform: scale(1.04); opacity: 0.6; }
+}
+
+/* ─── HERO EYEBROW DECORATION ────────────────────────────── */
+.hero-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: var(--gold);
+  vertical-align: middle;
+  margin-right: 12px;
+  opacity: 0.8;
+}
+
 /* ─── TRUST BAR ──────────────────────────────────────────── */
 .trust-bar {
   background: var(--white);

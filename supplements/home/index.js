@@ -1033,25 +1033,43 @@ document.addEventListener('DOMContentLoaded', () => {
 (function() {
   var container = document.getElementById('heroParticles');
   if (!container) return;
-  var count = 16;
-  var colors = ['rgba(163,132,91,.15)', 'rgba(197,168,128,.12)', 'rgba(43,37,35,.05)'];
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var count = 26;
   for (var i = 0; i < count; i++) {
-    var span = document.createElement('span');
-    var size = Math.random() * 8 + 5;
-    var color = colors[Math.floor(Math.random() * colors.length)];
-    span.style.cssText = [
-      'position: absolute',
-      'bottom: -20px',
-      'left:' + Math.random() * 100 + '%',
-      'width:' + size + 'px',
-      'height:' + size + 'px',
-      'background:' + color,
-      'border-radius: 50%',
-      'box-shadow: 0 0 ' + (size * 2) + 'px ' + color,
-      'animation: wlParticleUp ' + (Math.random() * 8 + 8) + 's linear infinite',
-      'animation-delay:' + (Math.random() * 7) + 's',
-    ].join(';');
-    container.appendChild(span);
+    var s = document.createElement('span');
+    var size = Math.random() * 7 + 3;
+    var x = Math.random() * 58; // keep within hero-left area
+    var dur = (Math.random() * 14 + 12).toFixed(1);
+    var delay = (Math.random() * 16).toFixed(1);
+    var op = (Math.random() * 0.35 + 0.15).toFixed(2);
+    var isSparkle = Math.random() > 0.45;
+    var css;
+    if (isSparkle) {
+      css = [
+        'position:absolute',
+        'bottom:-12px',
+        'left:' + x + '%',
+        'width:' + size + 'px',
+        'height:' + size + 'px',
+        'background:rgba(163,132,91,' + op + ')',
+        'clip-path:polygon(50% 0%,54% 46%,100% 50%,54% 54%,50% 100%,46% 54%,0% 50%,46% 46%)',
+        'animation:heroSparkleUp ' + dur + 's linear ' + delay + 's infinite',
+      ].join(';');
+    } else {
+      css = [
+        'position:absolute',
+        'bottom:-12px',
+        'left:' + x + '%',
+        'width:' + size + 'px',
+        'height:' + size + 'px',
+        'background:rgba(197,168,128,' + op + ')',
+        'border-radius:50%',
+        'box-shadow:0 0 ' + (size * 2.5).toFixed(0) + 'px rgba(163,132,91,' + (op * 0.5).toFixed(2) + ')',
+        'animation:heroParticleUp ' + dur + 's linear ' + delay + 's infinite',
+      ].join(';');
+    }
+    s.style.cssText = css;
+    container.appendChild(s);
   }
 })();
 
