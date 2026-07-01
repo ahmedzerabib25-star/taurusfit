@@ -2770,20 +2770,20 @@
 
       function updateDeliveryPriceDisplay() {
         const costs = getDeliveryCost();
-        const homePriceEl = document.querySelector(
-          "#deliveryHome .delivery-option-price",
-        );
-        const officePriceEl = document.querySelector(
-          "#deliveryOffice .delivery-option-price",
-        );
+        const homePriceEl = document.querySelector("#deliveryHome .delivery-option-price");
+        const officePriceEl = document.querySelector("#deliveryOffice .delivery-option-price");
+        const variants = parseField(selectedProduct ? selectedProduct.variants : []);
+        const variantPrice = getProductPrice(selectedProduct, selectedVariantIndex);
+        const subtotal = variantPrice * selectedQty;
+        const free = selectedWilayaCode && isFreeDelivery(subtotal);
         if (homePriceEl)
-          homePriceEl.textContent = selectedWilayaCode
-            ? `+${costs.home.toLocaleString("fr-DZ")} DA`
-            : "—";
+          homePriceEl.innerHTML = !selectedWilayaCode ? "—"
+            : free ? `<span style="color:#22a06b;font-weight:600">FREE</span>`
+            : `+${costs.home.toLocaleString("fr-DZ")} DA`;
         if (officePriceEl)
-          officePriceEl.textContent = selectedWilayaCode
-            ? `+${costs.office.toLocaleString("fr-DZ")} DA`
-            : "—";
+          officePriceEl.innerHTML = !selectedWilayaCode ? "—"
+            : free ? `<span style="color:#22a06b;font-weight:600">FREE</span>`
+            : `+${costs.office.toLocaleString("fr-DZ")} DA`;
       }
 
       function selectCommuneOption(name) {

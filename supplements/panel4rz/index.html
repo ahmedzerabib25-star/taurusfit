@@ -12,7 +12,7 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/supplements/supabase-client.js"></script>
-    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=6" />
+    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=7" />
   </head>
   <body>
 <div class="loading-overlay" id="loading-overlay">
@@ -437,13 +437,13 @@
               </div>
               <div class="form-group" style="margin-bottom:0">
                 <label style="margin-bottom:10px;display:block">All Deliveries Free</label>
-                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin:0">
-                  <div class="fd-toggle-track" id="afd-track" onclick="toggleAllFreeDelivery()">
-                    <div class="fd-toggle-thumb" id="afd-thumb"></div>
-                  </div>
-                  <input type="checkbox" id="all-free-delivery" style="display:none"/>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <label class="fd-switch">
+                    <input type="checkbox" id="all-free-delivery" onchange="document.getElementById('afd-label').textContent=this.checked?'Enabled':'Disabled'">
+                    <span class="fd-switch-slider"></span>
+                  </label>
                   <span style="font-size:13px;color:var(--g600)" id="afd-label">Disabled</span>
-                </label>
+                </div>
               </div>
             </div>
             <button class="btn-primary" style="margin-top:18px" onclick="saveFreeDeliverySettings()">
@@ -940,13 +940,13 @@
             </div>
             <div class="form-group">
               <label style="margin-bottom:10px;display:block">Free Delivery</label>
-              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin:0">
-                <div class="fd-toggle-track" id="pm-fd-track" onclick="togglePmFreeDelivery()">
-                  <div class="fd-toggle-thumb" id="pm-fd-thumb"></div>
-                </div>
-                <input type="checkbox" id="pm-free-delivery" style="display:none" onchange="document.getElementById('pm-fd-track').classList.toggle('active',this.checked);document.getElementById('pm-fd-thumb').style.transform=this.checked?'translateX(20px)':''"/>
+              <div style="display:flex;align-items:center;gap:10px">
+                <label class="fd-switch">
+                  <input type="checkbox" id="pm-free-delivery">
+                  <span class="fd-switch-slider"></span>
+                </label>
                 <span style="font-size:13px;color:var(--g600)">Ships free regardless of order total</span>
-              </label>
+              </div>
             </div>
           </div>
         </div>
@@ -1151,6 +1151,6 @@
       ><span id="toast-msg">Done!</span>
     </div>
 
-    <script src="/supplements/panel4rz/index.js?v=5"></script>
+    <script src="/supplements/panel4rz/index.js?v=6"></script>
   </body>
 </html>

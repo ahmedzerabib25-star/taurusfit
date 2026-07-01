@@ -339,9 +339,7 @@
           if (thr) thr.value = settings.free_delivery_threshold || "";
           if (afd) {
             afd.checked = settings.all_free_delivery === "true";
-            var afdTrack = document.getElementById("afd-track");
             var afdLabel = document.getElementById("afd-label");
-            if (afdTrack) afdTrack.classList.toggle("active", afd.checked);
             if (afdLabel) afdLabel.textContent = afd.checked ? "Enabled" : "Disabled";
           }
         }
@@ -576,22 +574,6 @@
       // ════════════════════════════════════════════
       // SIDEBAR & NAV
       // ════════════════════════════════════════════
-      function toggleAllFreeDelivery() {
-        const cb = document.getElementById("all-free-delivery");
-        const track = document.getElementById("afd-track");
-        const label = document.getElementById("afd-label");
-        cb.checked = !cb.checked;
-        track.classList.toggle("active", cb.checked);
-        if (label) label.textContent = cb.checked ? "Enabled" : "Disabled";
-      }
-
-      function togglePmFreeDelivery() {
-        const cb = document.getElementById("pm-free-delivery");
-        const track = document.getElementById("pm-fd-track");
-        cb.checked = !cb.checked;
-        track.classList.toggle("active", cb.checked);
-      }
-
       function toggleSidebar() {
         if (window.innerWidth < 768) {
           const isOpen = document.getElementById("sidebar").classList.toggle("mobile-open");
