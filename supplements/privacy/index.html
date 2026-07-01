@@ -121,23 +121,22 @@
     </div>
 
     <!-- Mobile menu -->
-    <div class="mobile-menu" id="mobileMenu">
-      <div class="mobile-nav-links">
-        <a class="mobile-nav-link" href="/products">Products</a>
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+      <div class="mm-hd">
+        <span class="mm-brand">Luxury Secret</span>
+        <button class="mm-close" onclick="toggleMobileMenu()" aria-label="Close menu">&#x2715;</button>
       </div>
-      <div id="mobileCatItems"></div>
-      <div style="margin-top:24px;border-top:1px solid var(--gray-100);padding-top:20px;">
-        <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray-400);margin-bottom:12px;">Language</div>
-        <div style="display:flex;gap:8px;">
-          <button class="lang-btn active" data-lang="en" onclick="switchLang('en');toggleMobileMenu();">EN</button>
-          <button class="lang-btn" data-lang="fr" onclick="switchLang('fr');toggleMobileMenu();">FR</button>
-          <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode" style="margin-left:auto;">
-            <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-            <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          </button>
+      <div class="mm-body">
+        <div class="mobile-nav-links">
+          <a class="m-link" href="/products">Products</a>
         </div>
+        <div id="mobileCatItems"></div>
       </div>
-    </div>
+      <div class="mobile-lang">
+        <button class="lang-btn active" data-lang="en" onclick="switchLang('en');toggleMobileMenu();">EN</button>
+        <button class="lang-btn" data-lang="fr" onclick="switchLang('fr');toggleMobileMenu();">FR</button>
+      </div>
+    </nav>
     <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
 
     <!-- ─── HERO ── -->

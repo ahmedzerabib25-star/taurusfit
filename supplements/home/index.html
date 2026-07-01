@@ -21,7 +21,7 @@
         .catch(function () { return null; });
     </script>
 
-    <link rel="stylesheet" href="/supplements/home/index.css?v=15" />
+    <link rel="stylesheet" href="/supplements/home/index.css?v=16" />
     <script>if(sessionStorage.getItem('bb_wl'))document.documentElement.classList.add('bb-noanim');</script>
   </head>
   <body>
@@ -290,15 +290,21 @@
 
     <!-- Mobile Menu -->
     <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
-      <a
-        href="/products"
-        class="m-link active"
-        onclick="toggleMobileMenu()"
-        data-i18n="nav.products"
-        >Cosmetics</a
-      >
-      <!-- Categories and subcategories populated by loadCategories() -->
-      <div id="mobileCatItems"></div>
+      <div class="mm-hd">
+        <span class="mm-brand">Luxury Secret</span>
+        <button class="mm-close" onclick="toggleMobileMenu()" aria-label="Close menu">&#x2715;</button>
+      </div>
+      <div class="mm-body">
+        <a
+          href="/products"
+          class="m-link active"
+          onclick="toggleMobileMenu()"
+          data-i18n="nav.products"
+          >Cosmetics</a
+        >
+        <!-- Categories and subcategories populated by loadCategories() -->
+        <div id="mobileCatItems"></div>
+      </div>
       <div class="mobile-lang">
         <button
           class="lang-btn"
