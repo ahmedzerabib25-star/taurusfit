@@ -12,7 +12,7 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/supplements/supabase-client.js"></script>
-    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=8" />
+    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=9" />
   </head>
   <body>
 <div class="loading-overlay" id="loading-overlay">
@@ -816,18 +816,28 @@
               <input type="text" class="form-control" id="pm-name-en" placeholder="e.g. Velvet Lip Gloss No.5" />
             </div>
             <div class="form-group">
-              <label>Brand</label>
-              <input type="text" class="form-control" id="pm-brand" placeholder="e.g. MAC Cosmetics" />
+              <label>Brand (English)</label>
+              <input type="text" class="form-control" id="pm-brand-en" placeholder="e.g. MAC Cosmetics" />
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group">
+            <div class="form-group" style="flex:2">
               <label>Product Name (French)</label>
               <input type="text" class="form-control" id="pm-name-fr" placeholder="ex. Gloss velours No.5" />
             </div>
             <div class="form-group">
+              <label>Brand (French)</label>
+              <input type="text" class="form-control" id="pm-brand-fr" placeholder="ex. MAC Cosmétiques" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group" style="flex:2">
               <label>Product Name (Arabic)</label>
               <input type="text" class="form-control" id="pm-name-ar" placeholder="مثال: غلوس مخملي" dir="rtl" />
+            </div>
+            <div class="form-group">
+              <label>Brand (Arabic)</label>
+              <input type="text" class="form-control" id="pm-brand-ar" placeholder="مثال: ماك كوزمتيكس" dir="rtl" />
             </div>
           </div>
           <div class="form-group" style="margin-bottom: 16px">
@@ -1159,6 +1169,6 @@
       ><span id="toast-msg">Done!</span>
     </div>
 
-    <script src="/supplements/panel4rz/index.js?v=14"></script>
+    <script src="/supplements/panel4rz/index.js?v=15"></script>
   </body>
 </html>

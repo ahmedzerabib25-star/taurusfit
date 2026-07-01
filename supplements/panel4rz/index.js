@@ -97,7 +97,7 @@
       // ROW MAPPERS (snake_case → camelCase)
       // ════════════════════════════════════════════
       function _remapProductRow(r) {
-        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || r.name || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", brand: r.brand, categoryIds: (r.category_ids || "").split(",").filter(Boolean), subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), description: r.description_en || r.description || "", descriptionEn: r.description_en || r.description || "", descriptionFr: r.description_fr || "", descriptionAr: r.description_ar || "", imageUrl: r.image_url || [], variants: r.variants || [], flavors: r.flavors || [], stock: r.stock, discount: r.discount, freeDelivery: r.free_delivery === true || r.free_delivery === "true", status: r.status, hidden: r.hidden || false, createdAt: r.created_at };
+        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || r.name || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", brand: r.brand_en || r.brand || "", brandEn: r.brand_en || r.brand || "", brandFr: r.brand_fr || "", brandAr: r.brand_ar || "", categoryIds: (r.category_ids || "").split(",").filter(Boolean), subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), description: r.description_en || r.description || "", descriptionEn: r.description_en || r.description || "", descriptionFr: r.description_fr || "", descriptionAr: r.description_ar || "", imageUrl: r.image_url || [], variants: r.variants || [], flavors: r.flavors || [], stock: r.stock, discount: r.discount, freeDelivery: r.free_delivery === true || r.free_delivery === "true", status: r.status, hidden: r.hidden || false, createdAt: r.created_at };
       }
       function _remapCategoryRow(r) {
         return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", description: r.description, createdAt: r.created_at };
@@ -113,7 +113,7 @@
       }
       // ROW BUILDERS (camelCase → snake_case)
       function _toProductRow(p) {
-        return { name: p.nameEn || p.name || "", name_en: p.nameEn || "", name_fr: p.nameFr || "", name_ar: p.nameAr || "", brand: p.brand || "", category_ids: (p.categoryIds || []).join(","), sub_category_ids: (p.subCategoryIds || []).join(","), description: p.descriptionEn || p.description || "", description_en: p.descriptionEn || "", description_fr: p.descriptionFr || "", description_ar: p.descriptionAr || "", image_url: p.imageUrl || [], variants: p.variants || [], flavors: p.flavors || [], stock: p.stock || 0, discount: p.discount || 0, free_delivery: p.freeDelivery || false, status: p.status || "active", hidden: p.hidden || false };
+        return { name: p.nameEn || p.name || "", name_en: p.nameEn || "", name_fr: p.nameFr || "", name_ar: p.nameAr || "", brand: p.brandEn || p.brand || "", brand_en: p.brandEn || "", brand_fr: p.brandFr || "", brand_ar: p.brandAr || "", category_ids: (p.categoryIds || []).join(","), sub_category_ids: (p.subCategoryIds || []).join(","), description: p.descriptionEn || p.description || "", description_en: p.descriptionEn || "", description_fr: p.descriptionFr || "", description_ar: p.descriptionAr || "", image_url: p.imageUrl || [], variants: p.variants || [], flavors: p.flavors || [], stock: p.stock || 0, discount: p.discount || 0, free_delivery: p.freeDelivery || false, status: p.status || "active", hidden: p.hidden || false };
       }
       // ════════════════════════════════════════════
       // API HELPERS (Supabase)
@@ -815,7 +815,9 @@
             document.getElementById("pm-name-en").value = p.nameEn || p.name || "";
             document.getElementById("pm-name-fr").value = p.nameFr || "";
             document.getElementById("pm-name-ar").value = p.nameAr || "";
-            document.getElementById("pm-brand").value = p.brand || "";
+            document.getElementById("pm-brand-en").value = p.brandEn || p.brand || "";
+            document.getElementById("pm-brand-fr").value = p.brandFr || "";
+            document.getElementById("pm-brand-ar").value = p.brandAr || "";
             document.getElementById("pm-desc-en").innerHTML = p.descriptionEn || p.description || "";
             document.getElementById("pm-desc-fr").innerHTML = p.descriptionFr || "";
             document.getElementById("pm-desc-ar").innerHTML = p.descriptionAr || "";
@@ -851,7 +853,7 @@
             refreshStockMatrix();
           }
         } else {
-          ["pm-name-en", "pm-name-fr", "pm-name-ar", "pm-brand", "pm-stock", "pm-discount"].forEach(
+          ["pm-name-en", "pm-name-fr", "pm-name-ar", "pm-brand-en", "pm-brand-fr", "pm-brand-ar", "pm-stock", "pm-discount"].forEach(
             (x) => (document.getElementById(x).value = ""),
           );
           document.getElementById("pm-desc-en").innerHTML = "";
@@ -890,8 +892,10 @@
         div.className = "variant-row";
         if (v && v.flavorStock) div.dataset.flavorStock = JSON.stringify(v.flavorStock);
         if (v && v.stock !== undefined) div.dataset.varStock = String(v.stock);
-        const existingLabel = v ? (v.label || (v.weight ? `${v.weight}${v.unit || ''}` : '')) : '';
-        div.innerHTML = `<div class="form-group" style="flex:2"><label>Label</label><input type="text" class="form-control variant-label-input" placeholder="e.g. 30ml, Full Size, 1er Choix, Matte…" value="${existingLabel}" oninput="refreshStockMatrix()" /></div><div class="form-group"><label>Price (DA)</label><input type="number" class="form-control" placeholder="0" value="${v ? v.price : ""}" /></div><button class="btn-remove-variant" onclick="this.closest('.variant-row').remove();refreshStockMatrix()">×</button>`;
+        const existingLabelEn = v ? (v.labelEn || v.label || (v.weight ? `${v.weight}${v.unit || ''}` : '')) : '';
+        const existingLabelFr = v ? (v.labelFr || '') : '';
+        const existingLabelAr = v ? (v.labelAr || '') : '';
+        div.innerHTML = `<div class="form-group" style="flex:2"><label>Label</label><input type="text" class="form-control variant-label-input" placeholder="EN *" value="${existingLabelEn}" oninput="refreshStockMatrix()" /><input type="text" class="form-control variant-label-fr" placeholder="FR" value="${existingLabelFr}" style="margin-top:4px" /><input type="text" class="form-control variant-label-ar" placeholder="AR" value="${existingLabelAr}" style="margin-top:4px;direction:rtl" /></div><div class="form-group"><label>Price (DA)</label><input type="number" class="form-control variant-price-input" placeholder="0" value="${v ? v.price : ""}" /></div><button class="btn-remove-variant" onclick="this.closest('.variant-row').remove();refreshStockMatrix()">×</button>`;
         list.appendChild(div);
         refreshStockMatrix();
       }
@@ -900,7 +904,10 @@
         const list = document.getElementById("flavors-list");
         const div = document.createElement("div");
         div.className = "flavor-row";
-        div.innerHTML = `<div class="form-group" style="flex:2"><label>Shade / Color / Option</label><input type="text" class="form-control flavor-name-input" placeholder="e.g. Red No.5, Nude Beige, Matte Finish…" value="${f ? f.name : ""}" oninput="refreshStockMatrix()" /></div><div class="form-group flavor-qty-cell"><label>Qty (no variants)</label><input type="number" class="form-control flavor-qty-input" placeholder="0" value="${f && f.qty ? f.qty : ""}" min="0" oninput="refreshStockMatrix()" /></div><button class="btn-remove-variant" onclick="this.closest('.flavor-row').remove();refreshStockMatrix()">×</button>`;
+        const fNameEn = f ? (f.nameEn || f.name || '') : '';
+        const fNameFr = f ? (f.nameFr || '') : '';
+        const fNameAr = f ? (f.nameAr || '') : '';
+        div.innerHTML = `<div class="form-group" style="flex:2"><label>Shade / Color / Option</label><input type="text" class="form-control flavor-name-input" placeholder="EN *  e.g. Red No.5, Nude Beige…" value="${fNameEn}" oninput="refreshStockMatrix()" /><input type="text" class="form-control flavor-name-fr" placeholder="FR" value="${fNameFr}" style="margin-top:4px" /><input type="text" class="form-control flavor-name-ar" placeholder="AR" value="${fNameAr}" style="margin-top:4px;direction:rtl" /></div><div class="form-group flavor-qty-cell"><label>Qty (no variants)</label><input type="number" class="form-control flavor-qty-input" placeholder="0" value="${f && f.qty ? f.qty : ""}" min="0" oninput="refreshStockMatrix()" /></div><button class="btn-remove-variant" onclick="this.closest('.flavor-row').remove();refreshStockMatrix()">×</button>`;
         list.appendChild(div);
         refreshStockMatrix();
       }
@@ -1023,10 +1030,12 @@
 
         const variants = Array.from(document.querySelectorAll("#variants-list .variant-row"))
           .map((r, vi) => {
-            const labelEl = r.querySelector(".variant-label-input");
-            const priceEl = r.querySelectorAll("input")[1];
-            const label = labelEl?.value.trim() || "";
-            const v = { label, price: parseFloat(priceEl?.value) || 0 };
+            const labelEn = r.querySelector(".variant-label-input")?.value.trim() || "";
+            const labelFr = r.querySelector(".variant-label-fr")?.value.trim() || "";
+            const labelAr = r.querySelector(".variant-label-ar")?.value.trim() || "";
+            const priceEl = r.querySelector(".variant-price-input");
+            const label = labelEn;
+            const v = { label, labelEn, labelFr, labelAr, price: parseFloat(priceEl?.value) || 0 };
             if (showMatrix) {
               v.flavorStock = {};
               document.querySelectorAll(`#stock-matrix-body input[data-vi="${vi}"]`).forEach(inp => {
@@ -1043,9 +1052,11 @@
 
         const flavors = Array.from(document.querySelectorAll("#flavors-list .flavor-row"))
           .map((r) => {
-            const name = r.querySelector(".flavor-name-input")?.value.trim() || "";
-            const qty  = parseInt(r.querySelector(".flavor-qty-input")?.value) || 0;
-            return { name, qty };
+            const nameEn = r.querySelector(".flavor-name-input")?.value.trim() || "";
+            const nameFr = r.querySelector(".flavor-name-fr")?.value.trim() || "";
+            const nameAr = r.querySelector(".flavor-name-ar")?.value.trim() || "";
+            const qty    = parseInt(r.querySelector(".flavor-qty-input")?.value) || 0;
+            return { name: nameEn, nameEn, nameFr, nameAr, qty };
           })
           .filter((f) => f.name);
 
@@ -1064,7 +1075,10 @@
           nameEn,
           nameFr,
           nameAr,
-          brand: document.getElementById("pm-brand").value.trim(),
+          brand: document.getElementById("pm-brand-en").value.trim(),
+          brandEn: document.getElementById("pm-brand-en").value.trim(),
+          brandFr: document.getElementById("pm-brand-fr").value.trim(),
+          brandAr: document.getElementById("pm-brand-ar").value.trim(),
           categoryIds,
           subCategoryIds,
           description: document.getElementById("pm-desc-en").innerHTML.trim(),
