@@ -100,10 +100,10 @@
         return { id: r.id, name: r.name, brand: r.brand, categoryIds: (r.category_ids || "").split(",").filter(Boolean), subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), description: r.description, imageUrl: r.image_url || [], variants: r.variants || [], flavors: r.flavors || [], stock: r.stock, discount: r.discount, freeDelivery: r.free_delivery === true || r.free_delivery === "true", status: r.status, hidden: r.hidden || false, createdAt: r.created_at };
       }
       function _remapCategoryRow(r) {
-        return { id: r.id, name: r.name, description: r.description, createdAt: r.created_at };
+        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", description: r.description, createdAt: r.created_at };
       }
       function _remapSubCategoryRow(r) {
-        return { id: r.id, name: r.name, categoryIds: (r.category_ids || "").split(",").filter(Boolean), createdAt: r.created_at };
+        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", categoryIds: (r.category_ids || "").split(",").filter(Boolean), createdAt: r.created_at };
       }
       function _remapDeliveryRow(r) {
         return { id: r.id, wilaya: r.wilaya, homePrice: r.home_price, officePrice: r.office_price, createdAt: r.created_at };
@@ -214,24 +214,27 @@
           // ── CATEGORIES ──
           case "addCategory": {
             const catId = String(Date.now());
-            const { error: catErr } = await sb.from("categories").insert({ id: catId, name: rest.name, description: rest.description || "" });
+            const { error: catErr } = await sb.from("categories").insert({ id: catId, name: rest.nameEn || rest.name || "", name_en: rest.nameEn || "", name_fr: rest.nameFr || "", name_ar: rest.nameAr || "", description: rest.description || "" });
             if (catErr) throw catErr;
-            for (const subName of (rest.subCategories || [])) {
+            for (const sub of (rest.subCategories || [])) {
+              if (!sub) continue;
+              const subName = typeof sub === "string" ? sub : (sub.nameEn || sub.name || "");
               if (!subName) continue;
               await new Promise((r) => setTimeout(r, 5));
-              await sb.from("sub_categories").insert({ id: String(Date.now()), name: subName, category_ids: catId });
+              await sb.from("sub_categories").insert({ id: String(Date.now()), name: subName, name_en: typeof sub === "string" ? sub : (sub.nameEn || ""), name_fr: typeof sub === "string" ? "" : (sub.nameFr || ""), name_ar: typeof sub === "string" ? "" : (sub.nameAr || ""), category_ids: catId });
             }
             return { success: true, id: catId };
           }
           case "updateCategory": {
-            const { error } = await sb.from("categories").update({ name: rest.name, description: rest.description || "" }).eq("id", id);
+            const { error } = await sb.from("categories").update({ name: rest.nameEn || rest.name || "", name_en: rest.nameEn || "", name_fr: rest.nameFr || "", name_ar: rest.nameAr || "", description: rest.description || "" }).eq("id", id);
             if (error) throw error;
             for (const sub of (rest.subCategories || [])) {
+              const subName = sub.nameEn || sub.name || "";
               if (sub.id) {
-                await sb.from("sub_categories").update({ name: sub.name }).eq("id", sub.id);
-              } else if (sub.name) {
+                await sb.from("sub_categories").update({ name: subName, name_en: sub.nameEn || "", name_fr: sub.nameFr || "", name_ar: sub.nameAr || "" }).eq("id", sub.id);
+              } else if (subName) {
                 await new Promise((r) => setTimeout(r, 5));
-                await sb.from("sub_categories").insert({ id: String(Date.now()), name: sub.name, category_ids: id });
+                await sb.from("sub_categories").insert({ id: String(Date.now()), name: subName, name_en: sub.nameEn || "", name_fr: sub.nameFr || "", name_ar: sub.nameAr || "", category_ids: id });
               }
             }
             return { success: true };
@@ -243,7 +246,7 @@
             return { success: true };
           }
           case "updateSubCategory": {
-            const { error } = await sb.from("sub_categories").update({ name: rest.name }).eq("id", id);
+            const { error } = await sb.from("sub_categories").update({ name: rest.nameEn || rest.name || "", name_en: rest.nameEn || "", name_fr: rest.nameFr || "", name_ar: rest.nameAr || "" }).eq("id", id);
             if (error) throw error;
             return { success: true };
           }
@@ -1134,7 +1137,9 @@
       function openCatModal() {
         editingCatId = null;
         document.getElementById("cat-modal-title").textContent = "Add Category";
-        document.getElementById("cat-name").value = "";
+        document.getElementById("cat-name-en").value = "";
+        document.getElementById("cat-name-fr").value = "";
+        document.getElementById("cat-name-ar").value = "";
         document.getElementById("cat-desc").value = "";
         document.getElementById("sub-items-list").innerHTML = "";
         openModal("cat-modal");
@@ -1144,11 +1149,17 @@
         if (!cat) return;
         editingCatId = id;
         document.getElementById("cat-modal-title").textContent = "Edit Category";
-        document.getElementById("cat-name").value = cat.name || "";
+        document.getElementById("cat-name-en").value = cat.nameEn || cat.name || "";
+        document.getElementById("cat-name-fr").value = cat.nameFr || "";
+        document.getElementById("cat-name-ar").value = cat.nameAr || "";
         document.getElementById("cat-desc").value = cat.description || "";
         const subs = subCategories.filter((s) => s.categoryIds && s.categoryIds.includes(id));
         document.getElementById("sub-items-list").innerHTML = subs
-          .map((s) => `<div class="sub-item-row"><input type="text" class="form-control" style="flex:1" value="${s.name.replace(/"/g,'&quot;')}" data-sub-id="${s.id}" /><button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button></div>`)
+          .map((s) => `<div class="sub-item-row" data-sub-id="${s.id}">
+            <input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="EN" value="${(s.nameEn||s.name||'').replace(/"/g,'&quot;')}" data-lang="en" />
+            <input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="FR" value="${(s.nameFr||'').replace(/"/g,'&quot;')}" data-lang="fr" />
+            <input type="text" class="form-control" style="flex:1;min-width:80px;direction:rtl" placeholder="AR" value="${(s.nameAr||'').replace(/"/g,'&quot;')}" data-lang="ar" />
+            <button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button></div>`)
           .join("");
         openModal("cat-modal");
       }
@@ -1156,30 +1167,38 @@
         const list = document.getElementById("sub-items-list");
         const div = document.createElement("div");
         div.className = "sub-item-row";
-        div.innerHTML = `<input type="text" class="form-control" style="flex:1" placeholder="Sub-category name…" /><button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button>`;
+        div.innerHTML = `<input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="EN" data-lang="en" /><input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="FR" data-lang="fr" /><input type="text" class="form-control" style="flex:1;min-width:80px;direction:rtl" placeholder="AR" data-lang="ar" /><button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button>`;
         list.appendChild(div);
       }
       async function saveCat() {
-        const name = document.getElementById("cat-name").value.trim();
-        if (!name) { showToast("Name required", "error"); return; }
-        const subRows = Array.from(document.querySelectorAll("#sub-items-list .sub-item-row input"));
-        const subs = subRows.map((i) => ({ id: i.dataset.subId || "", name: i.value.trim() })).filter((s) => s.name);
+        const nameEn = document.getElementById("cat-name-en").value.trim();
+        const nameFr = document.getElementById("cat-name-fr").value.trim();
+        const nameAr = document.getElementById("cat-name-ar").value.trim();
+        if (!nameEn) { showToast("English name required", "error"); return; }
+        const subRows = Array.from(document.querySelectorAll("#sub-items-list .sub-item-row"));
+        const subs = subRows.map((row) => ({
+          id: row.dataset.subId || "",
+          nameEn: (row.querySelector('[data-lang="en"]')?.value || "").trim(),
+          nameFr: (row.querySelector('[data-lang="fr"]')?.value || "").trim(),
+          nameAr: (row.querySelector('[data-lang="ar"]')?.value || "").trim(),
+        })).filter((s) => s.nameEn);
         showLoading(editingCatId ? "Updating category…" : "Saving category…");
         try {
+          const desc = document.getElementById("cat-desc").value.trim();
           const payload = editingCatId
-            ? { action: "updateCategory", id: editingCatId, name, description: document.getElementById("cat-desc").value.trim(), subCategories: subs }
-            : { action: "addCategory", name, description: document.getElementById("cat-desc").value.trim(), subCategories: subs.map((s) => s.name) };
+            ? { action: "updateCategory", id: editingCatId, nameEn, nameFr, nameAr, description: desc, subCategories: subs }
+            : { action: "addCategory", nameEn, nameFr, nameAr, description: desc, subCategories: subs };
           const r = await apiPost(payload);
           if (r.success) {
             showToast(editingCatId ? "Category updated!" : "Category saved!");
             closeModal("cat-modal");
+            const savedId = editingCatId || r.id || ("tmp_cat_" + Date.now());
             editingCatId = null;
-            // Local mutation + silent background sync
             if (payload.action === "updateCategory") {
               const idx = categories.findIndex(c => c.id === payload.id);
-              if (idx >= 0) categories[idx] = { ...categories[idx], name: payload.name, description: payload.description };
+              if (idx >= 0) categories[idx] = { ...categories[idx], name: nameEn, nameEn, nameFr, nameAr, description: desc };
             } else {
-              categories.push({ id: r.id || ("tmp_cat_" + Date.now()), name: payload.name, description: payload.description });
+              categories.push({ id: savedId, name: nameEn, nameEn, nameFr, nameAr, description: desc });
             }
             renderCats();
             updateDashboard();
@@ -1193,20 +1212,24 @@
         const sub = subCategories.find((s) => s.id === id);
         if (!sub) return;
         editingSubCatId = id;
-        document.getElementById("subcat-name-input").value = sub.name || "";
+        document.getElementById("subcat-name-en").value = sub.nameEn || sub.name || "";
+        document.getElementById("subcat-name-fr").value = sub.nameFr || "";
+        document.getElementById("subcat-name-ar").value = sub.nameAr || "";
         openModal("subcat-edit-modal");
       }
       async function saveSubCat() {
-        const name = document.getElementById("subcat-name-input").value.trim();
-        if (!name) { showToast("Name required", "error"); return; }
+        const nameEn = document.getElementById("subcat-name-en").value.trim();
+        const nameFr = document.getElementById("subcat-name-fr").value.trim();
+        const nameAr = document.getElementById("subcat-name-ar").value.trim();
+        if (!nameEn) { showToast("English name required", "error"); return; }
         showLoading("Updating sub-category…");
         try {
-          const r = await apiPost({ action: "updateSubCategory", id: editingSubCatId, name });
+          const r = await apiPost({ action: "updateSubCategory", id: editingSubCatId, nameEn, nameFr, nameAr });
           if (r.success) {
             showToast("Sub-category updated!");
             closeModal("subcat-edit-modal");
             const sIdx = subCategories.findIndex(s => s.id === editingSubCatId);
-            if (sIdx >= 0) subCategories[sIdx] = { ...subCategories[sIdx], name };
+            if (sIdx >= 0) subCategories[sIdx] = { ...subCategories[sIdx], name: nameEn, nameEn, nameFr, nameAr };
             editingSubCatId = null;
             renderCats();
           } else showToast("Error: " + (r.error || "Unknown"), "error");

@@ -980,36 +980,27 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="form-group" style="margin-bottom: 14px">
-            <label>Category Name *</label
-            ><input
-              type="text"
-              class="form-control"
-              id="cat-name"
-              placeholder="e.g. Protein"
-            />
+          <div class="form-group" style="margin-bottom:14px">
+            <label>Name (English) *</label>
+            <input type="text" class="form-control" id="cat-name-en" placeholder="e.g. Lipstick" />
+          </div>
+          <div class="form-group" style="margin-bottom:14px">
+            <label>Name (French)</label>
+            <input type="text" class="form-control" id="cat-name-fr" placeholder="ex. Rouge à lèvres" />
+          </div>
+          <div class="form-group" style="margin-bottom:14px">
+            <label>Name (Arabic)</label>
+            <input type="text" class="form-control" id="cat-name-ar" placeholder="مثال: أحمر شفاه" dir="rtl" />
           </div>
           <div class="form-group" style="margin-bottom: 14px">
-            <label>Description</label
-            ><input
-              type="text"
-              class="form-control"
-              id="cat-desc"
-              placeholder="Optional short description"
-            />
+            <label>Description</label>
+            <input type="text" class="form-control" id="cat-desc" placeholder="Optional short description" />
           </div>
           <div class="sub-adder">
             <div class="sub-adder-title">Sub-categories (optional)</div>
             <div id="sub-items-list"></div>
             <button class="btn-add-sub" onclick="addSubItem()">
-              <svg
-                width="11"
-                height="11"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-              >
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <line x1="12" y1="5" x2="12" y2="19" />
                 <line x1="5" y1="12" x2="19" y2="12" /></svg
               >Add Sub-category
@@ -1036,9 +1027,17 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="form-group">
-            <label>Sub-Category Name *</label>
-            <input type="text" class="form-control" id="subcat-name-input" placeholder="Sub-category name" />
+          <div class="form-group" style="margin-bottom:14px">
+            <label>Name (English) *</label>
+            <input type="text" class="form-control" id="subcat-name-en" placeholder="e.g. Matte" />
+          </div>
+          <div class="form-group" style="margin-bottom:14px">
+            <label>Name (French)</label>
+            <input type="text" class="form-control" id="subcat-name-fr" placeholder="ex. Mat" />
+          </div>
+          <div class="form-group" style="margin-bottom:14px">
+            <label>Name (Arabic)</label>
+            <input type="text" class="form-control" id="subcat-name-ar" placeholder="مثال: مطفي" dir="rtl" />
           </div>
         </div>
         <div class="modal-footer">
@@ -1151,6 +1150,6 @@
       ><span id="toast-msg">Done!</span>
     </div>
 
-    <script src="/supplements/panel4rz/index.js?v=12"></script>
+    <script src="/supplements/panel4rz/index.js?v=13"></script>
   </body>
 </html>
