@@ -34,11 +34,27 @@
   }
 
   function _remapCategory(c) {
-    return { id: c.id, name: c.name, description: c.description || "", createdAt: c.created_at };
+    return {
+      id: c.id,
+      name: c.name_en || c.name || "",
+      nameEn: c.name_en || c.name || "",
+      nameFr: c.name_fr || "",
+      nameAr: c.name_ar || "",
+      description: c.description || "",
+      createdAt: c.created_at,
+    };
   }
 
   function _remapSubCategory(s) {
-    return { id: s.id, name: s.name, categoryIds: (s.category_ids || "").split(",").filter(Boolean), createdAt: s.created_at };
+    return {
+      id: s.id,
+      name: s.name_en || s.name || "",
+      nameEn: s.name_en || s.name || "",
+      nameFr: s.name_fr || "",
+      nameAr: s.name_ar || "",
+      categoryIds: (s.category_ids || "").split(",").filter(Boolean),
+      createdAt: s.created_at,
+    };
   }
 
   function _remapBundle(b) {

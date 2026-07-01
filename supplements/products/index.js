@@ -186,6 +186,11 @@
       };
 
       let currentLang = "en";
+      function catName(item) {
+        if (!item) return "";
+        const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+        return item[key] || item.nameEn || item.name || "";
+      }
 
       /* ══════════════════════════════════════════════════════════════
    LANGUAGE SWITCHER
@@ -218,6 +223,10 @@
 
         // Re-render product buttons in new language
         renderProducts();
+
+        // Re-render category nav and sidebar filters in new language
+        renderCatNav(allCategories, allSubCategories);
+        renderSidebars();
       }
 
       /* ══════════════════════════════════════════════════════════════
@@ -309,25 +318,25 @@
           if (catSubs.length > 0) {
             desktopHTML += `
               <div class="cat-item">
-                <a href="#" class="cat-link" onclick="filterByCategory('${cat.id}'); return false;">${cat.name}
+                <a href="#" class="cat-link" onclick="filterByCategory('${cat.id}'); return false;">${catName(cat)}
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
                 </a>
                 <div class="dropdown">
-                  ${catSubs.map((s) => `<a href="#" onclick="filterBySubCategory('${s.id}'); return false;">${s.name}</a>`).join("")}
+                  ${catSubs.map((s) => `<a href="#" onclick="filterBySubCategory('${s.id}'); return false;">${catName(s)}</a>`).join("")}
                 </div>
               </div>`;
             mobileHTML += `
               <div class="m-cat-item">
                 <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
-                  ${cat.name} <span class="m-arrow">›</span>
+                  ${catName(cat)} <span class="m-arrow">›</span>
                 </button>
                 <div class="m-sub">
-                  ${catSubs.map((s) => `<a href="#" class="m-sub-link" onclick="filterBySubCategory('${s.id}'); toggleMobileMenu(); return false;">${s.name}</a>`).join("")}
+                  ${catSubs.map((s) => `<a href="#" class="m-sub-link" onclick="filterBySubCategory('${s.id}'); toggleMobileMenu(); return false;">${catName(s)}</a>`).join("")}
                 </div>
               </div>`;
           } else {
-            desktopHTML += `<div class="cat-item"><a href="#" class="cat-link" onclick="filterByCategory('${cat.id}'); return false;">${cat.name}</a></div>`;
-            mobileHTML += `<a href="#" class="m-link" onclick="filterByCategory('${cat.id}'); toggleMobileMenu(); return false;">${cat.name}</a>`;
+            desktopHTML += `<div class="cat-item"><a href="#" class="cat-link" onclick="filterByCategory('${cat.id}'); return false;">${catName(cat)}</a></div>`;
+            mobileHTML += `<a href="#" class="m-link" onclick="filterByCategory('${cat.id}'); toggleMobileMenu(); return false;">${catName(cat)}</a>`;
           }
         });
 
@@ -352,7 +361,9 @@
           categoryOptions = allCategories
             .map((cat) => ({
               value: cat.id,
-              label: cat.name,
+              nameEn: cat.nameEn || cat.name || "",
+              nameFr: cat.nameFr || "",
+              nameAr: cat.nameAr || "",
               count: allProducts.filter((p) => p.categoryIds.includes(cat.id)).length,
             }))
             .filter((opt) => opt.count > 0);
@@ -362,7 +373,7 @@
             .map((sub) => {
               const parsedCatIds = parseIds(sub.categoryIds);
               const count = allProducts.filter((p) => p.subCategoryIds.includes(sub.id)).length;
-              return { value: sub.id, label: sub.name, categoryIds: parsedCatIds, count };
+              return { value: sub.id, nameEn: sub.nameEn || sub.name || "", nameFr: sub.nameFr || "", nameAr: sub.nameAr || "", categoryIds: parsedCatIds, count };
             })
             .filter((opt) => opt.count > 0);
 
@@ -471,7 +482,7 @@
                   <div class="custom-checkbox">
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                   </div>
-                  ${opt.label}
+                  ${catName(opt)}
                 </label>
                 <span class="option-count">${opt.count}</span>
               </div>`,
@@ -506,7 +517,7 @@
                   <div class="custom-checkbox">
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                   </div>
-                  ${opt.label}
+                  ${catName(opt)}
                 </label>
                 <span class="option-count">${opt.count}</span>
               </div>`,

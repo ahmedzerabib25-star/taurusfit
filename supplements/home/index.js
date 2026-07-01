@@ -254,6 +254,11 @@ function hideLoader() {
 }
 
 let currentLang = "en";
+function catName(item) {
+  if (!item) return "";
+  const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+  return item[key] || item.nameEn || item.name || "";
+}
 /* ══════════════════════════════════════════════════════════════
    CART — localStorage persistence
 ══════════════════════════════════════════════════════════════ */
@@ -442,6 +447,8 @@ function cartCheckout() { window.location.href = "/checkout"; }
    PRODUCTS DATA — loaded from Supabase
 ───────────────────────────────────────────────────────────── */
 let products = [];
+let _categories = [];
+let _subCategories = [];
 let _bundleId = null;
 let _bundleText = { titleEn: "", titleFr: "", titleAr: "", descriptionEn: "", descriptionFr: "", descriptionAr: "" };
 
@@ -591,6 +598,61 @@ function sanitizeFooterAndModals(lang) {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   CATEGORY NAV RENDERER — called on load and on language change
+───────────────────────────────────────────────────────────── */
+function renderCatNav() {
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>`;
+
+  const desktopInner = document.getElementById("catNavInner");
+  if (desktopInner) {
+    desktopInner.innerHTML = _categories
+      .map((cat) => {
+        const subs = _subCategories.filter((s) => s.categoryIds.includes(cat.id));
+        if (subs.length === 0) {
+          return `<div class="cat-item"><a href="/products?cat=${encodeURIComponent(cat.id)}" class="cat-link">${catName(cat)}</a></div>`;
+        }
+        return `
+          <div class="cat-item">
+            <a href="/products?cat=${encodeURIComponent(cat.id)}" class="cat-link">${catName(cat)} ${chevron}</a>
+            <div class="dropdown" role="menu">
+              ${subs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.id)}" role="menuitem">${catName(s)}</a>`).join("")}
+            </div>
+          </div>`;
+      })
+      .join("");
+  }
+
+  const footerList = document.getElementById("footerCategoryList");
+  if (footerList) {
+    footerList.innerHTML = _categories
+      .slice(0, 6)
+      .map((cat) => `<li><a href="/products?cat=${encodeURIComponent(cat.id)}">${catName(cat)}</a></li>`)
+      .join("");
+  }
+
+  const mobileContainer = document.getElementById("mobileCatItems");
+  if (mobileContainer) {
+    mobileContainer.innerHTML = _categories
+      .map((cat) => {
+        const subs = _subCategories.filter((s) => s.categoryIds.includes(cat.id));
+        if (subs.length === 0) {
+          return `<a href="/products?cat=${encodeURIComponent(cat.id)}" class="m-link">${catName(cat)}</a>`;
+        }
+        return `
+          <div class="m-cat-item">
+            <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
+              ${catName(cat)} <span class="m-arrow">›</span>
+            </button>
+            <div class="m-sub">
+              ${subs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.id)}" class="m-sub-link">${catName(s)}</a>`).join("")}
+            </div>
+          </div>`;
+      })
+      .join("");
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
    LANGUAGE SWITCHER
    - Switches UI text for elements with data-i18n / data-i18n-html
 ───────────────────────────────────────────────────────────── */
@@ -625,6 +687,9 @@ function switchLang(lang) {
 
   // Re-render products with new button labels
   renderProducts(lang);
+
+  // Re-render category nav in new language
+  renderCatNav();
 
   // Update bundle banner text
   updateBannerLang(lang);
@@ -823,65 +888,9 @@ async function loadInitialData() {
     }
 
     // ── Categories ──
-    const categories = res.categories || [];
-    const subCategories = res.subCategories || [];
-
-    const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>`;
-
-    // ── Desktop cat-nav ──
-    const desktopInner = document.getElementById("catNavInner");
-    if (desktopInner) {
-      desktopInner.innerHTML = categories
-        .map((cat) => {
-          const subs = subCategories.filter((s) =>
-            s.categoryIds.includes(cat.id),
-          );
-          if (subs.length === 0) {
-            return `<div class="cat-item"><a href="/products?cat=${encodeURIComponent(cat.id)}" class="cat-link">${cat.name}</a></div>`;
-          }
-          return `
-            <div class="cat-item">
-              <a href="/products?cat=${encodeURIComponent(cat.id)}" class="cat-link">${cat.name} ${chevron}</a>
-              <div class="dropdown" role="menu">
-                ${subs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.id)}" role="menuitem">${s.name}</a>`).join("")}
-              </div>
-            </div>`;
-        })
-        .join("");
-    }
-
-    // ── Footer categories (max 6) ──
-    const footerList = document.getElementById("footerCategoryList");
-    if (footerList) {
-      footerList.innerHTML = categories
-        .slice(0, 6)
-        .map((cat) => `<li><a href="/products?cat=${encodeURIComponent(cat.id)}">${cat.name}</a></li>`)
-        .join("");
-    }
-
-    // ── Mobile menu categories ──
-    const mobileContainer = document.getElementById("mobileCatItems");
-    if (mobileContainer) {
-      mobileContainer.innerHTML = categories
-        .map((cat) => {
-          const subs = subCategories.filter((s) =>
-            s.categoryIds.includes(cat.id),
-          );
-          if (subs.length === 0) {
-            return `<a href="/products?cat=${encodeURIComponent(cat.id)}" class="m-link">${cat.name}</a>`;
-          }
-          return `
-            <div class="m-cat-item">
-              <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
-                ${cat.name} <span class="m-arrow">›</span>
-              </button>
-              <div class="m-sub">
-                ${subs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.id)}" class="m-sub-link">${s.name}</a>`).join("")}
-              </div>
-            </div>`;
-        })
-        .join("");
-    }
+    _categories = res.categories || [];
+    _subCategories = res.subCategories || [];
+    renderCatNav();
   } catch (err) {
     console.error("Failed to load initial data:", err);
   }
