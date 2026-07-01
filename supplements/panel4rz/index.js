@@ -380,10 +380,10 @@
         showLoading("Loading dashboard…");
         // Fetch fresh data from Supabase
         try {
-          const [initRes, settingsRes, bundleRes] = await Promise.all([
-            apiGet("getInitialData"),
-            apiGet("getSettings"),
-            apiGet("getBundle"),
+          const _timeout = new Promise((_, rej) => setTimeout(() => rej(new Error("Load timeout — check your connection")), 20000));
+          const [initRes, settingsRes, bundleRes] = await Promise.race([
+            Promise.all([apiGet("getInitialData"), apiGet("getSettings"), apiGet("getBundle")]),
+            _timeout,
           ]);
           if (initRes && initRes.success) {
             applyInitialData(initRes, settingsRes);
@@ -1235,8 +1235,11 @@
             { key: "all_free_delivery", value: String(allFree) },
             { key: "free_delivery_threshold", value: String(threshold) },
           ];
+          const controller = new AbortController();
+          const tid = setTimeout(() => controller.abort(), 10000);
           const res = await fetch(SUPABASE_URL + "/rest/v1/settings", {
             method: "POST",
+            signal: controller.signal,
             headers: {
               "Content-Type": "application/json",
               "apikey": SUPABASE_ANON_KEY,
@@ -1245,6 +1248,7 @@
             },
             body: JSON.stringify(upserts),
           });
+          clearTimeout(tid);
           if (!res.ok) {
             const err = await res.json().catch(() => ({}));
             throw new Error(err.message || "HTTP " + res.status);
