@@ -595,6 +595,7 @@
         delivery: "Delivery Prices",
         bundle: "Bundle",
         orders: "Orders",
+        stock: "Stock Management",
         settings: "Settings",
       };
       function showPage(name, el) {
@@ -609,6 +610,7 @@
         document.getElementById("page-title").textContent =
           pageNames[name] || name;
         if (name === "orders") { /* badge cleared on view */ }
+        if (name === "stock") renderStock();
         if (name === "settings") loadAdminUsers();
         if (window.innerWidth < 768) closeSidebar();
       }
@@ -617,6 +619,146 @@
         sessionStorage.removeItem("bb_admin_auth");
         sessionStorage.removeItem("bb_admin_name");
         window.location.href = "/mgmt9kx";
+      }
+
+      // ════════════════════════════════════════════
+      // STOCK MANAGEMENT
+      // ════════════════════════════════════════════
+      function renderStock() {
+        var list = document.getElementById("stock-list");
+        var summary = document.getElementById("stock-summary");
+        if (!list) return;
+        var search = (document.getElementById("stock-search")?.value || "").toLowerCase().trim();
+        var filter = document.getElementById("stock-filter")?.value || "all";
+
+        var filtered = products.filter(function(p) {
+          var name = (p.nameEn || p.name || "").toLowerCase();
+          var brand = (p.brandEn || p.brand || "").toLowerCase();
+          if (search && !name.includes(search) && !brand.includes(search)) return false;
+          var s = Number(p.stock) || 0;
+          if (filter === "out") return s === 0;
+          if (filter === "low") return s > 0 && s <= 5;
+          return true;
+        });
+
+        var outCount = products.filter(function(p) { return (Number(p.stock) || 0) === 0; }).length;
+        var lowCount = products.filter(function(p) { var s = Number(p.stock) || 0; return s > 0 && s <= 5; }).length;
+        if (summary) summary.textContent = filtered.length + " product" + (filtered.length !== 1 ? "s" : "") + " · " + outCount + " out · " + lowCount + " low";
+
+        if (!filtered.length) {
+          list.innerHTML = '<div style="padding:48px;text-align:center;color:var(--g400);font-size:13px">No products match.</div>';
+          return;
+        }
+
+        list.innerHTML = filtered.map(function(p) {
+          var totalStock = Number(p.stock) || 0;
+          var isOut = totalStock === 0;
+          var isLow = !isOut && totalStock <= 5;
+          var imgSrc = Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl;
+          var hasVariants = Array.isArray(p.variants) && p.variants.length > 0;
+
+          var badgeCls = isOut ? "stock-badge-out" : isLow ? "stock-badge-low" : "stock-badge-ok";
+          var badgeText = isOut ? "Out of Stock" : String(totalStock);
+
+          var controls = "";
+          if (hasVariants) {
+            controls = '<div class="stock-variants">' +
+              p.variants.map(function(v, vi) {
+                var label = v.labelEn || v.label || (v.weight ? v.weight + (v.unit || "") : "") || ("Option " + (vi + 1));
+                var vStock = Number(v.stock) || 0;
+                var vOut = vStock === 0;
+                return '<div class="stock-variant-row' + (vOut ? " stock-variant-out" : "") + '">' +
+                  '<span class="stock-variant-label">' + _esc(label) + '</span>' +
+                  '<input type="number" class="stock-input" data-pid="' + p.id + '" data-vi="' + vi + '" value="' + vStock + '" min="0" oninput="stockInputChanged(\'' + p.id + '\')" />' +
+                  (vOut ? '<span class="stock-v-zero">0</span>' : '') +
+                '</div>';
+              }).join("") +
+            "</div>";
+          } else {
+            controls = '<input type="number" class="stock-input stock-input-solo" data-pid="' + p.id + '" value="' + (Number(p.stock) || 0) + '" min="0" oninput="stockInputChanged(\'' + p.id + '\')" />';
+          }
+
+          return '<div class="stock-row' + (isOut ? " stock-row-out" : isLow ? " stock-row-low" : "") + '" id="stock-row-' + p.id + '">' +
+            '<div class="stock-row-main">' +
+              '<div class="stock-row-left">' +
+                (imgSrc ? '<img src="' + imgSrc + '" class="stock-thumb" alt="" />' : '<div class="stock-thumb stock-thumb-empty"></div>') +
+                '<div class="stock-info">' +
+                  '<div class="stock-name">' + _esc(p.nameEn || p.name || "Unnamed") + '</div>' +
+                  (p.brandEn || p.brand ? '<div class="stock-brand">' + _esc(p.brandEn || p.brand) + '</div>' : '') +
+                  '<div class="stock-total-badge ' + badgeCls + '" id="stock-badge-' + p.id + '">' + badgeText + '</div>' +
+                '</div>' +
+              '</div>' +
+              '<div class="stock-row-actions">' +
+                '<button class="stock-save-btn" id="stock-save-' + p.id + '" onclick="saveStockRow(\'' + p.id + '\')" disabled>Save</button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="stock-controls">' + controls + '</div>' +
+          '</div>';
+        }).join("");
+      }
+
+      function _esc(s) {
+        return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+      }
+
+      function stockInputChanged(pid) {
+        var btn = document.getElementById("stock-save-" + pid);
+        if (btn) btn.disabled = false;
+        var row = document.getElementById("stock-row-" + pid);
+        if (!row) return;
+        var inputs = row.querySelectorAll(".stock-input");
+        var total = 0;
+        inputs.forEach(function(inp) { total += parseInt(inp.value) || 0; });
+        var badge = document.getElementById("stock-badge-" + pid);
+        if (badge) {
+          var isOut = total === 0;
+          var isLow = !isOut && total <= 5;
+          badge.className = "stock-total-badge " + (isOut ? "stock-badge-out" : isLow ? "stock-badge-low" : "stock-badge-ok");
+          badge.textContent = isOut ? "Out of Stock" : String(total);
+          row.classList.toggle("stock-row-out", isOut);
+          row.classList.toggle("stock-row-low", isLow && !isOut);
+        }
+        // Update variant zero highlight
+        row.querySelectorAll(".stock-input[data-vi]").forEach(function(inp) {
+          var vRow = inp.closest(".stock-variant-row");
+          if (vRow) vRow.classList.toggle("stock-variant-out", (parseInt(inp.value) || 0) === 0);
+        });
+      }
+
+      async function saveStockRow(pid) {
+        var p = products.find(function(x) { return x.id === pid; });
+        if (!p) return;
+        var btn = document.getElementById("stock-save-" + pid);
+        var origText = btn ? btn.textContent : "Save";
+        if (btn) { btn.disabled = true; btn.textContent = "Saving…"; }
+        try {
+          var row = document.getElementById("stock-row-" + pid);
+          var updateData = {};
+          if (Array.isArray(p.variants) && p.variants.length > 0) {
+            var newVariants = p.variants.map(function(v, vi) {
+              var inp = row.querySelector('.stock-input[data-vi="' + vi + '"]');
+              return Object.assign({}, v, { stock: parseInt(inp ? inp.value : 0) || 0 });
+            });
+            var globalStock = newVariants.reduce(function(s, v) { return s + (Number(v.stock) || 0); }, 0);
+            updateData = { variants: newVariants, stock: globalStock };
+            p.variants = newVariants;
+            p.stock = globalStock;
+          } else {
+            var inp = row.querySelector(".stock-input");
+            var newStock = parseInt(inp ? inp.value : 0) || 0;
+            updateData = { stock: newStock };
+            p.stock = newStock;
+          }
+          var res = await sb.from("products").update(updateData).eq("id", pid);
+          if (res.error) throw res.error;
+          if (btn) { btn.textContent = "Saved ✓"; btn.style.background = "var(--green,#22c55e)"; }
+          setTimeout(function() {
+            if (btn) { btn.textContent = "Save"; btn.style.background = ""; btn.disabled = true; }
+          }, 2200);
+        } catch (err) {
+          alert("Error: " + (err.message || err));
+          if (btn) { btn.disabled = false; btn.textContent = origText; }
+        }
       }
 
       // ════════════════════════════════════════════

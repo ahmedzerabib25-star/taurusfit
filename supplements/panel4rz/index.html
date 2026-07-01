@@ -12,7 +12,7 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/supplements/supabase-client.js?v=4"></script>
-    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=9" />
+    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=10" />
   </head>
   <body>
 <div class="loading-overlay" id="loading-overlay">
@@ -120,6 +120,14 @@
               <rect x="9" y="3" width="6" height="4" rx="1"/>
               <path d="M9 12h6M9 16h4"/></svg
             ><span>Orders</span>
+          </div>
+          <div class="sb-link" onclick="showPage('stock', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="7" width="20" height="14" rx="2"/>
+              <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+              <line x1="12" y1="12" x2="12" y2="16"/>
+              <line x1="10" y1="14" x2="14" y2="14"/>
+            </svg><span>Stock</span>
           </div>
           <div class="sb-section-label">Admin</div>
           <div class="sb-link" onclick="showPage('settings', this)">
@@ -764,6 +772,32 @@
             <div id="orders-pag"></div>
           </div>
         </div>
+
+        <!-- STOCK -->
+        <div class="page" id="page-stock">
+          <div class="sec-header">
+            <div class="sec-title">Stock Management</div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <select id="stock-filter" class="search-box" style="width:auto;padding:0 10px;cursor:pointer" onchange="renderStock()">
+                <option value="all">All Products</option>
+                <option value="out">Out of Stock</option>
+                <option value="low">Low Stock (≤5)</option>
+              </select>
+              <button class="btn-primary" onclick="renderStock()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                Refresh
+              </button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <div class="table-toolbar">
+              <input class="search-box" type="text" id="stock-search" placeholder="Search products…" oninput="renderStock()" style="max-width:280px" />
+              <span id="stock-summary" style="font-size:12px;color:var(--g400);margin-left:auto"></span>
+            </div>
+            <div id="stock-list"></div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -1141,6 +1175,6 @@
       ><span id="toast-msg">Done!</span>
     </div>
 
-    <script src="/supplements/panel4rz/index.js?v=16"></script>
+    <script src="/supplements/panel4rz/index.js?v=17"></script>
   </body>
 </html>
