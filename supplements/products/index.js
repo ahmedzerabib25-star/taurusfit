@@ -191,6 +191,28 @@
         const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
         return item[key] || item.nameEn || item.name || "";
       }
+      function prodName(p) {
+        if (!p) return "";
+        const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+        return p[key] || p.nameEn || p.name || "";
+      }
+      function prodBrand(p) {
+        if (!p) return "";
+        const key = "brand" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+        return p[key] || p.brandEn || p.brand || "";
+      }
+      function varLabel(v, i) {
+        if (typeof v !== "object" || v === null) return String(v);
+        if (v.weight) return `${v.weight}${v.unit || ""}`;
+        const key = "label" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+        return v[key] || v.labelEn || v.label || v.name || `Option ${(i || 0) + 1}`;
+      }
+      function shadeName(f) {
+        if (!f) return "";
+        if (typeof f !== "object") return String(f);
+        const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+        return f[key] || f.nameEn || f.name || "";
+      }
 
       /* ══════════════════════════════════════════════════════════════
    LANGUAGE SWITCHER
@@ -694,10 +716,10 @@
             const badge = oos ? { type: "oos", label: "OUT OF STOCK" } : computeBadge(p, _bundleId, _topSoldIds);
 
             const flavorLabel =
-              p.flavors && p.flavors.length > 0 ? p.flavors[0].name : "";
+              p.flavors && p.flavors.length > 0 ? shadeName(p.flavors[0]) : "";
             const _imgs = Array.isArray(p.imageUrl) ? p.imageUrl : (p.imageUrl ? [p.imageUrl] : []);
             const imgEl = _imgs[0]
-              ? `<img src="${_imgs[0]}" alt="${p.name}" class="img-primary" loading="lazy" />${_imgs[1] ? `<img src="${_imgs[1]}" alt="${p.name}" class="img-hover" loading="lazy" />` : ""}`
+              ? `<img src="${_imgs[0]}" alt="${prodName(p)}" class="img-primary" loading="lazy" />${_imgs[1] ? `<img src="${_imgs[1]}" alt="${prodName(p)}" class="img-hover" loading="lazy" />` : ""}`
               : `<svg class="placeholder-icon" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
 
             return `
@@ -707,8 +729,8 @@
             ${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ''}
           </div>
           <div class="product-info">
-            <span class="product-brand">${p.brand || ""}</span>
-            <h3 class="product-name">${p.name}</h3>
+            <span class="product-brand">${prodBrand(p)}</span>
+            <h3 class="product-name">${prodName(p)}</h3>
             ${flavorLabel ? `<span class="product-flavor">${flavorLabel}</span>` : ""}
             <div class="product-pricing">
               ${currentPrice > 0 ? `<span class="price">${currentPrice.toLocaleString()} DA</span>` : ""}
@@ -956,13 +978,13 @@
           const price = getProductPrice(p).toLocaleString("fr-DZ");
           const _t0 = Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl;
           const thumb = _t0
-            ? `<img src="${_t0}" alt="${p.name}" />`
+            ? `<img src="${_t0}" alt="${prodName(p)}" />`
             : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
           return `<div class="search-drop-item" onclick="closeSearchDropdown(); window.location.href='/product-detail?id=${encodeURIComponent(p.id)}'">
             <div class="search-drop-thumb">${thumb}</div>
             <div class="search-drop-info">
-              <p class="search-drop-brand">${p.brand || ""}</p>
-              <p class="search-drop-name">${p.name}</p>
+              <p class="search-drop-brand">${prodBrand(p)}</p>
+              <p class="search-drop-name">${prodName(p)}</p>
             </div>
             <span class="search-drop-price">${price} DA</span>
           </div>`;

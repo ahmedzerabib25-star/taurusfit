@@ -259,6 +259,28 @@ function catName(item) {
   const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
   return item[key] || item.nameEn || item.name || "";
 }
+function prodName(p) {
+  if (!p) return "";
+  const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+  return p[key] || p.nameEn || p.name || "";
+}
+function prodBrand(p) {
+  if (!p) return "";
+  const key = "brand" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+  return p[key] || p.brandEn || p.brand || "";
+}
+function varLabel(v, i) {
+  if (typeof v !== "object" || v === null) return String(v);
+  if (v.weight) return `${v.weight}${v.unit || ""}`;
+  const key = "label" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+  return v[key] || v.labelEn || v.label || v.name || `Option ${(i || 0) + 1}`;
+}
+function shadeName(f) {
+  if (!f) return "";
+  if (typeof f !== "object") return String(f);
+  const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+  return f[key] || f.nameEn || f.name || "";
+}
 /* ══════════════════════════════════════════════════════════════
    CART — localStorage persistence
 ══════════════════════════════════════════════════════════════ */
@@ -277,9 +299,9 @@ function openAddToCartModal(productId) {
   _atcProduct = p; _atcQty = 1; _atcFlavor = ""; _atcVariantIdx = 0;
   const _atcImg0 = Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl;
   document.getElementById("atcImg").innerHTML = _atcImg0
-    ? `<img src="${_atcImg0}" alt="${p.name}">`
+    ? `<img src="${_atcImg0}" alt="${prodName(p)}">`
     : `<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
-  document.getElementById("atcName").textContent = p.name;
+  document.getElementById("atcName").textContent = prodName(p);
   _atcRefreshPrice();
   _atcFlavorObjs = (Array.isArray(p.flavors) ? p.flavors : [])
     .map(f => typeof f === "object" ? { name: f.name || f.label || "", qty: f.qty || 0 } : { name: String(f), qty: 0 })
@@ -290,7 +312,7 @@ function openAddToCartModal(productId) {
   const weightSec = document.getElementById("atcWeightSection");
   if (variants.length) {
     document.getElementById("atcWeightOptions").innerHTML = variants.map((v, i) => {
-      const lbl = typeof v === "object" ? (v.weight ? `${v.weight}${v.unit||""}` : v.label || v.name || `Option ${i+1}`) : String(v);
+      const lbl = varLabel(v, i);
       return `<button class="atc-option${i===0?" active":""}" onclick="atcPickVariant(this,${i})">${lbl}</button>`;
     }).join("");
     weightSec.style.display = "";
@@ -316,7 +338,7 @@ function _atcRenderFlavorOptions() {
   document.getElementById("atcFlavorOptions").innerHTML = _atcFlavorObjs.map(fo => {
     const oos = isOOS(fo);
     const active = fo.name === _atcFlavor;
-    return `<button class="atc-option${active ? " active" : ""}" ${oos ? 'disabled style="opacity:.4;cursor:not-allowed;text-decoration:line-through;"' : `onclick="atcPickFlavor(this,'${fo.name.replace(/'/g, "\\'")}')"`}>${fo.name}${oos ? " (OOS)" : ""}</button>`;
+    return `<button class="atc-option${active ? " active" : ""}" ${oos ? 'disabled style="opacity:.4;cursor:not-allowed;text-decoration:line-through;"' : `onclick="atcPickFlavor(this,'${fo.name.replace(/'/g, "\\'")}')"`}>${shadeName(fo)}${oos ? " (OOS)" : ""}</button>`;
   }).join("");
 }
 function _atcRefreshPrice() {
@@ -523,12 +545,12 @@ function renderProducts(lang) {
       const badge = computeBadge(p, _bundleId, _topSoldIds);
 
       // Flavor label (represented as Shade in UI)
-      const flavorLabel = p.flavors && p.flavors.length > 0 ? p.flavors[0].name : "";
+      const flavorLabel = p.flavors && p.flavors.length > 0 ? shadeName(p.flavors[0]) : "";
 
       // Image
       const _imgs = Array.isArray(p.imageUrl) ? p.imageUrl : (p.imageUrl ? [p.imageUrl] : []);
       const imgEl = _imgs[0]
-        ? `<img src="${_imgs[0]}" alt="${p.name}" class="img-primary" loading="lazy" />${_imgs[1] ? `<img src="${_imgs[1]}" alt="${p.name}" class="img-hover" loading="lazy" />` : ""}`
+        ? `<img src="${_imgs[0]}" alt="${prodName(p)}" class="img-primary" loading="lazy" />${_imgs[1] ? `<img src="${_imgs[1]}" alt="${prodName(p)}" class="img-hover" loading="lazy" />` : ""}`
         : `<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
 
       return `
@@ -538,8 +560,8 @@ function renderProducts(lang) {
     ${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ''}
   </div>
   <div class="product-info">
-    <span class="product-brand">${p.brand || ""}</span>
-    <h3 class="product-name">${p.name}</h3>
+    <span class="product-brand">${prodBrand(p)}</span>
+    <h3 class="product-name">${prodName(p)}</h3>
     ${flavorLabel ? `<span class="product-flavor">${flavorLabel}</span>` : ""}
     <div class="product-pricing">
       ${currentPrice > 0 ? `<span class="price">${currentPrice.toLocaleString()} DA</span>` : ""}
@@ -747,17 +769,17 @@ function handleSearch(query) {
 
   dropdown.innerHTML = matches.map((p) => {
     const price = getProductPrice(p);
-    const flavorLabel = p.flavors && p.flavors.length > 0 ? p.flavors[0].name : "";
+    const flavorLabel = p.flavors && p.flavors.length > 0 ? shadeName(p.flavors[0]) : "";
     const _t0 = Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl;
     const thumb = _t0
-      ? `<img src="${_t0}" alt="${p.name}" />`
+      ? `<img src="${_t0}" alt="${prodName(p)}" />`
       : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
     return `
-      <div class="search-drop-item" onclick="closeSearchDropdown(); window.location.href='/products?search=${encodeURIComponent(p.name)}'">
+      <div class="search-drop-item" onclick="closeSearchDropdown(); window.location.href='/products?search=${encodeURIComponent(p.nameEn || p.name)}'">
         <div class="search-drop-thumb">${thumb}</div>
         <div class="search-drop-info">
-          <p class="search-drop-brand">${p.brand || ""}</p>
-          <p class="search-drop-name">${p.name}</p>
+          <p class="search-drop-brand">${prodBrand(p)}</p>
+          <p class="search-drop-name">${prodName(p)}</p>
           ${flavorLabel ? `<p style="font-size:11px;color:var(--gray-400);margin:0;">${flavorLabel}</p>` : ""}
         </div>
         <span class="search-drop-price">${price} DA</span>
@@ -968,19 +990,19 @@ function handleMobileSearch(query) {
     .map(
       (p) => {
         const price = getProductPrice(p);
-        const flavorLabel = p.flavors && p.flavors.length > 0 ? p.flavors[0].name : "";
+        const flavorLabel = p.flavors && p.flavors.length > 0 ? shadeName(p.flavors[0]) : "";
         const _i0 = Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl;
         const imgEl = _i0
-          ? `<img src="${_i0}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:0px;" />`
+          ? `<img src="${_i0}" alt="${prodName(p)}" style="width:100%;height:100%;object-fit:cover;border-radius:0px;" />`
           : `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
         return `
-<div onclick="window.location.href='/products?search=${encodeURIComponent(p.name)}'" style="display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--gray-200); cursor:pointer;">
+<div onclick="window.location.href='/products?search=${encodeURIComponent(p.nameEn || p.name)}'" style="display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--gray-200); cursor:pointer;">
   <div style="width:48px; height:48px; background:var(--gray-50); border-radius:0px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:1px solid var(--gray-200); overflow:hidden;">
     ${imgEl}
   </div>
   <div style="flex:1; min-width:0;">
-    <p style="font-size:11px; color:var(--gray-400); font-weight:600; letter-spacing:1px; text-transform:uppercase; margin:0 0 2px;">${p.brand || ""}</p>
-    <p style="font-size:14px; font-weight:500; color:var(--black); margin:0 0 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</p>
+    <p style="font-size:11px; color:var(--gray-400); font-weight:600; letter-spacing:1px; text-transform:uppercase; margin:0 0 2px;">${prodBrand(p)}</p>
+    <p style="font-size:14px; font-weight:500; color:var(--black); margin:0 0 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${prodName(p)}</p>
     <p style="font-size:11px; color:var(--gray-400); margin:0;">${flavorLabel}</p>
   </div>
   <span style="font-size:15px; font-weight: 500; color:var(--black); flex-shrink:0; direction:ltr;">${price} DA</span>

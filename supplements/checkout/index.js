@@ -134,14 +134,14 @@
               ${item.imageUrl ? `<img src="${Array.isArray(item.imageUrl) ? item.imageUrl[0] : item.imageUrl}" alt="${item.name}">` : `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`}
             </div>
             <div class="checkout-item-info">
-              <div class="checkout-item-name">${item.name}</div>
+              <div class="checkout-item-name">${(()=>{ const _p = _allProducts.find(p => p.id === (item.productId || item.id)); return _p ? prodName(_p) : item.name; })()}</div>
               ${(()=>{
                 const product = _allProducts.find(p => p.id === (item.productId || item.id));
                 const flavors = product ? parseField(product.flavors) : [];
                 const variants = product ? parseField(product.variants) : [];
-                const flavorObjs = flavors.map(f => typeof f === 'object' ? { name: f.name || '', qty: f.qty || 0 } : { name: String(f), qty: 0 }).filter(fo => fo.name);
-                // Find currently selected variant index
-                const variantLabels = variants.map(v => typeof v === 'object' ? (v.weight ? `${v.weight}${v.unit||''}` : v.label || v.name || '') : String(v));
+                const flavorObjs = flavors.map(f => typeof f === 'object' ? { name: f.name || f.nameEn || '', nameEn: f.nameEn || f.name || '', nameFr: f.nameFr || '', nameAr: f.nameAr || '', qty: f.qty || 0 } : { name: String(f), nameEn: String(f), nameFr: '', nameAr: '', qty: 0 }).filter(fo => fo.name);
+                // Find currently selected variant index using English label (stored key)
+                const variantLabels = variants.map(v => typeof v === 'object' ? (v.weight ? `${v.weight}${v.unit||''}` : v.labelEn || v.label || v.name || '') : String(v));
                 const selectedVariantIdx = Math.max(0, variantLabels.indexOf(item.variant));
                 const selectedVariant = variants[selectedVariantIdx];
                 // Determine if variant has flavorStock
@@ -167,7 +167,7 @@
                   html += `<select class="checkout-item-select" onchange="checkoutChangeFlavor(${idx}, this.value)" ${flavorObjs.filter(fo => !isFlavorOOS(fo)).length === 0 ? 'disabled' : ''}>`;
                   flavorObjs.forEach(fo => {
                     const oos = isFlavorOOS(fo);
-                    html += `<option value="${fo.name}" ${item.flavor===fo.name?'selected':''} ${oos ? 'disabled' : ''}>${fo.name}${oos ? ' (OOS)' : ''}</option>`;
+                    html += `<option value="${fo.name}" ${item.flavor===fo.name?'selected':''} ${oos ? 'disabled' : ''}>${shadeName(fo)}${oos ? ' (OOS)' : ''}</option>`;
                   });
                   html += '</select>';
                 }
@@ -176,9 +176,10 @@
                   if (html === '') html += '<div class="checkout-item-selects">'; // Start div if not already started by flavors
                   html += `<select class="checkout-item-select" onchange="checkoutChangeVariant(${idx}, this.options[this.selectedIndex].dataset.origIdx)" ${variants.filter((v,i) => !isVariantOOS(v,i)).length === 0 ? 'disabled' : ''}>`;
                   variants.forEach((v, i) => {
-                    const label = typeof v === 'object' ? (v.weight ? `${v.weight}${v.unit||''}` : v.label || v.name || '') : String(v);
+                    const label = varLabel(v, i);
+                    const englishLabel = typeof v === 'object' ? (v.weight ? `${v.weight}${v.unit||''}` : v.labelEn || v.label || v.name || '') : String(v);
                     const oos = isVariantOOS(v, i);
-                    html += `<option value="${i}" data-orig-idx="${i}" ${item.variant===label?'selected':''} ${oos ? 'disabled' : ''}>${label}${oos ? ' (OOS)' : ''}</option>`;
+                    html += `<option value="${i}" data-orig-idx="${i}" ${item.variant===englishLabel?'selected':''} ${oos ? 'disabled' : ''}>${label}${oos ? ' (OOS)' : ''}</option>`;
                   });
                     html += '</select>';
                   }
@@ -331,11 +332,15 @@
           } else {
             summaryList.innerHTML = items
               .map(
-                (item) => `
+                (item) => {
+                  const _sp = _allProducts.find(p => p.id === (item.productId || item.id));
+                  const displayName = _sp ? prodName(_sp) : item.name;
+                  return `
               <div class="order-summary-row">
-                <span class="order-summary-label">${item.name} × ${item.qty}</span>
+                <span class="order-summary-label">${displayName} × ${item.qty}</span>
                 <span class="order-summary-val">${(item.unitPrice * item.qty).toLocaleString("fr-DZ")} DA</span>
-              </div>`,
+              </div>`;
+                },
               )
               .join("");
           }
@@ -3276,6 +3281,23 @@
       };
 
       let currentLang = "en";
+      function prodName(p) {
+        if (!p) return "";
+        const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+        return p[key] || p.nameEn || p.name || "";
+      }
+      function varLabel(v, i) {
+        if (typeof v !== "object" || v === null) return String(v);
+        if (v.weight) return `${v.weight}${v.unit || ""}`;
+        const key = "label" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+        return v[key] || v.labelEn || v.label || v.name || `Option ${(i || 0) + 1}`;
+      }
+      function shadeName(f) {
+        if (!f) return "";
+        if (typeof f !== "object") return String(f);
+        const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+        return f[key] || f.nameEn || f.name || "";
+      }
 
       function switchLang(lang) {
         localStorage.setItem("bybens_lang", lang);

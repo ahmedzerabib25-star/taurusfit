@@ -15,11 +15,20 @@
   function _remapProduct(p) {
     return {
       id: p.id,
-      name: p.name,
-      brand: p.brand || "",
+      name: p.name_en || p.name || "",
+      nameEn: p.name_en || p.name || "",
+      nameFr: p.name_fr || "",
+      nameAr: p.name_ar || "",
+      brand: p.brand_en || p.brand || "",
+      brandEn: p.brand_en || p.brand || "",
+      brandFr: p.brand_fr || "",
+      brandAr: p.brand_ar || "",
+      description: p.description_en || p.description || "",
+      descriptionEn: p.description_en || p.description || "",
+      descriptionFr: p.description_fr || "",
+      descriptionAr: p.description_ar || "",
       categoryIds: (p.category_ids || "").split(",").filter(Boolean),
       subCategoryIds: (p.sub_category_ids || "").split(",").filter(Boolean),
-      description: p.description || "",
       imageUrl: Array.isArray(p.image_url) ? p.image_url : (p.image_url ? [p.image_url] : []),
       variants: p.variants || [],
       flavors: p.flavors || [],
@@ -126,7 +135,7 @@
       return fetch(_URL + "/rest/v1/" + path, { headers: h }).then(function (r) { return r.json(); });
     }
     return Promise.all([
-      sf("products?select=id,name,brand,category_ids,sub_category_ids,description,image_url,variants,flavors,stock,discount,allow_promo,promo_code_ids,free_delivery,status,created_at&hidden=not.is.true"),
+      sf("products?select=id,name,name_en,name_fr,name_ar,brand,brand_en,brand_fr,brand_ar,category_ids,sub_category_ids,description,description_en,description_fr,description_ar,image_url,variants,flavors,stock,discount,allow_promo,promo_code_ids,free_delivery,status,created_at&hidden=not.is.true"),
       sf("categories?select=*"),
       sf("sub_categories?select=*"),
       sf("bundle?select=*&limit=1"),

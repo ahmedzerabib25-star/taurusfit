@@ -346,10 +346,10 @@
         p.categoryIds = parseField(p.categoryIds);
         p.subCategoryIds = parseField(p.subCategoryIds);
 
-        document.title = `${p.name} – Luxury Secret`;
-        document.getElementById("breadcrumbName").textContent = p.name;
-        document.getElementById("productBrand").textContent = p.brand || "";
-        document.getElementById("productName").textContent = p.name;
+        document.title = `${prodName(p)} – Luxury Secret`;
+        document.getElementById("breadcrumbName").textContent = prodName(p);
+        document.getElementById("productBrand").textContent = prodBrand(p);
+        document.getElementById("productName").textContent = prodName(p);
 
         // Image
         const imgWrap = document.getElementById("productImgWrap");
@@ -389,13 +389,13 @@
           p.categoryIds.forEach((cid) => {
             const cat = _allCategories.find((c) => c.id === cid);
             if (cat)
-              tags.push(`<span class="cat-tag primary">${cat.name}</span>`);
+              tags.push(`<span class="cat-tag primary">${catName(cat)}</span>`);
           });
         }
         if (p.subCategoryIds.length) {
           p.subCategoryIds.forEach((sid) => {
             const sub = _allSubCategories.find((s) => s.id === sid);
-            if (sub) tags.push(`<span class="cat-tag">${sub.name}</span>`);
+            if (sub) tags.push(`<span class="cat-tag">${catName(sub)}</span>`);
           });
         }
         catEl.innerHTML = tags.join("");
@@ -403,8 +403,8 @@
 
         // Description
         document.getElementById("productDescription").innerHTML =
-          p.description ||
-          `${p.name} by ${p.brand} — a luxury cosmetics product.`;
+          prodDesc(p) ||
+          `${prodName(p)} by ${prodBrand(p)} — a luxury cosmetics product.`;
 
         // ── VARIANTS (weight/size) pills ──
         const weightGroup = document.getElementById("weightGroup");
@@ -415,8 +415,8 @@
         _productFlavorObjs = (p.flavors || [])
           .map((f) =>
             typeof f === "object" && f !== null
-              ? { name: f.name || f.label || "", qty: f.qty || 0 }
-              : { name: String(f), qty: 0 },
+              ? { name: f.name || f.nameEn || f.label || "", nameEn: f.nameEn || f.name || "", nameFr: f.nameFr || "", nameAr: f.nameAr || "", qty: f.qty || 0 }
+              : { name: String(f), nameEn: String(f), nameFr: "", nameAr: "", qty: 0 },
           )
           .filter((fo) => fo.name);
 
@@ -427,14 +427,7 @@
           );
           weightPills.innerHTML = p.variants
             .map((v, i) => {
-              let label;
-              if (typeof v === "object" && v !== null) {
-                label = v.weight
-                  ? `${v.weight}${v.unit || ""}`
-                  : v.label || v.name || `Option ${i + 1}`;
-              } else {
-                label = String(v);
-              }
+              const label = varLabel(v, i);
               const oos =
                 hasNewStock &&
                 typeof v === "object" &&
@@ -598,15 +591,14 @@
           _productFlavorObjs.find((fo) => !isOOS(fo)) || _productFlavorObjs[0];
         if (!selectedFlavor || isOOS({ name: selectedFlavor })) {
           selectedFlavor = firstAvail.name;
-          document.getElementById("productFlavor").textContent =
-            firstAvail.name;
+          document.getElementById("productFlavor").textContent = shadeName(firstAvail);
         }
 
         flavorPills.innerHTML = _productFlavorObjs
           .map((fo) => {
             const oos = isOOS(fo);
             const active = fo.name === selectedFlavor;
-            return `<div class="variant-pill${active ? " active" : ""}${oos ? " variant-pill-oos" : ""}" ${oos ? "" : `onclick="selectFlavor(this,'${fo.name.replace(/'/g, "\\'")}')"`}>${fo.name}</div>`;
+            return `<div class="variant-pill${active ? " active" : ""}${oos ? " variant-pill-oos" : ""}" ${oos ? "" : `onclick="selectFlavor(this,'${fo.name.replace(/'/g, "\\'")}')"`}>${shadeName(fo)}</div>`;
           })
           .join("");
       }
@@ -687,7 +679,8 @@
           .querySelectorAll("#flavorPills .variant-pill")
           .forEach((p) => p.classList.remove("active"));
         el.classList.add("active");
-        document.getElementById("productFlavor").textContent = f;
+        const _selFo = _productFlavorObjs.find(fo => fo.name === f);
+        document.getElementById("productFlavor").textContent = _selFo ? shadeName(_selFo) : f;
         selectedQty = 1;
         document.getElementById("qtyValue").textContent = 1;
         // Clamp quantity to new flavor stock
@@ -754,8 +747,11 @@
           }
         }
 
-        let name = p.name + variantLabel;
-        if (selectedFlavor) name += ` — ${selectedFlavor}`;
+        let name = prodName(p) + variantLabel;
+        if (selectedFlavor) {
+          const fo = _productFlavorObjs.find(f => f.name === selectedFlavor);
+          name += ` — ${fo ? shadeName(fo) : selectedFlavor}`;
+        }
 
         document.getElementById("summaryProduct").textContent = name;
         document.getElementById("summaryPrice").textContent =
@@ -3233,6 +3229,83 @@
       };
 
       let currentLang = "en";
+      function catName(item) {
+        if (!item) return "";
+        const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+        return item[key] || item.nameEn || item.name || "";
+      }
+      function prodName(p) {
+        if (!p) return "";
+        const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+        return p[key] || p.nameEn || p.name || "";
+      }
+      function prodBrand(p) {
+        if (!p) return "";
+        const key = "brand" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+        return p[key] || p.brandEn || p.brand || "";
+      }
+      function prodDesc(p) {
+        if (!p) return "";
+        const key = "description" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+        return p[key] || p.descriptionEn || p.description || "";
+      }
+      function varLabel(v, i) {
+        if (typeof v !== "object" || v === null) return String(v);
+        if (v.weight) return `${v.weight}${v.unit || ""}`;
+        const key = "label" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+        return v[key] || v.labelEn || v.label || v.name || `Option ${(i || 0) + 1}`;
+      }
+      function shadeName(f) {
+        if (!f) return "";
+        if (typeof f !== "object") return String(f);
+        const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+        return f[key] || f.nameEn || f.name || "";
+      }
+      function refreshProductLang() {
+        const p = selectedProduct;
+        if (!p) return;
+        document.title = `${prodName(p)} – Luxury Secret`;
+        const bnEl = document.getElementById("breadcrumbName");
+        if (bnEl) bnEl.textContent = prodName(p);
+        const brandEl = document.getElementById("productBrand");
+        if (brandEl) brandEl.textContent = prodBrand(p);
+        const nameEl = document.getElementById("productName");
+        if (nameEl) nameEl.textContent = prodName(p);
+        const descEl = document.getElementById("productDescription");
+        if (descEl) descEl.innerHTML = prodDesc(p) || `${prodName(p)} by ${prodBrand(p)} — a luxury cosmetics product.`;
+        // Category tags
+        const catEl = document.getElementById("productCategories");
+        if (catEl) {
+          const tags = [];
+          parseField(p.categoryIds).forEach(cid => { const c = _allCategories.find(x => x.id === cid); if (c) tags.push(`<span class="cat-tag primary">${catName(c)}</span>`); });
+          parseField(p.subCategoryIds).forEach(sid => { const s = _allSubCategories.find(x => x.id === sid); if (s) tags.push(`<span class="cat-tag">${catName(s)}</span>`); });
+          catEl.innerHTML = tags.join("");
+        }
+        // Variant pill labels (update text only, preserve classes)
+        const weightPills = document.getElementById("weightPills");
+        if (weightPills) {
+          const variants = parseField(p.variants);
+          weightPills.querySelectorAll(".variant-pill").forEach((pill, i) => {
+            const v = variants[i];
+            if (v !== undefined) pill.textContent = varLabel(v, i);
+          });
+        }
+        // Flavor/shade pill labels
+        const flavorPills = document.getElementById("flavorPills");
+        if (flavorPills) {
+          flavorPills.querySelectorAll(".variant-pill").forEach((pill, i) => {
+            const fo = _productFlavorObjs[i];
+            if (fo) pill.textContent = shadeName(fo);
+          });
+        }
+        // Current flavor label
+        const flavorEl = document.getElementById("productFlavor");
+        if (flavorEl && selectedFlavor) {
+          const fo = _productFlavorObjs.find(f => f.name === selectedFlavor);
+          if (fo) flavorEl.textContent = shadeName(fo);
+        }
+        updateSummary();
+      }
       function switchLang(lang) {
         localStorage.setItem("bybens_lang", lang);
         currentLang = lang;
@@ -3262,6 +3335,7 @@
             ? t["form.selectWilayaFirst"] || "Select wilaya first"
             : t["form.selectWilaya"] || "Select commune…";
         }
+        refreshProductLang();
       }
 
       /* ══════════════════════════════════════════════════════
