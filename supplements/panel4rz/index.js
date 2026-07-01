@@ -97,7 +97,7 @@
       // ROW MAPPERS (snake_case → camelCase)
       // ════════════════════════════════════════════
       function _remapProductRow(r) {
-        return { id: r.id, name: r.name, brand: r.brand, categoryIds: (r.category_ids || "").split(",").filter(Boolean), subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), description: r.description, imageUrl: r.image_url || [], variants: r.variants || [], flavors: r.flavors || [], stock: r.stock, discount: r.discount, freeDelivery: r.free_delivery === true || r.free_delivery === "true", status: r.status, hidden: r.hidden || false, createdAt: r.created_at };
+        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || r.name || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", brand: r.brand, categoryIds: (r.category_ids || "").split(",").filter(Boolean), subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), description: r.description_en || r.description || "", descriptionEn: r.description_en || r.description || "", descriptionFr: r.description_fr || "", descriptionAr: r.description_ar || "", imageUrl: r.image_url || [], variants: r.variants || [], flavors: r.flavors || [], stock: r.stock, discount: r.discount, freeDelivery: r.free_delivery === true || r.free_delivery === "true", status: r.status, hidden: r.hidden || false, createdAt: r.created_at };
       }
       function _remapCategoryRow(r) {
         return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", description: r.description, createdAt: r.created_at };
@@ -113,7 +113,7 @@
       }
       // ROW BUILDERS (camelCase → snake_case)
       function _toProductRow(p) {
-        return { name: p.name, brand: p.brand || "", category_ids: (p.categoryIds || []).join(","), sub_category_ids: (p.subCategoryIds || []).join(","), description: p.description || "", image_url: p.imageUrl || [], variants: p.variants || [], flavors: p.flavors || [], stock: p.stock || 0, discount: p.discount || 0, free_delivery: p.freeDelivery || false, status: p.status || "active", hidden: p.hidden || false };
+        return { name: p.nameEn || p.name || "", name_en: p.nameEn || "", name_fr: p.nameFr || "", name_ar: p.nameAr || "", brand: p.brand || "", category_ids: (p.categoryIds || []).join(","), sub_category_ids: (p.subCategoryIds || []).join(","), description: p.descriptionEn || p.description || "", description_en: p.descriptionEn || "", description_fr: p.descriptionFr || "", description_ar: p.descriptionAr || "", image_url: p.imageUrl || [], variants: p.variants || [], flavors: p.flavors || [], stock: p.stock || 0, discount: p.discount || 0, free_delivery: p.freeDelivery || false, status: p.status || "active", hidden: p.hidden || false };
       }
       // ════════════════════════════════════════════
       // API HELPERS (Supabase)
@@ -812,9 +812,14 @@
         if (id) {
           const p = products.find((x) => x.id === id);
           if (p) {
-            document.getElementById("pm-name").value = p.name;
+            document.getElementById("pm-name-en").value = p.nameEn || p.name || "";
+            document.getElementById("pm-name-fr").value = p.nameFr || "";
+            document.getElementById("pm-name-ar").value = p.nameAr || "";
             document.getElementById("pm-brand").value = p.brand || "";
-            document.getElementById("pm-desc").innerHTML = p.description || "";
+            document.getElementById("pm-desc-en").innerHTML = p.descriptionEn || p.description || "";
+            document.getElementById("pm-desc-fr").innerHTML = p.descriptionFr || "";
+            document.getElementById("pm-desc-ar").innerHTML = p.descriptionAr || "";
+            switchDescTab("en");
             document.getElementById("pm-stock").value = p.stock;
             document.getElementById("pm-discount").value = p.discount;
             document.getElementById("pm-status").value = p.status;
@@ -846,10 +851,13 @@
             refreshStockMatrix();
           }
         } else {
-          ["pm-name", "pm-brand", "pm-stock", "pm-discount"].forEach(
+          ["pm-name-en", "pm-name-fr", "pm-name-ar", "pm-brand", "pm-stock", "pm-discount"].forEach(
             (x) => (document.getElementById(x).value = ""),
           );
-          document.getElementById("pm-desc").innerHTML = "";
+          document.getElementById("pm-desc-en").innerHTML = "";
+          document.getElementById("pm-desc-fr").innerHTML = "";
+          document.getElementById("pm-desc-ar").innerHTML = "";
+          switchDescTab("en");
           document.getElementById("variants-list").innerHTML = "";
           document.getElementById("flavors-list").innerHTML = "";
           document.getElementById("stock-matrix-section").style.display = "none";
@@ -1001,9 +1009,11 @@
       }
 
       async function saveProduct() {
-        const name = document.getElementById("pm-name").value.trim();
-        if (!name) {
-          showToast("Product name required", "error");
+        const nameEn = document.getElementById("pm-name-en").value.trim();
+        const nameFr = document.getElementById("pm-name-fr").value.trim();
+        const nameAr = document.getElementById("pm-name-ar").value.trim();
+        if (!nameEn) {
+          showToast("Product name (English) required", "error");
           return;
         }
         const categoryIds = getCheckedValues("pm-categories");
@@ -1050,11 +1060,17 @@
         }
 
         const payload = {
-          name,
+          name: nameEn,
+          nameEn,
+          nameFr,
+          nameAr,
           brand: document.getElementById("pm-brand").value.trim(),
           categoryIds,
           subCategoryIds,
-          description: document.getElementById("pm-desc").innerHTML.trim(),
+          description: document.getElementById("pm-desc-en").innerHTML.trim(),
+          descriptionEn: document.getElementById("pm-desc-en").innerHTML.trim(),
+          descriptionFr: document.getElementById("pm-desc-fr").innerHTML.trim(),
+          descriptionAr: document.getElementById("pm-desc-ar").innerHTML.trim(),
           imageUrl: currentImageUrls,
           variants,
           flavors,
@@ -1590,9 +1606,20 @@
       let toastTimer;
       /* ── Rich Text Editor helpers ── */
       function rteCmd(cmd, edId) {
-        const ed = document.getElementById(edId || "pm-desc");
+        const ed = document.getElementById(edId || "pm-desc-en");
         ed.focus();
         document.execCommand(cmd, false, null);
+      }
+      let _activeDescLang = "en";
+      function activeDescId() { return "pm-desc-" + _activeDescLang; }
+      function switchDescTab(lang) {
+        _activeDescLang = lang;
+        ["en","fr","ar"].forEach((l) => {
+          document.getElementById("pm-desc-" + l).style.display = l === lang ? "" : "none";
+          const tab = document.getElementById("desc-tab-" + l);
+          if (tab) tab.classList.toggle("active", l === lang);
+        });
+        document.getElementById("pm-desc-" + lang).focus();
       }
 
       // Auto-upload pasted images in RTE fields to Cloudinary instead of embedding base64

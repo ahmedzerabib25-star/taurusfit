@@ -12,7 +12,7 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/supplements/supabase-client.js"></script>
-    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=7" />
+    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=8" />
   </head>
   <body>
 <div class="loading-overlay" id="loading-overlay">
@@ -811,23 +811,23 @@
         </div>
         <div class="modal-body">
           <div class="form-row">
-            <div class="form-group">
-              <label>Product Name *</label
-              ><input
-                type="text"
-                class="form-control"
-                id="pm-name"
-                placeholder="e.g. Velvet Lip Gloss No.5"
-              />
+            <div class="form-group" style="flex:2">
+              <label>Product Name (English) *</label>
+              <input type="text" class="form-control" id="pm-name-en" placeholder="e.g. Velvet Lip Gloss No.5" />
             </div>
             <div class="form-group">
-              <label>Brand</label
-              ><input
-                type="text"
-                class="form-control"
-                id="pm-brand"
-                placeholder="e.g. MAC Cosmetics"
-              />
+              <label>Brand</label>
+              <input type="text" class="form-control" id="pm-brand" placeholder="e.g. MAC Cosmetics" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Product Name (French)</label>
+              <input type="text" class="form-control" id="pm-name-fr" placeholder="ex. Gloss velours No.5" />
+            </div>
+            <div class="form-group">
+              <label>Product Name (Arabic)</label>
+              <input type="text" class="form-control" id="pm-name-ar" placeholder="مثال: غلوس مخملي" dir="rtl" />
             </div>
           </div>
           <div class="form-group" style="margin-bottom: 16px">
@@ -840,25 +840,34 @@
           </div>
           <div class="form-row full">
             <div class="form-group">
-              <label>Description</label>
+              <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center">
+                <label style="margin:0">Description</label>
+                <div style="display:flex;gap:4px;margin-left:auto">
+                  <button type="button" class="rte-lang-tab active" id="desc-tab-en" onclick="switchDescTab('en')">EN</button>
+                  <button type="button" class="rte-lang-tab" id="desc-tab-fr" onclick="switchDescTab('fr')">FR</button>
+                  <button type="button" class="rte-lang-tab" id="desc-tab-ar" onclick="switchDescTab('ar')">AR</button>
+                </div>
+              </div>
               <div class="rte-wrap">
                 <div class="rte-toolbar">
-                  <button type="button" class="rte-btn" onclick="rteCmd('bold')" title="Bold"><strong>B</strong></button>
-                  <button type="button" class="rte-btn" onclick="rteCmd('italic')" title="Italic"><em>I</em></button>
-                  <button type="button" class="rte-btn" onclick="rteCmd('underline')" title="Underline"><u>U</u></button>
+                  <button type="button" class="rte-btn" onclick="rteCmd('bold',activeDescId())" title="Bold"><strong>B</strong></button>
+                  <button type="button" class="rte-btn" onclick="rteCmd('italic',activeDescId())" title="Italic"><em>I</em></button>
+                  <button type="button" class="rte-btn" onclick="rteCmd('underline',activeDescId())" title="Underline"><u>U</u></button>
                   <span class="rte-sep"></span>
-                  <button type="button" class="rte-btn" onclick="rteCmd('insertUnorderedList')" title="Bullet list">
+                  <button type="button" class="rte-btn" onclick="rteCmd('insertUnorderedList',activeDescId())" title="Bullet list">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1.5" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.5" fill="currentColor" stroke="none"/></svg>
                     Bullets
                   </button>
-                  <button type="button" class="rte-btn" onclick="rteCmd('insertOrderedList')" title="Numbered list">
+                  <button type="button" class="rte-btn" onclick="rteCmd('insertOrderedList',activeDescId())" title="Numbered list">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><text x="2" y="8" font-size="8" fill="currentColor" stroke="none" font-weight="bold">1.</text><text x="2" y="14" font-size="8" fill="currentColor" stroke="none" font-weight="bold">2.</text><text x="2" y="20" font-size="8" fill="currentColor" stroke="none" font-weight="bold">3.</text></svg>
                     Numbers
                   </button>
                   <span class="rte-sep"></span>
-                  <button type="button" class="rte-btn" onclick="rteCmd('removeFormat')" title="Clear formatting">✕ Clear</button>
+                  <button type="button" class="rte-btn" onclick="rteCmd('removeFormat',activeDescId())" title="Clear formatting">✕ Clear</button>
                 </div>
-                <div class="rte-editor" id="pm-desc" contenteditable="true" spellcheck="true" data-placeholder="Describe the product…"></div>
+                <div class="rte-editor" id="pm-desc-en" contenteditable="true" spellcheck="true" data-placeholder="Describe the product (English)…"></div>
+                <div class="rte-editor" id="pm-desc-fr" contenteditable="true" spellcheck="true" data-placeholder="Décrivez le produit (Français)…" style="display:none"></div>
+                <div class="rte-editor" id="pm-desc-ar" contenteditable="true" spellcheck="true" data-placeholder="وصف المنتج (عربي)…" style="display:none;direction:rtl;text-align:right"></div>
               </div>
             </div>
           </div>
@@ -1150,6 +1159,6 @@
       ><span id="toast-msg">Done!</span>
     </div>
 
-    <script src="/supplements/panel4rz/index.js?v=13"></script>
+    <script src="/supplements/panel4rz/index.js?v=14"></script>
   </body>
 </html>

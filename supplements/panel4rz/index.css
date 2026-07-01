@@ -974,6 +974,13 @@
       .rte-editor strong { font-weight: 700; }
       .rte-editor em { font-style: italic; }
       .rte-editor u { text-decoration: underline; }
+      .rte-lang-tab {
+        height: 24px; padding: 0 10px; font-size: 11px; font-weight: 600;
+        border: 1.5px solid var(--g200); border-radius: 5px; background: var(--white);
+        color: var(--g400); cursor: pointer; transition: all var(--tr);
+      }
+      .rte-lang-tab:hover { border-color: var(--red); color: var(--red); }
+      .rte-lang-tab.active { border-color: var(--red); color: var(--red); background: var(--red-light,#fdf6ee); }
 
       /* ── Stock Matrix ── */
       .stock-section-label {
