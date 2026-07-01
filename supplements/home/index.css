@@ -930,6 +930,45 @@ html[data-theme="dark"] .logo-img-dark {
   background-size: 160px 160px;
 }
 
+/* ─── HERO ANIMATIONS: LIGHT MODE BOOST ─────────────────── */
+html:not([data-theme="dark"]) .hero-bg-anim::before {
+  background: conic-gradient(
+    from 0deg at 25% 55%,
+    transparent 0deg,
+    rgba(163,132,91,0.22) 70deg,
+    transparent 150deg,
+    rgba(197,168,128,0.16) 230deg,
+    transparent 310deg
+  );
+}
+html:not([data-theme="dark"]) .hero-orb-1 {
+  background: radial-gradient(circle at center, rgba(163,132,91,0.42) 0%, transparent 65%);
+  filter: blur(55px);
+}
+html:not([data-theme="dark"]) .hero-orb-2 {
+  background: radial-gradient(circle at center, rgba(163,132,91,0.32) 0%, transparent 65%);
+  filter: blur(55px);
+}
+html:not([data-theme="dark"]) .hero-orb-3 {
+  background: radial-gradient(circle at center, rgba(140,110,65,0.34) 0%, transparent 65%);
+  filter: blur(48px);
+}
+html:not([data-theme="dark"]) .hero-scan {
+  width: 5px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(163,132,91,0.30) 25%,
+    rgba(120,88,42,0.62) 50%,
+    rgba(163,132,91,0.30) 75%,
+    transparent 100%
+  );
+  filter: blur(4px);
+}
+html:not([data-theme="dark"]) .hero-scan::after {
+  background: linear-gradient(to right, transparent, rgba(163,132,91,0.18), transparent);
+}
+
 /* ─── HERO PARTICLE KEYFRAMES ─────────────────────────────── */
 @keyframes heroSparkleUp {
   0%   { transform: translateY(0)     rotate(0deg)   scale(0);   opacity: 0; }
