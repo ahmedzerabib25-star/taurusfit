@@ -1317,26 +1317,36 @@
       // ════════════════════════════════════════════
       let _adminUsers = [];
 
+      async function _manageUsersToken() {
+        const { data: sd } = await sb.auth.getSession();
+        return sd?.session?.access_token || SUPABASE_ANON_KEY;
+      }
+
       async function loadAdminUsers() {
-        const res = await fetch(SUPABASE_URL + "/functions/v1/manage-users", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SUPABASE_ANON_KEY },
-          body: JSON.stringify({ action: "list" }),
-        });
-        const r = await res.json();
-        if (!r.success) { document.getElementById("users-list").innerHTML = '<div style="color:var(--danger);font-size:13px">Failed to load users</div>'; return; }
-        _adminUsers = r.users;
-        const { data: { user: me } } = await sb.auth.getUser();
         const list = document.getElementById("users-list");
-        if (!_adminUsers.length) { list.innerHTML = '<div style="color:var(--g400);font-size:13px">No users found</div>'; return; }
-        list.innerHTML = _adminUsers.map((u) => `
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--g50);border-radius:8px;border:1px solid var(--g100)">
-            <div>
-              <div style="font-size:14px;font-weight:500">${u.email}</div>
-              <div style="font-size:11px;color:var(--g400)">Created ${new Date(u.created_at).toLocaleDateString()}</div>
-            </div>
-            ${u.id !== me?.id ? `<button onclick="deleteAdminUser('${u.id}','${u.email}')" style="background:none;border:none;cursor:pointer;color:var(--danger);padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600" onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='none'">Delete</button>` : `<span style="font-size:11px;color:var(--g400);padding:4px 8px">You</span>`}
-          </div>`).join("");
+        try {
+          const token = await _manageUsersToken();
+          const res = await fetch(SUPABASE_URL + "/functions/v1/manage-users", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+            body: JSON.stringify({ action: "list" }),
+          });
+          const r = await res.json();
+          if (!r.success) { list.innerHTML = '<div style="color:var(--danger);font-size:13px">Failed to load users</div>'; return; }
+          _adminUsers = r.users;
+          const { data: { user: me } } = await sb.auth.getUser();
+          if (!_adminUsers.length) { list.innerHTML = '<div style="color:var(--g400);font-size:13px">No users found</div>'; return; }
+          list.innerHTML = _adminUsers.map((u) => `
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--g50);border-radius:8px;border:1px solid var(--g100)">
+              <div>
+                <div style="font-size:14px;font-weight:500">${u.email}</div>
+                <div style="font-size:11px;color:var(--g400)">Created ${new Date(u.created_at).toLocaleDateString()}</div>
+              </div>
+              ${u.id !== me?.id ? `<button onclick="deleteAdminUser('${u.id}','${u.email}')" style="background:none;border:none;cursor:pointer;color:var(--danger);padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600" onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='none'">Delete</button>` : `<span style="font-size:11px;color:var(--g400);padding:4px 8px">You</span>`}
+            </div>`).join("");
+        } catch (e) {
+          if (list) list.innerHTML = '<div style="color:var(--danger);font-size:13px">Failed to load users</div>';
+        }
       }
 
       async function createAdminUser() {
@@ -1346,9 +1356,10 @@
         if (!password) { showToast("Password is required", "error"); return; }
         showLoading("Creating user…");
         try {
+          const token = await _manageUsersToken();
           const res = await fetch(SUPABASE_URL + "/functions/v1/manage-users", {
             method: "POST",
-            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SUPABASE_ANON_KEY },
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
             body: JSON.stringify({ action: "create", email, password }),
           });
           const r = await res.json();
@@ -1370,9 +1381,10 @@
         if (!confirm(`Delete user ${email}? This cannot be undone.`)) return;
         showLoading("Deleting user…");
         try {
+          const token = await _manageUsersToken();
           const res = await fetch(SUPABASE_URL + "/functions/v1/manage-users", {
             method: "POST",
-            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SUPABASE_ANON_KEY },
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
             body: JSON.stringify({ action: "delete", uid }),
           });
           const r = await res.json();

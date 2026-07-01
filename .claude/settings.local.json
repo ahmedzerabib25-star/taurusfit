@@ -36,7 +36,8 @@
       "Bash(curl -s -o /dev/null -w \"/ → %{http_code}\\\\n\" http://localhost:3000/)",
       "Bash(curl -s -o /dev/null -w \"/mgmt9kx → %{http_code}\\\\n\" http://localhost:3000/mgmt9kx)",
       "Bash(curl -s -o /dev/null -w \"/panel4rz → %{http_code}\\\\n\" http://localhost:3000/panel4rz)",
-      "Bash(curl -s -o /dev/null -w \"/products → %{http_code}\\\\n\" http://localhost:3000/products)"
+      "Bash(curl -s -o /dev/null -w \"/products → %{http_code}\\\\n\" http://localhost:3000/products)",
+      "mcp__plugin_supabase_supabase__get_edge_function"
     ]
   }
 }
