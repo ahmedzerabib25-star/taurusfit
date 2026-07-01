@@ -196,7 +196,7 @@
                   <span class="qty-value">${item.qty}</span>
                   <button class="qty-btn" onclick="checkoutChangeQty(${idx}, 1)">+</button>
                 </div>
-                <span class="checkout-item-price">${(item.unitPrice * item.qty).toLocaleString("fr-DZ")} DA</span>
+                <span class="checkout-item-price">${(item.unitPrice * item.qty).toLocaleString("fr-DZ")} ${curr()}</span>
                 <button class="checkout-item-del" onclick="checkoutRemove(${idx})" aria-label="Remove item">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
@@ -210,7 +210,7 @@
           getBulkNoticeHTML() +
           `<div class="checkout-subtotal">
             <span data-i18n="checkout.subtotal">Subtotal</span>
-            <span>${subtotal.toLocaleString("fr-DZ")} DA</span>
+            <span>${subtotal.toLocaleString("fr-DZ")} ${curr()}</span>
           </div>`;
 
         // apply lang
@@ -338,7 +338,7 @@
                   return `
               <div class="order-summary-row">
                 <span class="order-summary-label">${displayName} × ${item.qty}</span>
-                <span class="order-summary-val">${(item.unitPrice * item.qty).toLocaleString("fr-DZ")} DA</span>
+                <span class="order-summary-val">${(item.unitPrice * item.qty).toLocaleString("fr-DZ")} ${curr()}</span>
               </div>`;
                 },
               )
@@ -347,7 +347,7 @@
         }
 
         if (subtotalEl)
-          subtotalEl.textContent = subtotal.toLocaleString("fr-DZ") + " DA";
+          subtotalEl.textContent = subtotal.toLocaleString("fr-DZ") + " " + curr();
 
         if (deliveryEl) {
           if (!selectedWilayaCode) {
@@ -355,12 +355,12 @@
           } else if (freeShip) {
             deliveryEl.innerHTML = `<span style="color:#22a06b;font-weight:600">FREE</span>`;
           } else {
-            deliveryEl.textContent = `+${deliveryCost.toLocaleString("fr-DZ")} DA (${selectedDelivery === "home" ? "Home" : "Office"})`;
+            deliveryEl.textContent = `+${deliveryCost.toLocaleString("fr-DZ")} ${curr()} (${selectedDelivery === "home" ? "Home" : "Office"})`;
           }
         }
 
         if (totalEl)
-          totalEl.textContent = total.toLocaleString("fr-DZ") + " DA";
+          totalEl.textContent = total.toLocaleString("fr-DZ") + " " + curr();
       }
 
       function updateBulkNoticeVisibility() {
@@ -444,7 +444,7 @@
                   <span class="ciq-val">${item.qty}</span>
                   <button class="ciq-btn" onclick="cartQty(${idx},1)">+</button>
                 </div>
-                <span class="cart-row-price">${(item.unitPrice * item.qty).toLocaleString()} DA</span>
+                <span class="cart-row-price">${(item.unitPrice * item.qty).toLocaleString()} ${curr()}</span>
               </div>
             </div>
             <button class="cart-row-del" onclick="cartRemove(${idx})" aria-label="Remove">
@@ -609,8 +609,8 @@
               <div class="also-card-body">
                 <div class="also-card-name">${p.name}</div>
                 <div style="display:flex; align-items:baseline; gap:8px; direction:ltr;">
-                  <div class="also-card-price">${currentPrice.toLocaleString("fr-DZ")} DA</div>
-                  ${oldPrice ? `<span style="font-size:12px; color:var(--gray-400); text-decoration:line-through;">${oldPrice.toLocaleString("fr-DZ")} DA</span>` : ""}
+                  <div class="also-card-price">${currentPrice.toLocaleString("fr-DZ")} ${curr()}</div>
+                  ${oldPrice ? `<span style="font-size:12px; color:var(--gray-400); text-decoration:line-through;">${oldPrice.toLocaleString("fr-DZ")} ${curr()}</span>` : ""}
                 </div>
                 <div class="also-card-actions">
                   ${Number(p.stock) <= 0
@@ -687,7 +687,7 @@
         const base = v && typeof v === "object" ? (v.price || 0) : 0;
         const disc = p.discount || 0;
         const final = disc > 0 ? Math.round(base * (1 - disc/100)) : base;
-        document.getElementById("atcPrice").textContent = final > 0 ? `${final.toLocaleString()} DA` : "";
+        document.getElementById("atcPrice").textContent = final > 0 ? `${final.toLocaleString()} ${curr()}` : "";
       }
       function atcPickFlavor(btn, f) {
         document.querySelectorAll("#atcFlavorOptions .atc-option").forEach(b => b.classList.remove("active"));
@@ -2725,11 +2725,11 @@
         if (homePriceEl)
           homePriceEl.innerHTML = !selectedWilayaCode ? "—"
             : _free ? `<span style="color:#22a06b;font-weight:600">FREE</span>`
-            : `+${costs.home.toLocaleString("fr-DZ")} DA`;
+            : `+${costs.home.toLocaleString("fr-DZ")} ${curr()}`;
         if (officePriceEl)
           officePriceEl.innerHTML = !selectedWilayaCode ? "—"
             : _free ? `<span style="color:#22a06b;font-weight:600">FREE</span>`
-            : `+${costs.office.toLocaleString("fr-DZ")} DA`;
+            : `+${costs.office.toLocaleString("fr-DZ")} ${curr()}`;
       }
 
       function selectCommuneOption(name) {
@@ -2998,7 +2998,7 @@
                 <p class="search-drop-brand">${p.brand || ""}</p>
                 <p class="search-drop-name">${p.name}</p>
               </div>
-              <span class="search-drop-price">${price} DA</span>
+              <span class="search-drop-price">${price} ${curr()}</span>
             </div>`;
           })
           .join("");
@@ -3298,6 +3298,7 @@
         const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
         return f[key] || f.nameEn || f.name || "";
       }
+      function curr() { return currentLang === "ar" ? "دج" : "DA"; }
 
       function switchLang(lang) {
         localStorage.setItem("bybens_lang", lang);

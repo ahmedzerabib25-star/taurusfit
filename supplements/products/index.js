@@ -213,6 +213,7 @@
         const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
         return f[key] || f.nameEn || f.name || "";
       }
+      function curr() { return currentLang === "ar" ? "دج" : "DA"; }
 
       /* ══════════════════════════════════════════════════════════════
    LANGUAGE SWITCHER
@@ -733,8 +734,8 @@
             <h3 class="product-name">${prodName(p)}</h3>
             ${flavorLabel ? `<span class="product-flavor">${flavorLabel}</span>` : ""}
             <div class="product-pricing">
-              ${currentPrice > 0 ? `<span class="price">${currentPrice.toLocaleString()} DA</span>` : ""}
-              ${oldPrice ? `<span class="price-old">${oldPrice.toLocaleString()} DA</span>` : ""}
+              ${currentPrice > 0 ? `<span class="price">${currentPrice.toLocaleString()} ${curr()}</span>` : ""}
+              ${oldPrice ? `<span class="price-old">${oldPrice.toLocaleString()} ${curr()}</span>` : ""}
               ${saveLabel ? `<span class="price-save">${saveLabel}</span>` : ""}
             </div>
             <div class="product-actions">
@@ -840,7 +841,7 @@
         );
         if (state.priceMin || state.priceMax)
           chips.push({
-            label: `${state.priceMin || "0"} – ${state.priceMax || "∞"} DA`,
+            label: `${state.priceMin || "0"} – ${state.priceMax || "∞"} ${curr()}`,
             remove: () => {
               state.priceMin = "";
               state.priceMax = "";
@@ -986,7 +987,7 @@
               <p class="search-drop-brand">${prodBrand(p)}</p>
               <p class="search-drop-name">${prodName(p)}</p>
             </div>
-            <span class="search-drop-price">${price} DA</span>
+            <span class="search-drop-price">${price} ${curr()}</span>
           </div>`;
         }).join("");
         dropdown.classList.add("open");
@@ -1047,7 +1048,7 @@
               <p style="font-size:12px;color:var(--gray-400);margin:0 0 2px;">${p.brand || ""}</p>
               <p style="font-size:14px;font-weight:600;color:var(--gray-800);margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</p>
             </div>
-            <span style="font-size:13px;font-weight:700;color:var(--red);flex-shrink:0;">${price} DA</span>
+            <span style="font-size:13px;font-weight:700;color:var(--red);flex-shrink:0;">${price} ${curr()}</span>
           </div>`;
         }).join("");
       }
@@ -1191,7 +1192,7 @@
         const disc = p.discount || 0;
         const final = disc > 0 ? Math.round(base * (1 - disc / 100)) : base;
         document.getElementById("atcPrice").textContent =
-          final > 0 ? `${final.toLocaleString()} DA` : "";
+          final > 0 ? `${final.toLocaleString()} ${curr()}` : "";
       }
       function atcPickFlavor(btn, f) {
         document
@@ -1334,7 +1335,7 @@
                   <span class="ciq-val">${item.qty}</span>
                   <button class="ciq-btn" onclick="cartQty(${idx},1)">+</button>
                 </div>
-                <span class="cart-row-price">${(item.unitPrice * item.qty).toLocaleString()} DA</span>
+                <span class="cart-row-price">${(item.unitPrice * item.qty).toLocaleString()} ${curr()}</span>
               </div>
             </div>
             <button class="cart-row-del" onclick="cartRemove(${idx})" aria-label="Remove">

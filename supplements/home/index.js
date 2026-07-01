@@ -281,6 +281,7 @@ function shadeName(f) {
   const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
   return f[key] || f.nameEn || f.name || "";
 }
+function curr() { return currentLang === "ar" ? "دج" : "DA"; }
 /* ══════════════════════════════════════════════════════════════
    CART — localStorage persistence
 ══════════════════════════════════════════════════════════════ */
@@ -347,7 +348,7 @@ function _atcRefreshPrice() {
   const base = v && typeof v === "object" ? (v.price || 0) : 0;
   const disc = p.discount || 0;
   const final = disc > 0 ? Math.round(base * (1 - disc/100)) : base;
-  document.getElementById("atcPrice").textContent = final > 0 ? `${final.toLocaleString()} DA` : "";
+  document.getElementById("atcPrice").textContent = final > 0 ? `${final.toLocaleString()} ${curr()}` : "";
 }
 function atcPickFlavor(btn, f) {
   document.querySelectorAll("#atcFlavorOptions .atc-option").forEach(b => b.classList.remove("active"));
@@ -425,7 +426,7 @@ function _renderCartDrawer() {
             <span class="ciq-val">${item.qty}</span>
             <button class="ciq-btn" onclick="cartQty(${idx},1)">+</button>
           </div>
-          <span class="cart-row-price">${(item.unitPrice * item.qty).toLocaleString()} DA</span>
+          <span class="cart-row-price">${(item.unitPrice * item.qty).toLocaleString()} ${curr()}</span>
         </div>
       </div>
       <button class="cart-row-del" onclick="cartRemove(${idx})" aria-label="Remove">
@@ -564,8 +565,8 @@ function renderProducts(lang) {
     <h3 class="product-name">${prodName(p)}</h3>
     ${flavorLabel ? `<span class="product-flavor">${flavorLabel}</span>` : ""}
     <div class="product-pricing">
-      ${currentPrice > 0 ? `<span class="price">${currentPrice.toLocaleString()} DA</span>` : ""}
-      ${oldPrice ? `<span class="price-old">${oldPrice.toLocaleString()} DA</span>` : ""}
+      ${currentPrice > 0 ? `<span class="price">${currentPrice.toLocaleString()} ${curr()}</span>` : ""}
+      ${oldPrice ? `<span class="price-old">${oldPrice.toLocaleString()} ${curr()}</span>` : ""}
       ${saveLabel ? `<span class="price-save">${saveLabel}</span>` : ""}
     </div>
     <div class="product-actions">
@@ -782,7 +783,7 @@ function handleSearch(query) {
           <p class="search-drop-name">${prodName(p)}</p>
           ${flavorLabel ? `<p style="font-size:11px;color:var(--gray-400);margin:0;">${flavorLabel}</p>` : ""}
         </div>
-        <span class="search-drop-price">${price} DA</span>
+        <span class="search-drop-price">${price} ${curr()}</span>
       </div>`;
   }).join("");
   dropdown.classList.add("open");
@@ -1005,7 +1006,7 @@ function handleMobileSearch(query) {
     <p style="font-size:14px; font-weight:500; color:var(--black); margin:0 0 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${prodName(p)}</p>
     <p style="font-size:11px; color:var(--gray-400); margin:0;">${flavorLabel}</p>
   </div>
-  <span style="font-size:15px; font-weight: 500; color:var(--black); flex-shrink:0; direction:ltr;">${price} DA</span>
+  <span style="font-size:15px; font-weight: 500; color:var(--black); flex-shrink:0; direction:ltr;">${price} ${curr()}</span>
 </div>`;
       },
     )

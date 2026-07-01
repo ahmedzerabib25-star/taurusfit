@@ -304,7 +304,7 @@
               <div class="also-card-img">${img}${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ""}</div>
               <div class="also-card-body">
                 <div class="also-card-name">${p.name}</div>
-                <div class="also-card-price">${price ? price.toLocaleString("fr-DZ") + " DA" : ""}</div>
+                <div class="also-card-price">${price ? price.toLocaleString("fr-DZ") + " " + curr() : ""}</div>
                 <div class="also-card-actions">
                   ${
                     Number(p.stock) <= 0
@@ -517,12 +517,12 @@
             : basePrice;
 
         document.getElementById("productPrice").textContent =
-          currentPrice.toLocaleString("fr-DZ") + " DA";
+          currentPrice.toLocaleString("fr-DZ") + " " + curr();
 
         const oldPriceEl = document.getElementById("productOldPrice");
         const saveEl = document.getElementById("productSave");
         if (discount > 0 && basePrice > 0) {
-          oldPriceEl.textContent = basePrice.toLocaleString("fr-DZ") + " DA";
+          oldPriceEl.textContent = basePrice.toLocaleString("fr-DZ") + " " + curr();
           oldPriceEl.style.display = "";
           saveEl.textContent = `-${discount}%`;
           saveEl.style.display = "";
@@ -755,7 +755,7 @@
 
         document.getElementById("summaryProduct").textContent = name;
         document.getElementById("summaryPrice").textContent =
-          `${variantPrice.toLocaleString("fr-DZ")} DA × ${selectedQty}`;
+          `${variantPrice.toLocaleString("fr-DZ")} ${curr()} × ${selectedQty}`;
 
         const subtotal = variantPrice * selectedQty;
         const deliveryCosts = getDeliveryCost();
@@ -777,7 +777,7 @@
         const total = subtotal + deliveryCharge;
 
         document.getElementById("summaryTotal").textContent =
-          total.toLocaleString("fr-DZ") + " DA";
+          total.toLocaleString("fr-DZ") + " " + curr();
       }
 
       /* ══════════════════════════════════════════════════════
@@ -3261,6 +3261,7 @@
         const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
         return f[key] || f.nameEn || f.name || "";
       }
+      function curr() { return currentLang === "ar" ? "دج" : "DA"; }
       function refreshProductLang() {
         const p = selectedProduct;
         if (!p) return;
@@ -3304,6 +3305,7 @@
           const fo = _productFlavorObjs.find(f => f.name === selectedFlavor);
           if (fo) flavorEl.textContent = shadeName(fo);
         }
+        updatePriceDisplay();
         updateSummary();
       }
       function switchLang(lang) {
