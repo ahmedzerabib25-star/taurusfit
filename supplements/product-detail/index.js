@@ -304,7 +304,7 @@
               <div class="also-card-img">${img}${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ""}</div>
               <div class="also-card-body">
                 <div class="also-card-name">${p.name}</div>
-                <div class="also-card-price">${price ? price.toLocaleString("fr-DZ") + " " + curr() : ""}</div>
+                <div class="also-card-price">${price ? price.toLocaleString("fr-DZ") + " " + " DA" : ""}</div>
                 <div class="also-card-actions">
                   ${
                     Number(p.stock) <= 0
@@ -517,12 +517,12 @@
             : basePrice;
 
         document.getElementById("productPrice").textContent =
-          currentPrice.toLocaleString("fr-DZ") + " " + curr();
+          currentPrice.toLocaleString("fr-DZ") + " " + " DA";
 
         const oldPriceEl = document.getElementById("productOldPrice");
         const saveEl = document.getElementById("productSave");
         if (discount > 0 && basePrice > 0) {
-          oldPriceEl.textContent = basePrice.toLocaleString("fr-DZ") + " " + curr();
+          oldPriceEl.textContent = basePrice.toLocaleString("fr-DZ") + " " + " DA";
           oldPriceEl.style.display = "";
           saveEl.textContent = `-${discount}%`;
           saveEl.style.display = "";
@@ -755,7 +755,7 @@
 
         document.getElementById("summaryProduct").textContent = name;
         document.getElementById("summaryPrice").textContent =
-          `${variantPrice.toLocaleString("fr-DZ")} ${curr()} × ${selectedQty}`;
+          `${variantPrice.toLocaleString("fr-DZ")} DA × ${selectedQty}`;
 
         const subtotal = variantPrice * selectedQty;
         const deliveryCosts = getDeliveryCost();
@@ -777,7 +777,7 @@
         const total = subtotal + deliveryCharge;
 
         document.getElementById("summaryTotal").textContent =
-          total.toLocaleString("fr-DZ") + " " + curr();
+          total.toLocaleString("fr-DZ") + " " + " DA";
       }
 
       /* ══════════════════════════════════════════════════════
@@ -3149,83 +3149,6 @@
           "success.title": "Commande Passée !",
           "success.back": "Retour aux Produits",
         },
-        ar: {
-          "nav.home": "الرئيسية",
-          "nav.products": "المنتجات",
-          "nav.contact": "اتصل بنا",
-          "detail.weight": "الحجم",
-          "detail.flavor": "النكهة",
-          "detail.about": "عن هذا المنتج",
-          "form.firstName": "الاسم الأول",
-          "form.lastName": "اللقب",
-          "form.phone": "رقم الهاتف",
-          "form.wilaya": "الولاية",
-          "form.address": "العنوان (اختياري)",
-          "form.commune": "البلدية",
-          "form.deliveryType": "نوع التوصيل",
-          "form.homeDelivery": "🏠 توصيل للمنزل",
-          "form.officePick": "📦 استلام من المكتب",
-          "form.deliveredDoor": "يُسلَّم إلى بابك",
-          "form.pickupOffice": "الاستلام من أقرب مكتب",
-          "form.selectWilaya": "اختر الولاية…",
-          "form.selectWilayaFirst": "اختر الولاية أولاً",
-          "form.orderNow": "اطلب الآن",
-          "form.orderSummary": "ملخص الطلب",
-          "form.product": "المنتج",
-          "form.price": "السعر",
-          "form.delivery": "التوصيل",
-          "form.total": "المجموع",
-          "form.addToCart": "أضف إلى السلة",
-          "form.confirmOrder": "تأكيد الطلب",
-          "section.alsoLike": "قد يعجبك أيضاً",
-          "footer.brand.desc":
-            "وجهتك الأولى في الجزائر لمستحضرات التجميل الفاخرة والعناية بالبشرة الحصرية.",
-          "footer.links": "روابط سريعة",
-          "footer.shipping": "سياسة الشحن",
-          "footer.returns": "الإرجاع",
-          "footer.categories": "الفئات",
-          "footer.contact": "أرسل رسالة",
-          "footer.rights": "جميع الحقوق محفوظة.",
-          "form.name": "اسمك",
-          "form.email": "البريد / الهاتف",
-          "form.message": "رسالتك",
-          "form.send": "إرسال",
-          "shipping.title": "سياسة الشحن",
-          "shipping.item1.title": "توصيل وطني",
-          "shipping.item1.text": "نوصّل إلى جميع الولايات الـ 58 في الجزائر عبر إيمير للوجستيك.",
-          "shipping.item2.title": "توصيل مجاني",
-          "shipping.item2.text": "الطلبات التي تتجاوز 15,000 دج تستفيد من توصيل مجاني!",
-          "shipping.item3.title": "التوقيت القياسي",
-          "shipping.item3.text": "يتم معالجة الطلبات خلال 24 ساعة.",
-          "returns.title": "الإرجاع والاسترداد",
-          "returns.item1.title": "سياسة الإرجاع",
-          "returns.item1.text": "لديك 1 أيام لإرجاع المنتج. يجب أن تكون المنتجات غير مفتوحة.",
-          "returns.item2.title": "عملية سهلة",
-          "returns.item2.text": "اتصل بنا عبر واتساب أو إنستغرام لبدء عملية الإرجاع.",
-          "returns.item3.title": "طريقة الاسترداد",
-          "returns.item3.text": "نقدم خيارات الاستبدال بمنتجات أخرى أو رصيد متجر.",
-          "toast.sent": "تم إرسال رسالتك!",
-          "footer.shop": "المتجر",
-          "footer.allProducts": "جميع المنتجات",
-          "footer.protein": "كريم الأساس والكونسيلر",
-          "footer.preworkout": "أحمر الشفاه والغلوس",
-          "footer.creatine": "العناية بالبشرة والسيروم",
-          "footer.vitamins": "العطور والفراغنس",
-          "footer.info": "معلومات",
-          "footer.shipping": "سياسة الشحن",
-          "footer.returns": "الإرجاع",
-          "footer.faq": "الأسئلة الشائعة",
-          "footer.contact": "اتصل بنا",
-          "footer.location": "الجزائر العاصمة، الجزائر",
-          "footer.rights": "جميع الحقوق محفوظة.",
-          "search.cancel": "إلغاء",
-          "breadcrumb.home": "الرئيسية",
-          "breadcrumb.products": "المنتجات",
-          "detail.bulkLabel": "سعر الجملة",
-          "detail.bulkNotice": "هل تطلب 3 قطع أو أكثر؟ اتصل بنا عبر واتساب للحصول على خصم خاص للجملة!",
-          "success.title": "تم تقديم الطلب!",
-          "success.back": "العودة إلى المنتجات",
-        },
       };
 
       let currentLang = "en";
@@ -3261,7 +3184,6 @@
         const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
         return f[key] || f.nameEn || f.name || "";
       }
-      function curr() { return currentLang === "ar" ? "دج" : "DA"; }
       function refreshProductLang() {
         const p = selectedProduct;
         if (!p) return;
@@ -3312,9 +3234,8 @@
         localStorage.setItem("bybens_lang", lang);
         currentLang = lang;
         const t = i18n[lang];
-        const isAr = lang === "ar";
         document.documentElement.lang = lang;
-        document.documentElement.dir = isAr ? "rtl" : "ltr";
+        document.documentElement.dir = "ltr";
         document.querySelectorAll("[data-i18n]").forEach((el) => {
           const key = el.getAttribute("data-i18n");
           if (t[key] !== undefined) {

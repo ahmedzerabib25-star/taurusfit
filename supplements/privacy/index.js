@@ -1,16 +1,14 @@
 ﻿      const i18n = {
         en: { "nav.home": "Home", "search.cancel": "Cancel" },
-        fr: { "nav.home": "Accueil", "search.cancel": "Annuler" },
-        ar: { "nav.home": "الرئيسية", "search.cancel": "إلغاء" }
+        fr: { "nav.home": "Accueil", "search.cancel": "Annuler" }
       };
       let currentLang = "en";
 
       function switchLang(lang) {
         currentLang = lang;
         const t = i18n[lang] || i18n.en;
-        const isAr = lang === "ar";
         document.documentElement.lang = lang;
-        document.documentElement.dir = isAr ? "rtl" : "ltr";
+        document.documentElement.dir = "ltr";
         document.querySelectorAll("[data-i18n]").forEach(function(el) {
           const key = el.getAttribute("data-i18n");
           if (t[key] !== undefined) {
@@ -214,7 +212,7 @@
       var _wlStart = Date.now();
       document.addEventListener("DOMContentLoaded", function() {
         if (window.BYBENS_CONTENT) {
-          ["en", "fr", "ar"].forEach(function(lang) {
+          ["en", "fr"].forEach(function(lang) {
             if (window.BYBENS_CONTENT[lang]) Object.assign(i18n[lang], window.BYBENS_CONTENT[lang]);
           });
         }

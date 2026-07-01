@@ -97,13 +97,13 @@
       // ROW MAPPERS (snake_case → camelCase)
       // ════════════════════════════════════════════
       function _remapProductRow(r) {
-        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || r.name || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", brand: r.brand_en || r.brand || "", brandEn: r.brand_en || r.brand || "", brandFr: r.brand_fr || "", brandAr: r.brand_ar || "", categoryIds: (r.category_ids || "").split(",").filter(Boolean), subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), description: r.description_en || r.description || "", descriptionEn: r.description_en || r.description || "", descriptionFr: r.description_fr || "", descriptionAr: r.description_ar || "", imageUrl: r.image_url || [], variants: r.variants || [], flavors: r.flavors || [], stock: r.stock, discount: r.discount, freeDelivery: r.free_delivery === true || r.free_delivery === "true", status: r.status, hidden: r.hidden || false, createdAt: r.created_at };
+        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || r.name || "", nameFr: r.name_fr || "", brand: r.brand_en || r.brand || "", brandEn: r.brand_en || r.brand || "", brandFr: r.brand_fr || "", categoryIds: (r.category_ids || "").split(",").filter(Boolean), subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), description: r.description_en || r.description || "", descriptionEn: r.description_en || r.description || "", descriptionFr: r.description_fr || "", imageUrl: r.image_url || [], variants: r.variants || [], flavors: r.flavors || [], stock: r.stock, discount: r.discount, freeDelivery: r.free_delivery === true || r.free_delivery === "true", status: r.status, hidden: r.hidden || false, createdAt: r.created_at };
       }
       function _remapCategoryRow(r) {
-        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", description: r.description, createdAt: r.created_at };
+        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || "", nameFr: r.name_fr || "", description: r.description, createdAt: r.created_at };
       }
       function _remapSubCategoryRow(r) {
-        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", categoryIds: (r.category_ids || "").split(",").filter(Boolean), createdAt: r.created_at };
+        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || "", nameFr: r.name_fr || "", categoryIds: (r.category_ids || "").split(",").filter(Boolean), createdAt: r.created_at };
       }
       function _remapDeliveryRow(r) {
         return { id: r.id, wilaya: r.wilaya, homePrice: r.home_price, officePrice: r.office_price, createdAt: r.created_at };
@@ -113,7 +113,7 @@
       }
       // ROW BUILDERS (camelCase → snake_case)
       function _toProductRow(p) {
-        return { name: p.nameEn || p.name || "", name_en: p.nameEn || "", name_fr: p.nameFr || "", name_ar: p.nameAr || "", brand: p.brandEn || p.brand || "", brand_en: p.brandEn || "", brand_fr: p.brandFr || "", brand_ar: p.brandAr || "", category_ids: (p.categoryIds || []).join(","), sub_category_ids: (p.subCategoryIds || []).join(","), description: p.descriptionEn || p.description || "", description_en: p.descriptionEn || "", description_fr: p.descriptionFr || "", description_ar: p.descriptionAr || "", image_url: p.imageUrl || [], variants: p.variants || [], flavors: p.flavors || [], stock: p.stock || 0, discount: p.discount || 0, free_delivery: p.freeDelivery || false, status: p.status || "active", hidden: p.hidden || false };
+        return { name: p.nameEn || p.name || "", name_en: p.nameEn || "", name_fr: p.nameFr || "", brand: p.brandEn || p.brand || "", brand_en: p.brandEn || "", brand_fr: p.brandFr || "", category_ids: (p.categoryIds || []).join(","), sub_category_ids: (p.subCategoryIds || []).join(","), description: p.descriptionEn || p.description || "", description_en: p.descriptionEn || "", description_fr: p.descriptionFr || "", image_url: p.imageUrl || [], variants: p.variants || [], flavors: p.flavors || [], stock: p.stock || 0, discount: p.discount || 0, free_delivery: p.freeDelivery || false, status: p.status || "active", hidden: p.hidden || false };
       }
       // ════════════════════════════════════════════
       // API HELPERS (Supabase)
@@ -163,10 +163,8 @@
               bundleId: data?.bundle_id || "",
               titleEn: data?.title_en || "",
               titleFr: data?.title_fr || "",
-              titleAr: data?.title_ar || "",
               descriptionEn: data?.description_en || "",
               descriptionFr: data?.description_fr || "",
-              descriptionAr: data?.description_ar || "",
             };
           }
           case "getOrders": {
@@ -214,27 +212,27 @@
           // ── CATEGORIES ──
           case "addCategory": {
             const catId = String(Date.now());
-            const { error: catErr } = await sb.from("categories").insert({ id: catId, name: rest.nameEn || rest.name || "", name_en: rest.nameEn || "", name_fr: rest.nameFr || "", name_ar: rest.nameAr || "", description: rest.description || "" });
+            const { error: catErr } = await sb.from("categories").insert({ id: catId, name: rest.nameEn || rest.name || "", name_en: rest.nameEn || "", name_fr: rest.nameFr || "", description: rest.description || "" });
             if (catErr) throw catErr;
             for (const sub of (rest.subCategories || [])) {
               if (!sub) continue;
               const subName = typeof sub === "string" ? sub : (sub.nameEn || sub.name || "");
               if (!subName) continue;
               await new Promise((r) => setTimeout(r, 5));
-              await sb.from("sub_categories").insert({ id: String(Date.now()), name: subName, name_en: typeof sub === "string" ? sub : (sub.nameEn || ""), name_fr: typeof sub === "string" ? "" : (sub.nameFr || ""), name_ar: typeof sub === "string" ? "" : (sub.nameAr || ""), category_ids: catId });
+              await sb.from("sub_categories").insert({ id: String(Date.now()), name: subName, name_en: typeof sub === "string" ? sub : (sub.nameEn || ""), name_fr: typeof sub === "string" ? "" : (sub.nameFr || ""), category_ids: catId });
             }
             return { success: true, id: catId };
           }
           case "updateCategory": {
-            const { error } = await sb.from("categories").update({ name: rest.nameEn || rest.name || "", name_en: rest.nameEn || "", name_fr: rest.nameFr || "", name_ar: rest.nameAr || "", description: rest.description || "" }).eq("id", id);
+            const { error } = await sb.from("categories").update({ name: rest.nameEn || rest.name || "", name_en: rest.nameEn || "", name_fr: rest.nameFr || "", description: rest.description || "" }).eq("id", id);
             if (error) throw error;
             for (const sub of (rest.subCategories || [])) {
               const subName = sub.nameEn || sub.name || "";
               if (sub.id) {
-                await sb.from("sub_categories").update({ name: subName, name_en: sub.nameEn || "", name_fr: sub.nameFr || "", name_ar: sub.nameAr || "" }).eq("id", sub.id);
+                await sb.from("sub_categories").update({ name: subName, name_en: sub.nameEn || "", name_fr: sub.nameFr || "" }).eq("id", sub.id);
               } else if (subName) {
                 await new Promise((r) => setTimeout(r, 5));
-                await sb.from("sub_categories").insert({ id: String(Date.now()), name: subName, name_en: sub.nameEn || "", name_fr: sub.nameFr || "", name_ar: sub.nameAr || "", category_ids: id });
+                await sb.from("sub_categories").insert({ id: String(Date.now()), name: subName, name_en: sub.nameEn || "", name_fr: sub.nameFr || "", category_ids: id });
               }
             }
             return { success: true };
@@ -246,7 +244,7 @@
             return { success: true };
           }
           case "updateSubCategory": {
-            const { error } = await sb.from("sub_categories").update({ name: rest.nameEn || rest.name || "", name_en: rest.nameEn || "", name_fr: rest.nameFr || "", name_ar: rest.nameAr || "" }).eq("id", id);
+            const { error } = await sb.from("sub_categories").update({ name: rest.nameEn || rest.name || "", name_en: rest.nameEn || "", name_fr: rest.nameFr || "" }).eq("id", id);
             if (error) throw error;
             return { success: true };
           }
@@ -278,10 +276,8 @@
               bundle_id:      rest.bundleId || "",
               title_en:       rest.titleEn || "",
               title_fr:       rest.titleFr || "",
-              title_ar:       rest.titleAr || "",
               description_en: rest.descriptionEn || "",
               description_fr: rest.descriptionFr || "",
-              description_ar: rest.descriptionAr || "",
             }).eq("id", 1);
             if (error) throw error;
             return { success: true };
@@ -814,13 +810,10 @@
           if (p) {
             document.getElementById("pm-name-en").value = p.nameEn || p.name || "";
             document.getElementById("pm-name-fr").value = p.nameFr || "";
-            document.getElementById("pm-name-ar").value = p.nameAr || "";
             document.getElementById("pm-brand-en").value = p.brandEn || p.brand || "";
             document.getElementById("pm-brand-fr").value = p.brandFr || "";
-            document.getElementById("pm-brand-ar").value = p.brandAr || "";
             document.getElementById("pm-desc-en").innerHTML = p.descriptionEn || p.description || "";
             document.getElementById("pm-desc-fr").innerHTML = p.descriptionFr || "";
-            document.getElementById("pm-desc-ar").innerHTML = p.descriptionAr || "";
             switchDescTab("en");
             document.getElementById("pm-stock").value = p.stock;
             document.getElementById("pm-discount").value = p.discount;
@@ -853,12 +846,11 @@
             refreshStockMatrix();
           }
         } else {
-          ["pm-name-en", "pm-name-fr", "pm-name-ar", "pm-brand-en", "pm-brand-fr", "pm-brand-ar", "pm-stock", "pm-discount"].forEach(
+          ["pm-name-en", "pm-name-fr", "pm-brand-en", "pm-brand-fr", "pm-stock", "pm-discount"].forEach(
             (x) => (document.getElementById(x).value = ""),
           );
           document.getElementById("pm-desc-en").innerHTML = "";
           document.getElementById("pm-desc-fr").innerHTML = "";
-          document.getElementById("pm-desc-ar").innerHTML = "";
           switchDescTab("en");
           document.getElementById("variants-list").innerHTML = "";
           document.getElementById("flavors-list").innerHTML = "";
@@ -894,8 +886,7 @@
         if (v && v.stock !== undefined) div.dataset.varStock = String(v.stock);
         const existingLabelEn = v ? (v.labelEn || v.label || (v.weight ? `${v.weight}${v.unit || ''}` : '')) : '';
         const existingLabelFr = v ? (v.labelFr || '') : '';
-        const existingLabelAr = v ? (v.labelAr || '') : '';
-        div.innerHTML = `<div class="form-group" style="flex:2"><label>Label</label><input type="text" class="form-control variant-label-input" placeholder="EN *" value="${existingLabelEn}" oninput="refreshStockMatrix()" /><input type="text" class="form-control variant-label-fr" placeholder="FR" value="${existingLabelFr}" style="margin-top:4px" /><input type="text" class="form-control variant-label-ar" placeholder="AR" value="${existingLabelAr}" style="margin-top:4px;direction:rtl" /></div><div class="form-group"><label>Price (DA)</label><input type="number" class="form-control variant-price-input" placeholder="0" value="${v ? v.price : ""}" /></div><button class="btn-remove-variant" onclick="this.closest('.variant-row').remove();refreshStockMatrix()">×</button>`;
+        div.innerHTML = `<div class="form-group" style="flex:2"><label>Label</label><input type="text" class="form-control variant-label-input" placeholder="EN *" value="${existingLabelEn}" oninput="refreshStockMatrix()" /><input type="text" class="form-control variant-label-fr" placeholder="FR" value="${existingLabelFr}" style="margin-top:4px" /></div><div class="form-group"><label>Price (DA)</label><input type="number" class="form-control variant-price-input" placeholder="0" value="${v ? v.price : ""}" /></div><button class="btn-remove-variant" onclick="this.closest('.variant-row').remove();refreshStockMatrix()">×</button>`;
         list.appendChild(div);
         refreshStockMatrix();
       }
@@ -906,8 +897,7 @@
         div.className = "flavor-row";
         const fNameEn = f ? (f.nameEn || f.name || '') : '';
         const fNameFr = f ? (f.nameFr || '') : '';
-        const fNameAr = f ? (f.nameAr || '') : '';
-        div.innerHTML = `<div class="form-group" style="flex:2"><label>Shade / Color / Option</label><input type="text" class="form-control flavor-name-input" placeholder="EN *  e.g. Red No.5, Nude Beige…" value="${fNameEn}" oninput="refreshStockMatrix()" /><input type="text" class="form-control flavor-name-fr" placeholder="FR" value="${fNameFr}" style="margin-top:4px" /><input type="text" class="form-control flavor-name-ar" placeholder="AR" value="${fNameAr}" style="margin-top:4px;direction:rtl" /></div><div class="form-group flavor-qty-cell"><label>Qty (no variants)</label><input type="number" class="form-control flavor-qty-input" placeholder="0" value="${f && f.qty ? f.qty : ""}" min="0" oninput="refreshStockMatrix()" /></div><button class="btn-remove-variant" onclick="this.closest('.flavor-row').remove();refreshStockMatrix()">×</button>`;
+        div.innerHTML = `<div class="form-group" style="flex:2"><label>Shade / Color / Option</label><input type="text" class="form-control flavor-name-input" placeholder="EN *  e.g. Red No.5, Nude Beige…" value="${fNameEn}" oninput="refreshStockMatrix()" /><input type="text" class="form-control flavor-name-fr" placeholder="FR" value="${fNameFr}" style="margin-top:4px" /></div><div class="form-group flavor-qty-cell"><label>Qty (no variants)</label><input type="number" class="form-control flavor-qty-input" placeholder="0" value="${f && f.qty ? f.qty : ""}" min="0" oninput="refreshStockMatrix()" /></div><button class="btn-remove-variant" onclick="this.closest('.flavor-row').remove();refreshStockMatrix()">×</button>`;
         list.appendChild(div);
         refreshStockMatrix();
       }
@@ -1018,7 +1008,6 @@
       async function saveProduct() {
         const nameEn = document.getElementById("pm-name-en").value.trim();
         const nameFr = document.getElementById("pm-name-fr").value.trim();
-        const nameAr = document.getElementById("pm-name-ar").value.trim();
         if (!nameEn) {
           showToast("Product name (English) required", "error");
           return;
@@ -1032,10 +1021,9 @@
           .map((r, vi) => {
             const labelEn = r.querySelector(".variant-label-input")?.value.trim() || "";
             const labelFr = r.querySelector(".variant-label-fr")?.value.trim() || "";
-            const labelAr = r.querySelector(".variant-label-ar")?.value.trim() || "";
             const priceEl = r.querySelector(".variant-price-input");
             const label = labelEn;
-            const v = { label, labelEn, labelFr, labelAr, price: parseFloat(priceEl?.value) || 0 };
+            const v = { label, labelEn, labelFr, price: parseFloat(priceEl?.value) || 0 };
             if (showMatrix) {
               v.flavorStock = {};
               document.querySelectorAll(`#stock-matrix-body input[data-vi="${vi}"]`).forEach(inp => {
@@ -1054,9 +1042,8 @@
           .map((r) => {
             const nameEn = r.querySelector(".flavor-name-input")?.value.trim() || "";
             const nameFr = r.querySelector(".flavor-name-fr")?.value.trim() || "";
-            const nameAr = r.querySelector(".flavor-name-ar")?.value.trim() || "";
             const qty    = parseInt(r.querySelector(".flavor-qty-input")?.value) || 0;
-            return { name: nameEn, nameEn, nameFr, nameAr, qty };
+            return { name: nameEn, nameEn, nameFr, qty };
           })
           .filter((f) => f.name);
 
@@ -1074,17 +1061,14 @@
           name: nameEn,
           nameEn,
           nameFr,
-          nameAr,
           brand: document.getElementById("pm-brand-en").value.trim(),
           brandEn: document.getElementById("pm-brand-en").value.trim(),
           brandFr: document.getElementById("pm-brand-fr").value.trim(),
-          brandAr: document.getElementById("pm-brand-ar").value.trim(),
           categoryIds,
           subCategoryIds,
           description: document.getElementById("pm-desc-en").innerHTML.trim(),
           descriptionEn: document.getElementById("pm-desc-en").innerHTML.trim(),
           descriptionFr: document.getElementById("pm-desc-fr").innerHTML.trim(),
-          descriptionAr: document.getElementById("pm-desc-ar").innerHTML.trim(),
           imageUrl: currentImageUrls,
           variants,
           flavors,
@@ -1169,7 +1153,6 @@
         document.getElementById("cat-modal-title").textContent = "Add Category";
         document.getElementById("cat-name-en").value = "";
         document.getElementById("cat-name-fr").value = "";
-        document.getElementById("cat-name-ar").value = "";
         document.getElementById("cat-desc").value = "";
         document.getElementById("sub-items-list").innerHTML = "";
         openModal("cat-modal");
@@ -1181,14 +1164,12 @@
         document.getElementById("cat-modal-title").textContent = "Edit Category";
         document.getElementById("cat-name-en").value = cat.nameEn || cat.name || "";
         document.getElementById("cat-name-fr").value = cat.nameFr || "";
-        document.getElementById("cat-name-ar").value = cat.nameAr || "";
         document.getElementById("cat-desc").value = cat.description || "";
         const subs = subCategories.filter((s) => s.categoryIds && s.categoryIds.includes(id));
         document.getElementById("sub-items-list").innerHTML = subs
           .map((s) => `<div class="sub-item-row" data-sub-id="${s.id}">
             <input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="EN" value="${(s.nameEn||s.name||'').replace(/"/g,'&quot;')}" data-lang="en" />
             <input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="FR" value="${(s.nameFr||'').replace(/"/g,'&quot;')}" data-lang="fr" />
-            <input type="text" class="form-control" style="flex:1;min-width:80px;direction:rtl" placeholder="AR" value="${(s.nameAr||'').replace(/"/g,'&quot;')}" data-lang="ar" />
             <button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button></div>`)
           .join("");
         openModal("cat-modal");
@@ -1197,27 +1178,25 @@
         const list = document.getElementById("sub-items-list");
         const div = document.createElement("div");
         div.className = "sub-item-row";
-        div.innerHTML = `<input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="EN" data-lang="en" /><input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="FR" data-lang="fr" /><input type="text" class="form-control" style="flex:1;min-width:80px;direction:rtl" placeholder="AR" data-lang="ar" /><button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button>`;
+        div.innerHTML = `<input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="EN" data-lang="en" /><input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="FR" data-lang="fr" /><button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button>`;
         list.appendChild(div);
       }
       async function saveCat() {
         const nameEn = document.getElementById("cat-name-en").value.trim();
         const nameFr = document.getElementById("cat-name-fr").value.trim();
-        const nameAr = document.getElementById("cat-name-ar").value.trim();
         if (!nameEn) { showToast("English name required", "error"); return; }
         const subRows = Array.from(document.querySelectorAll("#sub-items-list .sub-item-row"));
         const subs = subRows.map((row) => ({
           id: row.dataset.subId || "",
           nameEn: (row.querySelector('[data-lang="en"]')?.value || "").trim(),
           nameFr: (row.querySelector('[data-lang="fr"]')?.value || "").trim(),
-          nameAr: (row.querySelector('[data-lang="ar"]')?.value || "").trim(),
         })).filter((s) => s.nameEn);
         showLoading(editingCatId ? "Updating category…" : "Saving category…");
         try {
           const desc = document.getElementById("cat-desc").value.trim();
           const payload = editingCatId
-            ? { action: "updateCategory", id: editingCatId, nameEn, nameFr, nameAr, description: desc, subCategories: subs }
-            : { action: "addCategory", nameEn, nameFr, nameAr, description: desc, subCategories: subs };
+            ? { action: "updateCategory", id: editingCatId, nameEn, nameFr, description: desc, subCategories: subs }
+            : { action: "addCategory", nameEn, nameFr, description: desc, subCategories: subs };
           const r = await apiPost(payload);
           if (r.success) {
             showToast(editingCatId ? "Category updated!" : "Category saved!");
@@ -1226,9 +1205,9 @@
             editingCatId = null;
             if (payload.action === "updateCategory") {
               const idx = categories.findIndex(c => c.id === payload.id);
-              if (idx >= 0) categories[idx] = { ...categories[idx], name: nameEn, nameEn, nameFr, nameAr, description: desc };
+              if (idx >= 0) categories[idx] = { ...categories[idx], name: nameEn, nameEn, nameFr, description: desc };
             } else {
-              categories.push({ id: savedId, name: nameEn, nameEn, nameFr, nameAr, description: desc });
+              categories.push({ id: savedId, name: nameEn, nameEn, nameFr, description: desc });
             }
             renderCats();
             updateDashboard();
@@ -1244,22 +1223,20 @@
         editingSubCatId = id;
         document.getElementById("subcat-name-en").value = sub.nameEn || sub.name || "";
         document.getElementById("subcat-name-fr").value = sub.nameFr || "";
-        document.getElementById("subcat-name-ar").value = sub.nameAr || "";
         openModal("subcat-edit-modal");
       }
       async function saveSubCat() {
         const nameEn = document.getElementById("subcat-name-en").value.trim();
         const nameFr = document.getElementById("subcat-name-fr").value.trim();
-        const nameAr = document.getElementById("subcat-name-ar").value.trim();
         if (!nameEn) { showToast("English name required", "error"); return; }
         showLoading("Updating sub-category…");
         try {
-          const r = await apiPost({ action: "updateSubCategory", id: editingSubCatId, nameEn, nameFr, nameAr });
+          const r = await apiPost({ action: "updateSubCategory", id: editingSubCatId, nameEn, nameFr });
           if (r.success) {
             showToast("Sub-category updated!");
             closeModal("subcat-edit-modal");
             const sIdx = subCategories.findIndex(s => s.id === editingSubCatId);
-            if (sIdx >= 0) subCategories[sIdx] = { ...subCategories[sIdx], name: nameEn, nameEn, nameFr, nameAr };
+            if (sIdx >= 0) subCategories[sIdx] = { ...subCategories[sIdx], name: nameEn, nameEn, nameFr };
             editingSubCatId = null;
             renderCats();
           } else showToast("Error: " + (r.error || "Unknown"), "error");
@@ -1628,7 +1605,7 @@
       function activeDescId() { return "pm-desc-" + _activeDescLang; }
       function switchDescTab(lang) {
         _activeDescLang = lang;
-        ["en","fr","ar"].forEach((l) => {
+        ["en","fr"].forEach((l) => {
           document.getElementById("pm-desc-" + l).style.display = l === lang ? "" : "none";
           const tab = document.getElementById("desc-tab-" + l);
           if (tab) tab.classList.toggle("active", l === lang);
@@ -1881,10 +1858,8 @@
             const fields = {
               "bundle-title-en":       r.titleEn,
               "bundle-title-fr":       r.titleFr,
-              "bundle-title-ar":       r.titleAr,
               "bundle-description-en": r.descriptionEn,
               "bundle-description-fr": r.descriptionFr,
-              "bundle-description-ar": r.descriptionAr,
             };
             Object.entries(fields).forEach(([id, val]) => {
               const el = document.getElementById(id);
@@ -1906,10 +1881,8 @@
             bundleId:      bundleSelectedId || "",
             titleEn:       g("bundle-title-en"),
             titleFr:       g("bundle-title-fr"),
-            titleAr:       g("bundle-title-ar"),
             descriptionEn: g("bundle-description-en"),
             descriptionFr: g("bundle-description-fr"),
-            descriptionAr: g("bundle-description-ar"),
           });
           if (r.success) showToast("Bundle saved!");
           else showToast("Error: " + (r.error || "Unknown"), "error");

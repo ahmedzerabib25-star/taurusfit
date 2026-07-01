@@ -11,7 +11,7 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="/supplements/supabase-client.js?v=3"></script>
+    <script src="/supplements/supabase-client.js?v=4"></script>
     <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=9" />
   </head>
   <body>
@@ -520,10 +520,6 @@
               <label>Title (French)</label>
               <input id="bundle-title-fr" class="form-control" type="text" placeholder="BOOSTEZ VOS PERFORMANCES" />
             </div>
-            <div class="form-group" style="margin-bottom:20px">
-              <label>Title (Arabic)</label>
-              <input id="bundle-title-ar" class="form-control" type="text" placeholder="ارفع مستوى أدائك" dir="rtl" />
-            </div>
 
             <!-- Banner Description -->
             <div style="font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--g400);margin-bottom:12px;">Banner Description</div>
@@ -534,10 +530,6 @@
             <div class="form-group" style="margin-bottom:12px">
               <label>Description (French)</label>
               <textarea id="bundle-description-fr" class="form-control" rows="2" placeholder="Obtenez notre bundle le plus populaire à -20%. Stock limité — commandez maintenant." style="resize:vertical;min-height:60px"></textarea>
-            </div>
-            <div class="form-group" style="margin-bottom:20px">
-              <label>Description (Arabic)</label>
-              <textarea id="bundle-description-ar" class="form-control" rows="2" placeholder="احصل على باقتنا الأكثر مبيعاً بخصم 20%. مخزون محدود — اطلب الآن." style="resize:vertical;min-height:60px" dir="rtl"></textarea>
             </div>
             <input
               class="search-box"
@@ -830,16 +822,6 @@
               <input type="text" class="form-control" id="pm-brand-fr" placeholder="ex. MAC Cosmétiques" />
             </div>
           </div>
-          <div class="form-row">
-            <div class="form-group" style="flex:2">
-              <label>Product Name (Arabic)</label>
-              <input type="text" class="form-control" id="pm-name-ar" placeholder="مثال: غلوس مخملي" dir="rtl" />
-            </div>
-            <div class="form-group">
-              <label>Brand (Arabic)</label>
-              <input type="text" class="form-control" id="pm-brand-ar" placeholder="مثال: ماك كوزمتيكس" dir="rtl" />
-            </div>
-          </div>
           <div class="form-group" style="margin-bottom: 16px">
             <label>Categories (select one or more)</label>
             <div class="checkbox-group" id="pm-categories"></div>
@@ -855,7 +837,6 @@
                 <div style="display:flex;gap:4px;margin-left:auto">
                   <button type="button" class="rte-lang-tab active" id="desc-tab-en" onclick="switchDescTab('en')">EN</button>
                   <button type="button" class="rte-lang-tab" id="desc-tab-fr" onclick="switchDescTab('fr')">FR</button>
-                  <button type="button" class="rte-lang-tab" id="desc-tab-ar" onclick="switchDescTab('ar')">AR</button>
                 </div>
               </div>
               <div class="rte-wrap">
@@ -877,7 +858,6 @@
                 </div>
                 <div class="rte-editor" id="pm-desc-en" contenteditable="true" spellcheck="true" data-placeholder="Describe the product (English)…"></div>
                 <div class="rte-editor" id="pm-desc-fr" contenteditable="true" spellcheck="true" data-placeholder="Décrivez le produit (Français)…" style="display:none"></div>
-                <div class="rte-editor" id="pm-desc-ar" contenteditable="true" spellcheck="true" data-placeholder="وصف المنتج (عربي)…" style="display:none;direction:rtl;text-align:right"></div>
               </div>
             </div>
           </div>
@@ -1007,10 +987,6 @@
             <label>Name (French)</label>
             <input type="text" class="form-control" id="cat-name-fr" placeholder="ex. Rouge à lèvres" />
           </div>
-          <div class="form-group" style="margin-bottom:14px">
-            <label>Name (Arabic)</label>
-            <input type="text" class="form-control" id="cat-name-ar" placeholder="مثال: أحمر شفاه" dir="rtl" />
-          </div>
           <div class="form-group" style="margin-bottom: 14px">
             <label>Description</label>
             <input type="text" class="form-control" id="cat-desc" placeholder="Optional short description" />
@@ -1053,10 +1029,6 @@
           <div class="form-group" style="margin-bottom:14px">
             <label>Name (French)</label>
             <input type="text" class="form-control" id="subcat-name-fr" placeholder="ex. Mat" />
-          </div>
-          <div class="form-group" style="margin-bottom:14px">
-            <label>Name (Arabic)</label>
-            <input type="text" class="form-control" id="subcat-name-ar" placeholder="مثال: مطفي" dir="rtl" />
           </div>
         </div>
         <div class="modal-footer">
@@ -1169,6 +1141,6 @@
       ><span id="toast-msg">Done!</span>
     </div>
 
-    <script src="/supplements/panel4rz/index.js?v=15"></script>
+    <script src="/supplements/panel4rz/index.js?v=16"></script>
   </body>
 </html>

@@ -157,82 +157,6 @@ const i18n = {
     "modal.shade": "Teinte / Couleur",
     "modal.size": "Taille / Volume"
   },
-  ar: {
-    "nav.home": "الرئيسية",
-    "nav.products": "مستحضرات التجميل",
-    "nav.contact": "اتصل بنا",
-    "hero.eyebrow": "مجموعة حصرية من مستحضرات التجميل الراقية",
-    "hero.title": "فن الجمال<em>السرمدي</em>",
-    "hero.desc":
-      "لوكسري سيكرت هي دار حصرية لمستحضرات التجميل والعناية بالبشرة. اكتشف تركيبة عالية الأداء وألوانًا غنية وطقوسًا رائعة مصممة لتكشف عن إشراقكِ الداخلي.",
-    "hero.cta1": "تسوّق الآن",
-    "hero.cta2": "اكتشف المزيد",
-    "hero.stat1": "عميل سعيد",
-    "hero.stat2": "منتجاتنا الفريدة",
-    "hero.stat3": "شحن وطني سريع",
-    "trust.delivery": "شحن مجاني",
-    "trust.delivery.sub": "على جميع الطلبات التي تتعدى 15,000 دج",
-    "trust.authentic": "ضمان الدار",
-    "trust.authentic.sub": "منتجات أصيلة ومضمونة 100%",
-    "trust.wilayas": "توصيل وطني",
-    "trust.wilayas.sub": "عناية فائقة لجميع الولايات الـ 69",
-    "trust.payment": "الدفع عند الاستلام",
-    "trust.payment.sub": "الدفع بكل سهولة عند بابك",
-    "trust.support": "مستشار الجمال",
-    "trust.support.sub": "استشارات مخصصة على مدار الساعة",
-    "products.label": "روائع الدار المختارة",
-    "products.title": "الأيقونات",
-    "products.viewall": "عرض الكل",
-    "products.viewall.btn": "عرض جميع المنتجات",
-    "banner.eyebrow": "باقة الدار الخاصة",
-    "banner.title": "اكتشفي<em>سرّكِ الكامن</em>",
-    "banner.desc":
-      "انغمسي في تشكيلة الأيقونات الخاصة بنا. باقة مختارة بعناية من مستحضرات العناية بالبشرة والشفاه المصممة خصيصًا لكِ.",
-    "banner.cta": "اقتناء الباقة",
-    "contact.label": "تواصل معنا",
-    "contact.title": "اتصل بنا",
-    "contact.desc":
-      "هل لديكِ أي استفسار حول مجموعاتنا؟ خبراء التجميل لدينا في خدمتكِ دائماً.",
-    "footer.brand.desc":
-      "الوجهة الأولى في الجزائر لمستحضرات التجميل والعناية بالبشرة الحصرية. نوصل لكِ جمالكِ الراقي مباشرة إلى بابكِ.",
-    "footer.links": "روابط سريعة",
-    "footer.shipping": "سياسة الشحن",
-    "footer.returns": "الإرجاع",
-    "footer.categories": "الفئات",
-    "footer.contact": "أرسل رسالة",
-    "footer.rights": "جميع الحقوق محفوظة.",
-    "form.name": "اسمك",
-    "form.email": "البريد / الهاتف",
-    "form.message": "الرسالة",
-    "form.send": "إرسال",
-    "btn.addcart": "تسوق سريع",
-    "btn.buynow": "اكتشف",
-    "about.who.title": "إرثنا",
-    "about.who.text": "لوكسري سيكرت هي دار مستحضرات تجميل حصرية، متخصصة في دمج المكونات الطبيعية النقية مع علم التجميل المتطور. نقدم منتجات عناية بالبشرة ومكياج راقٍ يجسد الفخامة العصرية.",
-    "about.offer.title": "ابتكاراتنا",
-    "about.offer.text": "من كريم الأساس المخملي إلى سيروم العناية المتطور، ابتكاراتنا أصيلة 100% ومستوردة مباشرة من أرقى المختبرات التجميلية في العالم.",
-    "about.order.title": "طقوس الطلب",
-    "about.order.text": "اختاري درجة اللون والحجم المناسبين، ثم أضيفيهما إلى سلة التجميل الخاصة بكِ. أكملي تفاصيل العنوان دون تسجيل، واستمتعي بخدمة التوصيل والدفع عند الاستلام بكل فخامة.",
-    "about.cta": "تسوق المجموعة",
-    "shipping.title": "سياسة الشحن والتوصيل",
-    "shipping.item1.title": "توصيل راقٍ",
-    "shipping.item1.text": "نوصّل إلى جميع الولايات الـ 69 في الجزائر بعناية فائقة وسرعة مثالية عبر إيمير للوجستيك.",
-    "shipping.item2.title": "شحن مجاني",
-    "shipping.item2.text": "الطلبات التي تتجاوز 15,000 دج تستفيد من شحن مجاني فاخر! للطلبات الأخرى، تطبق أسعار الشحن القياسية.",
-    "shipping.item3.title": "مواعيد التوصيل",
-    "shipping.item3.text": "يتم معالجة الطلبات خلال 24 ساعة. يستغرق التوصيل عادةً من 2 إلى 4 أيام عمل للمدن الكبرى.",
-    "returns.title": "الإرجاع والاستبدال",
-    "returns.item1.title": "سياسة الإرجاع",
-    "returns.item1.text": "لديكِ 7 أيام لإرجاع المنتجات غير المفتوحة وفي غلافها الأصلي مع سلامة الختم الأصلي.",
-    "returns.item2.title": "دعم متميز",
-    "returns.item2.text": "تواصلوا مع مستشارينا عبر واتساب أو إنستغرام لبدء عملية الإرجاع. سنتكفل بترتيب شحن المرتجع.",
-    "returns.item3.title": "رصيد الدار",
-    "returns.item3.text": "بمجرد فحص المنتج المرتجع، نقدم خيارات الاستبدال بمنتجات أخرى أو رصيد متجر لضمان رضاكِ الكامل.",
-    "toast.added": "تمت إضافتها لسلة التجميل الخاصة بكِ",
-    "toast.sent": "تم إرسال رسالتكِ إلى مستشارينا.",
-    "modal.shade": "درجة اللون",
-    "modal.size": "الحجم"
-  },
 };
 
 const SUPABASE_URL = window.SUPABASE_URL;
@@ -281,7 +205,6 @@ function shadeName(f) {
   const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
   return f[key] || f.nameEn || f.name || "";
 }
-function curr() { return currentLang === "ar" ? "دج" : "DA"; }
 /* ══════════════════════════════════════════════════════════════
    CART — localStorage persistence
 ══════════════════════════════════════════════════════════════ */
@@ -348,7 +271,7 @@ function _atcRefreshPrice() {
   const base = v && typeof v === "object" ? (v.price || 0) : 0;
   const disc = p.discount || 0;
   const final = disc > 0 ? Math.round(base * (1 - disc/100)) : base;
-  document.getElementById("atcPrice").textContent = final > 0 ? `${final.toLocaleString()} ${curr()}` : "";
+  document.getElementById("atcPrice").textContent = final > 0 ? `${final.toLocaleString()} DA` : "";
 }
 function atcPickFlavor(btn, f) {
   document.querySelectorAll("#atcFlavorOptions .atc-option").forEach(b => b.classList.remove("active"));
@@ -426,7 +349,7 @@ function _renderCartDrawer() {
             <span class="ciq-val">${item.qty}</span>
             <button class="ciq-btn" onclick="cartQty(${idx},1)">+</button>
           </div>
-          <span class="cart-row-price">${(item.unitPrice * item.qty).toLocaleString()} ${curr()}</span>
+          <span class="cart-row-price">${(item.unitPrice * item.qty).toLocaleString()} DA</span>
         </div>
       </div>
       <button class="cart-row-del" onclick="cartRemove(${idx})" aria-label="Remove">
@@ -565,8 +488,8 @@ function renderProducts(lang) {
     <h3 class="product-name">${prodName(p)}</h3>
     ${flavorLabel ? `<span class="product-flavor">${flavorLabel}</span>` : ""}
     <div class="product-pricing">
-      ${currentPrice > 0 ? `<span class="price">${currentPrice.toLocaleString()} ${curr()}</span>` : ""}
-      ${oldPrice ? `<span class="price-old">${oldPrice.toLocaleString()} ${curr()}</span>` : ""}
+      ${currentPrice > 0 ? `<span class="price">${currentPrice.toLocaleString()} DA</span>` : ""}
+      ${oldPrice ? `<span class="price-old">${oldPrice.toLocaleString()} DA</span>` : ""}
       ${saveLabel ? `<span class="price-save">${saveLabel}</span>` : ""}
     </div>
     <div class="product-actions">
@@ -597,9 +520,7 @@ function sanitizeFooterAndModals(lang) {
   const footerText = document.querySelector('.footer-bottom p');
   if (footerText) {
     const year = new Date().getFullYear();
-    if (lang === 'ar') {
-      footerText.innerHTML = `© ${year} لوكسري سيكرت الجزائر. جميع الحقوق محفوظة.`;
-    } else if (lang === 'fr') {
+    if (lang === 'fr') {
       footerText.innerHTML = `© ${year} Luxury Secret Algérie. Tous droits réservés.`;
     } else {
       footerText.innerHTML = `© ${year} Luxury Secret Algeria. All rights reserved.`;
@@ -684,10 +605,8 @@ function switchLang(lang) {
 
   currentLang = lang;
   const t = i18n[lang];
-  const isAr = lang === "ar";
-
   document.documentElement.lang = lang;
-  document.documentElement.dir = isAr ? "rtl" : "ltr";
+  document.documentElement.dir = "ltr";
 
   // Update all translatable text nodes
   document.querySelectorAll("[data-i18n]").forEach((el) => {
@@ -783,7 +702,7 @@ function handleSearch(query) {
           <p class="search-drop-name">${prodName(p)}</p>
           ${flavorLabel ? `<p style="font-size:11px;color:var(--gray-400);margin:0;">${flavorLabel}</p>` : ""}
         </div>
-        <span class="search-drop-price">${price} ${curr()}</span>
+        <span class="search-drop-price">${price} DA</span>
       </div>`;
   }).join("");
   dropdown.classList.add("open");
@@ -929,7 +848,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const savedLang = localStorage.getItem("bybens_lang") || "en";
   // Merge content.js into i18n so static texts can be edited from that file
   if (window.BYBENS_CONTENT) {
-    ["en", "fr", "ar"].forEach(function(lang) {
+    ["en", "fr"].forEach(function(lang) {
       if (window.BYBENS_CONTENT[lang]) {
         // Merge so that our local cosmetics translations override content.js
         i18n[lang] = Object.assign({}, window.BYBENS_CONTENT[lang], i18n[lang]);
@@ -1006,7 +925,7 @@ function handleMobileSearch(query) {
     <p style="font-size:14px; font-weight:500; color:var(--black); margin:0 0 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${prodName(p)}</p>
     <p style="font-size:11px; color:var(--gray-400); margin:0;">${flavorLabel}</p>
   </div>
-  <span style="font-size:15px; font-weight: 500; color:var(--black); flex-shrink:0; direction:ltr;">${price} ${curr()}</span>
+  <span style="font-size:15px; font-weight: 500; color:var(--black); flex-shrink:0; direction:ltr;">${price} DA</span>
 </div>`;
       },
     )

@@ -123,66 +123,6 @@
           "btn.buynow": "Acheter",
           "toast.added": "Ajouté au panier !",
         },
-        ar: {
-          "nav.home": "الرئيسية",
-          "nav.products": "المنتجات",
-          "nav.contact": "اتصل بنا",
-          "page.hero.title": "جميع <em>المنتجات</em>",
-          "page.hero.desc":
-            "تصفّحي مجموعتنا الكاملة من منتجات الماكياج والعناية بالبشرة الفاخرة.",
-          "toolbar.filters": "الفلاتر",
-          "toolbar.products": "منتج",
-          "sort.featured": "الترتيب: مميز",
-          "sort.priceAsc": "السعر: الأقل أولاً",
-          "sort.priceDesc": "السعر: الأعلى أولاً",
-          "sort.rating": "الأعلى تقييماً",
-          "sort.newest": "الأحدث أولاً",
-          "sort.name": "الاسم أ–ي",
-          "footer.brand.desc":
-            "وجهتك الأولى في الجزائر لمستحضرات التجميل الفاخرة والعناية بالبشرة الحصرية.",
-          "footer.links": "روابط سريعة",
-          "footer.shipping": "سياسة الشحن",
-          "footer.returns": "الإرجاع",
-          "footer.categories": "الفئات",
-          "footer.contact": "أرسل رسالة",
-          "footer.rights": "جميع الحقوق محفوظة.",
-          "form.name": "اسمك",
-          "form.email": "البريد / الهاتف",
-          "form.message": "رسالتك",
-          "form.send": "إرسال",
-          "shipping.title": "سياسة الشحن",
-          "shipping.item1.title": "توصيل وطني",
-          "shipping.item1.text": "نوصّل إلى جميع الولايات الـ 58 في الجزائر عبر إيمير للوجستيك. منتجات تجميل راقية تصل إلى باب منزلك.",
-          "shipping.item2.title": "توصيل مجاني",
-          "shipping.item2.text": "الطلبات التي تتجاوز 15,000 دج تستفيد من توصيل مجاني! للطلبات الأخرى، تطبق أسعار الشحن القياسية.",
-          "shipping.item3.title": "التوقيت القياسي",
-          "shipping.item3.text": "يتم معالجة الطلبات خلال 24 ساعة. يستغرق التوصيل عادةً من يومين إلى 3 أيام عمل للمدن الكبرى.",
-          "returns.title": "الإرجاع والاسترداد",
-          "returns.item1.title": "سياسة الإرجاع",
-          "returns.item1.text": "لديك 1 أيام لإرجاع المنتج. يجب أن تكون المنتجات غير مفتوحة وفي غلافها الأصلي مع الختم الأصلي.",
-          "returns.item2.title": "عملية سهلة",
-          "returns.item2.text": "اتصل بنا عبر واتساب أو إنستغرام لبدء عملية الإرجاع. سنوجهك خلال خطوات الاستبدال أو الاسترداد.",
-          "returns.item3.title": "طريقة الاسترداد",
-          "returns.item3.text": "بمجرد فحص المنتج المرتجع، نقدم خيارات الاستبدال بمنتجات أخرى أو رصيد متجر. المبالغ النقدية تخضع للتقييم.",
-          "footer.shop": "المتجر",
-          "footer.allProducts": "جميع المنتجات",
-          "footer.protein": "كريم الأساس والكونسيلر",
-          "footer.preworkout": "أحمر الشفاه والغلوس",
-          "footer.creatine": "العناية بالبشرة والسيروم",
-          "footer.vitamins": "العطور والفراغنس",
-          "footer.info": "معلومات",
-          "footer.shipping": "سياسة الشحن",
-          "footer.returns": "الإرجاع",
-          "footer.faq": "الأسئلة الشائعة",
-          "footer.contactLink": "اتصل بنا",
-          "footer.contactTitle": "تواصل معنا",
-          "toast.sent": "تم إرسال رسالتك!",
-          "footer.location": "الجزائر العاصمة، الجزائر",
-          "footer.rights": "جميع الحقوق محفوظة.",
-          "btn.addcart": "أضف للسلة",
-          "btn.buynow": "اشتر الآن",
-          "toast.added": "تمت الإضافة للسلة!",
-        },
       };
 
       let currentLang = "en";
@@ -213,7 +153,6 @@
         const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
         return f[key] || f.nameEn || f.name || "";
       }
-      function curr() { return currentLang === "ar" ? "دج" : "DA"; }
 
       /* ══════════════════════════════════════════════════════════════
    LANGUAGE SWITCHER
@@ -225,10 +164,8 @@
         localStorage.setItem("bybens_lang", lang);
         currentLang = lang;
         const t = i18n[lang];
-        const isAr = lang === "ar";
-
         document.documentElement.lang = lang;
-        document.documentElement.dir = isAr ? "rtl" : "ltr";
+        document.documentElement.dir = "ltr";
 
         document.querySelectorAll("[data-i18n]").forEach((el) => {
           const key = el.getAttribute("data-i18n");
@@ -734,8 +671,8 @@
             <h3 class="product-name">${prodName(p)}</h3>
             ${flavorLabel ? `<span class="product-flavor">${flavorLabel}</span>` : ""}
             <div class="product-pricing">
-              ${currentPrice > 0 ? `<span class="price">${currentPrice.toLocaleString()} ${curr()}</span>` : ""}
-              ${oldPrice ? `<span class="price-old">${oldPrice.toLocaleString()} ${curr()}</span>` : ""}
+              ${currentPrice > 0 ? `<span class="price">${currentPrice.toLocaleString()} DA</span>` : ""}
+              ${oldPrice ? `<span class="price-old">${oldPrice.toLocaleString()} DA</span>` : ""}
               ${saveLabel ? `<span class="price-save">${saveLabel}</span>` : ""}
             </div>
             <div class="product-actions">
@@ -841,7 +778,7 @@
         );
         if (state.priceMin || state.priceMax)
           chips.push({
-            label: `${state.priceMin || "0"} – ${state.priceMax || "∞"} ${curr()}`,
+            label: `${state.priceMin || "0"} – ${state.priceMax || "∞"} DA`,
             remove: () => {
               state.priceMin = "";
               state.priceMax = "";
@@ -987,7 +924,7 @@
               <p class="search-drop-brand">${prodBrand(p)}</p>
               <p class="search-drop-name">${prodName(p)}</p>
             </div>
-            <span class="search-drop-price">${price} ${curr()}</span>
+            <span class="search-drop-price">${price} DA</span>
           </div>`;
         }).join("");
         dropdown.classList.add("open");
@@ -1048,7 +985,7 @@
               <p style="font-size:12px;color:var(--gray-400);margin:0 0 2px;">${p.brand || ""}</p>
               <p style="font-size:14px;font-weight:600;color:var(--gray-800);margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</p>
             </div>
-            <span style="font-size:13px;font-weight:700;color:var(--red);flex-shrink:0;">${price} ${curr()}</span>
+            <span style="font-size:13px;font-weight:700;color:var(--red);flex-shrink:0;">${price} DA</span>
           </div>`;
         }).join("");
       }
@@ -1192,7 +1129,7 @@
         const disc = p.discount || 0;
         const final = disc > 0 ? Math.round(base * (1 - disc / 100)) : base;
         document.getElementById("atcPrice").textContent =
-          final > 0 ? `${final.toLocaleString()} ${curr()}` : "";
+          final > 0 ? `${final.toLocaleString()} DA` : "";
       }
       function atcPickFlavor(btn, f) {
         document
@@ -1335,7 +1272,7 @@
                   <span class="ciq-val">${item.qty}</span>
                   <button class="ciq-btn" onclick="cartQty(${idx},1)">+</button>
                 </div>
-                <span class="cart-row-price">${(item.unitPrice * item.qty).toLocaleString()} ${curr()}</span>
+                <span class="cart-row-price">${(item.unitPrice * item.qty).toLocaleString()} DA</span>
               </div>
             </div>
             <button class="cart-row-del" onclick="cartRemove(${idx})" aria-label="Remove">

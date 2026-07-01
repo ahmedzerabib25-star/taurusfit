@@ -139,7 +139,7 @@
                 const product = _allProducts.find(p => p.id === (item.productId || item.id));
                 const flavors = product ? parseField(product.flavors) : [];
                 const variants = product ? parseField(product.variants) : [];
-                const flavorObjs = flavors.map(f => typeof f === 'object' ? { name: f.name || f.nameEn || '', nameEn: f.nameEn || f.name || '', nameFr: f.nameFr || '', nameAr: f.nameAr || '', qty: f.qty || 0 } : { name: String(f), nameEn: String(f), nameFr: '', nameAr: '', qty: 0 }).filter(fo => fo.name);
+                const flavorObjs = flavors.map(f => typeof f === 'object' ? { name: f.name || f.nameEn || '', nameEn: f.nameEn || f.name || '', nameFr: f.nameFr || '', qty: f.qty || 0 } : { name: String(f), nameEn: String(f), nameFr: '', qty: 0 }).filter(fo => fo.name);
                 // Find currently selected variant index using English label (stored key)
                 const variantLabels = variants.map(v => typeof v === 'object' ? (v.weight ? `${v.weight}${v.unit||''}` : v.labelEn || v.label || v.name || '') : String(v));
                 const selectedVariantIdx = Math.max(0, variantLabels.indexOf(item.variant));
@@ -196,7 +196,7 @@
                   <span class="qty-value">${item.qty}</span>
                   <button class="qty-btn" onclick="checkoutChangeQty(${idx}, 1)">+</button>
                 </div>
-                <span class="checkout-item-price">${(item.unitPrice * item.qty).toLocaleString("fr-DZ")} ${curr()}</span>
+                <span class="checkout-item-price">${(item.unitPrice * item.qty).toLocaleString("fr-DZ")} DA</span>
                 <button class="checkout-item-del" onclick="checkoutRemove(${idx})" aria-label="Remove item">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
@@ -210,7 +210,7 @@
           getBulkNoticeHTML() +
           `<div class="checkout-subtotal">
             <span data-i18n="checkout.subtotal">Subtotal</span>
-            <span>${subtotal.toLocaleString("fr-DZ")} ${curr()}</span>
+            <span>${subtotal.toLocaleString("fr-DZ")} DA</span>
           </div>`;
 
         // apply lang
@@ -338,7 +338,7 @@
                   return `
               <div class="order-summary-row">
                 <span class="order-summary-label">${displayName} × ${item.qty}</span>
-                <span class="order-summary-val">${(item.unitPrice * item.qty).toLocaleString("fr-DZ")} ${curr()}</span>
+                <span class="order-summary-val">${(item.unitPrice * item.qty).toLocaleString("fr-DZ")} DA</span>
               </div>`;
                 },
               )
@@ -347,7 +347,7 @@
         }
 
         if (subtotalEl)
-          subtotalEl.textContent = subtotal.toLocaleString("fr-DZ") + " " + curr();
+          subtotalEl.textContent = subtotal.toLocaleString("fr-DZ") + " DA";
 
         if (deliveryEl) {
           if (!selectedWilayaCode) {
@@ -355,12 +355,12 @@
           } else if (freeShip) {
             deliveryEl.innerHTML = `<span style="color:#22a06b;font-weight:600">FREE</span>`;
           } else {
-            deliveryEl.textContent = `+${deliveryCost.toLocaleString("fr-DZ")} ${curr()} (${selectedDelivery === "home" ? "Home" : "Office"})`;
+            deliveryEl.textContent = `+${deliveryCost.toLocaleString("fr-DZ")} DA (${selectedDelivery === "home" ? "Home" : "Office"})`;
           }
         }
 
         if (totalEl)
-          totalEl.textContent = total.toLocaleString("fr-DZ") + " " + curr();
+          totalEl.textContent = total.toLocaleString("fr-DZ") + " DA";
       }
 
       function updateBulkNoticeVisibility() {
@@ -444,7 +444,7 @@
                   <span class="ciq-val">${item.qty}</span>
                   <button class="ciq-btn" onclick="cartQty(${idx},1)">+</button>
                 </div>
-                <span class="cart-row-price">${(item.unitPrice * item.qty).toLocaleString()} ${curr()}</span>
+                <span class="cart-row-price">${(item.unitPrice * item.qty).toLocaleString()} DA</span>
               </div>
             </div>
             <button class="cart-row-del" onclick="cartRemove(${idx})" aria-label="Remove">
@@ -609,8 +609,8 @@
               <div class="also-card-body">
                 <div class="also-card-name">${p.name}</div>
                 <div style="display:flex; align-items:baseline; gap:8px; direction:ltr;">
-                  <div class="also-card-price">${currentPrice.toLocaleString("fr-DZ")} ${curr()}</div>
-                  ${oldPrice ? `<span style="font-size:12px; color:var(--gray-400); text-decoration:line-through;">${oldPrice.toLocaleString("fr-DZ")} ${curr()}</span>` : ""}
+                  <div class="also-card-price">${currentPrice.toLocaleString("fr-DZ")} DA</div>
+                  ${oldPrice ? `<span style="font-size:12px; color:var(--gray-400); text-decoration:line-through;">${oldPrice.toLocaleString("fr-DZ")} DA</span>` : ""}
                 </div>
                 <div class="also-card-actions">
                   ${Number(p.stock) <= 0
@@ -687,7 +687,7 @@
         const base = v && typeof v === "object" ? (v.price || 0) : 0;
         const disc = p.discount || 0;
         const final = disc > 0 ? Math.round(base * (1 - disc/100)) : base;
-        document.getElementById("atcPrice").textContent = final > 0 ? `${final.toLocaleString()} ${curr()}` : "";
+        document.getElementById("atcPrice").textContent = final > 0 ? `${final.toLocaleString()} DA` : "";
       }
       function atcPickFlavor(btn, f) {
         document.querySelectorAll("#atcFlavorOptions .atc-option").forEach(b => b.classList.remove("active"));
@@ -2725,11 +2725,11 @@
         if (homePriceEl)
           homePriceEl.innerHTML = !selectedWilayaCode ? "—"
             : _free ? `<span style="color:#22a06b;font-weight:600">FREE</span>`
-            : `+${costs.home.toLocaleString("fr-DZ")} ${curr()}`;
+            : `+${costs.home.toLocaleString("fr-DZ")} DA`;
         if (officePriceEl)
           officePriceEl.innerHTML = !selectedWilayaCode ? "—"
             : _free ? `<span style="color:#22a06b;font-weight:600">FREE</span>`
-            : `+${costs.office.toLocaleString("fr-DZ")} ${curr()}`;
+            : `+${costs.office.toLocaleString("fr-DZ")} DA`;
       }
 
       function selectCommuneOption(name) {
@@ -2998,7 +2998,7 @@
                 <p class="search-drop-brand">${p.brand || ""}</p>
                 <p class="search-drop-name">${p.name}</p>
               </div>
-              <span class="search-drop-price">${price} ${curr()}</span>
+              <span class="search-drop-price">${price} DA</span>
             </div>`;
           })
           .join("");
@@ -3202,82 +3202,6 @@
           "success.title": "Commande Passée !",
           "success.back": "Retour aux Produits",
         },
-        ar: {
-          "nav.home": "الرئيسية",
-          "nav.products": "المنتجات",
-          "nav.contact": "اتصل بنا",
-          "form.firstName": "الاسم الأول",
-          "form.lastName": "اللقب",
-          "form.phone": "رقم الهاتف",
-          "form.wilaya": "الولاية",
-          "form.address": "العنوان (اختياري)",
-          "form.commune": "البلدية",
-          "form.deliveryType": "نوع التوصيل",
-          "form.homeDelivery": "🏠 توصيل للمنزل",
-          "form.officePick": "📦 استلام من المكتب",
-          "form.deliveredDoor": "يُسلَّم إلى بابك",
-          "form.pickupOffice": "الاستلام من أقرب مكتب",
-          "form.selectWilaya": "اختر الولاية…",
-          "form.selectWilayaFirst": "اختر الولاية أولاً",
-          "form.orderSummary": "ملخص الطلب",
-          "form.delivery": "التوصيل",
-          "form.total": "المجموع",
-          "form.confirmOrder": "تأكيد الطلب",
-          "form.deliveryDetails": "تفاصيل التوصيل",
-          "checkout.title": "إتمام الشراء",
-          "checkout.yourOrder": "طلبك",
-          "checkout.empty": "سلتك فارغة",
-          "checkout.goShop": "متابعة التسوق",
-          "checkout.subtotal": "المجموع الفرعي",
-          "breadcrumb.home": "الرئيسية",
-          "breadcrumb.cart": "السلة",
-          "breadcrumb.checkout": "الدفع",
-          "detail.bulkLabel": "سعر الجملة",
-          "detail.bulkNotice": "هل تطلب 5 قطع أو أكثر؟ اتصل بنا عبر واتساب للحصول على خصم خاص للجملة!",
-          "section.alsoLike": "قد يعجبك أيضاً",
-          "footer.brand.desc":
-            "وجهتك الأولى في الجزائر لمستحضرات التجميل الفاخرة والعناية بالبشرة الحصرية.",
-          "footer.links": "روابط سريعة",
-          "footer.shipping": "سياسة الشحن",
-          "footer.returns": "الإرجاع",
-          "footer.categories": "الفئات",
-          "footer.contact": "أرسل رسالة",
-          "form.name": "اسمك",
-          "form.email": "البريد / الهاتف",
-          "form.message": "رسالتك",
-          "form.send": "إرسال",
-          "shipping.title": "سياسة الشحن",
-          "shipping.item1.title": "توصيل وطني",
-          "shipping.item1.text": "نوصّل إلى جميع الولايات الـ 58 في الجزائر عبر إيمير للوجستيك. منتجات تجميل راقية تصل إلى باب منزلك.",
-          "shipping.item2.title": "توصيل مجاني",
-          "shipping.item2.text": "الطلبات التي تتجاوز 15,000 دج تستفيد من توصيل مجاني! للطلبات الأخرى، تطبق أسعار الشحن القياسية.",
-          "shipping.item3.title": "التوقيت القياسي",
-          "shipping.item3.text": "يتم معالجة الطلبات خلال 24 ساعة. يستغرق التوصيل عادةً من يومين إلى 3 أيام عمل للمدن الكبرى.",
-          "returns.title": "الإرجاع والاسترداد",
-          "returns.item1.title": "سياسة الإرجاع",
-          "returns.item1.text": "لديك 1 أيام لإرجاع المنتج. يجب أن تكون المنتجات غير مفتوحة وفي غلافها الأصلي مع الختم الأصلي.",
-          "returns.item2.title": "عملية سهلة",
-          "returns.item2.text": "اتصل بنا عبر واتساب أو إنستغرام لبدء عملية الإرجاع. سنوجهك خلال خطوات الاستبدال أو الاسترداد.",
-          "returns.item3.title": "طريقة الاسترداد",
-          "returns.item3.text": "بمجرد فحص المنتج المرتجع، نقدم خيارات الاستبدال بمنتجات أخرى أو رصيد متجر. المبالغ النقدية تخضع للتقييم.",
-          "toast.sent": "تم إرسال رسالتك!",
-          "footer.shop": "المتجر",
-          "footer.allProducts": "جميع المنتجات",
-          "footer.protein": "كريم الأساس والكونسيلر",
-          "footer.preworkout": "أحمر الشفاه والغلوس",
-          "footer.creatine": "العناية بالبشرة والسيروم",
-          "footer.vitamins": "العطور والفراغنس",
-          "footer.info": "معلومات",
-          "footer.shipping": "سياسة الشحن",
-          "footer.returns": "الإرجاع",
-          "footer.faq": "الأسئلة الشائعة",
-          "footer.contact": "اتصل بنا",
-          "footer.location": "الجزائر العاصمة، الجزائر",
-          "footer.rights": "جميع الحقوق محفوظة.",
-          "search.cancel": "إلغاء",
-          "success.title": "تم تقديم الطلب!",
-          "success.back": "العودة إلى المنتجات",
-        },
       };
 
       let currentLang = "en";
@@ -3298,15 +3222,12 @@
         const key = "name" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
         return f[key] || f.nameEn || f.name || "";
       }
-      function curr() { return currentLang === "ar" ? "دج" : "DA"; }
-
       function switchLang(lang) {
         localStorage.setItem("bybens_lang", lang);
         currentLang = lang;
         const t = i18n[lang];
-        const isAr = lang === "ar";
         document.documentElement.lang = lang;
-        document.documentElement.dir = isAr ? "rtl" : "ltr";
+        document.documentElement.dir = "ltr";
         document.querySelectorAll("[data-i18n]").forEach((el) => {
           const key = el.getAttribute("data-i18n");
           if (t[key] !== undefined) {
@@ -3370,7 +3291,7 @@
         const savedLang = localStorage.getItem("bybens_lang") || "en";
         // Merge content.js into i18n
         if (window.BYBENS_CONTENT) {
-          ["en", "fr", "ar"].forEach(function(lang) {
+          ["en", "fr"].forEach(function(lang) {
             if (window.BYBENS_CONTENT[lang]) Object.assign(i18n[lang], window.BYBENS_CONTENT[lang]);
           });
         }
