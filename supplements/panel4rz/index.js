@@ -411,8 +411,9 @@
           }
         } catch (e) {
           if (!cached) showToast("Failed to load: " + e.message, "error");
+        } finally {
+          hideLoading();
         }
-        hideLoading();
       });
 
       async function loadSubCategories() {
@@ -608,7 +609,7 @@
         if (el) el.classList.add("active");
         document.getElementById("page-title").textContent =
           pageNames[name] || name;
-        if (name === "orders") clearOrdersBadge();
+        if (name === "orders") { /* badge cleared on view */ }
         if (name === "settings") loadAdminUsers();
         if (window.innerWidth < 768) closeSidebar();
       }
@@ -1223,17 +1224,36 @@
         const allFree = document.getElementById("all-free-delivery").checked;
         showLoading("Saving…");
         try {
+          // Get auth token directly from localStorage (Supabase v2 storage key)
+          let token = SUPABASE_ANON_KEY;
+          try {
+            const raw = localStorage.getItem("sb-" + SUPABASE_URL.split("//")[1].split(".")[0] + "-auth-token");
+            if (raw) token = JSON.parse(raw).access_token || token;
+          } catch (_) {}
+
           const upserts = [
             { key: "all_free_delivery", value: String(allFree) },
             { key: "free_delivery_threshold", value: String(threshold) },
           ];
-          const { error } = await sb.from("settings").upsert(upserts, { onConflict: "key" });
-          if (error) throw error;
+          const res = await fetch(SUPABASE_URL + "/rest/v1/settings", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "apikey": SUPABASE_ANON_KEY,
+              "Authorization": "Bearer " + token,
+              "Prefer": "resolution=merge-duplicates",
+            },
+            body: JSON.stringify(upserts),
+          });
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.message || "HTTP " + res.status);
+          }
           settings.all_free_delivery = String(allFree);
           settings.free_delivery_threshold = String(threshold);
           showToast("Free delivery settings saved!");
         } catch (e) {
-          showToast("Save failed: " + (e.message || e.details || JSON.stringify(e)), "error");
+          showToast("Save failed: " + (e.message || "Unknown error"), "error");
         } finally {
           hideLoading();
         }
