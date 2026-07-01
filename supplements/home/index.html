@@ -21,7 +21,7 @@
         .catch(function () { return null; });
     </script>
 
-    <link rel="stylesheet" href="/supplements/home/index.css?v=9" />
+    <link rel="stylesheet" href="/supplements/home/index.css?v=10" />
     <script>if(sessionStorage.getItem('bb_wl'))document.documentElement.classList.add('bb-noanim');</script>
   </head>
   <body>
@@ -496,18 +496,18 @@
       <!-- THE RITUAL (HOW IT WORKS) -->
       <section class="hiw-section">
         <div class="container">
-          <p class="hiw-label reveal">The Order Process</p>
+          <p class="hiw-label reveal" data-i18n="hiw.label">The Order Process</p>
           <h2 class="hiw-title reveal reveal-d1" data-i18n="about.order.title">The Order Ritual</h2>
-          <p class="hiw-sub reveal reveal-d2">Indulge in a seamless shopping experience tailored for modern luxury.</p>
-          <div class="hiw-steps">
+          <p class="hiw-sub reveal reveal-d2" data-i18n="hiw.sub">Indulge in a seamless shopping experience tailored for modern luxury.</p>
+          <div class="hiw-steps reveal" id="hiwStepsGrid">
             <div class="hiw-step reveal reveal-d1">
               <div class="hiw-step-num">
                 <span class="hiw-badge">1</span>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
               </div>
               <div class="hiw-step-body">
-                <h3>Select Your Shade</h3>
-                <p>Browse our catalog of luxury skincare &amp; cosmetics. Find your perfect shade, color, or formula and add to vanity cart.</p>
+                <h3 data-i18n="hiw.step1.title">Select Your Shade</h3>
+                <p data-i18n="hiw.step1.text">Browse our catalog of luxury skincare &amp; cosmetics. Find your perfect shade, color, or formula and add to vanity cart.</p>
               </div>
             </div>
             <div class="hiw-step reveal reveal-d2">
@@ -516,8 +516,8 @@
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
               </div>
               <div class="hiw-step-body">
-                <h3>Confirm In Moments</h3>
-                <p>Complete checkout by providing your delivery details. No tedious registration required — checkout is direct and private.</p>
+                <h3 data-i18n="hiw.step2.title">Confirm In Moments</h3>
+                <p data-i18n="hiw.step2.text">Complete checkout by providing your delivery details. No tedious registration required — checkout is direct and private.</p>
               </div>
             </div>
             <div class="hiw-step reveal reveal-d3">
@@ -526,8 +526,8 @@
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
               </div>
               <div class="hiw-step-body">
-                <h3>White-Glove Delivery</h3>
-                <p>We deliver across all 69 Wilayas. Inspect your package and pay cash upon arrival directly to the courier.</p>
+                <h3 data-i18n="hiw.step3.title">White-Glove Delivery</h3>
+                <p data-i18n="hiw.step3.text">We deliver across all 69 Wilayas. Inspect your package and pay cash upon arrival directly to the courier.</p>
               </div>
             </div>
           </div>
@@ -669,7 +669,7 @@
     </div>
 
     <script src="/content.js" defer></script>
-    <script src="/supplements/home/index.js?v=10" defer></script>
+    <script src="/supplements/home/index.js?v=11" defer></script>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/supplements/supabase-client.js?v=4"></script>

@@ -79,7 +79,15 @@ const i18n = {
     "toast.added": "Added to your vanity cart",
     "toast.sent": "Your message has been sent to our concierge.",
     "modal.shade": "Shade / Color",
-    "modal.size": "Size / Volume"
+    "modal.size": "Size / Volume",
+    "hiw.label": "The Order Process",
+    "hiw.sub": "Indulge in a seamless shopping experience tailored for modern luxury.",
+    "hiw.step1.title": "Select Your Shade",
+    "hiw.step1.text": "Browse our catalog of luxury skincare & cosmetics. Find your perfect shade, color, or formula and add to vanity cart.",
+    "hiw.step2.title": "Confirm In Moments",
+    "hiw.step2.text": "Complete checkout by providing your delivery details. No tedious registration required — checkout is direct and private.",
+    "hiw.step3.title": "White-Glove Delivery",
+    "hiw.step3.text": "We deliver across all 69 Wilayas. Inspect your package and pay cash upon arrival directly to the courier.",
   },
   fr: {
     "nav.home": "Accueil",
@@ -155,7 +163,15 @@ const i18n = {
     "toast.added": "Ajouté à votre panier de beauté",
     "toast.sent": "Votre message a été transmis à la conciergerie.",
     "modal.shade": "Teinte / Couleur",
-    "modal.size": "Taille / Volume"
+    "modal.size": "Taille / Volume",
+    "hiw.label": "Le Processus de Commande",
+    "hiw.sub": "Profitez d'une expérience d'achat fluide et soignée, conçue pour le luxe moderne.",
+    "hiw.step1.title": "Choisissez Votre Teinte",
+    "hiw.step1.text": "Parcourez notre catalogue de soins et cosmétiques de luxe. Trouvez votre teinte, couleur ou formule idéale et ajoutez-la à votre panier beauté.",
+    "hiw.step2.title": "Confirmez en Instants",
+    "hiw.step2.text": "Finalisez votre commande en renseignant vos coordonnées de livraison. Aucune inscription requise — simple, rapide et confidentiel.",
+    "hiw.step3.title": "Livraison Haut de Gamme",
+    "hiw.step3.text": "Nous livrons dans les 69 wilayas. Inspectez votre colis à la réception et réglez en espèces directement auprès du livreur.",
   },
 };
 
