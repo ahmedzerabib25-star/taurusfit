@@ -32,6 +32,9 @@ const i18n = {
     "products.title": "THE ICONS",
     "products.viewall": "View All",
     "products.viewall.btn": "View All Products",
+    "banner.intro.eyebrow": "Maison Selection",
+    "banner.intro.title": "THE SIGNATURE<em>COLLECTION</em>",
+    "banner.intro.sub": "Our most coveted beauty rituals, curated for the modern connoisseur of luxury.",
     "banner.eyebrow": "Maison Capsule",
     "banner.title": "REVEAL YOUR<em>INNER SECRET</em>",
     "banner.desc":
@@ -116,6 +119,9 @@ const i18n = {
     "products.title": "LES ICÔNES",
     "products.viewall": "Voir Tout",
     "products.viewall.btn": "Voir Tous les Produits",
+    "banner.intro.eyebrow": "Sélection de la Maison",
+    "banner.intro.title": "LA COLLECTION<em>SIGNATURE</em>",
+    "banner.intro.sub": "Nos rituels beauté les plus convoités, sélectionnés pour la femme moderne éprise de luxe.",
     "banner.eyebrow": "Coffret de la Maison",
     "banner.title": "RÉVÉLEZ VOTRE<em>SECRET INTERNE</em>",
     "banner.desc":

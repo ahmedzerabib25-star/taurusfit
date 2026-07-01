@@ -1442,20 +1442,82 @@ html[data-theme="dark"] .logo-img-dark {
   color: var(--gray-600);
 }
 
+/* ─── BANNER SECTION INTRO HEADER ───────────────────────── */
+.banner-section-intro {
+  text-align: center;
+  padding: 88px 0 52px;
+}
+.banner-intro-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 14px;
+}
+.banner-intro-eyebrow::before,
+.banner-intro-eyebrow::after {
+  content: "·";
+  margin: 0 10px;
+  opacity: 0.45;
+}
+.banner-intro-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 300;
+  color: var(--black);
+  letter-spacing: 3px;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+.banner-intro-title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold);
+  display: block;
+  font-size: 1.05em;
+}
+.banner-intro-sub {
+  font-size: 13px;
+  color: var(--gray-400);
+  max-width: 480px;
+  margin: 0 auto 28px;
+  line-height: 1.7;
+}
+.banner-intro-rule {
+  width: 64px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(163,132,91,0.7), transparent);
+  margin: 0 auto;
+}
+
 /* ─── FEATURED BANNER ────────────────────────────────────── */
 .featured-banner {
-  background: var(--white);
-  border: 1px solid var(--gray-200);
-  margin: 64px 0;
+  background: var(--black);
+  border: none;
+  margin: 0 0 80px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 380px;
+  min-height: 400px;
+  position: relative;
+  overflow: hidden;
+}
+.featured-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 65% 100% at 15% 50%, rgba(163,132,91,0.13) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
 }
 .banner-left {
-  padding: 48px;
+  padding: 56px 48px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  position: relative;
+  z-index: 2;
 }
 .banner-eyebrow {
   font-size: 11px;
@@ -1469,7 +1531,7 @@ html[data-theme="dark"] .logo-img-dark {
   font-family: var(--font-display);
   font-size: 38px;
   font-weight: 300;
-  color: var(--black);
+  color: #F9F8F6;
   margin-bottom: 16px;
   line-height: 1.1;
 }
@@ -1481,17 +1543,53 @@ html[data-theme="dark"] .logo-img-dark {
 .banner-desc {
   font-size: 13.5px;
   line-height: 1.65;
-  color: var(--gray-600);
+  color: rgba(249,248,246,0.6);
   margin-bottom: 28px;
 }
+
+/* Corner bracket decorations */
+.banner-corner {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  pointer-events: none;
+  z-index: 3;
+}
+.banner-corner-tl {
+  top: 20px;
+  left: 20px;
+  border-top: 1px solid rgba(163,132,91,0.45);
+  border-left: 1px solid rgba(163,132,91,0.45);
+}
+.banner-corner-bl {
+  bottom: 20px;
+  left: 20px;
+  border-bottom: 1px solid rgba(163,132,91,0.45);
+  border-left: 1px solid rgba(163,132,91,0.45);
+}
+
 .banner-right {
-  background: var(--gray-100);
+  background: #1a1714;
   overflow: hidden;
+  position: relative;
+}
+.banner-right-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, var(--black) 0%, rgba(0,0,0,0.35) 55%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
 }
 .banner-right img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0.85;
+  transition: transform 8s ease-out, opacity 0.4s ease;
+}
+.featured-banner:hover .banner-right img {
+  transform: scale(1.03);
+  opacity: 0.95;
 }
 
 /* ─── SCROLL PROGRESS & TOP ──────────────────────────────── */
@@ -1929,12 +2027,19 @@ html[data-theme="dark"] .logo-img-dark {
     height: 380px;
     justify-content: center;
   }
+  .banner-section-intro {
+    padding: 60px 0 40px;
+  }
   .featured-banner {
     grid-template-columns: 1fr;
     min-height: auto;
+    margin: 0 0 60px;
   }
   .banner-right {
-    height: 300px;
+    height: 320px;
+  }
+  .banner-right-overlay {
+    background: linear-gradient(to bottom, var(--black) 0%, transparent 40%);
   }
   .hiw-steps {
     grid-template-columns: 1fr;
@@ -2027,9 +2132,15 @@ html[data-theme="dark"] .logo-img-dark {
     letter-spacing: 0.5px;
   }
   .featured-banner {
-    margin: 40px 0;
+    margin: 0 0 48px;
+  }
+  .banner-section-intro {
+    padding: 48px 0 32px;
+  }
+  .banner-intro-title {
+    letter-spacing: 1.5px;
   }
   .banner-left {
-    padding: 32px 24px;
+    padding: 36px 28px;
   }
 }

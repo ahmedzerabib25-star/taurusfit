@@ -21,7 +21,7 @@
         .catch(function () { return null; });
     </script>
 
-    <link rel="stylesheet" href="/supplements/home/index.css?v=12" />
+    <link rel="stylesheet" href="/supplements/home/index.css?v=13" />
     <script>if(sessionStorage.getItem('bb_wl'))document.documentElement.classList.add('bb-noanim');</script>
   </head>
   <body>
@@ -535,27 +535,29 @@
       </section>
 
       <!-- FEATURED BANNER -->
-      <section class="container" id="featuredBannerSection" style="display:none;">
+      <section id="featuredBannerSection" style="display:none;">
+        <div class="banner-section-intro container">
+          <p class="banner-intro-eyebrow reveal" data-i18n="banner.intro.eyebrow">Maison Selection</p>
+          <h2 class="banner-intro-title reveal reveal-d1" data-i18n-html="banner.intro.title">THE SIGNATURE<em>COLLECTION</em></h2>
+          <p class="banner-intro-sub reveal reveal-d2" data-i18n="banner.intro.sub">Our most coveted beauty rituals, curated for the modern connoisseur of luxury.</p>
+          <div class="banner-intro-rule reveal reveal-d3" aria-hidden="true"></div>
+        </div>
         <div class="featured-banner">
           <div class="banner-left">
+            <div class="banner-corner banner-corner-tl" aria-hidden="true"></div>
+            <div class="banner-corner banner-corner-bl" aria-hidden="true"></div>
             <p class="banner-eyebrow" data-i18n="banner.eyebrow">Maison Capsule</p>
             <h2 class="banner-title" id="bundleBannerTitle"></h2>
             <p class="banner-desc" id="bundleBannerDesc"></p>
-            <a href="#" class="btn-primary" id="bundleBannerLink">
+            <a href="#" class="btn-primary banner-btn" id="bundleBannerLink">
               <span data-i18n="banner.cta">Acquire Bundle</span>
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="m9 18 6-6-6-6" />
               </svg>
             </a>
           </div>
           <div class="banner-right">
+            <div class="banner-right-overlay" aria-hidden="true"></div>
             <img id="bundleBannerImg" style="display:none;" />
           </div>
         </div>
@@ -669,7 +671,7 @@
     </div>
 
     <script src="/content.js" defer></script>
-    <script src="/supplements/home/index.js?v=11" defer></script>
+    <script src="/supplements/home/index.js?v=12" defer></script>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/supplements/supabase-client.js?v=4"></script>
