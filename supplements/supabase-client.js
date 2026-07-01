@@ -8,7 +8,16 @@
 
   window.SUPABASE_URL = _URL;
   window.SUPABASE_ANON_KEY = _KEY;
-  window.supabase = supabase.createClient(_URL, _KEY);
+
+  var _isAdmin = /panel4rz|mgmt9kx/.test(window.location.pathname);
+  window.supabase = supabase.createClient(_URL, _KEY, {
+    auth: {
+      autoRefreshToken: _isAdmin,
+      persistSession: _isAdmin,
+      detectSessionInUrl: false,
+    },
+    realtime: { enabled: _isAdmin },
+  });
 
   // ── Remapping helpers: snake_case (Supabase REST) → camelCase (app) ──
 
