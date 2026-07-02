@@ -1,7 +1,7 @@
-# Luxury Secret — Complete Redesign Blueprint
+# Maison Comfort — Complete Redesign Blueprint
 
 > **CRITICAL CONTEXT FOR ALL FUTURE CONVERSATIONS:**
-> This project is a **ground-up redesign** of the Luxury Secret e-commerce website. The existing site (`/supplements/`) is the **reference for features and backend only** — not for design, layout, or aesthetics. The new site must look nothing like the original. Every page must be rebuilt from scratch with an entirely different visual identity. The backend (Supabase), API routes, and data models are preserved exactly.
+> This project is a **ground-up redesign** of an existing e-commerce website. The codebase (`/supplements/`) was originally built for a different brand ("Luxury Secret") and is used here as the **technical base only** — the backend (Supabase), API routes, and data models are reused. The new site is being built for **Maison Comfort**, a local Algerian store that sells primarily **carpets and home furnishings**. Every page must be rebuilt with a brand-new visual identity suited to this product category.
 
 ---
 
@@ -9,11 +9,11 @@
 
 | Field | Value |
 |---|---|
-| Brand Name (EN/FR) | **Luxury Secret** |
-| Brand Name (AR) | **لوكسري سيكرت** |
-| Domain niche | Luxury makeup & beauty (Algeria) |
+| Brand Name (EN/FR) | **Maison Comfort** |
+| Brand Name (AR) | **ميزون كومفور** |
+| Domain niche | Carpets & home furnishings — local Algerian store |
 | Languages | English · French · Arabic (full RTL for AR) |
-| Tone | Clean · Editorial · High-fashion · Minimal |
+| Tone | Warm · Inviting · Trustworthy · Home-focused |
 
 ---
 
@@ -22,10 +22,10 @@
 ### Core Aesthetic
 - **White** (`#FFFFFF`) base canvas — light mode default
 - **Pure black** (`#0A0A0A`) as primary typography and UI color
-- **Single accent color** — a deep, muted rose or warm nude (not gold, not taupe) — used sparingly for CTAs and highlights only
-- **Editorial layout** — wide grids, structured whitespace, asymmetric hero sections, full-bleed category imagery
-- **Typography-first** — large, refined serif or display font for headings; clean sans-serif for body
-- Zero resemblance to the current "supplements/sports-nutrition" layout (no particle animations, no dark hero panels, no centered text stacks)
+- **Single accent color** — warm, earthy tone (terracotta, deep sand, or olive) — used sparingly for CTAs and highlights
+- **Home & comfort feel** — spacious layouts, full-bleed product photography, room-setting imagery showing carpets in context
+- **Typography-first** — large, approachable serif or display font for headings; clean sans-serif for body
+- Zero resemblance to the old base site (no particle animations, no dark hero panels, no centered text stacks)
 
 ### What the Old Site Looks Like (AVOID ALL OF THIS)
 - Dark hero with animated particle/gradient overlays
@@ -38,7 +38,7 @@
 ### New Layout Principles
 - **Homepage**: Full-bleed editorial hero (image + text left/right split), category grid with real category images (not icons), products in a masonry or staggered editorial grid, bundle/pack section as a large feature block
 - **Products page**: Two-column layout — slim left filter rail + wide right product grid, no sidebar hamburger on desktop
-- **Product Detail**: Gallery on left (large images, thumbnail strip below), all details on right in clean vertical stack — shade picker as color swatches, not dropdowns
+- **Product Detail**: Gallery on left (large images, thumbnail strip below), all details on right in clean vertical stack — variant/size picker as button group (e.g. carpet dimensions, material options)
 - **Checkout**: Single-column clean form, order summary panel on the right (desktop), step-indicator at top
 - **Mobile**: Full-screen overlay nav (clean white panel with black text, NOT dark)
 
@@ -47,7 +47,7 @@
 - Cards: `#141414`
 - Text: `#F5F5F5`
 - Borders: `#2A2A2A`
-- Accent: same muted rose, slightly lighter
+- Accent: same warm earthy tone, slightly lighter
 
 ---
 
@@ -111,9 +111,9 @@ supplements/
 │   ├── index.css        # Catalog layout — two-column desktop, stacked mobile
 │   └── index.js         # Filter logic, sort, category/subcategory URL params, i18n (EN/FR/AR)
 ├── product-detail/
-│   ├── index.html       # Detail — split gallery left / info right, shade swatches, add-to-cart
-│   ├── index.css        # Detail styles — gallery, swatch grid, tabs, delivery calculator
-│   └── index.js         # Image switcher, shade/variant selection, quick-buy, i18n (EN/FR/AR)
+│   ├── index.html       # Detail — split gallery left / info right, variant picker, add-to-cart
+│   ├── index.css        # Detail styles — gallery, variant buttons, tabs, delivery calculator
+│   └── index.js         # Image switcher, variant/size selection, quick-buy, i18n (EN/FR/AR)
 ├── checkout/
 │   ├── index.html       # Clean checkout form + right-side order summary, step indicator
 │   ├── index.css        # Checkout form styles — clean inputs, step bar, summary panel
@@ -277,9 +277,9 @@ These variables live in `footer.css` and are imported by every page. **Do not us
   --text-primary:#0A0A0A;        /* headings, primary labels */
   --text-muted:  #6B6B6B;        /* secondary text, meta */
   --text-subtle: #ABABAB;        /* placeholders, disabled */
-  --accent:      #C4616A;        /* CTA buttons, active states — muted rose */
-  --accent-hover:#A8474F;        /* accent hover/pressed */
-  --accent-light:#FDF0F1;        /* accent tint background */
+  --accent:      #B07442;        /* CTA buttons, active states — warm terracotta */
+  --accent-hover:#8F5C32;        /* accent hover/pressed */
+  --accent-light:#FBF3EB;        /* accent tint background */
   --success:     #2D7A4F;
   --warning:     #B45309;
   --error:       #C0392B;
@@ -314,8 +314,8 @@ html[data-theme="dark"] {
   --text-primary:#F5F5F5;
   --text-muted:  #9A9A9A;
   --text-subtle: #555555;
-  --accent:      #D97880;        /* slightly brighter rose in dark */
-  --accent-hover:#E8959B;
+  --accent:      #C98A56;        /* slightly brighter terracotta in dark */
+  --accent-hover:#DFA570;
   --accent-light:#1F1213;
 }
 ```
@@ -329,7 +329,7 @@ These features exist in the current site and must all work identically in the re
 | Feature | Notes |
 |---|---|
 | Product catalog with filters | Filter by category, subcategory, price range |
-| Shade/Color picker on product detail | Called "Shade" or "Color", never "Flavor" |
+| Variant picker on product detail | e.g. size (200x300cm), material (wool/synthetic) — never called "Flavor" |
 | Variant picker (size/weight) | Dropdowns or button group |
 | Add to cart (session cart) | Cart persists in `sessionStorage` or `localStorage` |
 | Checkout form | First name, last name, phone, address, wilaya, commune, delivery type |
@@ -400,7 +400,7 @@ When Arabic is active:
 2. **Version buster required**: After every edit to any `index.js` or `index.css`, increment `?v=N` on its `<script>` or `<link>` tag in the corresponding HTML file.
 3. **Use CSS variables only** — never hardcode colors, never hardcode font families.
 4. **No RTL hacks** — use logical CSS properties (`margin-inline-start` instead of `margin-left`) wherever practical, and `[dir="rtl"]` overrides for complex cases.
-5. **Shade/Color naming** — user-facing label for product variations by color is always "Shade" (EN), "Teinte" (FR), "لون" (AR). Never "Flavor".
+5. **Variant naming** — product variations (size, material, color) use plain labels matching the product type. Never use "Flavor" or "Shade" in user-facing text.
 6. **Do not modify `api/initial-data.js`** or `vercel.json` without explicit instruction.
 7. **Admin panel is functional, not pretty** — redesign effort focuses on the 5 public pages. The admin panel (`panel4rz`) only needs the new DB fields (category `name_ar`, `image_url`) added to its forms.
 8. **Category images**: rendered as `<img>` with `object-fit: cover` inside the category card. Fallback to a placeholder gradient if `imageUrl` is null/empty.

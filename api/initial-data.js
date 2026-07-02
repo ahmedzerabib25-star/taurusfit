@@ -1,4 +1,4 @@
-const SUPABASE_URL = "https://zuprsewbheqpahwrlwll.supabase.co";
+const SUPABASE_URL = "https://rgbmfstbvqzvgxadjxrb.supabase.co";
 const SUPABASE_SERVICE_ROLE_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1cHJzZXdiaGVxcGFod3Jsd2xsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MjY5MDI3NywiZXhwIjoyMDk4MjY2Mjc3fQ.HssKXBhO6VmyihewDnl5rpIfceIIcCMTxQlTG6fzjsc";
 

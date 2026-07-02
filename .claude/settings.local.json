@@ -54,7 +54,9 @@
       "Bash(sed -i 's|product-detail/index\\\\.js?v=9|product-detail/index.js?v=10|g' '/c/Users/Ahmed/Desktop/luxury secret/supplements/product-detail/index.html')",
       "Bash(sed -i 's|checkout/index\\\\.js?v=8|checkout/index.js?v=9|g' '/c/Users/Ahmed/Desktop/luxury secret/supplements/checkout/index.html')",
       "Read(//c/Users/Ahmed/Desktop/**)",
-      "Read(//c/Users/Ahmed/**)"
+      "Read(//c/Users/Ahmed/**)",
+      "Bash(xargs grep *)",
+      "Bash(xargs sed *)"
     ]
   }
 }
