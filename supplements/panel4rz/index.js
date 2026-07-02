@@ -4,8 +4,8 @@
       const SUPABASE_URL = window.SUPABASE_URL;
       const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY;
       const sb = window.supabase;
-      const CLOUDINARY_CLOUD = "dbxna1ipc";
-      const CLOUDINARY_PRESET = "Bybens";
+      const CLOUDINARY_CLOUD = "gcjqhpfk";
+      const CLOUDINARY_PRESET = "maison confort";
 
       // ════════════════════════════════════════════
       // AUTH GUARD — redirect to login if not authenticated
