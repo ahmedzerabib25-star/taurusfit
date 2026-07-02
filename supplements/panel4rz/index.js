@@ -15,6 +15,7 @@
       }
 
       // ── STATE ──
+      let adminLang = localStorage.getItem("admin_lang") || "en";
       let sidebarCollapsed = false;
       let editingProductId = null;
       let editingDeliveryId = null;
@@ -35,6 +36,28 @@
       const _PAGE = 15;
       let productPage = 1, catPage = 1, deliveryPage = 1, orderPage = 1;
       let _prodFilter = "", _delFilter = "";
+      // ── Language helpers ──
+      function _pLang(item) {
+        if (!item) return "";
+        if (adminLang === "fr") return item.nameFr || item.nameEn || item.name || "";
+        return item.nameEn || item.name || "";
+      }
+      function _bLang(item) {
+        if (!item) return "";
+        if (adminLang === "fr") return item.brandFr || item.brandEn || item.brand || "";
+        return item.brandEn || item.brand || "";
+      }
+      function switchAdminLang(lang) {
+        adminLang = lang;
+        localStorage.setItem("admin_lang", lang);
+        document.querySelectorAll(".tb-lang-btn").forEach(b => b.classList.remove("active"));
+        const btn = document.getElementById("lang-btn-" + lang);
+        if (btn) btn.classList.add("active");
+        renderProducts(_prodFilter);
+        renderCats();
+        renderBundleList(document.getElementById("bundle-search")?.value || "");
+      }
+
       function _pagCtrl(total, cur, setFn) {
         const totalPages = Math.ceil(total / _PAGE);
         if (totalPages <= 1) return "";
@@ -371,6 +394,12 @@
       // INIT
       // ════════════════════════════════════════════
       document.addEventListener("DOMContentLoaded", async () => {
+        // Sync lang button state
+        (function() {
+          document.querySelectorAll(".tb-lang-btn").forEach(b => b.classList.remove("active"));
+          const btn = document.getElementById("lang-btn-" + adminLang);
+          if (btn) btn.classList.add("active");
+        })();
         let cached = false;
         if (!SUPABASE_URL || !sb) {
           showToast("Supabase not configured!", "error");
@@ -872,8 +901,10 @@
         const filtered = products.filter(
           (p) =>
             !filter ||
-            p.name.toLowerCase().includes(filter) ||
-            (p.brand || "").toLowerCase().includes(filter),
+            (p.nameEn || p.name || "").toLowerCase().includes(filter) ||
+            (p.nameFr || "").toLowerCase().includes(filter) ||
+            (p.brandEn || p.brand || "").toLowerCase().includes(filter) ||
+            (p.brandFr || "").toLowerCase().includes(filter),
         );
         if (!filtered.length) {
           tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><p>No products</p></div></td></tr>`;
@@ -886,14 +917,14 @@
             const catNames = (p.categoryIds || [])
               .map((id) => {
                 const c = categories.find((x) => x.id === id);
-                return c ? c.name : "";
+                return c ? _pLang(c) : "";
               })
               .filter(Boolean)
               .join(", ");
             const subNames = (p.subCategoryIds || [])
               .map((id) => {
                 const s = subCategories.find((x) => x.id === id);
-                return s ? s.name : "";
+                return s ? _pLang(s) : "";
               })
               .filter(Boolean)
               .join(", ");
@@ -911,7 +942,7 @@
               : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>`;
             return `<tr>
           <td class="cb-td"><input type="checkbox" class="row-cb" data-sel-type="product" data-sel-id="${p.id}" onchange="_selToggle('product','${p.id}',this.checked)"></td>
-          <td><div class="prod-info"><div class="prod-thumb">${imgHtml}</div><div class="prod-name-block"><div class="name">${p.name}</div><div class="sub">${p.brand || ""}</div></div></div></td>
+          <td><div class="prod-info"><div class="prod-thumb">${imgHtml}</div><div class="prod-name-block"><div class="name">${_pLang(p)}</div><div class="sub">${_bLang(p)}</div></div></div></td>
           <td><span style="font-size:12px">${catNames}${subNames ? '<br><span style="color:var(--g400)">' + subNames + "</span>" : ""}</span></td>
           <td style="font-size:12px;color:var(--g600)">${flavorStr || "—"}</td>
           <td style="font-size:12px">${variantStr || "—"}</td>
@@ -934,7 +965,7 @@
         const validSubIds = currentSubIds.filter((id) =>
           filteredSubs.some((s) => s.id === id),
         );
-        buildCheckboxGroup("pm-subcategories", filteredSubs, validSubIds);
+        buildCheckboxGroup("pm-subcategories", filteredSubs.map(s => Object.assign({}, s, { label: _pLang(s) })), validSubIds);
       }
 
       function openProductModal(id = null) {
@@ -966,7 +997,7 @@
             renderImageGrid();
             buildCheckboxGroup(
               "pm-categories",
-              categories,
+              categories.map(c => Object.assign({}, c, { label: _pLang(c) })),
               p.categoryIds || [],
               "refreshSubCatCheckboxes",
             );
@@ -977,7 +1008,7 @@
               );
               buildCheckboxGroup(
                 "pm-subcategories",
-                filteredSubs,
+                filteredSubs.map(s => Object.assign({}, s, { label: _pLang(s) })),
                 p.subCategoryIds || [],
               );
             }, 30);
@@ -1005,7 +1036,7 @@
           if (fdElNew) fdElNew.checked = false;
           buildCheckboxGroup(
             "pm-categories",
-            categories,
+            categories.map(c => Object.assign({}, c, { label: _pLang(c) })),
             [],
             "refreshSubCatCheckboxes",
           );
@@ -1267,7 +1298,7 @@
             const subs = subCategories.filter((s) =>
               s.categoryIds && s.categoryIds.includes(c.id),
             );
-            return `<div class="cat-node"><div class="cat-row" id="cat-row-${c.id}" onclick="toggleCat('${c.id}',event)"><input type="checkbox" class="row-cb" data-sel-type="cat" data-sel-id="${c.id}" onclick="event.stopPropagation()" onchange="_selToggleCat('${c.id}',this.checked)" style="margin-right:8px;width:15px;height:15px;accent-color:var(--red);cursor:pointer;flex-shrink:0"><div class="cat-expand" id="cat-exp-${c.id}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div><div class="cat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div><div class="cat-name">${c.name}</div>${c.description ? `<span style="font-size:11px;color:var(--g400);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.description}</span>` : ""}${subs.length > 0 ? `<span class="cat-count">${subs.length} sub${subs.length !== 1 ? "s" : ""}</span>` : ""}<div class="action-group"><button class="act-btn act-edit" onclick="editCat('${c.id}');event.stopPropagation()">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('cat','${c.id}');event.stopPropagation()">Delete</button></div></div><div class="sub-cats" id="sub-cats-${c.id}">${subs.map((s) => `<div class="sub-node"><div class="sub-icon"></div><div class="sub-name">${s.name}</div><div class="sub-actions"><button class="act-btn act-edit" onclick="editSubCat('${s.id}')">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('subcat','${s.id}')">Delete</button></div></div>`).join("")}</div></div>`;
+            return `<div class="cat-node"><div class="cat-row" id="cat-row-${c.id}" onclick="toggleCat('${c.id}',event)"><input type="checkbox" class="row-cb" data-sel-type="cat" data-sel-id="${c.id}" onclick="event.stopPropagation()" onchange="_selToggleCat('${c.id}',this.checked)" style="margin-right:8px;width:15px;height:15px;accent-color:var(--red);cursor:pointer;flex-shrink:0"><div class="cat-expand" id="cat-exp-${c.id}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div><div class="cat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div><div class="cat-name">${_pLang(c)}</div>${c.description ? `<span style="font-size:11px;color:var(--g400);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.description}</span>` : ""}${subs.length > 0 ? `<span class="cat-count">${subs.length} sub${subs.length !== 1 ? "s" : ""}</span>` : ""}<div class="action-group"><button class="act-btn act-edit" onclick="editCat('${c.id}');event.stopPropagation()">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('cat','${c.id}');event.stopPropagation()">Delete</button></div></div><div class="sub-cats" id="sub-cats-${c.id}">${subs.map((s) => `<div class="sub-node"><div class="sub-icon"></div><div class="sub-name">${_pLang(s)}</div><div class="sub-actions"><button class="act-btn act-edit" onclick="editSubCat('${s.id}')">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('subcat','${s.id}')">Delete</button></div></div>`).join("")}</div></div>`;
           })
           .join("");
         if (pag) pag.innerHTML = _pagCtrl(categories.length, catPage, "setCatPage");
@@ -1935,8 +1966,10 @@
         const filtered = products.filter(
           (p) =>
             !q ||
-            p.name.toLowerCase().includes(q) ||
-            (p.brand || "").toLowerCase().includes(q),
+            (p.nameEn || p.name || "").toLowerCase().includes(q) ||
+            (p.nameFr || "").toLowerCase().includes(q) ||
+            (p.brandEn || p.brand || "").toLowerCase().includes(q) ||
+            (p.brandFr || "").toLowerCase().includes(q),
         );
         if (!filtered.length) {
           list.innerHTML = `<div style="text-align:center;color:var(--g400);padding:32px 0;font-size:13px;">${
@@ -1953,12 +1986,14 @@
             const imgHtml = _bundleFirstImg
               ? `<img src="${_bundleFirstImg}" alt="" />`
               : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>`;
-            const safeName = p.name.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+            const displayName = _pLang(p);
+            const displayBrand = _bLang(p);
+            const safeName = displayName.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
             return `<div class="bundle-item${sel ? " selected" : ""}" onclick="selectBundleItem('${p.id}','${safeName}')">
             <div class="bundle-item-thumb">${imgHtml}</div>
             <div class="bundle-item-info">
-              <div class="bundle-item-name">${p.name}</div>
-              <div class="bundle-item-brand">${p.brand || "No brand"}</div>
+              <div class="bundle-item-name">${displayName}</div>
+              <div class="bundle-item-brand">${displayBrand || "No brand"}</div>
             </div>
             <div class="bundle-radio"></div>
           </div>`;

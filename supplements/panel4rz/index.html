@@ -12,7 +12,7 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/supplements/supabase-client.js?v=5"></script>
-    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=10" />
+    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=11" />
   </head>
   <body>
 <div class="loading-overlay" id="loading-overlay">
@@ -197,6 +197,10 @@
             <span id="last-updated">Live</span>
           </div>
           <div class="tb-actions">
+            <div class="tb-lang-toggle">
+              <button class="tb-lang-btn" id="lang-btn-en" onclick="switchAdminLang('en')">EN</button>
+              <button class="tb-lang-btn" id="lang-btn-fr" onclick="switchAdminLang('fr')">FR</button>
+            </div>
 <button class="tb-logout" onclick="doLogout()">
               <svg
                 width="14"
@@ -1175,6 +1179,6 @@
       ><span id="toast-msg">Done!</span>
     </div>
 
-    <script src="/supplements/panel4rz/index.js?v=17"></script>
+    <script src="/supplements/panel4rz/index.js?v=18"></script>
   </body>
 </html>
