@@ -56,6 +56,7 @@
         renderProducts(_prodFilter);
         renderCats();
         renderBundleList(document.getElementById("bundle-search")?.value || "");
+        showToast(lang === "fr" ? "Langue : Français" : "Language: English");
       }
 
       function _pagCtrl(total, cur, setFn) {
