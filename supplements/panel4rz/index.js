@@ -56,7 +56,201 @@
         renderProducts(_prodFilter);
         renderCats();
         renderBundleList(document.getElementById("bundle-search")?.value || "");
-        showToast(lang === "fr" ? "Langue : Français" : "Language: English");
+        applyAdminI18n();
+        showToast(t('toast.langSwitch'));
+      }
+
+      // ── i18n dictionary ──
+      const ADMIN_I18N = {
+        en: {
+          'nav.main':'Main','nav.store':'Store','nav.admin':'Admin',
+          'nav.dashboard':'Dashboard','nav.products':'Products','nav.categories':'Categories',
+          'nav.delivery':'Delivery Prices','nav.bundle':'Bundle','nav.orders':'Orders',
+          'nav.stock':'Stock','nav.settings':'Settings','nav.backToSite':'Back to Website',
+          'nav.superAdmin':'Super Admin',
+          'tb.live':'Live','tb.logout':'Logout',
+          'dash.topProducts':'Top Products Sold','dash.allTime':'All time','dash.viewAll':'View All',
+          'dash.recentOrders':'Recent Orders','dash.statusOverview':'Orders Status Overview',
+          'stat.products':'Products','stat.totalOrders':'Total Orders',
+          'stat.weekOrders':'Orders This Week','stat.weekRevenue':'Revenue This Week (DA)',
+          'stat.totalRevenue':'Total Revenue (DA)','stat.pending':'Pending Orders',
+          'products.title':'Products','products.add':'Add Product','products.search':'Search products…',
+          'products.col.product':'Product','products.col.categories':'Categories',
+          'products.col.shades':'Shades / Options','products.col.variants':'Variants / Prices',
+          'products.col.stock':'Stock','products.col.status':'Status','products.col.actions':'Actions',
+          'products.empty':'No products',
+          'cats.title':'Categories','cats.add':'Add Category','cats.empty':'No categories yet',
+          'delivery.title':'Delivery Prices','delivery.addWilaya':'Add Wilaya',
+          'delivery.freeTitle':'Free Delivery Settings',
+          'delivery.minOrder':'Minimum Order for Free Delivery (DA)',
+          'delivery.minOrderHint':'When cart total meets or exceeds this amount, delivery is free. Set 0 to disable.',
+          'delivery.allFree':'All Deliveries Free','delivery.saveFree':'Save Free Delivery Settings',
+          'delivery.search':'Search wilaya…','delivery.col.num':'#','delivery.col.wilaya':'Wilaya',
+          'delivery.col.home':'Home Delivery (DA)','delivery.col.office':'Office / Desk (DA)',
+          'delivery.col.actions':'Actions',
+          'bundle.title':'Bundle','bundle.select':'Select Bundle Product',
+          'bundle.selectDesc':'Choose <strong>one product</strong> to feature as the bundle on your store.',
+          'bundle.bannerTitle':'Banner Title','bundle.titleEn':'Title (English)','bundle.titleFr':'Title (French)',
+          'bundle.bannerDesc':'Banner Description','bundle.descEn':'Description (English)',
+          'bundle.descFr':'Description (French)','bundle.search':'Search products…',
+          'bundle.noSelected':'No product selected','bundle.clear':'Clear','bundle.save':'Save Bundle',
+          'orders.title':'Orders','orders.refresh':'Refresh',
+          'orders.search':'Search name, phone, wilaya…',
+          'orders.sort.newest':'Newest First','orders.sort.oldest':'Oldest First',
+          'orders.sort.totalDesc':'Highest Total','orders.sort.totalAsc':'Lowest Total',
+          'orders.sort.nameAsc':'Name A→Z','orders.sort.nameDesc':'Name Z→A',
+          'orders.filter.all':'All','orders.filter.waiting':'Waiting',
+          'orders.filter.confirmed':'Confirmed','orders.filter.delivered':'Delivered',
+          'orders.filter.canceled':'Canceled',
+          'orders.col.num':'#','orders.col.customer':'Customer','orders.col.phone':'Phone',
+          'orders.col.wilaya':'Wilaya','orders.col.address':'Address','orders.col.items':'Items',
+          'orders.col.total':'Total','orders.col.source':'Source','orders.col.date':'Date',
+          'orders.col.status':'Status','orders.col.actions':'Actions','orders.empty':'No orders yet',
+          'stock.title':'Stock Management','stock.allProducts':'All Products',
+          'stock.outOfStock':'Out of Stock','stock.lowStock':'Low Stock (≤5)','stock.refresh':'Refresh',
+          'stock.search':'Search products…',
+          'settings.title':'Settings','settings.accountInfo':'Account Info',
+          'settings.username':'Username','settings.displayName':'Display Name',
+          'settings.saveChanges':'Save Changes','settings.changePass':'Change Password',
+          'settings.curPass':'Current Password','settings.newPass':'New Password',
+          'settings.confirmPass':'Confirm New Password','settings.updatePass':'Update Password',
+          'settings.manageUsers':'Manage Users','settings.email':'Email',
+          'settings.password':'Password','settings.createUser':'Create User',
+          'common.edit':'Edit','common.delete':'Delete','common.cancel':'Cancel',
+          'common.deleteSelected':'Delete Selected','common.enabled':'Enabled','common.disabled':'Disabled',
+          'common.save':'Save','common.show':'Show','common.hide':'Hide','common.noData':'No data',
+          'pm.addTitle':'Add Product','pm.editTitle':'Edit Product',
+          'pm.nameEn':'Product Name (English) *','pm.brandEn':'Brand (English)',
+          'pm.nameFr':'Product Name (French)','pm.brandFr':'Brand (French)',
+          'pm.categories':'Categories (select one or more)','pm.subcategories':'Sub-Categories',
+          'pm.description':'Description','pm.images':'Product Images',
+          'pm.variants':'Variants & Prices','pm.addVariant':'Add Variant',
+          'pm.shades':'Shades / Colors / Options','pm.addShade':'Add Shade / Option',
+          'pm.totalStock':'Total Stock','pm.discount':'Discount %','pm.status':'Status',
+          'pm.freeDelivery':'Free Delivery','pm.freeDeliveryHint':'Ships free regardless of order total',
+          'pm.save':'Save Product',
+          'cat.addTitle':'Add Category','cat.editTitle':'Edit Category',
+          'cat.nameEn':'Name (English) *','cat.nameFr':'Name (French)','cat.desc':'Description',
+          'cat.subs':'Sub-categories (optional)','cat.addSub':'Add Sub-category','cat.save':'Save Category',
+          'subcat.editTitle':'Edit Sub-Category','subcat.nameEn':'Name (English) *',
+          'subcat.nameFr':'Name (French)','subcat.save':'Save Changes',
+          'dm.addTitle':'Add Wilaya','dm.editTitle':'Edit Wilaya',
+          'dm.wilayaName':'Wilaya Name *','dm.homePrice':'Home Delivery Price (DA) *',
+          'dm.officePrice':'Office / Desk Price (DA) *','dm.save':'Save',
+          'confirm.title':'Are you sure?','confirm.default':'This action cannot be undone.',
+          'confirm.delete':'Delete',
+          'page.dashboard':'Dashboard','page.products':'Products','page.categories':'Categories',
+          'page.delivery':'Delivery Prices','page.bundle':'Bundle','page.orders':'Orders',
+          'page.stock':'Stock Management','page.settings':'Settings',
+          'status.active':'Active','status.inactive':'Inactive','status.waiting':'Waiting',
+          'status.confirmed':'Confirmed','status.delivered':'Delivered','status.canceled':'Canceled',
+          'toast.langSwitch':'Language: English',
+          'sel.items':'items selected','sel.item':'item selected',
+        },
+        fr: {
+          'nav.main':'Principal','nav.store':'Boutique','nav.admin':'Administration',
+          'nav.dashboard':'Tableau de bord','nav.products':'Produits','nav.categories':'Catégories',
+          'nav.delivery':'Prix de livraison','nav.bundle':'Coffret','nav.orders':'Commandes',
+          'nav.stock':'Stock','nav.settings':'Paramètres','nav.backToSite':'Retour au site',
+          'nav.superAdmin':'Super Administrateur',
+          'tb.live':'En direct','tb.logout':'Déconnexion',
+          'dash.topProducts':'Produits les plus vendus','dash.allTime':'Depuis toujours','dash.viewAll':'Voir tout',
+          'dash.recentOrders':'Commandes récentes','dash.statusOverview':'Aperçu des statuts',
+          'stat.products':'Produits','stat.totalOrders':'Total commandes',
+          'stat.weekOrders':'Commandes cette semaine','stat.weekRevenue':'Revenus cette semaine (DA)',
+          'stat.totalRevenue':'Revenus totaux (DA)','stat.pending':'Commandes en attente',
+          'products.title':'Produits','products.add':'Ajouter un produit','products.search':'Rechercher des produits…',
+          'products.col.product':'Produit','products.col.categories':'Catégories',
+          'products.col.shades':'Teintes / Options','products.col.variants':'Variantes / Prix',
+          'products.col.stock':'Stock','products.col.status':'Statut','products.col.actions':'Actions',
+          'products.empty':'Aucun produit',
+          'cats.title':'Catégories','cats.add':'Ajouter une catégorie','cats.empty':'Aucune catégorie',
+          'delivery.title':'Prix de livraison','delivery.addWilaya':'Ajouter une wilaya',
+          'delivery.freeTitle':'Paramètres livraison gratuite',
+          'delivery.minOrder':'Commande minimale pour livraison gratuite (DA)',
+          'delivery.minOrderHint':'Quand le panier atteint ce montant, la livraison est gratuite. 0 pour désactiver.',
+          'delivery.allFree':'Toutes les livraisons gratuites','delivery.saveFree':'Enregistrer les paramètres',
+          'delivery.search':'Rechercher une wilaya…','delivery.col.num':'N°','delivery.col.wilaya':'Wilaya',
+          'delivery.col.home':'Livraison domicile (DA)','delivery.col.office':'Bureau / Relais (DA)',
+          'delivery.col.actions':'Actions',
+          'bundle.title':'Coffret','bundle.select':'Sélectionner le produit coffret',
+          'bundle.selectDesc':'Choisissez <strong>un produit</strong> à mettre en avant comme coffret.',
+          'bundle.bannerTitle':'Titre de la bannière','bundle.titleEn':'Titre (Anglais)','bundle.titleFr':'Titre (Français)',
+          'bundle.bannerDesc':'Description de la bannière','bundle.descEn':'Description (Anglais)',
+          'bundle.descFr':'Description (Français)','bundle.search':'Rechercher des produits…',
+          'bundle.noSelected':'Aucun produit sélectionné','bundle.clear':'Effacer','bundle.save':'Enregistrer le coffret',
+          'orders.title':'Commandes','orders.refresh':'Actualiser',
+          'orders.search':'Rechercher nom, téléphone, wilaya…',
+          'orders.sort.newest':'Plus récent','orders.sort.oldest':'Plus ancien',
+          'orders.sort.totalDesc':'Total le plus élevé','orders.sort.totalAsc':'Total le plus bas',
+          'orders.sort.nameAsc':'Nom A→Z','orders.sort.nameDesc':'Nom Z→A',
+          'orders.filter.all':'Tous','orders.filter.waiting':'En attente',
+          'orders.filter.confirmed':'Confirmé','orders.filter.delivered':'Livré',
+          'orders.filter.canceled':'Annulé',
+          'orders.col.num':'N°','orders.col.customer':'Client','orders.col.phone':'Téléphone',
+          'orders.col.wilaya':'Wilaya','orders.col.address':'Adresse','orders.col.items':'Articles',
+          'orders.col.total':'Total','orders.col.source':'Source','orders.col.date':'Date',
+          'orders.col.status':'Statut','orders.col.actions':'Actions','orders.empty':'Aucune commande',
+          'stock.title':'Gestion du stock','stock.allProducts':'Tous les produits',
+          'stock.outOfStock':'Rupture de stock','stock.lowStock':'Stock faible (≤5)','stock.refresh':'Actualiser',
+          'stock.search':'Rechercher des produits…',
+          'settings.title':'Paramètres','settings.accountInfo':'Informations du compte',
+          'settings.username':"Nom d'utilisateur",'settings.displayName':'Nom affiché',
+          'settings.saveChanges':'Enregistrer','settings.changePass':'Changer le mot de passe',
+          'settings.curPass':'Mot de passe actuel','settings.newPass':'Nouveau mot de passe',
+          'settings.confirmPass':'Confirmer le nouveau mot de passe','settings.updatePass':'Mettre à jour',
+          'settings.manageUsers':'Gérer les utilisateurs','settings.email':'E-mail',
+          'settings.password':'Mot de passe','settings.createUser':'Créer un utilisateur',
+          'common.edit':'Modifier','common.delete':'Supprimer','common.cancel':'Annuler',
+          'common.deleteSelected':'Supprimer la sélection','common.enabled':'Activé','common.disabled':'Désactivé',
+          'common.save':'Enregistrer','common.show':'Afficher','common.hide':'Masquer','common.noData':'Aucune donnée',
+          'pm.addTitle':'Ajouter un produit','pm.editTitle':'Modifier le produit',
+          'pm.nameEn':'Nom du produit (Anglais) *','pm.brandEn':'Marque (Anglais)',
+          'pm.nameFr':'Nom du produit (Français)','pm.brandFr':'Marque (Français)',
+          'pm.categories':'Catégories (sélectionner une ou plusieurs)','pm.subcategories':'Sous-catégories',
+          'pm.description':'Description','pm.images':'Images du produit',
+          'pm.variants':'Variantes & Prix','pm.addVariant':'Ajouter une variante',
+          'pm.shades':'Teintes / Couleurs / Options','pm.addShade':'Ajouter une teinte / option',
+          'pm.totalStock':'Stock total','pm.discount':'Remise %','pm.status':'Statut',
+          'pm.freeDelivery':'Livraison gratuite','pm.freeDeliveryHint':'Livré gratuitement quel que soit le total',
+          'pm.save':'Enregistrer le produit',
+          'cat.addTitle':'Ajouter une catégorie','cat.editTitle':'Modifier la catégorie',
+          'cat.nameEn':'Nom (Anglais) *','cat.nameFr':'Nom (Français)','cat.desc':'Description',
+          'cat.subs':'Sous-catégories (optionnel)','cat.addSub':'Ajouter une sous-catégorie','cat.save':'Enregistrer la catégorie',
+          'subcat.editTitle':'Modifier la sous-catégorie','subcat.nameEn':'Nom (Anglais) *',
+          'subcat.nameFr':'Nom (Français)','subcat.save':'Enregistrer',
+          'dm.addTitle':'Ajouter une wilaya','dm.editTitle':'Modifier la wilaya',
+          'dm.wilayaName':'Nom de la wilaya *','dm.homePrice':'Prix livraison domicile (DA) *',
+          'dm.officePrice':'Prix bureau / relais (DA) *','dm.save':'Enregistrer',
+          'confirm.title':'Êtes-vous sûr ?','confirm.default':'Cette action est irréversible.',
+          'confirm.delete':'Supprimer',
+          'page.dashboard':'Tableau de bord','page.products':'Produits','page.categories':'Catégories',
+          'page.delivery':'Prix de livraison','page.bundle':'Coffret','page.orders':'Commandes',
+          'page.stock':'Gestion du stock','page.settings':'Paramètres',
+          'status.active':'Actif','status.inactive':'Inactif','status.waiting':'En attente',
+          'status.confirmed':'Confirmé','status.delivered':'Livré','status.canceled':'Annulé',
+          'toast.langSwitch':'Langue : Français',
+          'sel.items':'éléments sélectionnés','sel.item':'élément sélectionné',
+        }
+      };
+      function t(key) {
+        return (ADMIN_I18N[adminLang] || ADMIN_I18N.en)[key] || (ADMIN_I18N.en)[key] || key;
+      }
+      function tStatus(s) {
+        return t('status.' + s) || cap(s);
+      }
+      function applyAdminI18n() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.dataset.i18n;
+          const val = t(key);
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            el.placeholder = val;
+          } else if (el.dataset.i18nHtml) {
+            el.innerHTML = val;
+          } else {
+            el.textContent = val;
+          }
+        });
       }
 
       function _pagCtrl(total, cur, setFn) {
@@ -400,6 +594,7 @@
           document.querySelectorAll(".tb-lang-btn").forEach(b => b.classList.remove("active"));
           const btn = document.getElementById("lang-btn-" + adminLang);
           if (btn) btn.classList.add("active");
+          applyAdminI18n();
         })();
         let cached = false;
         if (!SUPABASE_URL || !sb) {
@@ -554,7 +749,7 @@
                   <div class="top-product-bar-wrap"><div class="top-product-bar-fill" style="width:${Math.round((qty/maxQty)*100)}%"></div></div>
                   <div class="top-product-qty">${qty} sold</div>
                 </div>`).join("")
-            : `<div style="padding:24px;text-align:center;color:var(--g400);font-size:13px">No order data yet</div>`;
+            : `<div style="padding:24px;text-align:center;color:var(--g400);font-size:13px">${t('common.noData')}</div>`;
         }
 
         // Recent orders (last 6)
@@ -573,7 +768,7 @@
                   <div class="recent-order-total">${Number(o.total||0).toLocaleString("fr-DZ")} DA</div>
                 </div>`;
               }).join("")
-            : `<div style="padding:24px;text-align:center;color:var(--g400);font-size:13px">No orders yet</div>`;
+            : `<div style="padding:24px;text-align:center;color:var(--g400);font-size:13px">${t('orders.empty')}</div>`;
         }
 
         // Status overview bar
@@ -619,14 +814,14 @@
         document.getElementById("sb-overlay").classList.remove("show");
       }
       const pageNames = {
-        dashboard: "Dashboard",
-        products: "Products",
-        categories: "Categories",
-        delivery: "Delivery Prices",
-        bundle: "Bundle",
-        orders: "Orders",
-        stock: "Stock Management",
-        settings: "Settings",
+        dashboard: () => t('page.dashboard'),
+        products: () => t('page.products'),
+        categories: () => t('page.categories'),
+        delivery: () => t('page.delivery'),
+        bundle: () => t('page.bundle'),
+        orders: () => t('page.orders'),
+        stock: () => t('page.stock'),
+        settings: () => t('page.settings'),
       };
       function showPage(name, el) {
         document
@@ -638,7 +833,7 @@
           .forEach((l) => l.classList.remove("active"));
         if (el) el.classList.add("active");
         document.getElementById("page-title").textContent =
-          pageNames[name] || name;
+          (typeof pageNames[name] === 'function' ? pageNames[name]() : pageNames[name]) || name;
         if (name === "orders") { /* badge cleared on view */ }
         if (name === "stock") renderStock();
         if (name === "settings") loadAdminUsers();
@@ -676,7 +871,7 @@
         if (summary) summary.textContent = filtered.length + " product" + (filtered.length !== 1 ? "s" : "") + " · " + outCount + " out · " + lowCount + " low";
 
         if (!filtered.length) {
-          list.innerHTML = '<div style="padding:48px;text-align:center;color:var(--g400);font-size:13px">No products match.</div>';
+          list.innerHTML = `<div style="padding:48px;text-align:center;color:var(--g400);font-size:13px">${t('common.noData')}</div>`;
           return;
         }
 
@@ -908,7 +1103,7 @@
             (p.brandFr || "").toLowerCase().includes(filter),
         );
         if (!filtered.length) {
-          tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><p>No products</p></div></td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><p>${t('products.empty')}</p></div></td></tr>`;
           if (pag) pag.innerHTML = "";
           return;
         }
@@ -973,8 +1168,8 @@
         editingProductId = id;
         currentImageUrls = [];
         document.getElementById("pm-title").textContent = id
-          ? "Edit Product"
-          : "Add Product";
+          ? t('pm.editTitle')
+          : t('pm.addTitle');
         document.getElementById("variants-list").innerHTML = "";
         document.getElementById("flavors-list").innerHTML = "";
         renderImageGrid();
@@ -1289,7 +1484,7 @@
         const pag = document.getElementById("cat-pag");
         if (!categories.length) {
           tree.innerHTML =
-            '<div class="empty-state"><p>No categories yet</p></div>';
+            `<div class="empty-state"><p>${t('cats.empty')}</p></div>`;
           if (pag) pag.innerHTML = "";
           return;
         }
@@ -1312,7 +1507,7 @@
         if (bar) bar.classList.toggle("visible", _sel.cat.size > 0);
         const label = document.getElementById("sel-count-cat");
         const n = _sel.cat.size;
-        if (label) label.textContent = n + " item" + (n !== 1 ? "s" : "") + " selected";
+        if (label) label.textContent = n + " " + (n !== 1 ? t('sel.items') : t('sel.item'));
       }
       function toggleCat(catId, e) {
         if (e && e.target.closest("button")) return;
@@ -1324,7 +1519,7 @@
       }
       function openCatModal() {
         editingCatId = null;
-        document.getElementById("cat-modal-title").textContent = "Add Category";
+        document.getElementById("cat-modal-title").textContent = t('cat.addTitle');
         document.getElementById("cat-name-en").value = "";
         document.getElementById("cat-name-fr").value = "";
         document.getElementById("cat-desc").value = "";
@@ -1335,7 +1530,7 @@
         const cat = categories.find((c) => c.id === id);
         if (!cat) return;
         editingCatId = id;
-        document.getElementById("cat-modal-title").textContent = "Edit Category";
+        document.getElementById("cat-modal-title").textContent = t('cat.editTitle');
         document.getElementById("cat-name-en").value = cat.nameEn || cat.name || "";
         document.getElementById("cat-name-fr").value = cat.nameFr || "";
         document.getElementById("cat-desc").value = cat.description || "";
@@ -1682,7 +1877,7 @@
         const n = _sel[type].size;
         bar.classList.toggle("visible", n > 0);
         const label = document.getElementById("sel-count-" + type);
-        if (label) label.textContent = n + " item" + (n !== 1 ? "s" : "") + " selected";
+        if (label) label.textContent = n + " " + (n !== 1 ? t('sel.items') : t('sel.item'));
         const allCb = document.getElementById("selall-" + type);
         if (allCb) {
           const total = document.querySelectorAll(`input.row-cb[data-sel-type="${type}"]`).length;
@@ -1883,8 +2078,8 @@
       function openDeliveryModal(id = null) {
         editingDeliveryId = id;
         document.getElementById("delivery-modal-title").textContent = id
-          ? "Edit Wilaya"
-          : "Add Wilaya";
+          ? t('dm.editTitle')
+          : t('dm.addTitle');
         if (id) {
           const d = deliveryPrices.find((x) => x.id === id);
           if (d) {
@@ -2150,7 +2345,7 @@
         });
 
         if (!orders.length && ordersTotal === 0) {
-          tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state"><p>${ordersSearch ? "No orders match your search" : "No orders"}</p></div></td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state"><p>${t('orders.empty')}</p></div></td></tr>`;
           const pag = document.getElementById("orders-pag");
           if (pag) pag.innerHTML = "";
           return;

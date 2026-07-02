@@ -12,7 +12,7 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/supplements/supabase-client.js?v=5"></script>
-    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=11" />
+    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=12" />
   </head>
   <body>
 <div class="loading-overlay" id="loading-overlay">
@@ -43,7 +43,7 @@
           </button>
         </div>
         <nav class="sb-nav">
-          <div class="sb-section-label">Main</div>
+          <div class="sb-section-label" data-i18n="nav.main">Main</div>
           <div class="sb-link active" onclick="showPage('dashboard', this)">
             <svg
               viewBox="0 0 24 24"
@@ -55,9 +55,9 @@
               <rect x="14" y="3" width="7" height="7" />
               <rect x="14" y="14" width="7" height="7" />
               <rect x="3" y="14" width="7" height="7" /></svg
-            ><span>Dashboard</span>
+            ><span data-i18n="nav.dashboard">Dashboard</span>
           </div>
-          <div class="sb-section-label">Store</div>
+          <div class="sb-section-label" data-i18n="nav.store">Store</div>
           <div class="sb-link" onclick="showPage('products', this)">
             <svg
               viewBox="0 0 24 24"
@@ -68,7 +68,7 @@
               <path
                 d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
               /></svg
-            ><span>Products</span>
+            ><span data-i18n="nav.products">Products</span>
           </div>
           <div class="sb-link" onclick="showPage('categories', this)">
             <svg
@@ -80,7 +80,7 @@
               <path
                 d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"
               /></svg
-            ><span>Categories</span>
+            ><span data-i18n="nav.categories">Categories</span>
           </div>
           <div class="sb-link" onclick="showPage('delivery', this)">
             <svg
@@ -93,7 +93,7 @@
               <path d="M16 8h4l3 5v4h-7V8z" />
               <circle cx="5.5" cy="18.5" r="2.5" />
               <circle cx="18.5" cy="18.5" r="2.5" /></svg
-            ><span>Delivery Prices</span>
+            ><span data-i18n="nav.delivery">Delivery Prices</span>
           </div>
           <div class="sb-link" onclick="showPage('bundle', this)">
             <svg
@@ -107,7 +107,7 @@
               />
               <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
               <line x1="12" y1="22.08" x2="12" y2="12" /></svg
-            ><span>Bundle</span>
+            ><span data-i18n="nav.bundle">Bundle</span>
           </div>
           <div class="sb-link" onclick="showPage('orders', this)">
             <svg
@@ -119,7 +119,7 @@
               <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
               <rect x="9" y="3" width="6" height="4" rx="1"/>
               <path d="M9 12h6M9 16h4"/></svg
-            ><span>Orders</span>
+            ><span data-i18n="nav.orders">Orders</span>
           </div>
           <div class="sb-link" onclick="showPage('stock', this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -127,9 +127,9 @@
               <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
               <line x1="12" y1="12" x2="12" y2="16"/>
               <line x1="10" y1="14" x2="14" y2="14"/>
-            </svg><span>Stock</span>
+            </svg><span data-i18n="nav.stock">Stock</span>
           </div>
-          <div class="sb-section-label">Admin</div>
+          <div class="sb-section-label" data-i18n="nav.admin">Admin</div>
           <div class="sb-link" onclick="showPage('settings', this)">
             <svg
               viewBox="0 0 24 24"
@@ -141,7 +141,7 @@
               <path
                 d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
               /></svg
-            ><span>Settings</span>
+            ><span data-i18n="nav.settings">Settings</span>
           </div>
         </nav>
         <div class="sb-footer">
@@ -154,7 +154,7 @@
             <div class="sb-avatar">A</div>
             <div class="sb-user-info">
               <div class="sb-user-name" id="sb-username">Admin</div>
-              <div class="sb-user-role">Super Admin</div>
+              <div class="sb-user-role" data-i18n="nav.superAdmin">Super Admin</div>
             </div>
           </div>
           <a href="/" class="back-to-site"
@@ -166,7 +166,7 @@
             >
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
               <polyline points="9 22 9 12 15 12 15 22" /></svg
-            ><span>Back to Website</span></a
+            ><span data-i18n="nav.backToSite">Back to Website</span></a
           >
         </div>
       </aside>
@@ -194,7 +194,7 @@
           <div class="tb-title" id="page-title">Dashboard</div>
           <div class="tb-live">
             <div class="tb-live-dot"></div>
-            <span id="last-updated">Live</span>
+            <span id="last-updated" data-i18n="tb.live">Live</span>
           </div>
           <div class="tb-actions">
             <div class="tb-lang-toggle">
@@ -213,7 +213,7 @@
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                 <polyline points="16 17 21 12 16 7" />
                 <line x1="21" y1="12" x2="9" y2="12" /></svg
-              >Logout
+              ><span data-i18n="tb.logout">Logout</span>
             </button>
           </div>
         </header>
@@ -229,7 +229,7 @@
               </div>
               <div>
                 <div class="stat-num" id="stat-products">0</div>
-                <div class="stat-label">Products</div>
+                <div class="stat-label" data-i18n="stat.products">Products</div>
               </div>
             </div>
             <div class="stat-card">
@@ -242,7 +242,7 @@
               </div>
               <div>
                 <div class="stat-num" id="stat-orders">0</div>
-                <div class="stat-label">Total Orders</div>
+                <div class="stat-label" data-i18n="stat.totalOrders">Total Orders</div>
               </div>
             </div>
             <div class="stat-card">
@@ -253,7 +253,7 @@
               </div>
               <div>
                 <div class="stat-num" id="stat-week-orders">0</div>
-                <div class="stat-label">Orders This Week</div>
+                <div class="stat-label" data-i18n="stat.weekOrders">Orders This Week</div>
                 <div class="stat-trend neutral" id="stat-week-trend"></div>
               </div>
             </div>
@@ -265,7 +265,7 @@
               </div>
               <div>
                 <div class="stat-num" id="stat-revenue-week">0</div>
-                <div class="stat-label">Revenue This Week (DA)</div>
+                <div class="stat-label" data-i18n="stat.weekRevenue">Revenue This Week (DA)</div>
               </div>
             </div>
             <div class="stat-card">
@@ -276,7 +276,7 @@
               </div>
               <div>
                 <div class="stat-num" id="stat-revenue-total">0</div>
-                <div class="stat-label">Total Revenue (DA)</div>
+                <div class="stat-label" data-i18n="stat.totalRevenue">Total Revenue (DA)</div>
               </div>
             </div>
             <div class="stat-card">
@@ -287,7 +287,7 @@
               </div>
               <div>
                 <div class="stat-num" id="stat-pending">0</div>
-                <div class="stat-label">Pending Orders</div>
+                <div class="stat-label" data-i18n="stat.pending">Pending Orders</div>
               </div>
             </div>
           </div>
@@ -297,8 +297,8 @@
             <div class="dash-panel">
               <div class="dash-panel-header">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                <div class="dash-panel-title">Top Products Sold</div>
-                <span class="dash-panel-subtitle" id="top-products-period">All time</span>
+                <div class="dash-panel-title" data-i18n="dash.topProducts">Top Products Sold</div>
+                <span class="dash-panel-subtitle" id="top-products-period" data-i18n="dash.allTime">All time</span>
               </div>
               <div class="dash-panel-body" id="top-products-list">
                 <div style="padding:24px;text-align:center;color:var(--g400);font-size:13px">No order data yet</div>
@@ -309,8 +309,8 @@
             <div class="dash-panel">
               <div class="dash-panel-header">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <div class="dash-panel-title">Recent Orders</div>
-                <button class="act-btn act-view" style="font-size:11px;padding:3px 10px" onclick="showPage('orders', document.querySelector('.sb-link[onclick*=orders]'))">View All</button>
+                <div class="dash-panel-title" data-i18n="dash.recentOrders">Recent Orders</div>
+                <button class="act-btn act-view" style="font-size:11px;padding:3px 10px" onclick="showPage('orders', document.querySelector('.sb-link[onclick*=orders]'))"><span data-i18n="dash.viewAll">View All</span></button>
               </div>
               <div class="dash-panel-body" id="recent-orders-list">
                 <div style="padding:24px;text-align:center;color:var(--g400);font-size:13px">No orders yet</div>
@@ -321,7 +321,7 @@
             <div class="dash-panel" style="grid-column: 1 / -1">
               <div class="dash-panel-header">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
-                <div class="dash-panel-title">Orders Status Overview</div>
+                <div class="dash-panel-title" data-i18n="dash.statusOverview">Orders Status Overview</div>
               </div>
               <div class="status-ov-bar-track" style="margin:12px 20px 6px">
                 <div class="status-ov-bar-segments" id="status-ov-bar">
@@ -336,7 +336,7 @@
         <!-- PRODUCTS -->
         <div class="page" id="page-products">
           <div class="sec-header">
-            <div class="sec-title">Products</div>
+            <div class="sec-title" data-i18n="products.title">Products</div>
             <button class="btn-primary" onclick="openProductModal()">
               <svg
                 width="14"
@@ -348,7 +348,7 @@
               >
                 <line x1="12" y1="5" x2="12" y2="19" />
                 <line x1="5" y1="12" x2="19" y2="12" /></svg
-              >Add Product
+              ><span data-i18n="products.add">Add Product</span>
             </button>
           </div>
           <div class="table-wrap">
@@ -357,25 +357,26 @@
                 class="search-box"
                 type="text"
                 placeholder="Search products…"
+                data-i18n="products.search"
                 oninput="filterProducts(this.value)"
               />
             </div>
             <div class="sel-bar" id="sel-bar-product">
               <span class="sel-count" id="sel-count-product">0 items selected</span>
-              <button class="act-btn act-delete" onclick="deleteSelected('product')">Delete Selected</button>
-              <button class="act-btn" style="background:var(--g100);color:var(--g600)" onclick="_selClear('product')">Cancel</button>
+              <button class="act-btn act-delete" onclick="deleteSelected('product')"><span data-i18n="common.deleteSelected">Delete Selected</span></button>
+              <button class="act-btn" style="background:var(--g100);color:var(--g600)" onclick="_selClear('product')"><span data-i18n="common.cancel">Cancel</span></button>
             </div>
             <table>
               <thead>
                 <tr>
                   <th class="cb-th"><input type="checkbox" class="row-cb" id="selall-product" onchange="_selAll('product',this.checked)"></th>
-                  <th>Product</th>
-                  <th>Categories</th>
-                  <th>Shades / Options</th>
-                  <th>Variants / Prices</th>
-                  <th>Stock</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <th data-i18n="products.col.product">Product</th>
+                  <th data-i18n="products.col.categories">Categories</th>
+                  <th data-i18n="products.col.shades">Shades / Options</th>
+                  <th data-i18n="products.col.variants">Variants / Prices</th>
+                  <th data-i18n="products.col.stock">Stock</th>
+                  <th data-i18n="products.col.status">Status</th>
+                  <th data-i18n="products.col.actions">Actions</th>
                 </tr>
               </thead>
               <tbody id="products-tbody"></tbody>
@@ -387,7 +388,7 @@
         <!-- CATEGORIES -->
         <div class="page" id="page-categories">
           <div class="sec-header">
-            <div class="sec-title">Categories</div>
+            <div class="sec-title" data-i18n="cats.title">Categories</div>
             <button class="btn-primary" onclick="openCatModal()">
               <svg
                 width="14"
@@ -399,13 +400,13 @@
               >
                 <line x1="12" y1="5" x2="12" y2="19" />
                 <line x1="5" y1="12" x2="19" y2="12" /></svg
-              >Add Category
+              ><span data-i18n="cats.add">Add Category</span>
             </button>
           </div>
           <div class="cats-sel-bar" id="sel-bar-cat">
             <span class="sel-count" id="sel-count-cat">0 items selected</span>
-            <button class="act-btn act-delete" onclick="deleteSelected('cat')">Delete Selected</button>
-            <button class="act-btn" style="background:var(--g100);color:var(--g600)" onclick="_selClear('cat')">Cancel</button>
+            <button class="act-btn act-delete" onclick="deleteSelected('cat')"><span data-i18n="common.deleteSelected">Delete Selected</span></button>
+            <button class="act-btn" style="background:var(--g100);color:var(--g600)" onclick="_selClear('cat')"><span data-i18n="common.cancel">Cancel</span></button>
           </div>
           <div class="cat-tree" id="cat-tree"></div>
           <div id="cat-pag"></div>
@@ -414,7 +415,7 @@
         <!-- DELIVERY PRICES -->
         <div class="page" id="page-delivery">
           <div class="sec-header">
-            <div class="sec-title">Delivery Prices</div>
+            <div class="sec-title" data-i18n="delivery.title">Delivery Prices</div>
             <button class="btn-primary" onclick="openDeliveryModal()">
               <svg
                 width="14"
@@ -426,7 +427,7 @@
               >
                 <line x1="12" y1="5" x2="12" y2="19" />
                 <line x1="5" y1="12" x2="19" y2="12" /></svg
-              >Add Wilaya
+              ><span data-i18n="delivery.addWilaya">Add Wilaya</span>
             </button>
           </div>
 
@@ -439,16 +440,16 @@
                 <circle cx="5.5" cy="18.5" r="2.5"/>
                 <circle cx="18.5" cy="18.5" r="2.5"/>
               </svg>
-              Free Delivery Settings
+              <span data-i18n="delivery.freeTitle">Free Delivery Settings</span>
             </div>
             <div class="form-row" style="align-items:flex-end;gap:20px;flex-wrap:wrap">
               <div class="form-group" style="flex:1;min-width:220px;margin-bottom:0">
-                <label>Minimum Order for Free Delivery (DA)</label>
+                <label data-i18n="delivery.minOrder">Minimum Order for Free Delivery (DA)</label>
                 <input type="number" class="form-control" id="free-delivery-threshold" placeholder="e.g. 15000 (0 = disabled)" min="0"/>
-                <span style="font-size:12px;color:var(--g400);margin-top:4px;display:block">When cart total meets or exceeds this amount, delivery is free. Set 0 to disable.</span>
+                <span style="font-size:12px;color:var(--g400);margin-top:4px;display:block" data-i18n="delivery.minOrderHint">When cart total meets or exceeds this amount, delivery is free. Set 0 to disable.</span>
               </div>
               <div class="form-group" style="margin-bottom:0">
-                <label style="margin-bottom:10px;display:block">All Deliveries Free</label>
+                <label style="margin-bottom:10px;display:block" data-i18n="delivery.allFree">All Deliveries Free</label>
                 <div style="display:flex;align-items:center;gap:10px">
                   <label class="fd-switch">
                     <input type="checkbox" id="all-free-delivery" onchange="document.getElementById('afd-label').textContent=this.checked?'Enabled':'Disabled'">
@@ -460,7 +461,7 @@
             </div>
             <button class="btn-primary" style="margin-top:18px" onclick="saveFreeDeliverySettings()">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              Save Free Delivery Settings
+              <span data-i18n="delivery.saveFree">Save Free Delivery Settings</span>
             </button>
           </div>
 
@@ -470,23 +471,24 @@
                 class="search-box"
                 type="text"
                 placeholder="Search wilaya…"
+                data-i18n="delivery.search"
                 oninput="filterDelivery(this.value)"
               />
             </div>
             <div class="sel-bar" id="sel-bar-delivery">
               <span class="sel-count" id="sel-count-delivery">0 items selected</span>
-              <button class="act-btn act-delete" onclick="deleteSelected('delivery')">Delete Selected</button>
-              <button class="act-btn" style="background:var(--g100);color:var(--g600)" onclick="_selClear('delivery')">Cancel</button>
+              <button class="act-btn act-delete" onclick="deleteSelected('delivery')"><span data-i18n="common.deleteSelected">Delete Selected</span></button>
+              <button class="act-btn" style="background:var(--g100);color:var(--g600)" onclick="_selClear('delivery')"><span data-i18n="common.cancel">Cancel</span></button>
             </div>
             <table>
               <thead>
                 <tr>
                   <th class="cb-th"><input type="checkbox" class="row-cb" id="selall-delivery" onchange="_selAll('delivery',this.checked)"></th>
-                  <th>#</th>
-                  <th>Wilaya</th>
-                  <th>Home Delivery (DA)</th>
-                  <th>Office / Desk (DA)</th>
-                  <th>Actions</th>
+                  <th data-i18n="delivery.col.num">#</th>
+                  <th data-i18n="delivery.col.wilaya">Wilaya</th>
+                  <th data-i18n="delivery.col.home">Home Delivery (DA)</th>
+                  <th data-i18n="delivery.col.office">Office / Desk (DA)</th>
+                  <th data-i18n="delivery.col.actions">Actions</th>
                 </tr>
               </thead>
               <tbody id="delivery-tbody"></tbody>
@@ -498,7 +500,7 @@
         <!-- BUNDLE -->
         <div class="page" id="page-bundle">
           <div class="sec-header">
-            <div class="sec-title">Bundle</div>
+            <div class="sec-title" data-i18n="bundle.title">Bundle</div>
           </div>
           <div class="settings-card" style="max-width: 680px">
             <div class="settings-card-title">
@@ -516,31 +518,31 @@
                 <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
                 <line x1="12" y1="22.08" x2="12" y2="12" />
               </svg>
-              Select Bundle Product
+              <span data-i18n="bundle.select">Select Bundle Product</span>
             </div>
-            <p style="font-size: 13px; color: var(--g600); margin-bottom: 18px">
+            <p style="font-size: 13px; color: var(--g600); margin-bottom: 18px" data-i18n="bundle.selectDesc" data-i18n-html="1">
               Choose <strong>one product</strong> to feature as the bundle on
               your store.
             </p>
             <!-- Banner Title -->
-            <div style="font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--g400);margin-bottom:12px;">Banner Title</div>
+            <div style="font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--g400);margin-bottom:12px;" data-i18n="bundle.bannerTitle">Banner Title</div>
             <div class="form-group" style="margin-bottom:12px">
-              <label>Title (English)</label>
+              <label data-i18n="bundle.titleEn">Title (English)</label>
               <input id="bundle-title-en" class="form-control" type="text" placeholder="RAMP UP YOUR PERFORMANCE" />
             </div>
             <div class="form-group" style="margin-bottom:12px">
-              <label>Title (French)</label>
+              <label data-i18n="bundle.titleFr">Title (French)</label>
               <input id="bundle-title-fr" class="form-control" type="text" placeholder="BOOSTEZ VOS PERFORMANCES" />
             </div>
 
             <!-- Banner Description -->
-            <div style="font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--g400);margin-bottom:12px;">Banner Description</div>
+            <div style="font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--g400);margin-bottom:12px;" data-i18n="bundle.bannerDesc">Banner Description</div>
             <div class="form-group" style="margin-bottom:12px">
-              <label>Description (English)</label>
+              <label data-i18n="bundle.descEn">Description (English)</label>
               <textarea id="bundle-description-en" class="form-control" rows="2" placeholder="Get our most popular bundle at 20% off. Limited stock — order now!" style="resize:vertical;min-height:60px"></textarea>
             </div>
             <div class="form-group" style="margin-bottom:12px">
-              <label>Description (French)</label>
+              <label data-i18n="bundle.descFr">Description (French)</label>
               <textarea id="bundle-description-fr" class="form-control" rows="2" placeholder="Obtenez notre bundle le plus populaire à -20%. Stock limité — commandez maintenant." style="resize:vertical;min-height:60px"></textarea>
             </div>
             <input
@@ -548,6 +550,7 @@
               id="bundle-search"
               type="text"
               placeholder="Search products…"
+              data-i18n="bundle.search"
               oninput="filterBundleProducts(this.value)"
               style="width: 100%; max-width: 100%; margin-bottom: 14px"
             />
@@ -577,12 +580,13 @@
               <div
                 style="font-size: 13px; color: var(--g600)"
                 id="bundle-selected-label"
+                data-i18n="bundle.noSelected"
               >
                 No product selected
               </div>
               <div style="display: flex; gap: 8px">
                 <button class="btn-secondary" onclick="clearBundle()">
-                  Clear
+                  <span data-i18n="bundle.clear">Clear</span>
                 </button>
                 <button class="btn-primary" onclick="saveBundle()">
                   <svg
@@ -595,7 +599,7 @@
                   >
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
-                  Save Bundle
+                  <span data-i18n="bundle.save">Save Bundle</span>
                 </button>
               </div>
             </div>
@@ -604,7 +608,7 @@
 
         <!-- SETTINGS -->
         <div class="page" id="page-settings">
-          <div class="sec-header"><div class="sec-title">Settings</div></div>
+          <div class="sec-header"><div class="sec-title" data-i18n="settings.title">Settings</div></div>
           <div class="settings-grid">
             <div class="settings-card">
               <div class="settings-card-title">
@@ -618,14 +622,14 @@
                 >
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                   <circle cx="12" cy="7" r="4" /></svg
-                >Account Info
+                ><span data-i18n="settings.accountInfo">Account Info</span>
               </div>
               <div class="form-group" style="margin-bottom: 14px">
-                <label>Username</label
+                <label data-i18n="settings.username">Username</label
                 ><input type="text" class="form-control" id="set-username" />
               </div>
               <div class="form-group" style="margin-bottom: 18px">
-                <label>Display Name</label
+                <label data-i18n="settings.displayName">Display Name</label
                 ><input type="text" class="form-control" id="set-displayname" />
               </div>
               <button
@@ -633,7 +637,7 @@
                 style="width: 100%; justify-content: center"
                 onclick="saveUsername()"
               >
-                Save Changes
+                <span data-i18n="settings.saveChanges">Save Changes</span>
               </button>
             </div>
             <div class="settings-card">
@@ -648,10 +652,10 @@
                 >
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg
-                >Change Password
+                ><span data-i18n="settings.changePass">Change Password</span>
               </div>
               <div class="form-group" style="margin-bottom: 14px">
-                <label>Current Password</label
+                <label data-i18n="settings.curPass">Current Password</label
                 ><input
                   type="password"
                   class="form-control"
@@ -660,7 +664,7 @@
                 />
               </div>
               <div class="form-group" style="margin-bottom: 14px">
-                <label>New Password</label
+                <label data-i18n="settings.newPass">New Password</label
                 ><input
                   type="password"
                   class="form-control"
@@ -669,7 +673,7 @@
                 />
               </div>
               <div class="form-group" style="margin-bottom: 18px">
-                <label>Confirm New Password</label
+                <label data-i18n="settings.confirmPass">Confirm New Password</label
                 ><input
                   type="password"
                   class="form-control"
@@ -682,7 +686,7 @@
                 style="width: 100%; justify-content: center"
                 onclick="savePassword()"
               >
-                Update Password
+                <span data-i18n="settings.updatePass">Update Password</span>
               </button>
             </div>
             <div class="settings-card" style="grid-column: 1 / -1">
@@ -692,21 +696,21 @@
                   <circle cx="9" cy="7" r="4"/>
                   <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
                   <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                </svg>Manage Users
+                </svg><span data-i18n="settings.manageUsers">Manage Users</span>
               </div>
               <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px">
                 <div class="form-group" style="flex:1;min-width:200px;margin-bottom:0">
-                  <label>Email</label>
+                  <label data-i18n="settings.email">Email</label>
                   <input type="email" class="form-control" id="new-user-email" placeholder="admin@example.com"/>
                 </div>
                 <div class="form-group" style="flex:1;min-width:200px;margin-bottom:0">
-                  <label>Password</label>
+                  <label data-i18n="settings.password">Password</label>
                   <input type="password" class="form-control" id="new-user-pass" placeholder="Min 6 characters"/>
                 </div>
                 <div style="display:flex;align-items:flex-end">
                   <button class="btn-primary" onclick="createAdminUser()">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    Create User
+                    <span data-i18n="settings.createUser">Create User</span>
                   </button>
                 </div>
               </div>
@@ -720,53 +724,53 @@
         <!-- ORDERS -->
         <div class="page" id="page-orders">
           <div class="sec-header">
-            <div class="sec-title">Orders</div>
+            <div class="sec-title" data-i18n="orders.title">Orders</div>
             <button class="btn-primary" onclick="loadOrders()">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
               </svg>
-              Refresh
+              <span data-i18n="orders.refresh">Refresh</span>
             </button>
           </div>
           <div class="table-wrap">
             <div class="table-toolbar" style="flex-wrap:wrap;gap:10px">
-              <input class="search-box" type="text" id="orders-search" placeholder="Search name, phone, wilaya…" oninput="searchOrders(this.value)" style="min-width:200px;max-width:260px"/>
+              <input class="search-box" type="text" id="orders-search" placeholder="Search name, phone, wilaya…" data-i18n="orders.search" oninput="searchOrders(this.value)" style="min-width:200px;max-width:260px"/>
               <select class="search-box" id="orders-sort" onchange="sortOrders(this.value)" style="min-width:0;width:auto;padding:0 10px;cursor:pointer">
-                <option value="date-desc">Newest First</option>
-                <option value="date-asc">Oldest First</option>
-                <option value="total-desc">Highest Total</option>
-                <option value="total-asc">Lowest Total</option>
-                <option value="name-asc">Name A→Z</option>
-                <option value="name-desc">Name Z→A</option>
+                <option value="date-desc" data-i18n="orders.sort.newest">Newest First</option>
+                <option value="date-asc" data-i18n="orders.sort.oldest">Oldest First</option>
+                <option value="total-desc" data-i18n="orders.sort.totalDesc">Highest Total</option>
+                <option value="total-asc" data-i18n="orders.sort.totalAsc">Lowest Total</option>
+                <option value="name-asc" data-i18n="orders.sort.nameAsc">Name A→Z</option>
+                <option value="name-desc" data-i18n="orders.sort.nameDesc">Name Z→A</option>
               </select>
               <div class="order-filters" style="flex:1;justify-content:flex-end">
-                <button class="order-filter-btn active" data-filter="all" onclick="filterOrders('all',this)">All <span class="count">0</span></button>
-                <button class="order-filter-btn" data-filter="waiting" onclick="filterOrders('waiting',this)">Waiting <span class="count">0</span></button>
-                <button class="order-filter-btn" data-filter="confirmed" onclick="filterOrders('confirmed',this)">Confirmed <span class="count">0</span></button>
-                <button class="order-filter-btn" data-filter="delivered" onclick="filterOrders('delivered',this)">Delivered <span class="count">0</span></button>
-                <button class="order-filter-btn" data-filter="canceled" onclick="filterOrders('canceled',this)">Canceled <span class="count">0</span></button>
+                <button class="order-filter-btn active" data-filter="all" onclick="filterOrders('all',this)"><span data-i18n="orders.filter.all">All</span> <span class="count">0</span></button>
+                <button class="order-filter-btn" data-filter="waiting" onclick="filterOrders('waiting',this)"><span data-i18n="orders.filter.waiting">Waiting</span> <span class="count">0</span></button>
+                <button class="order-filter-btn" data-filter="confirmed" onclick="filterOrders('confirmed',this)"><span data-i18n="orders.filter.confirmed">Confirmed</span> <span class="count">0</span></button>
+                <button class="order-filter-btn" data-filter="delivered" onclick="filterOrders('delivered',this)"><span data-i18n="orders.filter.delivered">Delivered</span> <span class="count">0</span></button>
+                <button class="order-filter-btn" data-filter="canceled" onclick="filterOrders('canceled',this)"><span data-i18n="orders.filter.canceled">Canceled</span> <span class="count">0</span></button>
               </div>
             </div>
             <div class="sel-bar" id="sel-bar-order">
               <span class="sel-count" id="sel-count-order">0 items selected</span>
-              <button class="act-btn act-delete" onclick="deleteSelected('order')">Delete Selected</button>
-              <button class="act-btn" style="background:var(--g100);color:var(--g600)" onclick="_selClear('order')">Cancel</button>
+              <button class="act-btn act-delete" onclick="deleteSelected('order')"><span data-i18n="common.deleteSelected">Delete Selected</span></button>
+              <button class="act-btn" style="background:var(--g100);color:var(--g600)" onclick="_selClear('order')"><span data-i18n="common.cancel">Cancel</span></button>
             </div>
             <table>
               <thead>
                 <tr>
                   <th class="cb-th"><input type="checkbox" class="row-cb" id="selall-order" onchange="_selAll('order',this.checked)"></th>
-                  <th>#</th>
-                  <th>Customer</th>
-                  <th>Phone</th>
-                  <th>Wilaya</th>
-                  <th>Address</th>
-                  <th style="text-align:center">Items</th>
-                  <th>Total</th>
-                  <th>Source</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <th data-i18n="orders.col.num">#</th>
+                  <th data-i18n="orders.col.customer">Customer</th>
+                  <th data-i18n="orders.col.phone">Phone</th>
+                  <th data-i18n="orders.col.wilaya">Wilaya</th>
+                  <th data-i18n="orders.col.address">Address</th>
+                  <th style="text-align:center" data-i18n="orders.col.items">Items</th>
+                  <th data-i18n="orders.col.total">Total</th>
+                  <th data-i18n="orders.col.source">Source</th>
+                  <th data-i18n="orders.col.date">Date</th>
+                  <th data-i18n="orders.col.status">Status</th>
+                  <th data-i18n="orders.col.actions">Actions</th>
                 </tr>
               </thead>
               <tbody id="orders-tbody">
@@ -780,22 +784,22 @@
         <!-- STOCK -->
         <div class="page" id="page-stock">
           <div class="sec-header">
-            <div class="sec-title">Stock Management</div>
+            <div class="sec-title" data-i18n="stock.title">Stock Management</div>
             <div style="display:flex;gap:8px;align-items:center">
               <select id="stock-filter" class="search-box" style="width:auto;padding:0 10px;cursor:pointer" onchange="renderStock()">
-                <option value="all">All Products</option>
-                <option value="out">Out of Stock</option>
-                <option value="low">Low Stock (≤5)</option>
+                <option value="all" data-i18n="stock.allProducts">All Products</option>
+                <option value="out" data-i18n="stock.outOfStock">Out of Stock</option>
+                <option value="low" data-i18n="stock.lowStock">Low Stock (≤5)</option>
               </select>
               <button class="btn-primary" onclick="renderStock()">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-                Refresh
+                <span data-i18n="stock.refresh">Refresh</span>
               </button>
             </div>
           </div>
           <div class="table-wrap">
             <div class="table-toolbar">
-              <input class="search-box" type="text" id="stock-search" placeholder="Search products…" oninput="renderStock()" style="max-width:280px" />
+              <input class="search-box" type="text" id="stock-search" placeholder="Search products…" data-i18n="stock.search" oninput="renderStock()" style="max-width:280px" />
               <span id="stock-summary" style="font-size:12px;color:var(--g400);margin-left:auto"></span>
             </div>
             <div id="stock-list"></div>
@@ -842,36 +846,36 @@
         <div class="modal-body">
           <div class="form-row">
             <div class="form-group" style="flex:2">
-              <label>Product Name (English) *</label>
+              <label data-i18n="pm.nameEn">Product Name (English) *</label>
               <input type="text" class="form-control" id="pm-name-en" placeholder="e.g. Velvet Lip Gloss No.5" />
             </div>
             <div class="form-group">
-              <label>Brand (English)</label>
+              <label data-i18n="pm.brandEn">Brand (English)</label>
               <input type="text" class="form-control" id="pm-brand-en" placeholder="e.g. MAC Cosmetics" />
             </div>
           </div>
           <div class="form-row">
             <div class="form-group" style="flex:2">
-              <label>Product Name (French)</label>
+              <label data-i18n="pm.nameFr">Product Name (French)</label>
               <input type="text" class="form-control" id="pm-name-fr" placeholder="ex. Gloss velours No.5" />
             </div>
             <div class="form-group">
-              <label>Brand (French)</label>
+              <label data-i18n="pm.brandFr">Brand (French)</label>
               <input type="text" class="form-control" id="pm-brand-fr" placeholder="ex. MAC Cosmétiques" />
             </div>
           </div>
           <div class="form-group" style="margin-bottom: 16px">
-            <label>Categories (select one or more)</label>
+            <label data-i18n="pm.categories">Categories (select one or more)</label>
             <div class="checkbox-group" id="pm-categories"></div>
           </div>
           <div class="form-group" style="margin-bottom: 16px">
-            <label>Sub-Categories</label>
+            <label data-i18n="pm.subcategories">Sub-Categories</label>
             <div class="checkbox-group" id="pm-subcategories"></div>
           </div>
           <div class="form-row full">
             <div class="form-group">
               <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center">
-                <label style="margin:0">Description</label>
+                <label style="margin:0" data-i18n="pm.description">Description</label>
                 <div style="display:flex;gap:4px;margin-left:auto">
                   <button type="button" class="rte-lang-tab active" id="desc-tab-en" onclick="switchDescTab('en')">EN</button>
                   <button type="button" class="rte-lang-tab" id="desc-tab-fr" onclick="switchDescTab('fr')">FR</button>
@@ -900,12 +904,12 @@
             </div>
           </div>
           <div class="form-group" style="margin-bottom: 16px">
-            <label>Product Images</label>
+            <label data-i18n="pm.images">Product Images</label>
             <div id="images-grid" class="images-grid"></div>
             <div id="upload-spinner" style="display:none;font-size:12px;color:var(--g400);margin-top:6px;">Uploading to Cloudinary…</div>
           </div>
           <div class="form-group" style="margin-bottom: 8px">
-            <label>Variants & Prices <span style="font-weight:400;color:var(--g400)">(size, quality, formula…)</span></label>
+            <label><span data-i18n="pm.variants">Variants & Prices</span> <span style="font-weight:400;color:var(--g400)">(size, quality, formula…)</span></label>
           </div>
           <div class="variants-list" id="variants-list"></div>
           <button class="btn-add-variant" onclick="addVariant()">
@@ -919,17 +923,17 @@
             >
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" /></svg
-            >Add Variant
+            ><span data-i18n="pm.addVariant">Add Variant</span>
           </button>
           <div class="form-group" style="margin-top: 16px; margin-bottom: 8px">
-            <label>Shades / Colors / Options <span style="font-weight:400;color:var(--g400)">(shade, color, type, finish…)</span></label>
+            <label><span data-i18n="pm.shades">Shades / Colors / Options</span> <span style="font-weight:400;color:var(--g400)">(shade, color, type, finish…)</span></label>
           </div>
           <div class="flavors-list" id="flavors-list"></div>
           <button class="btn-add-variant" onclick="addFlavor()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" /></svg
-            >Add Shade / Option
+            ><span data-i18n="pm.addShade">Add Shade / Option</span>
           </button>
 
           <!-- Per-variant stock (variants only, no shades) -->
@@ -951,12 +955,12 @@
 
           <div class="form-row" style="margin-top: 16px">
             <div class="form-group" id="pm-stock-group">
-              <label>Total Stock</label>
+              <label data-i18n="pm.totalStock">Total Stock</label>
               <input type="number" class="form-control" id="pm-stock" placeholder="0" min="0" />
               <span class="pm-stock-hint" id="pm-stock-hint" style="display:none">Auto-calculated from variants above</span>
             </div>
             <div class="form-group">
-              <label>Discount %</label
+              <label data-i18n="pm.discount">Discount %</label
               ><input
                 type="number"
                 class="form-control"
@@ -969,29 +973,29 @@
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Status</label
+              <label data-i18n="pm.status">Status</label
               ><select class="form-control form-select" id="pm-status">
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
+                <option value="active" data-i18n="status.active">Active</option>
+                <option value="inactive" data-i18n="status.inactive">Inactive</option>
               </select>
             </div>
             <div class="form-group">
-              <label style="margin-bottom:10px;display:block">Free Delivery</label>
+              <label style="margin-bottom:10px;display:block" data-i18n="pm.freeDelivery">Free Delivery</label>
               <div style="display:flex;align-items:center;gap:10px">
                 <label class="fd-switch">
                   <input type="checkbox" id="pm-free-delivery">
                   <span class="fd-switch-slider"></span>
                 </label>
-                <span style="font-size:13px;color:var(--g600)">Ships free regardless of order total</span>
+                <span style="font-size:13px;color:var(--g600)" data-i18n="pm.freeDeliveryHint">Ships free regardless of order total</span>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button class="btn-secondary" onclick="closeModal('product-modal')">
-            Cancel</button
+            <span data-i18n="common.cancel">Cancel</span></button
           ><button class="btn-primary" id="pm-save-btn" onclick="saveProduct()">
-            Save Product
+            <span data-i18n="pm.save">Save Product</span>
           </button>
         </div>
       </div>
@@ -1018,33 +1022,33 @@
         </div>
         <div class="modal-body">
           <div class="form-group" style="margin-bottom:14px">
-            <label>Name (English) *</label>
+            <label data-i18n="cat.nameEn">Name (English) *</label>
             <input type="text" class="form-control" id="cat-name-en" placeholder="e.g. Lipstick" />
           </div>
           <div class="form-group" style="margin-bottom:14px">
-            <label>Name (French)</label>
+            <label data-i18n="cat.nameFr">Name (French)</label>
             <input type="text" class="form-control" id="cat-name-fr" placeholder="ex. Rouge à lèvres" />
           </div>
           <div class="form-group" style="margin-bottom: 14px">
-            <label>Description</label>
+            <label data-i18n="cat.desc">Description</label>
             <input type="text" class="form-control" id="cat-desc" placeholder="Optional short description" />
           </div>
           <div class="sub-adder">
-            <div class="sub-adder-title">Sub-categories (optional)</div>
+            <div class="sub-adder-title" data-i18n="cat.subs">Sub-categories (optional)</div>
             <div id="sub-items-list"></div>
             <button class="btn-add-sub" onclick="addSubItem()">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <line x1="12" y1="5" x2="12" y2="19" />
                 <line x1="5" y1="12" x2="19" y2="12" /></svg
-              >Add Sub-category
+              ><span data-i18n="cat.addSub">Add Sub-category</span>
             </button>
           </div>
         </div>
         <div class="modal-footer">
           <button class="btn-secondary" onclick="closeModal('cat-modal')">
-            Cancel</button
+            <span data-i18n="common.cancel">Cancel</span></button
           ><button class="btn-primary" onclick="saveCat()">
-            Save Category
+            <span data-i18n="cat.save">Save Category</span>
           </button>
         </div>
       </div>
@@ -1054,24 +1058,24 @@
     <div class="modal-overlay" id="subcat-edit-modal">
       <div class="modal" style="max-width: 400px">
         <div class="modal-header">
-          <div class="modal-title">Edit Sub-Category</div>
+          <div class="modal-title" data-i18n="subcat.editTitle">Edit Sub-Category</div>
           <button class="modal-close" onclick="closeModal('subcat-edit-modal')">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
         <div class="modal-body">
           <div class="form-group" style="margin-bottom:14px">
-            <label>Name (English) *</label>
+            <label data-i18n="subcat.nameEn">Name (English) *</label>
             <input type="text" class="form-control" id="subcat-name-en" placeholder="e.g. Matte" />
           </div>
           <div class="form-group" style="margin-bottom:14px">
-            <label>Name (French)</label>
+            <label data-i18n="subcat.nameFr">Name (French)</label>
             <input type="text" class="form-control" id="subcat-name-fr" placeholder="ex. Mat" />
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn-secondary" onclick="closeModal('subcat-edit-modal')">Cancel</button>
-          <button class="btn-primary" onclick="saveSubCat()">Save Changes</button>
+          <button class="btn-secondary" onclick="closeModal('subcat-edit-modal')"><span data-i18n="common.cancel">Cancel</span></button>
+          <button class="btn-primary" onclick="saveSubCat()"><span data-i18n="subcat.save">Save Changes</span></button>
         </div>
       </div>
     </div>
@@ -1080,7 +1084,7 @@
     <div class="modal-overlay" id="delivery-modal">
       <div class="modal" style="max-width: 480px">
         <div class="modal-header">
-          <div class="modal-title" id="delivery-modal-title">Add Wilaya</div>
+          <div class="modal-title" id="delivery-modal-title" data-i18n="dm.addTitle">Add Wilaya</div>
           <button class="modal-close" onclick="closeModal('delivery-modal')">
             <svg
               width="18"
@@ -1097,7 +1101,7 @@
         </div>
         <div class="modal-body">
           <div class="form-group" style="margin-bottom: 16px">
-            <label>Wilaya Name *</label>
+            <label data-i18n="dm.wilayaName">Wilaya Name *</label>
             <input
               type="text"
               class="form-control"
@@ -1107,7 +1111,7 @@
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Home Delivery Price (DA) *</label>
+              <label data-i18n="dm.homePrice">Home Delivery Price (DA) *</label>
               <input
                 type="number"
                 class="form-control"
@@ -1117,7 +1121,7 @@
               />
             </div>
             <div class="form-group">
-              <label>Office / Desk Price (DA) *</label>
+              <label data-i18n="dm.officePrice">Office / Desk Price (DA) *</label>
               <input
                 type="number"
                 class="form-control"
@@ -1130,8 +1134,8 @@
         </div>
         <div class="modal-footer">
           <button class="btn-secondary" onclick="closeModal('delivery-modal')">
-            Cancel</button
-          ><button class="btn-primary" onclick="saveDelivery()">Save</button>
+            <span data-i18n="common.cancel">Cancel</span></button
+          ><button class="btn-primary" onclick="saveDelivery()"><span data-i18n="dm.save">Save</span></button>
         </div>
       </div>
     </div>
@@ -1154,13 +1158,13 @@
             <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
           </svg>
         </div>
-        <div class="confirm-title">Are you sure?</div>
+        <div class="confirm-title" data-i18n="confirm.title">Are you sure?</div>
         <div class="confirm-msg" id="confirm-msg">
           This action cannot be undone.
         </div>
         <div class="confirm-actions">
-          <button class="btn-cancel" onclick="closeConfirm()">Cancel</button
-          ><button class="btn-danger" id="confirm-ok">Delete</button>
+          <button class="btn-cancel" onclick="closeConfirm()" data-i18n="common.cancel">Cancel</button
+          ><button class="btn-danger" id="confirm-ok" data-i18n="confirm.delete">Delete</button>
         </div>
       </div>
     </div>
@@ -1179,6 +1183,6 @@
       ><span id="toast-msg">Done!</span>
     </div>
 
-    <script src="/supplements/panel4rz/index.js?v=19"></script>
+    <script src="/supplements/panel4rz/index.js?v=20"></script>
   </body>
 </html>
