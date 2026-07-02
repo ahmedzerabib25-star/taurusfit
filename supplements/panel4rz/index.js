@@ -15,7 +15,7 @@
       }
 
       // ── STATE ──
-      let adminLang = localStorage.getItem("admin_lang") || "en";
+      let adminLang = localStorage.getItem("admin_lang") || "fr";
       let sidebarCollapsed = false;
       let editingProductId = null;
       let editingDeliveryId = null;
