@@ -36,15 +36,17 @@
         <div class="footer-grid">
           <div class="footer-brand">
             <a href="/" class="footer-logo-link">
-              <img src="/images/logo-dark.png" alt="Luxury Secret" class="footer-brand-logo" />
+              <img src="/images/logo-dark.png" alt="Maison Comfort" class="footer-brand-logo" />
             </a>
-            <p data-i18n="footer.brand.desc">Algeria's premier destination for exclusive cosmetics and skincare. We bring world-class beauty formulations directly to your door.</p>
+            <p data-i18n="footer.brand.desc">Algeria's destination for handpicked carpets and home furnishings. We bring quality pieces directly to your door.</p>
             <div class="social-links">
-              <span class="social-link" aria-label="Facebook">f</span>
-              <span class="social-link" aria-label="Instagram">
+              <a href="https://www.facebook.com/profile.php?id=61559354403999" class="social-link" aria-label="Facebook" target="_blank" rel="noopener">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              </a>
+              <a href="https://www.instagram.com/all.in_one1dz?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
-              </span>
-              <a href="https://wa.me/231770058072" class="social-link" aria-label="WhatsApp" target="_blank" rel="noopener">
+              </a>
+              <a href="https://wa.me/213549299277" class="social-link" aria-label="WhatsApp" target="_blank" rel="noopener">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>
               </a>
             </div>
@@ -82,7 +84,7 @@
           </div>
         </div>
         <div class="footer-bottom">
-          <p>© <span id="footerYear"></span> Luxury Secret Algeria. <span data-i18n="footer.rights">All rights reserved.</span></p>
+          <p>© <span id="footerYear"></span> Maison Comfort Algeria. <span data-i18n="footer.rights">All rights reserved.</span></p>
         </div>
       </div>
     </footer>
@@ -102,7 +104,7 @@
             </div>
             <div class="about-card-text">
               <h4 data-i18n="shipping.item1.title">Nationwide Delivery</h4>
-              <p data-i18n="shipping.item1.text">Delivery to all 58 wilayas via Imir Logistics.</p>
+              <p data-i18n="shipping.item1.text">We deliver to all 69 Wilayas across Algeria with care and speed via Imir Logistics.</p>
             </div>
           </div>
           <div class="about-card">
@@ -110,8 +112,8 @@
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8l-8 8M8 8l8 8"/></svg>
             </div>
             <div class="about-card-text">
-              <h4 data-i18n="shipping.item2.title">Free Delivery</h4>
-              <p data-i18n="shipping.item2.text">Orders over 15,000 DA enjoy free delivery!</p>
+              <h4 data-i18n="shipping.item2.title">Complimentary Shipping</h4>
+              <p data-i18n="shipping.item2.text">Orders exceeding 15,000 DA enjoy complimentary shipping. Standard rates apply otherwise.</p>
             </div>
           </div>
           <div class="about-card">
@@ -119,8 +121,8 @@
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
             <div class="about-card-text">
-              <h4 data-i18n="shipping.item3.title">Standard Timing</h4>
-              <p data-i18n="shipping.item3.text">Orders are processed within 24 hours.</p>
+              <h4 data-i18n="shipping.item3.title">Dispatch Timeline</h4>
+              <p data-i18n="shipping.item3.text">Your orders are processed within 24 hours. Delivery takes 2-4 business days for major metropolitan hubs.</p>
             </div>
           </div>
         </div>
@@ -140,8 +142,8 @@
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             </div>
             <div class="about-card-text">
-              <h4 data-i18n="returns.item1.title">Return Policy</h4>
-              <p data-i18n="returns.item1.text">7 days to return unopened products.</p>
+              <h4 data-i18n="returns.item1.title">Exchanges & Returns</h4>
+              <p data-i18n="returns.item1.text">We offer a 7-day return policy for unopened items in their original packaging with intact seals.</p>
             </div>
           </div>
           <div class="about-card">
@@ -149,8 +151,8 @@
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             </div>
             <div class="about-card-text">
-              <h4 data-i18n="returns.item2.title">Easy Process</h4>
-              <p data-i18n="returns.item2.text">Contact us via WhatsApp or Instagram.</p>
+              <h4 data-i18n="returns.item2.title">Easy Support</h4>
+              <p data-i18n="returns.item2.text">Contact us via WhatsApp or Instagram to initiate a return. We will arrange the courier return for you.</p>
             </div>
           </div>
           <div class="about-card">
@@ -158,8 +160,8 @@
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
             </div>
             <div class="about-card-text">
-              <h4 data-i18n="returns.item3.title">Refund Method</h4>
-              <p data-i18n="returns.item3.text">Store credit or exchanges available.</p>
+              <h4 data-i18n="returns.item3.title">Maison Credit</h4>
+              <p data-i18n="returns.item3.text">Following inspection, we issue store credit, exchanges, or refunds, ensuring your satisfaction.</p>
             </div>
           </div>
         </div>
@@ -170,8 +172,8 @@
       <div class="about-modal" role="dialog" aria-modal="true">
         <button class="about-close" onclick="closeAboutModal()" aria-label="Close">&#x2715;</button>
         <div class="about-header">
-          <div class="about-brand">LUXURY<span>SECRET</span></div>
-          <div class="about-sub">Beauty & Cosmetics</div>
+          <div class="about-brand">MAISON <span>COMFORT</span></div>
+          <div class="about-sub">Carpets &amp; Home Furnishings</div>
         </div>
         <div class="about-body">
           <div class="about-card">
@@ -179,8 +181,8 @@
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
             <div class="about-card-text">
-              <h4 data-i18n="about.who.title">Who We Are</h4>
-              <p data-i18n="about.who.text">Algeria's premier luxury cosmetics destination.</p>
+              <h4 data-i18n="about.who.title">Our Heritage</h4>
+              <p data-i18n="about.who.text">Maison Comfort is a home furnishings house, dedicated to bringing carpets and decor of lasting quality to Algerian homes.</p>
             </div>
           </div>
           <div class="about-card">
@@ -188,13 +190,13 @@
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
             </div>
             <div class="about-card-text">
-              <h4 data-i18n="about.order.title">How to Order</h4>
-              <p data-i18n="about.order.text">Simple process, cash on delivery.</p>
+              <h4 data-i18n="about.order.title">How To Order</h4>
+              <p data-i18n="about.order.text">Choose your carpet's size and color, then add it to your cart. Complete your address without registration, and enjoy careful Cash on Arrival delivery.</p>
             </div>
           </div>
         </div>
         <div class="about-cta-wrap">
-          <a href="/products" class="about-cta" data-i18n="about.cta">Shop Now</a>
+          <a href="/products" class="about-cta" data-i18n="about.cta">Shop Collection</a>
         </div>
       </div>
     </div>

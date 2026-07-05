@@ -3,16 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Luxury Secret – Admin Panel</title>
+    <title>Maison Comfort – Admin Panel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" href="/images/favicon.ico" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/supplements/supabase-client.js?v=6"></script>
-    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=12" />
+    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=17" />
   </head>
   <body>
 <div class="loading-overlay" id="loading-overlay">
@@ -25,7 +26,7 @@
       <aside id="sidebar">
         <div class="sb-header">
           <div class="sb-logo-img-wrap">
-            <img src="/images/logo.png" alt="Luxury Secret" class="sb-logo-img" />
+            <img src="/images/logo.png" alt="Maison Comfort" class="sb-logo-img" />
           </div>
           <button class="sb-toggle" onclick="toggleSidebar()">
             <svg
@@ -197,9 +198,26 @@
             <span id="last-updated" data-i18n="tb.live">Live</span>
           </div>
           <div class="tb-actions">
+            <div class="tb-notif-wrap" id="tb-notif-wrap">
+              <button class="tb-icon-btn tb-notif-btn" onclick="toggleNotifPanel(event)" title="Notifications" aria-label="Notifications">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                <span class="tb-notif-badge" id="tb-notif-badge" style="display:none">0</span>
+              </button>
+              <div class="tb-notif-panel" id="tb-notif-panel">
+                <div class="tb-notif-panel-hd">
+                  <span data-i18n="notif.title">Notifications</span>
+                  <button class="tb-notif-clear" onclick="clearAllNotifs()" data-i18n="notif.clear">Clear all</button>
+                </div>
+                <div class="tb-notif-list" id="tb-notif-list"></div>
+              </div>
+            </div>
             <div class="tb-lang-toggle">
               <button class="tb-lang-btn" id="lang-btn-en" onclick="switchAdminLang('en')">EN</button>
               <button class="tb-lang-btn" id="lang-btn-fr" onclick="switchAdminLang('fr')">FR</button>
+              <button class="tb-lang-btn" id="lang-btn-ar" onclick="switchAdminLang('ar')">AR</button>
             </div>
 <button class="tb-logout" onclick="doLogout()">
               <svg
@@ -847,21 +865,31 @@
           <div class="form-row">
             <div class="form-group" style="flex:2">
               <label data-i18n="pm.nameEn">Product Name (English) *</label>
-              <input type="text" class="form-control" id="pm-name-en" placeholder="e.g. Velvet Lip Gloss No.5" />
+              <input type="text" class="form-control" id="pm-name-en" placeholder="e.g. Berber Wool Rug 200x300" />
             </div>
             <div class="form-group">
               <label data-i18n="pm.brandEn">Brand (English)</label>
-              <input type="text" class="form-control" id="pm-brand-en" placeholder="e.g. MAC Cosmetics" />
+              <input type="text" class="form-control" id="pm-brand-en" placeholder="e.g. Maison Comfort" />
             </div>
           </div>
           <div class="form-row">
             <div class="form-group" style="flex:2">
               <label data-i18n="pm.nameFr">Product Name (French)</label>
-              <input type="text" class="form-control" id="pm-name-fr" placeholder="ex. Gloss velours No.5" />
+              <input type="text" class="form-control" id="pm-name-fr" placeholder="ex. Tapis Berbère Laine 200x300" />
             </div>
             <div class="form-group">
               <label data-i18n="pm.brandFr">Brand (French)</label>
-              <input type="text" class="form-control" id="pm-brand-fr" placeholder="ex. MAC Cosmétiques" />
+              <input type="text" class="form-control" id="pm-brand-fr" placeholder="ex. Maison Comfort" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group" style="flex:2">
+              <label data-i18n="pm.nameAr">Product Name (Arabic)</label>
+              <input type="text" class="form-control" id="pm-name-ar" placeholder="مثال: سجادة بربرية صوف 200x300" dir="rtl" style="text-align:right;font-family:'Cairo','Tajawal',sans-serif" />
+            </div>
+            <div class="form-group">
+              <label data-i18n="pm.brandAr">Brand (Arabic)</label>
+              <input type="text" class="form-control" id="pm-brand-ar" placeholder="ميزون كومفور" dir="rtl" style="text-align:right;font-family:'Cairo','Tajawal',sans-serif" />
             </div>
           </div>
           <div class="form-group" style="margin-bottom: 16px">
@@ -879,6 +907,7 @@
                 <div style="display:flex;gap:4px;margin-left:auto">
                   <button type="button" class="rte-lang-tab active" id="desc-tab-en" onclick="switchDescTab('en')">EN</button>
                   <button type="button" class="rte-lang-tab" id="desc-tab-fr" onclick="switchDescTab('fr')">FR</button>
+                  <button type="button" class="rte-lang-tab" id="desc-tab-ar" onclick="switchDescTab('ar')">AR</button>
                 </div>
               </div>
               <div class="rte-wrap">
@@ -900,6 +929,7 @@
                 </div>
                 <div class="rte-editor" id="pm-desc-en" contenteditable="true" spellcheck="true" data-placeholder="Describe the product (English)…"></div>
                 <div class="rte-editor" id="pm-desc-fr" contenteditable="true" spellcheck="true" data-placeholder="Décrivez le produit (Français)…" style="display:none"></div>
+                <div class="rte-editor" id="pm-desc-ar" contenteditable="true" spellcheck="true" dir="rtl" style="display:none;text-align:right;font-family:'Cairo','Tajawal',sans-serif" data-placeholder="صف المنتج (بالعربية)…"></div>
               </div>
             </div>
           </div>
@@ -1023,15 +1053,23 @@
         <div class="modal-body">
           <div class="form-group" style="margin-bottom:14px">
             <label data-i18n="cat.nameEn">Name (English) *</label>
-            <input type="text" class="form-control" id="cat-name-en" placeholder="e.g. Lipstick" />
+            <input type="text" class="form-control" id="cat-name-en" placeholder="e.g. Carpets" />
           </div>
           <div class="form-group" style="margin-bottom:14px">
             <label data-i18n="cat.nameFr">Name (French)</label>
-            <input type="text" class="form-control" id="cat-name-fr" placeholder="ex. Rouge à lèvres" />
+            <input type="text" class="form-control" id="cat-name-fr" placeholder="ex. Tapis" />
+          </div>
+          <div class="form-group" style="margin-bottom:14px">
+            <label data-i18n="cat.nameAr">Name (Arabic)</label>
+            <input type="text" class="form-control" id="cat-name-ar" placeholder="مثال: سجاد" dir="rtl" style="text-align:right;font-family:'Cairo','Tajawal',sans-serif" />
           </div>
           <div class="form-group" style="margin-bottom: 14px">
             <label data-i18n="cat.desc">Description</label>
             <input type="text" class="form-control" id="cat-desc" placeholder="Optional short description" />
+          </div>
+          <div class="form-group" style="margin-bottom: 16px">
+            <label data-i18n="cat.image">Category Image</label>
+            <div id="cat-image-grid" class="images-grid"></div>
           </div>
           <div class="sub-adder">
             <div class="sub-adder-title" data-i18n="cat.subs">Sub-categories (optional)</div>
@@ -1066,11 +1104,15 @@
         <div class="modal-body">
           <div class="form-group" style="margin-bottom:14px">
             <label data-i18n="subcat.nameEn">Name (English) *</label>
-            <input type="text" class="form-control" id="subcat-name-en" placeholder="e.g. Matte" />
+            <input type="text" class="form-control" id="subcat-name-en" placeholder="e.g. Wool" />
           </div>
           <div class="form-group" style="margin-bottom:14px">
             <label data-i18n="subcat.nameFr">Name (French)</label>
-            <input type="text" class="form-control" id="subcat-name-fr" placeholder="ex. Mat" />
+            <input type="text" class="form-control" id="subcat-name-fr" placeholder="ex. Laine" />
+          </div>
+          <div class="form-group" style="margin-bottom:14px">
+            <label data-i18n="subcat.nameAr">Name (Arabic)</label>
+            <input type="text" class="form-control" id="subcat-name-ar" placeholder="مثال: صوف" dir="rtl" style="text-align:right;font-family:'Cairo','Tajawal',sans-serif" />
           </div>
         </div>
         <div class="modal-footer">
@@ -1183,6 +1225,6 @@
       ><span id="toast-msg">Done!</span>
     </div>
 
-    <script src="/supplements/panel4rz/index.js?v=22"></script>
+    <script src="/supplements/panel4rz/index.js?v=26"></script>
   </body>
 </html>

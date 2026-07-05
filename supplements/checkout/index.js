@@ -377,7 +377,7 @@
         const t = i18n[currentLang] || i18n.en;
         return `
           <div id="bulkNoticeInCart">
-            <a href="https://wa.me/231770058072" target="_blank" class="bulk-notice-content">
+            <a href="https://wa.me/213549299277" target="_blank" class="bulk-notice-content">
               <div class="bulk-notice-icon"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
               <div>
                 <span class="bulk-notice-tag" data-i18n="detail.bulkLabel">${t["detail.bulkLabel"]}</span>
@@ -480,43 +480,34 @@
          CATEGORY NAV
       ══════════════════════════════════════════════════════ */
       function renderCatNav(cats, subs) {
-        const inner = document.getElementById("catNavInner");
         const mobile = document.getElementById("mobileCatItems");
-        if (!inner || !mobile) return;
-        let dHTML = "",
-          mHTML = "";
-        cats.forEach((cat) => {
+        if (!mobile) return;
+        const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>`;
+        mobile.innerHTML = cats.map((cat) => {
           const catSubs = subs.filter(
-            (s) =>
-              Array.isArray(s.categoryIds) && s.categoryIds.includes(cat.id),
+            (s) => Array.isArray(s.categoryIds) && s.categoryIds.includes(cat.id),
           );
-          if (catSubs.length > 0) {
-            dHTML += `<div class="cat-item">
-              <a href="/products" class="cat-link">
-                ${cat.name}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
-              </a>
-              <div class="dropdown">
-                ${catSubs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.name)}">${s.name}</a>`).join("")}
-              </div>
-            </div>`;
-            mHTML += `<div class="m-cat-item">
-              <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
-                ${cat.name} <span class="m-arrow">›</span>
+          const label = (typeof catName === "function" ? catName(cat) : null) || cat.name;
+          if (catSubs.length === 0) {
+            return `<a href="/products?cat=${encodeURIComponent(cat.id)}" class="m-link">${label}</a>`;
+          }
+          return `
+            <div class="m-cat-item">
+              <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
+                <span>${label}</span> ${chevron}
               </button>
               <div class="m-sub">
-                ${catSubs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.name)}" class="m-sub-link">${s.name}</a>`).join("")}
+                <a href="/products?cat=${encodeURIComponent(cat.id)}" class="m-sub-link m-sub-all">${label} — ${currentLang === "ar" ? "الكل" : currentLang === "fr" ? "Tout voir" : "View All"}</a>
+                ${catSubs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.id)}" class="m-sub-link">${(typeof catName === "function" ? catName(s) : null) || s.name}</a>`).join("")}
               </div>
             </div>`;
-          } else {
-            dHTML += `<div class="cat-item"><a href="/products" class="cat-link">${cat.name}</a></div>`;
-            mHTML += `<a href="/products" class="mobile-nav-link">${cat.name}</a>`;
-          }
-        });
-        inner.innerHTML = dHTML;
-        // inject before the language section in mobile menu
-        const mobileCatItems = document.getElementById("mobileCatItems");
-        if (mobileCatItems) mobileCatItems.innerHTML = mHTML;
+        }).join("");
+      }
+
+      function scrollToFooter(e) {
+        if (e) e.preventDefault();
+        const footer = document.querySelector(".site-footer") || document.getElementById("footerPlaceholder");
+        if (footer) footer.scrollIntoView({ behavior: "smooth", block: "start" });
       }
 
       var _wlStart = Date.now();
@@ -3022,19 +3013,6 @@
         }
       });
 
-      function openMobileSearch() {
-        document.getElementById("mobileSearchOverlay").style.display = "flex";
-        document.body.style.overflow = "hidden";
-        setTimeout(
-          () => document.getElementById("mobileSearchInput").focus(),
-          50,
-        );
-      }
-      function closeMobileSearch() {
-        document.getElementById("mobileSearchOverlay").style.display = "none";
-        document.body.style.overflow = "";
-      }
-
       /* ══════════════════════════════════════════════════════
          MOBILE MENU
       ══════════════════════════════════════════════════════ */
@@ -3078,6 +3056,7 @@
           "nav.home": "Home",
           "nav.products": "Products",
           "nav.contact": "Contact",
+          "search.placeholder": "Search carpets, rugs, home decor…",
           "form.firstName": "First Name",
           "form.lastName": "Last Name",
           "form.phone": "Phone Number",
@@ -3085,8 +3064,8 @@
           "form.address": "Address (Optional)",
           "form.commune": "Commune",
           "form.deliveryType": "Delivery Type",
-          "form.homeDelivery": "🏠 Home Delivery",
-          "form.officePick": "📦 Office Pickup",
+          "form.homeDelivery": "Home Delivery",
+          "form.officePick": "Office Pickup",
           "form.deliveredDoor": "Delivered to your door",
           "form.pickupOffice": "Pickup at nearest office",
           "form.selectWilaya": "Select wilaya…",
@@ -3096,40 +3075,64 @@
           "form.total": "Total",
           "form.confirmOrder": "CONFIRM ORDER",
           "form.deliveryDetails": "Delivery Details",
+          "form.personalInfo": "Personal Information",
+          "form.deliveryLocation": "Delivery Location",
+          "modal.shade": "Color",
+          "modal.size": "Size",
           "checkout.title": "Checkout",
           "checkout.yourOrder": "Your Order",
           "checkout.empty": "Your cart is empty",
           "checkout.goShop": "Continue Shopping",
           "checkout.subtotal": "Subtotal",
+          "checkout.stepCart": "Cart",
+          "checkout.stepDelivery": "Delivery",
+          "checkout.stepConfirm": "Confirmed",
           "breadcrumb.home": "Home",
           "breadcrumb.cart": "Cart",
           "breadcrumb.checkout": "Checkout",
           "detail.bulkLabel": "Wholesale Pricing",
           "detail.bulkNotice": "Ordering 5 or more? Contact us on WhatsApp for a special wholesale discount!",
           "section.alsoLike": "You May Also Like",
-          "footer.tagline":
-            "Algeria's premier cosmetics destination. Authentic luxury beauty products, fast delivery, and expert concierge support.",
-          "footer.shop": "Shop",
-          "footer.allProducts": "All Products",
-          "footer.protein": "Foundation & Concealer",
-          "footer.preworkout": "Lipstick & Lip Gloss",
-          "footer.creatine": "Skincare & Serums",
-          "footer.vitamins": "Perfumes & Fragrances",
-          "footer.info": "Information",
+          "trust.secure": "Secure Checkout",
+          "trust.protection": "Buyer Protection",
+          "trust.fast": "Fast Delivery",
+          "footer.brand.desc":
+            "Algeria's destination for handpicked carpets and home furnishings. We bring quality pieces directly to your door.",
+          "footer.links": "Quick Links",
           "footer.shipping": "Shipping Policy",
           "footer.returns": "Returns",
-          "footer.faq": "FAQ",
-          "footer.contact": "Contact Us",
-          "footer.location": "Algiers, Algeria",
+          "footer.privacy": "Privacy Policy",
+          "footer.categories": "Categories",
+          "footer.contact": "Send a Message",
           "footer.rights": "All rights reserved.",
+          "form.name": "Your Name",
+          "form.email": "Email / Phone",
+          "form.message": "Message",
+          "form.send": "Send Message",
+          "shipping.title": "Courier & Shipping",
+          "shipping.item1.title": "Nationwide Delivery",
+          "shipping.item1.text": "We deliver to all 69 Wilayas across Algeria with care and speed via Imir Logistics.",
+          "shipping.item2.title": "Complimentary Shipping",
+          "shipping.item2.text": "Orders exceeding 15,000 DA enjoy complimentary shipping. Standard rates apply otherwise.",
+          "shipping.item3.title": "Dispatch Timeline",
+          "shipping.item3.text": "Your orders are processed within 24 hours. Delivery takes 2-4 business days for major metropolitan hubs.",
+          "returns.title": "Returns & Exchange",
+          "returns.item1.title": "Exchanges & Returns",
+          "returns.item1.text": "We offer a 7-day return policy for unopened items in their original packaging with intact seals.",
+          "returns.item2.title": "Easy Support",
+          "returns.item2.text": "Contact us via WhatsApp or Instagram to initiate a return. We will arrange the courier return for you.",
+          "returns.item3.title": "Maison Credit",
+          "returns.item3.text": "Following inspection, we issue store credit, exchanges, or refunds, ensuring your satisfaction.",
+          "toast.sent": "Your message has been sent to our team.",
           "search.cancel": "Cancel",
           "success.title": "Order Placed!",
           "success.back": "Back to Products",
         },
         fr: {
           "nav.home": "Accueil",
-          "nav.products": "Produits",
+          "nav.products": "Tapis",
           "nav.contact": "Contact",
+          "search.placeholder": "Rechercher tapis, décoration…",
           "form.firstName": "Prénom",
           "form.lastName": "Nom",
           "form.phone": "Numéro de téléphone",
@@ -3137,8 +3140,8 @@
           "form.address": "Adresse (Facultatif)",
           "form.commune": "Commune",
           "form.deliveryType": "Type de livraison",
-          "form.homeDelivery": "🏠 Livraison à domicile",
-          "form.officePick": "📦 Retrait en bureau",
+          "form.homeDelivery": "Livraison à domicile",
+          "form.officePick": "Retrait en bureau",
           "form.deliveredDoor": "Livré chez vous",
           "form.pickupOffice": "Retrait au bureau le plus proche",
           "form.selectWilaya": "Choisir la wilaya…",
@@ -3148,59 +3151,134 @@
           "form.total": "Total",
           "form.confirmOrder": "CONFIRMER LA COMMANDE",
           "form.deliveryDetails": "Détails de livraison",
+          "form.personalInfo": "Informations Personnelles",
+          "form.deliveryLocation": "Lieu de Livraison",
+          "modal.shade": "Couleur",
+          "modal.size": "Taille",
           "checkout.title": "Passer la commande",
           "checkout.yourOrder": "Votre Commande",
           "checkout.empty": "Votre panier est vide",
           "checkout.goShop": "Continuer vos achats",
           "checkout.subtotal": "Sous-total",
+          "checkout.stepCart": "Panier",
+          "checkout.stepDelivery": "Livraison",
+          "checkout.stepConfirm": "Confirmée",
           "breadcrumb.home": "Accueil",
           "breadcrumb.cart": "Panier",
           "breadcrumb.checkout": "Commande",
           "detail.bulkLabel": "Prix de Gros",
           "detail.bulkNotice": "Vous en commandez 5 ou plus ? Contactez-nous sur WhatsApp pour une remise spéciale !",
           "section.alsoLike": "Vous Aimerez Aussi",
+          "trust.secure": "Paiement Sécurisé",
+          "trust.protection": "Protection Acheteur",
+          "trust.fast": "Livraison Rapide",
           "footer.brand.desc":
-            "La première destination algérienne pour les cosmétiques et soins de luxe exclusifs.",
-          "footer.links": "Liens Rapides",
-          "footer.shipping": "Politique de livraison",
+            "La destination en Algérie pour des tapis et de la décoration d'intérieur sélectionnés. Nous livrons des pièces de qualité directement à votre porte.",
+          "footer.links": "Liens rapides",
+          "footer.shipping": "Livraison",
           "footer.returns": "Retours",
+          "footer.privacy": "Politique de Confidentialité",
           "footer.categories": "Catégories",
-          "footer.contact": "Envoyer un Message",
-          "form.name": "Votre Nom",
+          "footer.contact": "Envoyer un message",
+          "footer.rights": "Tous droits réservés.",
+          "form.name": "Votre nom",
           "form.email": "Email / Téléphone",
           "form.message": "Message",
           "form.send": "Envoyer",
-          "shipping.title": "Politique de livraison",
+          "shipping.title": "Livraison & Expédition",
           "shipping.item1.title": "Livraison Nationale",
-          "shipping.item1.text": "Nous livrons dans les 58 wilayas d'Algérie via Imir Logistics. Des produits de beauté premium livrés à votre porte.",
-          "shipping.item2.title": "Livraison Gratuite",
-          "shipping.item2.text": "Les commandes de plus de 15 000 DA bénéficient de la livraison gratuite ! Pour les autres, des tarifs standards s'appliquent.",
-          "shipping.item3.title": "Délais Standards",
-          "shipping.item3.text": "Les commandes sont traitées sous 24h. La livraison prend généralement 2-3 jours ouvrables pour les grandes villes.",
-          "returns.title": "Retours & Remboursements",
+          "shipping.item1.text": "Nous livrons dans les 69 wilayas d'Algérie avec une attention particulière via Imir Logistics.",
+          "shipping.item2.title": "Livraison Offerte",
+          "shipping.item2.text": "Les commandes de plus de 15 000 DA bénéficient de la livraison offerte. Des tarifs standards s'appliquent sinon.",
+          "shipping.item3.title": "Délais de Livraison",
+          "shipping.item3.text": "Les commandes sont traitées sous 24h et livrées sous 2 à 4 jours ouvrables pour les grandes villes.",
+          "returns.title": "Retours & Échanges",
           "returns.item1.title": "Politique de Retour",
-          "returns.item1.text": "Vous avez 1 jour pour retourner un produit. Les articles doivent être non ouverts, dans leur emballage d'origine.",
-          "returns.item2.title": "Processus Facile",
-          "returns.item2.text": "Contactez-nous via WhatsApp or Instagram pour initier un retour. Nous vous guiderons étape par étape.",
-          "returns.item3.title": "Mode de Remboursement",
-          "returns.item3.text": "Une fois l'article inspecté, nous proposons des échanges ou un avoir. Les remboursements en espèces sont soumis à évaluation.",
-          "toast.sent": "Message envoyé!",
-          "footer.shop": "Boutique",
-          "footer.allProducts": "Tous les Produits",
-          "footer.protein": "Fond de Teint & Correcteur",
-          "footer.preworkout": "Rouge à Lèvres & Gloss",
-          "footer.creatine": "Soins & Sérums",
-          "footer.vitamins": "Parfums & Fragrances",
-          "footer.info": "Informations",
-          "footer.shipping": "Politique de livraison",
-          "footer.returns": "Retours",
-          "footer.faq": "FAQ",
-          "footer.contact": "Contactez-nous",
-          "footer.location": "Alger, Algérie",
-          "footer.rights": "Tous droits réservés.",
+          "returns.item1.text": "Vous disposez de 7 jours pour retourner un produit non ouvert dans son emballage d'origine, avec scellé intact.",
+          "returns.item2.title": "Assistance Dédiée",
+          "returns.item2.text": "Contactez-nous via WhatsApp ou Instagram. Nous organiserons le retour par coursier à votre convenance.",
+          "returns.item3.title": "Avoir de la Maison",
+          "returns.item3.text": "Après vérification, nous procédons à un échange ou à l'émission d'un crédit boutique pour votre entière satisfaction.",
+          "toast.sent": "Votre message a été transmis à notre équipe.",
           "search.cancel": "Annuler",
           "success.title": "Commande Passée !",
           "success.back": "Retour aux Produits",
+        },
+        ar: {
+          "nav.home": "الرئيسية",
+          "nav.products": "السجاد",
+          "nav.contact": "اتصل بنا",
+          "search.placeholder": "ابحث عن سجاد وأثاث منزلي…",
+          "form.firstName": "الاسم الأول",
+          "form.lastName": "اللقب",
+          "form.phone": "رقم الهاتف",
+          "form.wilaya": "الولاية",
+          "form.address": "العنوان (اختياري)",
+          "form.commune": "البلدية",
+          "form.deliveryType": "نوع التوصيل",
+          "form.homeDelivery": "توصيل للمنزل",
+          "form.officePick": "استلام من المكتب",
+          "form.deliveredDoor": "يُوصَل إلى بابك",
+          "form.pickupOffice": "استلام من أقرب مكتب",
+          "form.selectWilaya": "اختر الولاية…",
+          "form.selectWilayaFirst": "اختر الولاية أولاً",
+          "form.orderSummary": "ملخص الطلب",
+          "form.delivery": "التوصيل",
+          "form.total": "الإجمالي",
+          "form.confirmOrder": "تأكيد الطلب",
+          "form.deliveryDetails": "تفاصيل التوصيل",
+          "form.personalInfo": "المعلومات الشخصية",
+          "form.deliveryLocation": "مكان التوصيل",
+          "modal.shade": "اللون",
+          "modal.size": "المقاس",
+          "checkout.title": "إتمام الطلب",
+          "checkout.yourOrder": "طلبك",
+          "checkout.empty": "سلتك فارغة",
+          "checkout.goShop": "متابعة التسوق",
+          "checkout.subtotal": "المجموع الفرعي",
+          "checkout.stepCart": "السلة",
+          "checkout.stepDelivery": "التوصيل",
+          "checkout.stepConfirm": "مؤكد",
+          "breadcrumb.home": "الرئيسية",
+          "breadcrumb.cart": "السلة",
+          "breadcrumb.checkout": "الطلب",
+          "detail.bulkLabel": "أسعار الجملة",
+          "detail.bulkNotice": "تطلب 5 قطع أو أكثر؟ تواصل معنا عبر واتساب للحصول على خصم خاص للجملة!",
+          "section.alsoLike": "قد يعجبك أيضًا",
+          "trust.secure": "دفع آمن",
+          "trust.protection": "حماية المشتري",
+          "trust.fast": "توصيل سريع",
+          "footer.brand.desc":
+            "وجهتك في الجزائر لسجاد وأثاث منزلي مختار بعناية. نوصل لك قطعًا عالية الجودة مباشرة إلى بابك.",
+          "footer.links": "روابط سريعة",
+          "footer.shipping": "سياسة الشحن",
+          "footer.returns": "الإرجاع",
+          "footer.privacy": "سياسة الخصوصية",
+          "footer.categories": "الفئات",
+          "footer.contact": "أرسل رسالة",
+          "footer.rights": "جميع الحقوق محفوظة.",
+          "form.name": "الاسم الكامل",
+          "form.email": "البريد الإلكتروني / الهاتف",
+          "form.message": "الرسالة",
+          "form.send": "إرسال",
+          "shipping.title": "التوصيل والشحن",
+          "shipping.item1.title": "توصيل وطني",
+          "shipping.item1.text": "نوصل إلى جميع الولايات الـ69 في الجزائر بعناية وسرعة عبر Imir Logistics.",
+          "shipping.item2.title": "شحن مجاني",
+          "shipping.item2.text": "الطلبات التي تتجاوز 15,000 دج تستفيد من شحن مجاني. تُطبَّق أسعار عادية غير ذلك.",
+          "shipping.item3.title": "مدة المعالجة",
+          "shipping.item3.text": "تتم معالجة طلباتك خلال 24 ساعة. يستغرق التوصيل من 2 إلى 4 أيام عمل للمدن الكبرى.",
+          "returns.title": "الإرجاع والاستبدال",
+          "returns.item1.title": "سياسة الإرجاع",
+          "returns.item1.text": "لديك 7 أيام لإرجاع منتج غير مفتوح في عبوته الأصلية وبختمه سليمًا.",
+          "returns.item2.title": "دعم سهل",
+          "returns.item2.text": "تواصل معنا عبر واتساب أو إنستغرام لبدء عملية الإرجاع. سننظم استرجاع الطرد نيابة عنك.",
+          "returns.item3.title": "رصيد الميزون",
+          "returns.item3.text": "بعد الفحص، نقدم رصيدًا في المتجر أو استبدالًا أو استرجاعًا لضمان رضاك التام.",
+          "toast.sent": "تم إرسال رسالتك إلى فريقنا.",
+          "search.cancel": "إلغاء",
+          "success.title": "تم تأكيد الطلب!",
+          "success.back": "العودة إلى المنتجات",
         },
       };
 
@@ -3226,8 +3304,10 @@
         localStorage.setItem("bybens_lang", lang);
         currentLang = lang;
         const t = i18n[lang];
+        const isRtl = lang === "ar";
         document.documentElement.lang = lang;
-        document.documentElement.dir = "ltr";
+        document.documentElement.dir = isRtl ? "rtl" : "ltr";
+        document.body.classList.toggle("lang-ar", isRtl);
         document.querySelectorAll("[data-i18n]").forEach((el) => {
           const key = el.getAttribute("data-i18n");
           if (t[key] !== undefined) {
@@ -3250,8 +3330,23 @@
             ? t["form.selectWilayaFirst"] || "Select wilaya first"
             : t["form.selectWilaya"] || "Select commune…";
         }
+        sanitizeFooterAndModals(lang);
         // Re-render checkout items to update translated empty state if needed
         renderCheckoutItems();
+      }
+
+      function sanitizeFooterAndModals(lang) {
+        const footerText = document.querySelector('.footer-bottom p');
+        if (footerText) {
+          const year = new Date().getFullYear();
+          footerText.innerHTML = lang === 'fr'
+            ? `© ${year} Maison Comfort Algérie. Tous droits réservés.`
+            : lang === 'ar'
+            ? `© ${year} ميزون كومفور الجزائر. جميع الحقوق محفوظة.`
+            : `© ${year} Maison Comfort Algeria. All rights reserved.`;
+        }
+        document.querySelectorAll('.about-brand').forEach((brand) => { brand.innerHTML = `MAISON <span>COMFORT</span>`; });
+        document.querySelectorAll('.about-sub').forEach((sub) => { sub.textContent = 'Maison Comfort'; });
       }
 
       /* ══════════════════════════════════════════════════════
@@ -3261,14 +3356,20 @@
         "scroll",
         () => {
           document
-            .getElementById("site-header")
-            .classList.toggle("scrolled", window.scrollY > 12);
-          document
             .getElementById("scrollTop")
             .classList.toggle("visible", window.scrollY > 400);
         },
         { passive: true },
       );
+
+      (function () {
+        var bar = document.getElementById('scroll-progress');
+        if (!bar) return;
+        window.addEventListener('scroll', function () {
+          var scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+          bar.style.width = Math.min(scrolled, 100) + '%';
+        }, { passive: true });
+      })();
 
       /* ══════════════════════════════════════════════════════
          INIT

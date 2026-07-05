@@ -6,46 +6,46 @@
 const i18n = {
   en: {
     "nav.home": "Home",
-    "nav.products": "Cosmetics",
+    "nav.products": "Products",
     "nav.contact": "Contact",
     "nav.login": "Login",
-    "hero.eyebrow": "An Exclusive Collection of Haute Cosmetics",
-    "hero.title": "THE ART OF<em>TIMELESS</em>BEAUTY",
+    "hero.eyebrow": "Carpets & Home Furnishings, Made for Algerian Homes",
+    "hero.title": "THE ART OF <em>EVERYDAY</em> COMFORT",
     "hero.desc":
-      "Luxury Secret is an editorial house of cosmetics and skincare. Explore high-performance formulas, rich pigments, and exquisite rituals designed to reveal your inner radiance.",
+      "Maison Comfort brings handpicked carpets and home furnishings to every corner of Algeria. Rich textures, timeless designs, and pieces built to make your house feel like home.",
     "hero.cta1": "Shop Now",
     "hero.cta2": "Learn More",
     "hero.stat1": "Happy Customers",
-    "hero.stat2": "Signature Products",
-    "hero.stat3": "Nationwide Dispatch",
-    "trust.delivery": "Complimentary Shipping",
-    "trust.delivery.sub": "On all orders above 15,000 DA",
-    "trust.authentic": "Maison Guarantee",
-    "trust.authentic.sub": "100% certified authentic products",
-    "trust.wilayas": "Nationwide Delivery",
-    "trust.wilayas.sub": "Exquisite care to all 69 Wilayas",
-    "trust.payment": "Cash on Arrival",
-    "trust.payment.sub": "Seamless payment at your door",
-    "trust.support": "Cosmetic Concierge",
-    "trust.support.sub": "24/7 bespoke advice & care",
-    "products.label": "Curated Signatures",
-    "products.title": "THE ICONS",
+    "hero.stat2": "Carpets & Pieces",
+    "hero.stat3": "Nationwide Delivery",
+    "trust.delivery": "Delivered With Care",
+    "trust.delivery.sub": "Complimentary on all orders above 15,000 DA",
+    "trust.authentic": "Woven to Last",
+    "trust.authentic.sub": "Every piece quality-checked before it reaches you",
+    "trust.wilayas": "Door to Door, Nationwide",
+    "trust.wilayas.sub": "Reaching all 69 Wilayas of Algeria",
+    "trust.payment": "Pay When It Arrives",
+    "trust.payment.sub": "Simple cash on delivery, no surprises",
+    "trust.support": "Guided By Our Team",
+    "trust.support.sub": "Personal advice to find your perfect piece",
+    "products.label": "Handpicked For Your Home",
+    "products.title": "SIGNATURE CARPETS",
     "products.viewall": "View All",
     "products.viewall.btn": "View All Products",
     "banner.intro.eyebrow": "Maison Selection",
     "banner.intro.title": "THE SIGNATURE<em>COLLECTION</em>",
-    "banner.intro.sub": "Our most coveted beauty rituals, curated for the modern connoisseur of luxury.",
+    "banner.intro.sub": "Our most-loved pieces, curated for a home that feels considered.",
     "banner.eyebrow": "Maison Capsule",
-    "banner.title": "REVEAL YOUR<em>INNER SECRET</em>",
+    "banner.title": "BRING HOME <em>NEW COMFORT</em>",
     "banner.desc":
-      "Immerse yourself in our signature selection. A curated capsule of skincare and lip formulas, crafted for the modern connoisseur.",
-    "banner.cta": "Acquire Bundle",
+      "Discover our signature selection. A curated capsule of carpets and home furnishings, chosen for warmth, texture, and lasting quality.",
+    "banner.cta": "Discover the Bundle",
     "contact.label": "Get In Touch",
     "contact.title": "CONTACT US",
     "contact.desc":
-      "Have questions about our collections? Our cosmetic experts are available to guide you.",
+      "Have questions about our collections? Our team is available to guide you.",
     "footer.brand.desc":
-      "Algeria's premier destination for exclusive cosmetics and skincare. We bring world-class beauty formulations directly to your door.",
+      "Algeria's destination for handpicked carpets and home furnishings. We bring quality pieces directly to your door.",
     "footer.links": "Quick Links",
     "footer.shipping": "Shipping Policy",
     "footer.returns": "Returns",
@@ -57,82 +57,84 @@ const i18n = {
     "form.message": "Message",
     "form.send": "Send Message",
     "btn.addcart": "Quick Shop",
-    "btn.buynow": "Discover",
+    "btn.buynow": "Buy Now",
     "about.who.title": "Our Heritage",
-    "about.who.text": "Luxury Secret is an exclusive cosmetics house, dedicated to blending pure botanicals with sophisticated cosmetic science. We provide refined skincare and high-pigment makeup that serve as a testament to modern luxury.",
-    "about.offer.title": "Our Creations",
-    "about.offer.text": "From velvety foundations and rich lip formulas to advanced botanical serums, our creations are 100% authentic, sourced directly from the world's most prestigious cosmetic laboratories.",
-    "about.order.title": "The Order Ritual",
-    "about.order.text": "Select your shade and size, then add to your personal vanity cart. Complete your address details without registration, and enjoy white-glove Cash on Arrival delivery.",
+    "about.who.text": "Maison Comfort is a home furnishings house, dedicated to bringing carpets and decor of lasting quality to Algerian homes. We provide pieces that make everyday living feel warmer.",
+    "about.offer.title": "Our Collection",
+    "about.offer.text": "From handwoven carpets to soft-pile rugs and home textiles, our pieces are sourced for durability and craftsmanship you can feel underfoot.",
+    "about.order.title": "How To Order",
+    "about.order.text": "Choose your carpet's size and color, then add it to your cart. Complete your address details without registration, and enjoy careful Cash on Arrival delivery.",
     "about.cta": "Shop Collection",
     "shipping.title": "Courier & Shipping",
-    "shipping.item1.title": "Bespoke Delivery",
-    "shipping.item1.text": "We deliver to all 69 Wilayas across Algeria with exceptional care and speed via Imir Logistics.",
-    "shipping.item2.title": "Complimentary Courier",
-    "shipping.item2.text": "Orders exceeding 15,000 DA enjoy complimentary white-glove courier shipping. Standard rates apply otherwise.",
+    "shipping.item1.title": "Nationwide Delivery",
+    "shipping.item1.text": "We deliver to all 69 Wilayas across Algeria with care and speed via Imir Logistics.",
+    "shipping.item2.title": "Complimentary Shipping",
+    "shipping.item2.text": "Orders exceeding 15,000 DA enjoy complimentary shipping. Standard rates apply otherwise.",
     "shipping.item3.title": "Dispatch Timeline",
-    "shipping.item3.text": "Your beauty orders are processed within 24 hours. Delivery takes 2-4 business days for major metropolitan hubs.",
+    "shipping.item3.text": "Your orders are processed within 24 hours. Delivery takes 2-4 business days for major metropolitan hubs.",
     "returns.title": "Returns & Exchange",
     "returns.item1.title": "Exchanges & Returns",
-    "returns.item1.text": "We offer a 7-day return policy for unopened items in their original custom packaging with intact security seals.",
-    "returns.item2.title": "Seamless Support",
-    "returns.item2.text": "Contact our Concierge via WhatsApp or Instagram to initiate a return. We will arrange the courier return for you.",
+    "returns.item1.text": "We offer a 7-day return policy for unopened items in their original packaging with intact seals.",
+    "returns.item2.title": "Easy Support",
+    "returns.item2.text": "Contact us via WhatsApp or Instagram to initiate a return. We will arrange the courier return for you.",
     "returns.item3.title": "Maison Credit",
-    "returns.item3.text": "Following inspection, we issue store credit, exchanges, or refunds, ensuring your ultimate satisfaction.",
-    "toast.added": "Added to your vanity cart",
-    "toast.sent": "Your message has been sent to our concierge.",
-    "modal.shade": "Shade / Color",
-    "modal.size": "Size / Volume",
+    "returns.item3.text": "Following inspection, we issue store credit, exchanges, or refunds, ensuring your satisfaction.",
+    "toast.added": "Added to your cart",
+    "toast.sent": "Your message has been sent to our team.",
+    "modal.shade": "Color",
+    "modal.size": "Size",
     "hiw.label": "The Order Process",
-    "hiw.sub": "Indulge in a seamless shopping experience tailored for modern luxury.",
-    "hiw.step1.title": "Select Your Shade",
-    "hiw.step1.text": "Browse our catalog of luxury skincare & cosmetics. Find your perfect shade, color, or formula and add to vanity cart.",
+    "hiw.sub": "A simple, seamless way to bring new comfort into your home.",
+    "hiw.step1.title": "Choose Your Piece",
+    "hiw.step1.text": "Browse our catalog of carpets and home furnishings. Find your perfect size, color, or material and add it to your cart.",
     "hiw.step2.title": "Confirm In Moments",
     "hiw.step2.text": "Complete checkout by providing your delivery details. No tedious registration required — checkout is direct and private.",
-    "hiw.step3.title": "White-Glove Delivery",
-    "hiw.step3.text": "We deliver across all 69 Wilayas. Inspect your package and pay cash upon arrival directly to the courier.",
+    "hiw.step3.title": "Careful Delivery",
+    "hiw.step3.text": "We deliver across all 69 Wilayas. Inspect your order and pay cash upon arrival directly to the courier.",
+    "categories.label": "Explore",
+    "categories.title": "SHOP BY CATEGORY",
   },
   fr: {
     "nav.home": "Accueil",
-    "nav.products": "Cosmétiques",
+    "nav.products": "Tapis",
     "nav.contact": "Contact",
-    "hero.eyebrow": "Une Collection Exclusive de Haute Cosmétique",
-    "hero.title": "L'ART DE LA BEAUTÉ<em>INTEMPORELLE</em>",
+    "hero.eyebrow": "Tapis & Décoration d'Intérieur, Pensés pour l'Algérie",
+    "hero.title": "L'ART DU <em>CONFORT</em> AU QUOTIDIEN",
     "hero.desc":
-      "Luxury Secret est une maison d'édition de cosmétiques et de soins de la peau. Découvrez des formules haute performance, des pigments riches et des rituels exquis conçus pour révéler votre éclat intérieur.",
+      "Maison Comfort apporte des tapis et de la décoration d'intérieur sélectionnés dans toute l'Algérie. Textures riches, designs intemporels, des pièces faites pour que votre maison se sente chez vous.",
     "hero.cta1": "Découvrir",
     "hero.cta2": "En savoir plus",
     "hero.stat1": "Clients Satisfaits",
-    "hero.stat2": "Produits Signatures",
-    "hero.stat3": "Expédition Nationale",
-    "trust.delivery": "Livraison Offerte",
-    "trust.delivery.sub": "Pour toute commande supérieure à 15 000 DA",
-    "trust.authentic": "Garantie de la Maison",
-    "trust.authentic.sub": "Produits 100% certifiés authentiques",
-    "trust.wilayas": "Livraison Nationale",
-    "trust.wilayas.sub": "Livraison soignée dans les 69 wilayas",
-    "trust.payment": "Paiement à la Réception",
-    "trust.payment.sub": "Paiement en toute simplicité",
-    "trust.support": "Concierge Beauté",
-    "trust.support.sub": "Conseils personnalisés 24h/24",
-    "products.label": "Signatures de la Maison",
-    "products.title": "LES ICÔNES",
+    "hero.stat2": "Tapis & Pièces",
+    "hero.stat3": "Livraison Nationale",
+    "trust.delivery": "Livrée avec Soin",
+    "trust.delivery.sub": "Offerte pour toute commande supérieure à 15 000 DA",
+    "trust.authentic": "Tissée pour Durer",
+    "trust.authentic.sub": "Chaque pièce contrôlée avant de vous parvenir",
+    "trust.wilayas": "Partout en Algérie",
+    "trust.wilayas.sub": "Livraison dans les 69 wilayas",
+    "trust.payment": "Payez à la Réception",
+    "trust.payment.sub": "Paiement en espèces, sans surprise",
+    "trust.support": "Accompagnés par Notre Équipe",
+    "trust.support.sub": "Des conseils pour trouver la pièce idéale",
+    "products.label": "Sélection pour Votre Maison",
+    "products.title": "TAPIS SIGNATURE",
     "products.viewall": "Voir Tout",
     "products.viewall.btn": "Voir Tous les Produits",
     "banner.intro.eyebrow": "Sélection de la Maison",
     "banner.intro.title": "LA COLLECTION<em>SIGNATURE</em>",
-    "banner.intro.sub": "Nos rituels beauté les plus convoités, sélectionnés pour la femme moderne éprise de luxe.",
+    "banner.intro.sub": "Nos pièces les plus appréciées, sélectionnées pour une maison chaleureuse.",
     "banner.eyebrow": "Coffret de la Maison",
-    "banner.title": "RÉVÉLEZ VOTRE<em>SECRET INTERNE</em>",
+    "banner.title": "RAMENEZ UN <em>NOUVEAU CONFORT</em>",
     "banner.desc":
-      "Plongez dans notre sélection emblématique. Un coffret raffiné de soins de la peau et de formules pour les lèvres, conçu pour l'esthète moderne.",
-    "banner.cta": "Acquérir le Coffret",
+      "Découvrez notre sélection emblématique. Un coffret raffiné de tapis et de décoration d'intérieur, choisis pour leur chaleur, leur texture et leur durabilité.",
+    "banner.cta": "Découvrir le Coffret",
     "contact.label": "Nous Contacter",
     "contact.title": "CONTACT",
     "contact.desc":
-      "Des questions sur nos collections? Nos conseillers beauté sont à votre entière disposition.",
+      "Des questions sur nos collections? Notre équipe est à votre entière disposition.",
     "footer.brand.desc":
-      "La première destination en Algérie pour des cosmétiques et soins exclusifs. Nous livrons la haute beauté directement à votre porte.",
+      "La destination en Algérie pour des tapis et de la décoration d'intérieur sélectionnés. Nous livrons des pièces de qualité directement à votre porte.",
     "footer.links": "Liens rapides",
     "footer.shipping": "Livraison",
     "footer.returns": "Retours",
@@ -144,40 +146,130 @@ const i18n = {
     "form.message": "Message",
     "form.send": "Envoyer",
     "btn.addcart": "Achat Rapide",
-    "btn.buynow": "Découvrir",
+    "btn.buynow": "Acheter",
     "about.who.title": "Notre Héritage",
-    "about.who.text": "Luxury Secret est une maison de cosmétiques exclusive, dédiée à l'alliance de plantes pures et d'une science cosmétique sophistiquée. Nous proposons des soins raffinés et du maquillage hautement pigmenté, témoignages du luxe moderne.",
-    "about.offer.title": "Nos Créations",
-    "about.offer.text": "Des fonds de teint veloutés aux sérums botaniques avancés, nos créations sont 100% authentiques, sourcées auprès de laboratoires prestigieux.",
-    "about.order.title": "Le Rituel de Commande",
-    "about.order.text": "Sélectionnez votre teinte et votre taille, puis ajoutez-les à votre panier de beauté. Complétez vos coordonnées de livraison sans inscription préalable, et profitez d'une livraison soignée avec paiement à la réception.",
+    "about.who.text": "Maison Comfort est une maison de décoration d'intérieur, dédiée à apporter des tapis et pièces de qualité durable aux foyers algériens. Nous proposons des pièces qui réchauffent le quotidien.",
+    "about.offer.title": "Notre Collection",
+    "about.offer.text": "Des tapis tissés main aux textiles d'intérieur, nos pièces sont choisies pour leur durabilité et un savoir-faire que l'on ressent sous les pieds.",
+    "about.order.title": "Comment Commander",
+    "about.order.text": "Sélectionnez la taille et la couleur de votre tapis, puis ajoutez-le à votre panier. Complétez vos coordonnées de livraison sans inscription préalable, et profitez d'une livraison soignée avec paiement à la réception.",
     "about.cta": "Acheter la Collection",
     "shipping.title": "Livraison & Expédition",
-    "shipping.item1.title": "Livraison Soignée",
+    "shipping.item1.title": "Livraison Nationale",
     "shipping.item1.text": "Nous livrons dans les 69 wilayas d'Algérie avec une attention particulière via Imir Logistics.",
     "shipping.item2.title": "Livraison Offerte",
-    "shipping.item2.text": "Les commandes de plus de 15 000 DA bénéficient de la livraison offerte par coursier. Des tarifs standards s'appliquent sinon.",
+    "shipping.item2.text": "Les commandes de plus de 15 000 DA bénéficient de la livraison offerte. Des tarifs standards s'appliquent sinon.",
     "shipping.item3.title": "Délais de Livraison",
-    "shipping.item3.text": "Les commandes de beauté sont traitées sous 24h et livrées sous 2 à 4 jours ouvrables pour les grandes villes.",
+    "shipping.item3.text": "Les commandes sont traitées sous 24h et livrées sous 2 à 4 jours ouvrables pour les grandes villes.",
     "returns.title": "Retours & Échanges",
     "returns.item1.title": "Politique de Retour",
     "returns.item1.text": "Vous disposez de 7 jours pour retourner un produit non ouvert dans son emballage d'origine, avec scellé intact.",
     "returns.item2.title": "Assistance Dédiée",
-    "returns.item2.text": "Contactez notre conciergerie via WhatsApp ou Instagram. Nous organiserons le retour par coursier à votre convenance.",
+    "returns.item2.text": "Contactez-nous via WhatsApp ou Instagram. Nous organiserons le retour par coursier à votre convenance.",
     "returns.item3.title": "Avoir de la Maison",
     "returns.item3.text": "Après vérification, nous procédons à un échange ou à l'émission d'un crédit boutique pour votre entière satisfaction.",
-    "toast.added": "Ajouté à votre panier de beauté",
-    "toast.sent": "Votre message a été transmis à la conciergerie.",
-    "modal.shade": "Teinte / Couleur",
-    "modal.size": "Taille / Volume",
+    "toast.added": "Ajouté à votre panier",
+    "toast.sent": "Votre message a été transmis à notre équipe.",
+    "modal.shade": "Couleur",
+    "modal.size": "Taille",
     "hiw.label": "Le Processus de Commande",
-    "hiw.sub": "Profitez d'une expérience d'achat fluide et soignée, conçue pour le luxe moderne.",
-    "hiw.step1.title": "Choisissez Votre Teinte",
-    "hiw.step1.text": "Parcourez notre catalogue de soins et cosmétiques de luxe. Trouvez votre teinte, couleur ou formule idéale et ajoutez-la à votre panier beauté.",
+    "hiw.sub": "Une façon simple et fluide d'apporter un nouveau confort chez vous.",
+    "hiw.step1.title": "Choisissez Votre Pièce",
+    "hiw.step1.text": "Parcourez notre catalogue de tapis et de décoration d'intérieur. Trouvez la taille, la couleur ou le matériau idéal et ajoutez-le à votre panier.",
     "hiw.step2.title": "Confirmez en Instants",
     "hiw.step2.text": "Finalisez votre commande en renseignant vos coordonnées de livraison. Aucune inscription requise — simple, rapide et confidentiel.",
-    "hiw.step3.title": "Livraison Haut de Gamme",
-    "hiw.step3.text": "Nous livrons dans les 69 wilayas. Inspectez votre colis à la réception et réglez en espèces directement auprès du livreur.",
+    "hiw.step3.title": "Livraison Soignée",
+    "hiw.step3.text": "Nous livrons dans les 69 wilayas. Inspectez votre commande à la réception et réglez en espèces directement auprès du livreur.",
+    "categories.label": "Explorer",
+    "categories.title": "PAR CATÉGORIE",
+  },
+  ar: {
+    "nav.home": "الرئيسية",
+    "nav.products": "السجاد",
+    "nav.contact": "اتصل بنا",
+    "hero.eyebrow": "سجاد وأثاث منزلي، مصمم للبيوت الجزائرية",
+    "hero.title": "فن <em>الراحة</em> اليومية",
+    "hero.desc":
+      "ميزون كومفور تقدم سجادًا وأثاثًا منزليًا مختارًا بعناية إلى كل ركن من الجزائر. نسيج غني وتصاميم خالدة، قطع صُنعت لتجعل منزلك مكانًا دافئًا.",
+    "hero.cta1": "تسوق الآن",
+    "hero.cta2": "اعرف أكثر",
+    "hero.stat1": "عميل سعيد",
+    "hero.stat2": "سجادة وقطعة",
+    "hero.stat3": "توصيل وطني",
+    "trust.delivery": "توصيل بعناية",
+    "trust.delivery.sub": "مجانًا لكل الطلبات فوق 15,000 دج",
+    "trust.authentic": "منسوجة لتدوم",
+    "trust.authentic.sub": "كل قطعة تُفحص بعناية قبل أن تصلك",
+    "trust.wilayas": "من الباب إلى الباب",
+    "trust.wilayas.sub": "توصيل يشمل كل 69 ولاية جزائرية",
+    "trust.payment": "ادفع عند الوصول",
+    "trust.payment.sub": "دفع نقدي بسيط دون مفاجآت",
+    "trust.support": "برفقة فريقنا",
+    "trust.support.sub": "نصائح شخصية لاختيار القطعة المثالية",
+    "products.label": "مختارات لمنزلك",
+    "products.title": "سجاد مميز",
+    "products.viewall": "عرض الكل",
+    "products.viewall.btn": "عرض كل المنتجات",
+    "categories.label": "استكشف",
+    "categories.title": "تسوق حسب الفئة",
+    "banner.intro.eyebrow": "اختيار الميزون",
+    "banner.intro.title": "المجموعة<em>المميزة</em>",
+    "banner.intro.sub": "أكثر قطعنا المحبوبة، مختارة لمنزل يشعرك بالدفء.",
+    "banner.eyebrow": "تشكيلة الميزون",
+    "banner.title": "أضف إلى منزلك <em>راحة جديدة</em>",
+    "banner.desc":
+      "اكتشف تشكيلتنا المميزة. مجموعة مختارة من السجاد والأثاث المنزلي، اخترناها لدفئها وملمسها وجودتها الدائمة.",
+    "banner.cta": "اكتشف التشكيلة",
+    "contact.label": "تواصل معنا",
+    "contact.title": "اتصل بنا",
+    "contact.desc": "لديك أسئلة حول مجموعاتنا؟ فريقنا جاهز لمساعدتك.",
+    "footer.brand.desc":
+      "وجهتك في الجزائر لسجاد وأثاث منزلي مختار بعناية. نوصل لك قطعًا عالية الجودة مباشرة إلى بابك.",
+    "footer.links": "روابط سريعة",
+    "footer.shipping": "سياسة الشحن",
+    "footer.returns": "الإرجاع",
+    "footer.categories": "الفئات",
+    "footer.contact": "أرسل رسالة",
+    "footer.rights": "جميع الحقوق محفوظة.",
+    "form.name": "الاسم الكامل",
+    "form.email": "البريد الإلكتروني / الهاتف",
+    "form.message": "الرسالة",
+    "form.send": "إرسال",
+    "btn.addcart": "إضافة سريعة",
+    "btn.buynow": "اشترِ الآن",
+    "about.who.title": "من نحن",
+    "about.who.text": "ميزون كومفور دار لأثاث المنزل، مكرّسة لتقديم سجاد وقطع ديكور ذات جودة دائمة للبيوت الجزائرية. نقدّم قطعًا تُدفئ الحياة اليومية.",
+    "about.offer.title": "مجموعتنا",
+    "about.offer.text": "من السجاد المنسوج يدويًا إلى المنسوجات المنزلية، نختار قطعنا لمتانتها وحرفيتها التي تُلمس تحت القدمين.",
+    "about.order.title": "كيفية الطلب",
+    "about.order.text": "اختر مقاس ولون سجادتك، ثم أضفها إلى سلتك. أكمل بيانات عنوانك دون تسجيل، واستمتع بتوصيل دقيق والدفع عند الاستلام.",
+    "about.cta": "تسوق المجموعة",
+    "shipping.title": "التوصيل والشحن",
+    "shipping.item1.title": "توصيل وطني",
+    "shipping.item1.text": "نوصل إلى جميع الولايات الـ69 في الجزائر بعناية وسرعة عبر Imir Logistics.",
+    "shipping.item2.title": "شحن مجاني",
+    "shipping.item2.text": "الطلبات التي تتجاوز 15,000 دج تستفيد من شحن مجاني. تُطبَّق أسعار عادية غير ذلك.",
+    "shipping.item3.title": "مدة المعالجة",
+    "shipping.item3.text": "تتم معالجة طلباتك خلال 24 ساعة. يستغرق التوصيل من 2 إلى 4 أيام عمل للمدن الكبرى.",
+    "returns.title": "الإرجاع والاستبدال",
+    "returns.item1.title": "سياسة الإرجاع",
+    "returns.item1.text": "لديك 7 أيام لإرجاع منتج غير مفتوح في عبوته الأصلية وبختمه سليمًا.",
+    "returns.item2.title": "دعم سهل",
+    "returns.item2.text": "تواصل معنا عبر واتساب أو إنستغرام لبدء عملية الإرجاع. سننظم استرجاع الطرد نيابة عنك.",
+    "returns.item3.title": "رصيد الميزون",
+    "returns.item3.text": "بعد الفحص، نقدم رصيدًا في المتجر أو استبدالًا أو استرجاعًا لضمان رضاك التام.",
+    "toast.added": "أُضيف إلى سلتك",
+    "toast.sent": "تم إرسال رسالتك إلى فريقنا.",
+    "modal.shade": "اللون",
+    "modal.size": "المقاس",
+    "hiw.label": "عملية الطلب",
+    "hiw.sub": "طريقة بسيطة وسلسة لإضافة راحة جديدة إلى منزلك.",
+    "hiw.step1.title": "اختر قطعتك",
+    "hiw.step1.text": "تصفح كتالوج السجاد والأثاث المنزلي لدينا. اعثر على المقاس واللون والخامة المثالية وأضفها إلى سلتك.",
+    "hiw.step2.title": "أكّد خلال لحظات",
+    "hiw.step2.text": "أكمل الطلب بتقديم بيانات التوصيل. لا حاجة للتسجيل — الطلب مباشر وخاص.",
+    "hiw.step3.title": "توصيل دقيق",
+    "hiw.step3.text": "نوصل إلى جميع الولايات الـ69. افحص طلبك وادفع نقدًا عند الاستلام مباشرة للموصل.",
   },
 };
 
@@ -426,8 +518,8 @@ function updateBannerLang(lang) {
   if (!titleEl || !descEl) return;
   const titles = { en: _bundleText.titleEn, fr: _bundleText.titleFr, ar: _bundleText.titleAr };
   const descs  = { en: _bundleText.descriptionEn, fr: _bundleText.descriptionFr, ar: _bundleText.descriptionAr };
-  const fallbackTitle = "REVEAL YOUR<em>INNER SECRET</em>";
-  const fallbackDesc  = "Immerse yourself in our signature selection. A curated capsule of skincare and lip formulas, crafted for the modern connoisseur.";
+  const fallbackTitle = "BRING HOME<em>NEW COMFORT</em>";
+  const fallbackDesc  = "Discover our signature selection. A curated capsule of carpets and home furnishings, chosen for warmth, texture, and lasting quality.";
   titleEl.innerHTML = titles[lang] || fallbackTitle;
   descEl.textContent = descs[lang] || fallbackDesc;
 }
@@ -490,9 +582,6 @@ function renderProducts(lang) {
 
       const badge = computeBadge(p, _bundleId, _topSoldIds);
 
-      // Flavor label (represented as Shade in UI)
-      const flavorLabel = p.flavors && p.flavors.length > 0 ? shadeName(p.flavors[0]) : "";
-
       // Image
       const _imgs = Array.isArray(p.imageUrl) ? p.imageUrl : (p.imageUrl ? [p.imageUrl] : []);
       const imgEl = _imgs[0]
@@ -506,9 +595,7 @@ function renderProducts(lang) {
     ${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ''}
   </div>
   <div class="product-info">
-    <span class="product-brand">${prodBrand(p)}</span>
     <h3 class="product-name">${prodName(p)}</h3>
-    ${flavorLabel ? `<span class="product-flavor">${flavorLabel}</span>` : ""}
     <div class="product-pricing">
       ${currentPrice > 0 ? `<span class="price">${currentPrice.toLocaleString()} DA</span>` : ""}
       ${oldPrice ? `<span class="price-old">${oldPrice.toLocaleString()} DA</span>` : ""}
@@ -518,11 +605,10 @@ function renderProducts(lang) {
       ${Number(p.stock) <= 0
         ? `<button class="btn-cart" disabled style="flex:1;opacity:0.45;cursor:not-allowed">Out of Stock</button>`
         : `<button class="btn-cart" onclick="event.stopPropagation();openAddToCartModal('${p.id}')">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         <span>${t["btn.addcart"]}</span>
       </button>
       <button class="btn-buy" onclick="event.stopPropagation();buyNow('${p.id}')">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9 18 6-6-6-6"/></svg>
+        <span>${t["btn.buynow"]}</span>
       </button>`
       }
     </div>
@@ -543,51 +629,25 @@ function sanitizeFooterAndModals(lang) {
   if (footerText) {
     const year = new Date().getFullYear();
     if (lang === 'fr') {
-      footerText.innerHTML = `© ${year} Luxury Secret Algérie. Tous droits réservés.`;
+      footerText.innerHTML = `© ${year} Maison Comfort Algérie. Tous droits réservés.`;
     } else {
-      footerText.innerHTML = `© ${year} Luxury Secret Algeria. All rights reserved.`;
+      footerText.innerHTML = `© ${year} Maison Comfort Algeria. All rights reserved.`;
     }
   }
 
-
   // Sanitize modal header texts
   document.querySelectorAll('.about-brand').forEach(brand => {
-    if (brand.innerHTML.includes('BY') && brand.innerHTML.includes('BEN\'S')) {
-      brand.innerHTML = `LUXURY <span>SECRET</span>`;
-    }
+    brand.innerHTML = `MAISON <span>COMFORT</span>`;
   });
   document.querySelectorAll('.about-sub').forEach(sub => {
-    if (sub.textContent.includes('ByBen\'s') || sub.textContent.includes('Supplements')) {
-      sub.textContent = 'Luxury Secret';
-    }
+    sub.textContent = 'Maison Comfort';
   });
 }
 
 /* ─────────────────────────────────────────────────────────────
-   CATEGORY NAV RENDERER — called on load and on language change
+   FOOTER CATEGORY LIST — called on load and on language change
 ───────────────────────────────────────────────────────────── */
 function renderCatNav() {
-  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>`;
-
-  const desktopInner = document.getElementById("catNavInner");
-  if (desktopInner) {
-    desktopInner.innerHTML = _categories
-      .map((cat) => {
-        const subs = _subCategories.filter((s) => s.categoryIds.includes(cat.id));
-        if (subs.length === 0) {
-          return `<div class="cat-item"><a href="/products?cat=${encodeURIComponent(cat.id)}" class="cat-link">${catName(cat)}</a></div>`;
-        }
-        return `
-          <div class="cat-item">
-            <a href="/products?cat=${encodeURIComponent(cat.id)}" class="cat-link">${catName(cat)} ${chevron}</a>
-            <div class="dropdown" role="menu">
-              ${subs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.id)}" role="menuitem">${catName(s)}</a>`).join("")}
-            </div>
-          </div>`;
-      })
-      .join("");
-  }
-
   const footerList = document.getElementById("footerCategoryList");
   if (footerList) {
     footerList.innerHTML = _categories
@@ -596,26 +656,57 @@ function renderCatNav() {
       .join("");
   }
 
-  const mobileContainer = document.getElementById("mobileCatItems");
-  if (mobileContainer) {
-    mobileContainer.innerHTML = _categories
+  const mobileCats = document.getElementById("mobileCatItems");
+  if (mobileCats) {
+    const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>`;
+    mobileCats.innerHTML = _categories
       .map((cat) => {
         const subs = _subCategories.filter((s) => s.categoryIds.includes(cat.id));
         if (subs.length === 0) {
-          return `<a href="/products?cat=${encodeURIComponent(cat.id)}" class="m-link">${catName(cat)}</a>`;
+          return `<a href="/products?cat=${encodeURIComponent(cat.id)}" class="m-link" onclick="toggleMobileMenu()">${catName(cat)}</a>`;
         }
         return `
           <div class="m-cat-item">
             <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
-              ${catName(cat)} <span class="m-arrow">›</span>
+              <span>${catName(cat)}</span> ${chevron}
             </button>
             <div class="m-sub">
-              ${subs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.id)}" class="m-sub-link">${catName(s)}</a>`).join("")}
+              <a href="/products?cat=${encodeURIComponent(cat.id)}" class="m-sub-link m-sub-all" onclick="toggleMobileMenu()">${catName(cat)} — ${currentLang === "ar" ? "الكل" : currentLang === "fr" ? "Tout voir" : "View All"}</a>
+              ${subs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.id)}" class="m-sub-link" onclick="toggleMobileMenu()">${catName(s)}</a>`).join("")}
             </div>
           </div>`;
       })
       .join("");
   }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CATEGORY GRID — homepage section under the hero
+───────────────────────────────────────────────────────────── */
+function renderCategoryGrid() {
+  const grid = document.getElementById("categoryGrid");
+  if (!grid) return;
+  if (!_categories.length) {
+    grid.innerHTML = "";
+    return;
+  }
+  grid.innerHTML = _categories
+    .map((cat, i) => {
+      const img = cat.imageUrl
+        ? `<img src="${cat.imageUrl}" alt="${catName(cat)}" loading="lazy" />`
+        : `<div class="category-card-fallback" aria-hidden="true"></div>`;
+      return `
+<a class="category-card reveal reveal-d${(i % 5) + 1}" href="/products?cat=${encodeURIComponent(cat.id)}">
+  <div class="category-card-media">
+    ${img}
+    <div class="category-card-overlay"></div>
+  </div>
+  <span class="category-card-name">${catName(cat)}</span>
+</a>`;
+    })
+    .join("");
+  const observed = grid.querySelectorAll(".reveal");
+  if (window._homeRevealObserver) observed.forEach((el) => window._homeRevealObserver.observe(el));
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -627,8 +718,10 @@ function switchLang(lang) {
 
   currentLang = lang;
   const t = i18n[lang];
+  const isRtl = lang === "ar";
   document.documentElement.lang = lang;
-  document.documentElement.dir = "ltr";
+  document.documentElement.dir = isRtl ? "rtl" : "ltr";
+  document.body.classList.toggle("lang-ar", isRtl);
 
   // Update all translatable text nodes
   document.querySelectorAll("[data-i18n]").forEach((el) => {
@@ -652,8 +745,9 @@ function switchLang(lang) {
   // Re-render products with new button labels
   renderProducts(lang);
 
-  // Re-render category nav in new language
+  // Re-render category nav + grid in new language
   renderCatNav();
+  renderCategoryGrid();
 
   // Update bundle banner text
   updateBannerLang(lang);
@@ -803,7 +897,9 @@ window.addEventListener(
   "scroll",
   () => {
     const header = document.getElementById("site-header");
-    header.classList.toggle("scrolled", window.scrollY > 12);
+    const heroEl = document.querySelector(".hero");
+    const heroH = heroEl ? heroEl.offsetHeight : window.innerHeight;
+    header.classList.toggle("scrolled", window.scrollY > heroH - 96);
 
     const scrollTop = document.getElementById("scrollTop");
     scrollTop.classList.toggle("visible", window.scrollY > 400);
@@ -855,6 +951,7 @@ async function loadInitialData() {
     _categories = res.categories || [];
     _subCategories = res.subCategories || [];
     renderCatNav();
+    renderCategoryGrid();
   } catch (err) {
     console.error("Failed to load initial data:", err);
   }
@@ -891,67 +988,10 @@ function toggleMobileCat(btn) {
   if (!isOpen) item.classList.add("open");
 }
 
-function openMobileSearch() {
-  const overlay = document.getElementById("mobileSearchOverlay");
-  overlay.style.display = "flex";
-  document.body.style.overflow = "hidden";
-  setTimeout(
-    () => document.getElementById("mobileSearchInput").focus(),
-    50,
-  );
-}
-
-function closeMobileSearch() {
-  const overlay = document.getElementById("mobileSearchOverlay");
-  overlay.style.display = "none";
-  document.body.style.overflow = "";
-  document.getElementById("mobileSearchInput").value = "";
-  document.getElementById("mobileSearchResults").innerHTML =
-    '<p style="font-size:13px; color:var(--gray-400); text-align:center; margin-top:40px;">Start typing to search products…</p>';
-}
-
-function handleMobileSearch(query) {
-  const resultsEl = document.getElementById("mobileSearchResults");
-  if (!query.trim()) {
-    resultsEl.innerHTML =
-      '<p style="font-size:13px; color:var(--gray-400); text-align:center; margin-top:40px;">Start typing to search products…</p>';
-    return;
-  }
-  const q = query.toLowerCase();
-  const matches = products.filter(
-    (p) =>
-      p.name.toLowerCase().includes(q) ||
-      (p.brand || "").toLowerCase().includes(q) ||
-      (p.flavors || []).some((f) => f.name.toLowerCase().includes(q)),
-  );
-  if (!matches.length) {
-    resultsEl.innerHTML = `<p style="font-size:13px; color:var(--gray-400); text-align:center; margin-top:40px;">No results for "${query}"</p>`;
-    return;
-  }
-  resultsEl.innerHTML = matches
-    .map(
-      (p) => {
-        const price = getProductPrice(p);
-        const flavorLabel = p.flavors && p.flavors.length > 0 ? shadeName(p.flavors[0]) : "";
-        const _i0 = Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl;
-        const imgEl = _i0
-          ? `<img src="${_i0}" alt="${prodName(p)}" style="width:100%;height:100%;object-fit:cover;border-radius:0px;" />`
-          : `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
-        return `
-<div onclick="window.location.href='/products?search=${encodeURIComponent(p.nameEn || p.name)}'" style="display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--gray-200); cursor:pointer;">
-  <div style="width:48px; height:48px; background:var(--gray-50); border-radius:0px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:1px solid var(--gray-200); overflow:hidden;">
-    ${imgEl}
-  </div>
-  <div style="flex:1; min-width:0;">
-    <p style="font-size:11px; color:var(--gray-400); font-weight:600; letter-spacing:1px; text-transform:uppercase; margin:0 0 2px;">${prodBrand(p)}</p>
-    <p style="font-size:14px; font-weight:500; color:var(--black); margin:0 0 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${prodName(p)}</p>
-    <p style="font-size:11px; color:var(--gray-400); margin:0;">${flavorLabel}</p>
-  </div>
-  <span style="font-size:15px; font-weight: 500; color:var(--black); flex-shrink:0; direction:ltr;">${price} DA</span>
-</div>`;
-      },
-    )
-    .join("");
+function scrollToFooter(e) {
+  if (e) e.preventDefault();
+  const footer = document.querySelector(".site-footer") || document.getElementById("footerPlaceholder");
+  if (footer) footer.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 /* ── AUTH LOGIC ── */
@@ -1051,60 +1091,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 })();
 
-// 2. Hero particles
-(function() {
-  var container = document.getElementById('heroParticles');
-  if (!container) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var count = 26;
-  for (var i = 0; i < count; i++) {
-    var s = document.createElement('span');
-    var size = Math.random() * 7 + 3;
-    var x = Math.random() * 58; // keep within hero-left area
-    var dur = (Math.random() * 14 + 12).toFixed(1);
-    var delay = (Math.random() * 16).toFixed(1);
-    var op = (Math.random() * 0.35 + 0.15).toFixed(2);
-    var isSparkle = Math.random() > 0.45;
-    var css;
-    if (isSparkle) {
-      css = [
-        'position:absolute',
-        'bottom:-12px',
-        'left:' + x + '%',
-        'width:' + size + 'px',
-        'height:' + size + 'px',
-        'background:rgba(163,132,91,' + op + ')',
-        'clip-path:polygon(50% 0%,54% 46%,100% 50%,54% 54%,50% 100%,46% 54%,0% 50%,46% 46%)',
-        'animation:heroSparkleUp ' + dur + 's linear ' + delay + 's infinite',
-      ].join(';');
-    } else {
-      css = [
-        'position:absolute',
-        'bottom:-12px',
-        'left:' + x + '%',
-        'width:' + size + 'px',
-        'height:' + size + 'px',
-        'background:rgba(197,168,128,' + op + ')',
-        'border-radius:50%',
-        'box-shadow:0 0 ' + (size * 2.5).toFixed(0) + 'px rgba(163,132,91,' + (op * 0.5).toFixed(2) + ')',
-        'animation:heroParticleUp ' + dur + 's linear ' + delay + 's infinite',
-      ].join(';');
-    }
-    s.style.cssText = css;
-    container.appendChild(s);
-  }
-})();
-
 // 3. Scroll reveal with IntersectionObserver
 (function() {
-  var els = document.querySelectorAll('.reveal');
-  if (!els.length) return;
   var obs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
       if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
     });
   }, { threshold: 0.12 });
-  els.forEach(function(el) { obs.observe(el); });
+  window._homeRevealObserver = obs;
+  document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
 })();
 
 // 4. Product card 3D tilt on mouse move

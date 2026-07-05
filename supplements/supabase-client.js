@@ -27,12 +27,15 @@
       name: p.name_en || p.name || "",
       nameEn: p.name_en || p.name || "",
       nameFr: p.name_fr || "",
+      nameAr: p.name_ar || "",
       brand: p.brand_en || p.brand || "",
       brandEn: p.brand_en || p.brand || "",
       brandFr: p.brand_fr || "",
+      brandAr: p.brand_ar || "",
       description: p.description_en || p.description || "",
       descriptionEn: p.description_en || p.description || "",
       descriptionFr: p.description_fr || "",
+      descriptionAr: p.description_ar || "",
       categoryIds: (p.category_ids || "").split(",").filter(Boolean),
       subCategoryIds: (p.sub_category_ids || "").split(",").filter(Boolean),
       imageUrl: Array.isArray(p.image_url) ? p.image_url : (p.image_url ? [p.image_url] : []),
@@ -54,7 +57,9 @@
       name: c.name_en || c.name || "",
       nameEn: c.name_en || c.name || "",
       nameFr: c.name_fr || "",
+      nameAr: c.name_ar || "",
       description: c.description || "",
+      imageUrl: c.image_url || "",
       createdAt: c.created_at,
     };
   }
@@ -65,6 +70,7 @@
       name: s.name_en || s.name || "",
       nameEn: s.name_en || s.name || "",
       nameFr: s.name_fr || "",
+      nameAr: s.name_ar || "",
       categoryIds: (s.category_ids || "").split(",").filter(Boolean),
       createdAt: s.created_at,
     };

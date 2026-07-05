@@ -56,7 +56,20 @@
       "Read(//c/Users/Ahmed/Desktop/**)",
       "Read(//c/Users/Ahmed/**)",
       "Bash(xargs grep *)",
-      "Bash(xargs sed *)"
+      "Bash(xargs sed *)",
+      "Read(//tmp/**)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5177/)",
+      "Bash(curl -s http://localhost:5177/)",
+      "Bash(curl -s -o /dev/null -w \"hero.mp4: %{http_code}\\\\n\" http://localhost:5177/images/hero.mp4)",
+      "Bash(curl -s -o /dev/null -w \"index.css: %{http_code}\\\\n\" \"http://localhost:5177/supplements/home/index.css?v=17\")",
+      "Bash(curl -s -o /dev/null -w \"index.js: %{http_code}\\\\n\" \"http://localhost:5177/supplements/home/index.js?v=13\")",
+      "Bash(pkill -f \"serve -l 5177\")",
+      "Bash(pkill -f \"serve -l 5179\")",
+      "Bash(grep -n \"^\\\\.hiw-\\\\|^/\\\\* ─── THE RITUAL\\\\|^/\\\\* ─── BANNER SECTION INTRO\" supplements/home/index.css)",
+      "Bash(pkill -f \"serve -l 5180\")",
+      "Bash(pkill -f \"serve -l 5055\")",
+      "Bash(pkill -f \"serve -l 5057\")",
+      "Bash(grep *)"
     ]
   }
 }

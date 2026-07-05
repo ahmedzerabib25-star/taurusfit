@@ -135,48 +135,35 @@
         return disc > 0 ? Math.round(base * (1 - disc / 100)) : base;
       }
 
-      /* ── CATEGORY NAV — FIX: always wrap in .cat-item div ── */
+      /* ── CATEGORY NAV — populates the hamburger sidebar only ── */
       function renderCatNav(cats, subs) {
-        const inner = document.getElementById("catNavInner");
         const mobile = document.getElementById("mobileCatItems");
-        if (!inner || !mobile) return;
-
-        let dHTML = "",
-          mHTML = "";
-        cats.forEach((cat) => {
+        if (!mobile) return;
+        const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>`;
+        mobile.innerHTML = cats.map((cat) => {
           const catSubs = subs.filter(
-            (s) =>
-              Array.isArray(s.categoryIds) && s.categoryIds.includes(cat.id),
+            (s) => Array.isArray(s.categoryIds) && s.categoryIds.includes(cat.id),
           );
-
-          if (catSubs.length > 0) {
-            // With dropdown — wrapped in .cat-item for hover to work
-            dHTML += `<div class="cat-item">
-              <a href="/products" class="cat-link">
-                ${cat.name}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
-              </a>
-              <div class="dropdown">
-                ${catSubs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.name)}">${s.name}</a>`).join("")}
-              </div>
-            </div>`;
-            mHTML += `<div class="m-cat-item">
-              <button class="m-cat-toggle" onclick="toggleMobileCat(this)">
-                ${cat.name} <span class="m-arrow">›</span>
+          if (catSubs.length === 0) {
+            return `<a href="/products?cat=${encodeURIComponent(cat.id)}" class="m-link">${catName(cat)}</a>`;
+          }
+          return `
+            <div class="m-cat-item">
+              <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
+                <span>${catName(cat)}</span> ${chevron}
               </button>
               <div class="m-sub">
-                ${catSubs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.name)}" class="m-sub-link">${s.name}</a>`).join("")}
+                <a href="/products?cat=${encodeURIComponent(cat.id)}" class="m-sub-link m-sub-all">${catName(cat)} — ${currentLang === "ar" ? "الكل" : currentLang === "fr" ? "Tout voir" : "View All"}</a>
+                ${catSubs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.id)}" class="m-sub-link">${catName(s)}</a>`).join("")}
               </div>
             </div>`;
-          } else {
-            // No sub-categories — still wrap in .cat-item for consistent hover underline
-            dHTML += `<div class="cat-item"><a href="/products" class="cat-link">${cat.name}</a></div>`;
-            mHTML += `<a href="/products" class="mobile-nav-link">${cat.name}</a>`;
-          }
-        });
+        }).join("");
+      }
 
-        inner.innerHTML = dHTML;
-        mobile.innerHTML = mHTML;
+      function scrollToFooter(e) {
+        if (e) e.preventDefault();
+        const footer = document.querySelector(".site-footer") || document.getElementById("footerPlaceholder");
+        if (footer) footer.scrollIntoView({ behavior: "smooth", block: "start" });
       }
 
       /* ── LOAD PRODUCT DATA ── */
@@ -346,7 +333,7 @@
         p.categoryIds = parseField(p.categoryIds);
         p.subCategoryIds = parseField(p.subCategoryIds);
 
-        document.title = `${prodName(p)} – Luxury Secret`;
+        document.title = `${prodName(p)} – Maison Comfort`;
         document.getElementById("breadcrumbName").textContent = prodName(p);
         document.getElementById("productBrand").textContent = prodBrand(p);
         document.getElementById("productName").textContent = prodName(p);
@@ -404,7 +391,7 @@
         // Description
         document.getElementById("productDescription").innerHTML =
           prodDesc(p) ||
-          `${prodName(p)} by ${prodBrand(p)} — a luxury cosmetics product.`;
+          `${prodName(p)} by ${prodBrand(p)} — a Maison Comfort home furnishings piece.`;
 
         // ── VARIANTS (weight/size) pills ──
         const weightGroup = document.getElementById("weightGroup");
@@ -2999,9 +2986,13 @@
           "nav.home": "Home",
           "nav.products": "Products",
           "nav.contact": "Contact",
+          "search.placeholder": "Search carpets, rugs, home decor…",
           "detail.weight": "SIZE",
-          "detail.flavor": "Flavor",
+          "detail.flavor": "Color",
+          "detail.quantity": "Quantity",
           "detail.about": "About this product",
+          "modal.shade": "Color",
+          "modal.size": "Size",
           "form.firstName": "First Name",
           "form.lastName": "Last Name",
           "form.phone": "Phone Number",
@@ -3009,8 +3000,8 @@
           "form.commune": "Commune",
           "form.deliveryType": "Delivery Type",
           "form.address": "Address (Optional)",
-          "form.homeDelivery": "🏠 Home Delivery",
-          "form.officePick": "📦 Office Pickup",
+          "form.homeDelivery": "Home Delivery",
+          "form.officePick": "Office Pickup",
           "form.deliveredDoor": "Delivered to your door",
           "form.pickupOffice": "Pickup at nearest office",
           "form.selectWilaya": "Select wilaya…",
@@ -3024,11 +3015,15 @@
           "form.addToCart": "ADD TO CART",
           "form.confirmOrder": "CONFIRM ORDER",
           "section.alsoLike": "You May Also Like",
+          "trust.secure": "Secure Order",
+          "trust.authenticShort": "Quality Checked",
+          "trust.call": "Call to Confirm",
           "footer.brand.desc":
-            "Algeria's premier destination for exclusive cosmetics and skincare. We bring world-class beauty formulations directly to your door.",
+            "Algeria's destination for handpicked carpets and home furnishings. We bring quality pieces directly to your door.",
           "footer.links": "Quick Links",
           "footer.shipping": "Shipping Policy",
           "footer.returns": "Returns",
+          "footer.privacy": "Privacy Policy",
           "footer.categories": "Categories",
           "footer.contact": "Send a Message",
           "footer.rights": "All rights reserved.",
@@ -3036,33 +3031,21 @@
           "form.email": "Email / Phone",
           "form.message": "Message",
           "form.send": "Send Message",
-          "shipping.title": "Shipping Policy",
+          "shipping.title": "Courier & Shipping",
           "shipping.item1.title": "Nationwide Delivery",
-          "shipping.item1.text": "We deliver to all 58 wilayas across Algeria via Imir Logistics.",
-          "shipping.item2.title": "Free Delivery",
-          "shipping.item2.text": "Orders over 15,000 DA enjoy free delivery!",
-          "shipping.item3.title": "Standard Timing",
-          "shipping.item3.text": "Orders are processed within 24 hours.",
-          "returns.title": "Returns & Refunds",
-          "returns.item1.title": "Return Policy",
-          "returns.item1.text": "You have 1 day to return a product. Items must be unopened.",
-          "returns.item2.title": "Easy Process",
-          "returns.item2.text": "Contact us via WhatsApp or Instagram to initiate a return.",
-          "returns.item3.title": "Refund Method",
-          "returns.item3.text": "We offer exchanges for other products or store credit.",
-          "toast.sent": "Message sent! We'll reply soon.",
-          "footer.shop": "Shop",
-          "footer.allProducts": "All Products",
-          "footer.protein": "Foundation & Concealer",
-          "footer.preworkout": "Lipstick & Lip Gloss",
-          "footer.creatine": "Skincare & Serums",
-          "footer.vitamins": "Perfumes & Fragrances",
-          "footer.info": "Information",
-          "footer.shipping": "Shipping Policy",
-          "footer.returns": "Returns",
-          "footer.faq": "FAQ",
-          "footer.contact": "Contact Us",
-          "footer.location": "Algiers, Algeria",
+          "shipping.item1.text": "We deliver to all 69 Wilayas across Algeria with care and speed via Imir Logistics.",
+          "shipping.item2.title": "Complimentary Shipping",
+          "shipping.item2.text": "Orders exceeding 15,000 DA enjoy complimentary shipping. Standard rates apply otherwise.",
+          "shipping.item3.title": "Dispatch Timeline",
+          "shipping.item3.text": "Your orders are processed within 24 hours. Delivery takes 2-4 business days for major metropolitan hubs.",
+          "returns.title": "Returns & Exchange",
+          "returns.item1.title": "Exchanges & Returns",
+          "returns.item1.text": "We offer a 7-day return policy for unopened items in their original packaging with intact seals.",
+          "returns.item2.title": "Easy Support",
+          "returns.item2.text": "Contact us via WhatsApp or Instagram to initiate a return. We will arrange the courier return for you.",
+          "returns.item3.title": "Maison Credit",
+          "returns.item3.text": "Following inspection, we issue store credit, exchanges, or refunds, ensuring your satisfaction.",
+          "toast.sent": "Your message has been sent to our team.",
           "footer.rights": "All rights reserved.",
           "search.cancel": "Cancel",
           "breadcrumb.home": "Home",
@@ -3074,11 +3057,15 @@
         },
         fr: {
           "nav.home": "Accueil",
-          "nav.products": "Produits",
+          "nav.products": "Tapis",
           "nav.contact": "Contact",
+          "search.placeholder": "Rechercher tapis, décoration…",
           "detail.weight": "Taille",
-          "detail.flavor": "Saveur",
+          "detail.flavor": "Couleur",
+          "detail.quantity": "Quantité",
           "detail.about": "À propos du produit",
+          "modal.shade": "Couleur",
+          "modal.size": "Taille",
           "form.firstName": "Prénom",
           "form.lastName": "Nom",
           "form.phone": "Numéro de téléphone",
@@ -3086,8 +3073,8 @@
           "form.address": "Adresse (Facultatif)",
           "form.commune": "Commune",
           "form.deliveryType": "Type de livraison",
-          "form.homeDelivery": "🏠 Livraison à domicile",
-          "form.officePick": "📦 Retrait en bureau",
+          "form.homeDelivery": "Livraison à domicile",
+          "form.officePick": "Retrait en bureau",
           "form.deliveredDoor": "Livré chez vous",
           "form.pickupOffice": "Retrait au bureau le plus proche",
           "form.selectWilaya": "Choisir la wilaya…",
@@ -3101,53 +3088,116 @@
           "form.addToCart": "AJOUTER AU PANIER",
           "form.confirmOrder": "CONFIRMER LA COMMANDE",
           "section.alsoLike": "Vous Aimerez Aussi",
+          "trust.secure": "Commande Sécurisée",
+          "trust.authenticShort": "Contrôle Qualité",
+          "trust.call": "Confirmé par Téléphone",
           "footer.brand.desc":
-            "La première destination algérienne pour les cosmétiques et soins de luxe exclusifs.",
-          "footer.links": "Liens Rapides",
-          "footer.shipping": "Politique de livraison",
+            "La destination en Algérie pour des tapis et de la décoration d'intérieur sélectionnés. Nous livrons des pièces de qualité directement à votre porte.",
+          "footer.links": "Liens rapides",
+          "footer.shipping": "Livraison",
           "footer.returns": "Retours",
+          "footer.privacy": "Politique de Confidentialité",
           "footer.categories": "Catégories",
-          "footer.contact": "Envoyer un Message",
+          "footer.contact": "Envoyer un message",
           "footer.rights": "Tous droits réservés.",
-          "form.name": "Votre Nom",
+          "form.name": "Votre nom",
           "form.email": "Email / Téléphone",
           "form.message": "Message",
           "form.send": "Envoyer",
-          "shipping.title": "Politique de livraison",
+          "shipping.title": "Livraison & Expédition",
           "shipping.item1.title": "Livraison Nationale",
-          "shipping.item1.text": "Nous livrons dans les 58 wilayas d'Algérie via Imir Logistics.",
-          "shipping.item2.title": "Livraison Gratuite",
-          "shipping.item2.text": "Les commandes de plus de 15 000 DA bénéficient de la livraison gratuite !",
-          "shipping.item3.title": "Délais Standards",
-          "shipping.item3.text": "Les commandes sont traitées sous 24h.",
-          "returns.title": "Retours & Remboursements",
+          "shipping.item1.text": "Nous livrons dans les 69 wilayas d'Algérie avec une attention particulière via Imir Logistics.",
+          "shipping.item2.title": "Livraison Offerte",
+          "shipping.item2.text": "Les commandes de plus de 15 000 DA bénéficient de la livraison offerte. Des tarifs standards s'appliquent sinon.",
+          "shipping.item3.title": "Délais de Livraison",
+          "shipping.item3.text": "Les commandes sont traitées sous 24h et livrées sous 2 à 4 jours ouvrables pour les grandes villes.",
+          "returns.title": "Retours & Échanges",
           "returns.item1.title": "Politique de Retour",
-          "returns.item1.text": "Vous avez 1 jour pour retourner un produit.",
-          "returns.item2.title": "Processus Facile",
-          "returns.item2.text": "Contactez-nous via WhatsApp or Instagram.",
-          "returns.item3.title": "Mode de Remboursement",
-          "returns.item3.text": "Nous proposons des échanges ou un avoir.",
-          "toast.sent": "Message envoyé!",
-          "footer.shop": "Boutique",
-          "footer.allProducts": "Tous les Produits",
-          "footer.protein": "Fond de Teint & Correcteur",
-          "footer.preworkout": "Rouge à Lèvres & Gloss",
-          "footer.creatine": "Soins & Sérums",
-          "footer.vitamins": "Parfums & Fragrances",
-          "footer.info": "Informations",
-          "footer.shipping": "Politique de livraison",
-          "footer.returns": "Retours",
-          "footer.faq": "FAQ",
-          "footer.contact": "Contactez-nous",
-          "footer.location": "Alger, Algérie",
-          "footer.rights": "Tous droits réservés.",
+          "returns.item1.text": "Vous disposez de 7 jours pour retourner un produit non ouvert dans son emballage d'origine, avec scellé intact.",
+          "returns.item2.title": "Assistance Dédiée",
+          "returns.item2.text": "Contactez-nous via WhatsApp ou Instagram. Nous organiserons le retour par coursier à votre convenance.",
+          "returns.item3.title": "Avoir de la Maison",
+          "returns.item3.text": "Après vérification, nous procédons à un échange ou à l'émission d'un crédit boutique pour votre entière satisfaction.",
+          "toast.sent": "Votre message a été transmis à notre équipe.",
           "search.cancel": "Annuler",
           "breadcrumb.home": "Accueil",
           "breadcrumb.products": "Produits",
           "detail.bulkLabel": "Prix de Gros",
-          "detail.bulkNotice": "Vous en commandez 3 ou plus ? Contactez-nous sur WhatsApp pour une remise spéciale !",
+          "detail.bulkNotice": "Vous en commandez 5 ou plus ? Contactez-nous sur WhatsApp pour une remise spéciale !",
           "success.title": "Commande Passée !",
           "success.back": "Retour aux Produits",
+        },
+        ar: {
+          "nav.home": "الرئيسية",
+          "nav.products": "السجاد",
+          "nav.contact": "اتصل بنا",
+          "search.placeholder": "ابحث عن سجاد وأثاث منزلي…",
+          "detail.weight": "المقاس",
+          "detail.flavor": "اللون",
+          "detail.quantity": "الكمية",
+          "detail.about": "عن هذا المنتج",
+          "modal.shade": "اللون",
+          "modal.size": "المقاس",
+          "form.firstName": "الاسم الأول",
+          "form.lastName": "اللقب",
+          "form.phone": "رقم الهاتف",
+          "form.wilaya": "الولاية",
+          "form.address": "العنوان (اختياري)",
+          "form.commune": "البلدية",
+          "form.deliveryType": "نوع التوصيل",
+          "form.homeDelivery": "توصيل للمنزل",
+          "form.officePick": "استلام من المكتب",
+          "form.deliveredDoor": "يُوصَل إلى بابك",
+          "form.pickupOffice": "استلام من أقرب مكتب",
+          "form.selectWilaya": "اختر الولاية…",
+          "form.selectWilayaFirst": "اختر الولاية أولاً",
+          "form.orderNow": "اطلب الآن",
+          "form.orderSummary": "ملخص الطلب",
+          "form.product": "المنتج",
+          "form.price": "السعر",
+          "form.delivery": "التوصيل",
+          "form.total": "الإجمالي",
+          "form.addToCart": "أضف إلى السلة",
+          "form.confirmOrder": "تأكيد الطلب",
+          "section.alsoLike": "قد يعجبك أيضًا",
+          "trust.secure": "طلب آمن",
+          "trust.authenticShort": "جودة مفحوصة",
+          "trust.call": "تأكيد عبر الهاتف",
+          "footer.brand.desc":
+            "وجهتك في الجزائر لسجاد وأثاث منزلي مختار بعناية. نوصل لك قطعًا عالية الجودة مباشرة إلى بابك.",
+          "footer.links": "روابط سريعة",
+          "footer.shipping": "سياسة الشحن",
+          "footer.returns": "الإرجاع",
+          "footer.privacy": "سياسة الخصوصية",
+          "footer.categories": "الفئات",
+          "footer.contact": "أرسل رسالة",
+          "footer.rights": "جميع الحقوق محفوظة.",
+          "form.name": "الاسم الكامل",
+          "form.email": "البريد الإلكتروني / الهاتف",
+          "form.message": "الرسالة",
+          "form.send": "إرسال",
+          "shipping.title": "التوصيل والشحن",
+          "shipping.item1.title": "توصيل وطني",
+          "shipping.item1.text": "نوصل إلى جميع الولايات الـ69 في الجزائر بعناية وسرعة عبر Imir Logistics.",
+          "shipping.item2.title": "شحن مجاني",
+          "shipping.item2.text": "الطلبات التي تتجاوز 15,000 دج تستفيد من شحن مجاني. تُطبَّق أسعار عادية غير ذلك.",
+          "shipping.item3.title": "مدة المعالجة",
+          "shipping.item3.text": "تتم معالجة طلباتك خلال 24 ساعة. يستغرق التوصيل من 2 إلى 4 أيام عمل للمدن الكبرى.",
+          "returns.title": "الإرجاع والاستبدال",
+          "returns.item1.title": "سياسة الإرجاع",
+          "returns.item1.text": "لديك 7 أيام لإرجاع منتج غير مفتوح في عبوته الأصلية وبختمه سليمًا.",
+          "returns.item2.title": "دعم سهل",
+          "returns.item2.text": "تواصل معنا عبر واتساب أو إنستغرام لبدء عملية الإرجاع. سننظم استرجاع الطرد نيابة عنك.",
+          "returns.item3.title": "رصيد الميزون",
+          "returns.item3.text": "بعد الفحص، نقدم رصيدًا في المتجر أو استبدالًا أو استرجاعًا لضمان رضاك التام.",
+          "toast.sent": "تم إرسال رسالتك إلى فريقنا.",
+          "search.cancel": "إلغاء",
+          "breadcrumb.home": "الرئيسية",
+          "breadcrumb.products": "المنتجات",
+          "detail.bulkLabel": "أسعار الجملة",
+          "detail.bulkNotice": "تطلب 5 قطع أو أكثر؟ تواصل معنا عبر واتساب للحصول على خصم خاص للجملة!",
+          "success.title": "تم تأكيد الطلب!",
+          "success.back": "العودة إلى المنتجات",
         },
       };
 
@@ -3187,7 +3237,7 @@
       function refreshProductLang() {
         const p = selectedProduct;
         if (!p) return;
-        document.title = `${prodName(p)} – Luxury Secret`;
+        document.title = `${prodName(p)} – Maison Comfort`;
         const bnEl = document.getElementById("breadcrumbName");
         if (bnEl) bnEl.textContent = prodName(p);
         const brandEl = document.getElementById("productBrand");
@@ -3195,7 +3245,7 @@
         const nameEl = document.getElementById("productName");
         if (nameEl) nameEl.textContent = prodName(p);
         const descEl = document.getElementById("productDescription");
-        if (descEl) descEl.innerHTML = prodDesc(p) || `${prodName(p)} by ${prodBrand(p)} — a luxury cosmetics product.`;
+        if (descEl) descEl.innerHTML = prodDesc(p) || `${prodName(p)} by ${prodBrand(p)} — a Maison Comfort home furnishings piece.`;
         // Category tags
         const catEl = document.getElementById("productCategories");
         if (catEl) {
@@ -3234,8 +3284,10 @@
         localStorage.setItem("bybens_lang", lang);
         currentLang = lang;
         const t = i18n[lang];
+        const isRtl = lang === "ar";
         document.documentElement.lang = lang;
-        document.documentElement.dir = "ltr";
+        document.documentElement.dir = isRtl ? "rtl" : "ltr";
+        document.body.classList.toggle("lang-ar", isRtl);
         document.querySelectorAll("[data-i18n]").forEach((el) => {
           const key = el.getAttribute("data-i18n");
           if (t[key] !== undefined) {
@@ -3258,7 +3310,23 @@
             ? t["form.selectWilayaFirst"] || "Select wilaya first"
             : t["form.selectWilaya"] || "Select commune…";
         }
+        renderCatNav(_allCategories, _allSubCategories);
+        sanitizeFooterAndModals(lang);
         refreshProductLang();
+      }
+
+      function sanitizeFooterAndModals(lang) {
+        const footerText = document.querySelector('.footer-bottom p');
+        if (footerText) {
+          const year = new Date().getFullYear();
+          footerText.innerHTML = lang === 'fr'
+            ? `© ${year} Maison Comfort Algérie. Tous droits réservés.`
+            : lang === 'ar'
+            ? `© ${year} ميزون كومفور الجزائر. جميع الحقوق محفوظة.`
+            : `© ${year} Maison Comfort Algeria. All rights reserved.`;
+        }
+        document.querySelectorAll('.about-brand').forEach((brand) => { brand.innerHTML = `MAISON <span>COMFORT</span>`; });
+        document.querySelectorAll('.about-sub').forEach((sub) => { sub.textContent = 'Maison Comfort'; });
       }
 
       /* ══════════════════════════════════════════════════════
@@ -3696,72 +3764,6 @@
           }
         });
 
-      function openMobileSearch() {
-        document.getElementById("mobileSearchOverlay").style.display = "flex";
-        document.body.style.overflow = "hidden";
-        setTimeout(
-          () => document.getElementById("mobileSearchInput").focus(),
-          50,
-        );
-      }
-      function closeMobileSearch() {
-        document.getElementById("mobileSearchOverlay").style.display = "none";
-        document.body.style.overflow = "";
-        const inp = document.getElementById("mobileSearchInput");
-        if (inp) inp.value = "";
-        const res = document.getElementById("mobileSearchResults");
-        if (res) res.innerHTML = `<p style="font-size:13px;color:var(--gray-400);text-align:center;margin-top:40px;">Start typing to search products…</p>`;
-      }
-
-      function handleMobileSearch(query) {
-        const results = document.getElementById("mobileSearchResults");
-        const q = (query || "").trim().toLowerCase();
-        if (!q) {
-          results.innerHTML = `<p style="font-size:13px;color:var(--gray-400);text-align:center;margin-top:40px;">Start typing to search products…</p>`;
-          return;
-        }
-        const matches = _allProducts.filter(
-          (p) =>
-            p.name.toLowerCase().includes(q) ||
-            (p.brand || "").toLowerCase().includes(q) ||
-            parseField(p.flavors).some((f) =>
-              (typeof f === "object" ? f.name || "" : String(f)).toLowerCase().includes(q)
-            )
-        );
-        if (!matches.length) {
-          results.innerHTML = `<p style="font-size:13px;color:var(--gray-400);text-align:center;margin-top:40px;">No results for "${query}"</p>`;
-          return;
-        }
-        results.innerHTML = matches.map((p) => {
-          const price = getProductPrice(p, 0).toLocaleString("fr-DZ");
-          const _t0 = Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl;
-          const thumb = _t0
-            ? `<img src="${_t0}" alt="${p.name}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;flex-shrink:0;" />`
-            : `<div style="width:48px;height:48px;border-radius:8px;background:var(--gray-100);flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg></div>`;
-          return `<div onclick="closeMobileSearch(); window.location.href='/product-detail?id=${encodeURIComponent(p.id)}'"
-            style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-100);cursor:pointer;">
-            ${thumb}
-            <div style="flex:1;min-width:0;">
-              <p style="font-size:12px;color:var(--gray-400);margin:0 0 2px;">${p.brand || ""}</p>
-              <p style="font-size:14px;font-weight:600;color:var(--gray-800);margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</p>
-            </div>
-            <span style="font-size:13px;font-weight:700;color:var(--red);flex-shrink:0;">${price} DA</span>
-          </div>`;
-        }).join("");
-
-        const mobileInput = document.getElementById("mobileSearchInput");
-        if (mobileInput && !mobileInput._keydownBound) {
-          mobileInput._keydownBound = true;
-          mobileInput.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-              const v = e.target.value.trim();
-              if (v) { closeMobileSearch(); window.location.href = `/products?q=${encodeURIComponent(v)}`; }
-            }
-            if (e.key === "Escape") closeMobileSearch();
-          });
-        }
-      }
-
       /* ── TOAST ── */
       let toastTimer;
       function showToast(msg) {
@@ -3777,14 +3779,20 @@
         "scroll",
         () => {
           document
-            .getElementById("site-header")
-            .classList.toggle("scrolled", window.scrollY > 12);
-          document
             .getElementById("scrollTop")
             .classList.toggle("visible", window.scrollY > 400);
         },
         { passive: true },
       );
+
+      (function () {
+        var bar = document.getElementById('scroll-progress');
+        if (!bar) return;
+        window.addEventListener('scroll', function () {
+          var scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+          bar.style.width = Math.min(scrolled, 100) + '%';
+        }, { passive: true });
+      })();
 
       /* ══════════════════════════════════════════════════════
          INIT

@@ -25,6 +25,7 @@
       let editingOrderItems = [];
       let _editAddProductId = null;
       let currentImageUrls = [];
+      let currentCatImageUrl = "";
       let categories = [],
         subCategories = [],
         products = [],
@@ -40,16 +41,19 @@
       function _pLang(item) {
         if (!item) return "";
         if (adminLang === "fr") return item.nameFr || item.nameEn || item.name || "";
+        if (adminLang === "ar") return item.nameAr || item.nameEn || item.name || "";
         return item.nameEn || item.name || "";
       }
       function _bLang(item) {
         if (!item) return "";
         if (adminLang === "fr") return item.brandFr || item.brandEn || item.brand || "";
+        if (adminLang === "ar") return item.brandAr || item.brandEn || item.brand || "";
         return item.brandEn || item.brand || "";
       }
       function switchAdminLang(lang) {
         adminLang = lang;
         localStorage.setItem("admin_lang", lang);
+        _applyLangDir(lang);
         document.querySelectorAll(".tb-lang-btn").forEach(b => b.classList.remove("active"));
         const btn = document.getElementById("lang-btn-" + lang);
         if (btn) btn.classList.add("active");
@@ -57,7 +61,13 @@
         renderCats();
         renderBundleList(document.getElementById("bundle-search")?.value || "");
         applyAdminI18n();
+        renderNotifList();
         showToast(t('toast.langSwitch'));
+      }
+      function _applyLangDir(lang) {
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+        document.body.classList.toggle("lang-ar", lang === "ar");
       }
 
       // ── i18n dictionary ──
@@ -69,6 +79,8 @@
           'nav.stock':'Stock','nav.settings':'Settings','nav.backToSite':'Back to Website',
           'nav.superAdmin':'Super Admin',
           'tb.live':'Live','tb.logout':'Logout',
+          'notif.title':'Notifications','notif.clear':'Clear all','notif.empty':'No notifications yet',
+          'notif.newOrder':'New order received','notif.justNow':'Just now','notif.minAgo':'m ago','notif.hourAgo':'h ago','notif.dayAgo':'d ago',
           'dash.topProducts':'Top Products Sold','dash.allTime':'All time','dash.viewAll':'View All',
           'dash.recentOrders':'Recent Orders','dash.statusOverview':'Orders Status Overview',
           'stat.products':'Products','stat.totalOrders':'Total Orders',
@@ -122,6 +134,7 @@
           'pm.addTitle':'Add Product','pm.editTitle':'Edit Product',
           'pm.nameEn':'Product Name (English) *','pm.brandEn':'Brand (English)',
           'pm.nameFr':'Product Name (French)','pm.brandFr':'Brand (French)',
+          'pm.nameAr':'Product Name (Arabic)','pm.brandAr':'Brand (Arabic)',
           'pm.categories':'Categories (select one or more)','pm.subcategories':'Sub-Categories',
           'pm.description':'Description','pm.images':'Product Images',
           'pm.variants':'Variants & Prices','pm.addVariant':'Add Variant',
@@ -130,10 +143,10 @@
           'pm.freeDelivery':'Free Delivery','pm.freeDeliveryHint':'Ships free regardless of order total',
           'pm.save':'Save Product',
           'cat.addTitle':'Add Category','cat.editTitle':'Edit Category',
-          'cat.nameEn':'Name (English) *','cat.nameFr':'Name (French)','cat.desc':'Description',
+          'cat.nameEn':'Name (English) *','cat.nameFr':'Name (French)','cat.nameAr':'Name (Arabic)','cat.desc':'Description','cat.image':'Category Image',
           'cat.subs':'Sub-categories (optional)','cat.addSub':'Add Sub-category','cat.save':'Save Category',
           'subcat.editTitle':'Edit Sub-Category','subcat.nameEn':'Name (English) *',
-          'subcat.nameFr':'Name (French)','subcat.save':'Save Changes',
+          'subcat.nameFr':'Name (French)','subcat.nameAr':'Name (Arabic)','subcat.save':'Save Changes',
           'dm.addTitle':'Add Wilaya','dm.editTitle':'Edit Wilaya',
           'dm.wilayaName':'Wilaya Name *','dm.homePrice':'Home Delivery Price (DA) *',
           'dm.officePrice':'Office / Desk Price (DA) *','dm.save':'Save',
@@ -154,6 +167,8 @@
           'nav.stock':'Stock','nav.settings':'Paramètres','nav.backToSite':'Retour au site',
           'nav.superAdmin':'Super Administrateur',
           'tb.live':'En direct','tb.logout':'Déconnexion',
+          'notif.title':'Notifications','notif.clear':'Tout effacer','notif.empty':'Aucune notification',
+          'notif.newOrder':'Nouvelle commande reçue','notif.justNow':'À l\'instant','notif.minAgo':'min','notif.hourAgo':'h','notif.dayAgo':'j',
           'dash.topProducts':'Produits les plus vendus','dash.allTime':'Depuis toujours','dash.viewAll':'Voir tout',
           'dash.recentOrders':'Commandes récentes','dash.statusOverview':'Aperçu des statuts',
           'stat.products':'Produits','stat.totalOrders':'Total commandes',
@@ -207,6 +222,7 @@
           'pm.addTitle':'Ajouter un produit','pm.editTitle':'Modifier le produit',
           'pm.nameEn':'Nom du produit (Anglais) *','pm.brandEn':'Marque (Anglais)',
           'pm.nameFr':'Nom du produit (Français)','pm.brandFr':'Marque (Français)',
+          'pm.nameAr':'Nom du produit (Arabe)','pm.brandAr':'Marque (Arabe)',
           'pm.categories':'Catégories (sélectionner une ou plusieurs)','pm.subcategories':'Sous-catégories',
           'pm.description':'Description','pm.images':'Images du produit',
           'pm.variants':'Variantes & Prix','pm.addVariant':'Ajouter une variante',
@@ -215,10 +231,10 @@
           'pm.freeDelivery':'Livraison gratuite','pm.freeDeliveryHint':'Livré gratuitement quel que soit le total',
           'pm.save':'Enregistrer le produit',
           'cat.addTitle':'Ajouter une catégorie','cat.editTitle':'Modifier la catégorie',
-          'cat.nameEn':'Nom (Anglais) *','cat.nameFr':'Nom (Français)','cat.desc':'Description',
+          'cat.nameEn':'Nom (Anglais) *','cat.nameFr':'Nom (Français)','cat.nameAr':'Nom (Arabe)','cat.desc':'Description','cat.image':'Image de la catégorie',
           'cat.subs':'Sous-catégories (optionnel)','cat.addSub':'Ajouter une sous-catégorie','cat.save':'Enregistrer la catégorie',
           'subcat.editTitle':'Modifier la sous-catégorie','subcat.nameEn':'Nom (Anglais) *',
-          'subcat.nameFr':'Nom (Français)','subcat.save':'Enregistrer',
+          'subcat.nameFr':'Nom (Français)','subcat.nameAr':'Nom (Arabe)','subcat.save':'Enregistrer',
           'dm.addTitle':'Ajouter une wilaya','dm.editTitle':'Modifier la wilaya',
           'dm.wilayaName':'Nom de la wilaya *','dm.homePrice':'Prix livraison domicile (DA) *',
           'dm.officePrice':'Prix bureau / relais (DA) *','dm.save':'Enregistrer',
@@ -231,6 +247,94 @@
           'status.confirmed':'Confirmé','status.delivered':'Livré','status.canceled':'Annulé',
           'toast.langSwitch':'Langue : Français',
           'sel.items':'éléments sélectionnés','sel.item':'élément sélectionné',
+        },
+        ar: {
+          'nav.main':'الرئيسية','nav.store':'المتجر','nav.admin':'الإدارة',
+          'nav.dashboard':'لوحة التحكم','nav.products':'المنتجات','nav.categories':'الفئات',
+          'nav.delivery':'أسعار التوصيل','nav.bundle':'الحزمة','nav.orders':'الطلبات',
+          'nav.stock':'المخزون','nav.settings':'الإعدادات','nav.backToSite':'العودة للموقع',
+          'nav.superAdmin':'مدير عام',
+          'tb.live':'مباشر','tb.logout':'تسجيل الخروج',
+          'notif.title':'الإشعارات','notif.clear':'مسح الكل','notif.empty':'لا توجد إشعارات',
+          'notif.newOrder':'طلب جديد','notif.justNow':'الآن','notif.minAgo':'د','notif.hourAgo':'س','notif.dayAgo':'ي',
+          'dash.topProducts':'الأكثر مبيعًا','dash.allTime':'كل الوقت','dash.viewAll':'عرض الكل',
+          'dash.recentOrders':'أحدث الطلبات','dash.statusOverview':'نظرة عامة على الحالة',
+          'stat.products':'المنتجات','stat.totalOrders':'إجمالي الطلبات',
+          'stat.weekOrders':'طلبات هذا الأسبوع','stat.weekRevenue':'إيرادات الأسبوع (دج)',
+          'stat.totalRevenue':'إجمالي الإيرادات (دج)','stat.pending':'طلبات معلقة',
+          'products.title':'المنتجات','products.add':'إضافة منتج','products.search':'ابحث عن منتجات…',
+          'products.col.product':'المنتج','products.col.categories':'الفئات',
+          'products.col.shades':'الألوان / الخيارات','products.col.variants':'الأنواع / الأسعار',
+          'products.col.stock':'المخزون','products.col.status':'الحالة','products.col.actions':'إجراءات',
+          'products.empty':'لا توجد منتجات',
+          'cats.title':'الفئات','cats.add':'إضافة فئة','cats.empty':'لا توجد فئات بعد',
+          'delivery.title':'أسعار التوصيل','delivery.addWilaya':'إضافة ولاية',
+          'delivery.freeTitle':'إعدادات التوصيل المجاني',
+          'delivery.minOrder':'الحد الأدنى للطلب للتوصيل المجاني (دج)',
+          'delivery.minOrderHint':'عندما يبلغ مجموع السلة هذا المبلغ أو يتجاوزه، يكون التوصيل مجانيًا. ضع 0 للتعطيل.',
+          'delivery.allFree':'كل التوصيلات مجانية','delivery.saveFree':'حفظ إعدادات التوصيل المجاني',
+          'delivery.search':'ابحث عن ولاية…','delivery.col.num':'#','delivery.col.wilaya':'الولاية',
+          'delivery.col.home':'توصيل المنزل (دج)','delivery.col.office':'المكتب (دج)',
+          'delivery.col.actions':'إجراءات',
+          'bundle.title':'الحزمة','bundle.select':'اختر منتج الحزمة',
+          'bundle.selectDesc':'اختر <strong>منتجًا واحدًا</strong> لعرضه كحزمة في متجرك.',
+          'bundle.bannerTitle':'عنوان البانر','bundle.titleEn':'العنوان (إنجليزي)','bundle.titleFr':'العنوان (فرنسي)',
+          'bundle.bannerDesc':'وصف البانر','bundle.descEn':'الوصف (إنجليزي)',
+          'bundle.descFr':'الوصف (فرنسي)','bundle.search':'ابحث عن منتجات…',
+          'bundle.noSelected':'لم يتم اختيار منتج','bundle.clear':'مسح','bundle.save':'حفظ الحزمة',
+          'orders.title':'الطلبات','orders.refresh':'تحديث',
+          'orders.search':'ابحث بالاسم، الهاتف، الولاية…',
+          'orders.sort.newest':'الأحدث أولاً','orders.sort.oldest':'الأقدم أولاً',
+          'orders.sort.totalDesc':'الأعلى سعرًا','orders.sort.totalAsc':'الأقل سعرًا',
+          'orders.sort.nameAsc':'الاسم أ→ي','orders.sort.nameDesc':'الاسم ي→أ',
+          'orders.filter.all':'الكل','orders.filter.waiting':'قيد الانتظار',
+          'orders.filter.confirmed':'مؤكد','orders.filter.delivered':'تم التوصيل',
+          'orders.filter.canceled':'ملغى',
+          'orders.col.num':'#','orders.col.customer':'العميل','orders.col.phone':'الهاتف',
+          'orders.col.wilaya':'الولاية','orders.col.address':'العنوان','orders.col.items':'العناصر',
+          'orders.col.total':'الإجمالي','orders.col.source':'المصدر','orders.col.date':'التاريخ',
+          'orders.col.status':'الحالة','orders.col.actions':'إجراءات','orders.empty':'لا توجد طلبات بعد',
+          'stock.title':'إدارة المخزون','stock.allProducts':'كل المنتجات',
+          'stock.outOfStock':'نفد المخزون','stock.lowStock':'مخزون منخفض (≤5)','stock.refresh':'تحديث',
+          'stock.search':'ابحث عن منتجات…',
+          'settings.title':'الإعدادات','settings.accountInfo':'معلومات الحساب',
+          'settings.username':'اسم المستخدم','settings.displayName':'الاسم المعروض',
+          'settings.saveChanges':'حفظ التغييرات','settings.changePass':'تغيير كلمة المرور',
+          'settings.curPass':'كلمة المرور الحالية','settings.newPass':'كلمة المرور الجديدة',
+          'settings.confirmPass':'تأكيد كلمة المرور الجديدة','settings.updatePass':'تحديث كلمة المرور',
+          'settings.manageUsers':'إدارة المستخدمين','settings.email':'البريد الإلكتروني',
+          'settings.password':'كلمة المرور','settings.createUser':'إنشاء مستخدم',
+          'common.edit':'تعديل','common.delete':'حذف','common.cancel':'إلغاء',
+          'common.deleteSelected':'حذف المحدد','common.enabled':'مفعّل','common.disabled':'معطّل',
+          'common.save':'حفظ','common.show':'إظهار','common.hide':'إخفاء','common.noData':'لا توجد بيانات',
+          'pm.addTitle':'إضافة منتج','pm.editTitle':'تعديل المنتج',
+          'pm.nameEn':'اسم المنتج (إنجليزي) *','pm.brandEn':'العلامة التجارية (إنجليزي)',
+          'pm.nameFr':'اسم المنتج (فرنسي)','pm.brandFr':'العلامة التجارية (فرنسي)',
+          'pm.nameAr':'اسم المنتج (عربي)','pm.brandAr':'العلامة التجارية (عربي)',
+          'pm.categories':'الفئات (اختر واحدة أو أكثر)','pm.subcategories':'الفئات الفرعية',
+          'pm.description':'الوصف','pm.images':'صور المنتج',
+          'pm.variants':'الأنواع والأسعار','pm.addVariant':'إضافة نوع',
+          'pm.shades':'الألوان / الخيارات','pm.addShade':'إضافة لون / خيار',
+          'pm.totalStock':'إجمالي المخزون','pm.discount':'الخصم %','pm.status':'الحالة',
+          'pm.freeDelivery':'توصيل مجاني','pm.freeDeliveryHint':'يُشحن مجانًا بغض النظر عن إجمالي الطلب',
+          'pm.save':'حفظ المنتج',
+          'cat.addTitle':'إضافة فئة','cat.editTitle':'تعديل الفئة',
+          'cat.nameEn':'الاسم (إنجليزي) *','cat.nameFr':'الاسم (فرنسي)','cat.nameAr':'الاسم (عربي)','cat.desc':'الوصف','cat.image':'صورة الفئة',
+          'cat.subs':'الفئات الفرعية (اختياري)','cat.addSub':'إضافة فئة فرعية','cat.save':'حفظ الفئة',
+          'subcat.editTitle':'تعديل الفئة الفرعية','subcat.nameEn':'الاسم (إنجليزي) *',
+          'subcat.nameFr':'الاسم (فرنسي)','subcat.nameAr':'الاسم (عربي)','subcat.save':'حفظ التغييرات',
+          'dm.addTitle':'إضافة ولاية','dm.editTitle':'تعديل الولاية',
+          'dm.wilayaName':'اسم الولاية *','dm.homePrice':'سعر التوصيل للمنزل (دج) *',
+          'dm.officePrice':'سعر المكتب (دج) *','dm.save':'حفظ',
+          'confirm.title':'هل أنت متأكد؟','confirm.default':'لا يمكن التراجع عن هذا الإجراء.',
+          'confirm.delete':'حذف',
+          'page.dashboard':'لوحة التحكم','page.products':'المنتجات','page.categories':'الفئات',
+          'page.delivery':'أسعار التوصيل','page.bundle':'الحزمة','page.orders':'الطلبات',
+          'page.stock':'إدارة المخزون','page.settings':'الإعدادات',
+          'status.active':'نشط','status.inactive':'غير نشط','status.waiting':'قيد الانتظار',
+          'status.confirmed':'مؤكد','status.delivered':'تم التوصيل','status.canceled':'ملغى',
+          'toast.langSwitch':'اللغة: العربية',
+          'sel.items':'عناصر محددة','sel.item':'عنصر محدد',
         }
       };
       function t(key) {
@@ -315,13 +419,13 @@
       // ROW MAPPERS (snake_case → camelCase)
       // ════════════════════════════════════════════
       function _remapProductRow(r) {
-        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || r.name || "", nameFr: r.name_fr || "", brand: r.brand_en || r.brand || "", brandEn: r.brand_en || r.brand || "", brandFr: r.brand_fr || "", categoryIds: (r.category_ids || "").split(",").filter(Boolean), subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), description: r.description_en || r.description || "", descriptionEn: r.description_en || r.description || "", descriptionFr: r.description_fr || "", imageUrl: r.image_url || [], variants: r.variants || [], flavors: r.flavors || [], stock: r.stock, discount: r.discount, freeDelivery: r.free_delivery === true || r.free_delivery === "true", status: r.status, hidden: r.hidden || false, createdAt: r.created_at };
+        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || r.name || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", brand: r.brand_en || r.brand || "", brandEn: r.brand_en || r.brand || "", brandFr: r.brand_fr || "", brandAr: r.brand_ar || "", categoryIds: (r.category_ids || "").split(",").filter(Boolean), subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), description: r.description_en || r.description || "", descriptionEn: r.description_en || r.description || "", descriptionFr: r.description_fr || "", descriptionAr: r.description_ar || "", imageUrl: r.image_url || [], variants: r.variants || [], flavors: r.flavors || [], stock: r.stock, discount: r.discount, freeDelivery: r.free_delivery === true || r.free_delivery === "true", status: r.status, hidden: r.hidden || false, createdAt: r.created_at };
       }
       function _remapCategoryRow(r) {
-        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || "", nameFr: r.name_fr || "", description: r.description, createdAt: r.created_at };
+        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", description: r.description, imageUrl: r.image_url || "", createdAt: r.created_at };
       }
       function _remapSubCategoryRow(r) {
-        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || "", nameFr: r.name_fr || "", categoryIds: (r.category_ids || "").split(",").filter(Boolean), createdAt: r.created_at };
+        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", categoryIds: (r.category_ids || "").split(",").filter(Boolean), createdAt: r.created_at };
       }
       function _remapDeliveryRow(r) {
         return { id: r.id, wilaya: r.wilaya, homePrice: r.home_price, officePrice: r.office_price, createdAt: r.created_at };
@@ -331,7 +435,7 @@
       }
       // ROW BUILDERS (camelCase → snake_case)
       function _toProductRow(p) {
-        return { name: p.nameEn || p.name || "", name_en: p.nameEn || "", name_fr: p.nameFr || "", brand: p.brandEn || p.brand || "", brand_en: p.brandEn || "", brand_fr: p.brandFr || "", category_ids: (p.categoryIds || []).join(","), sub_category_ids: (p.subCategoryIds || []).join(","), description: p.descriptionEn || p.description || "", description_en: p.descriptionEn || "", description_fr: p.descriptionFr || "", image_url: p.imageUrl || [], variants: p.variants || [], flavors: p.flavors || [], stock: p.stock || 0, discount: p.discount || 0, free_delivery: p.freeDelivery || false, status: p.status || "active", hidden: p.hidden || false };
+        return { name: p.nameEn || p.name || "", name_en: p.nameEn || "", name_fr: p.nameFr || "", name_ar: p.nameAr || "", brand: p.brandEn || p.brand || "", brand_en: p.brandEn || "", brand_fr: p.brandFr || "", brand_ar: p.brandAr || "", category_ids: (p.categoryIds || []).join(","), sub_category_ids: (p.subCategoryIds || []).join(","), description: p.descriptionEn || p.description || "", description_en: p.descriptionEn || "", description_fr: p.descriptionFr || "", description_ar: p.descriptionAr || "", image_url: p.imageUrl || [], variants: p.variants || [], flavors: p.flavors || [], stock: p.stock || 0, discount: p.discount || 0, free_delivery: p.freeDelivery || false, status: p.status || "active", hidden: p.hidden || false };
       }
       // ════════════════════════════════════════════
       // API HELPERS (Supabase)
@@ -348,7 +452,7 @@
               sb.from("categories").select("*").order("created_at", { ascending: true }),
               sb.from("sub_categories").select("*"),
               sb.from("delivery_prices").select("*").order("wilaya", { ascending: true }),
-              sb.from("bundle").select("*").eq("id", 1).maybeSingle(),
+              sb.from("bundle").select("*").limit(1).maybeSingle(),
             ]);
             if (e1 || e2 || e3 || e5 || e6) throw e1 || e2 || e3 || e5 || e6;
             return { success: true, products: (prods || []).map(_remapProductRow), categories: (cats || []).map(_remapCategoryRow), subCategories: (subs || []).map(_remapSubCategoryRow), deliveryPrices: (dpRows || []).map(_remapDeliveryRow), bundle: bndRow ? { bundleId: bndRow.bundle_id, bundleDescription: bndRow.description_en } : {} };
@@ -374,7 +478,7 @@
             return { success: true, deliveryPrices: (data || []).map(_remapDeliveryRow) };
           }
           case "getBundle": {
-            const { data, error } = await sb.from("bundle").select("*").eq("id", 1).maybeSingle();
+            const { data, error } = await sb.from("bundle").select("*").limit(1).maybeSingle();
             if (error) throw error;
             return {
               success: true,
@@ -430,27 +534,27 @@
           // ── CATEGORIES ──
           case "addCategory": {
             const catId = String(Date.now());
-            const { error: catErr } = await sb.from("categories").insert({ id: catId, name: rest.nameEn || rest.name || "", name_en: rest.nameEn || "", name_fr: rest.nameFr || "", description: rest.description || "" });
+            const { error: catErr } = await sb.from("categories").insert({ id: catId, name: rest.nameEn || rest.name || "", name_en: rest.nameEn || "", name_fr: rest.nameFr || "", name_ar: rest.nameAr || "", description: rest.description || "", image_url: rest.imageUrl || "" });
             if (catErr) throw catErr;
             for (const sub of (rest.subCategories || [])) {
               if (!sub) continue;
               const subName = typeof sub === "string" ? sub : (sub.nameEn || sub.name || "");
               if (!subName) continue;
               await new Promise((r) => setTimeout(r, 5));
-              await sb.from("sub_categories").insert({ id: String(Date.now()), name: subName, name_en: typeof sub === "string" ? sub : (sub.nameEn || ""), name_fr: typeof sub === "string" ? "" : (sub.nameFr || ""), category_ids: catId });
+              await sb.from("sub_categories").insert({ id: String(Date.now()), name: subName, name_en: typeof sub === "string" ? sub : (sub.nameEn || ""), name_fr: typeof sub === "string" ? "" : (sub.nameFr || ""), name_ar: typeof sub === "string" ? "" : (sub.nameAr || ""), category_ids: catId });
             }
             return { success: true, id: catId };
           }
           case "updateCategory": {
-            const { error } = await sb.from("categories").update({ name: rest.nameEn || rest.name || "", name_en: rest.nameEn || "", name_fr: rest.nameFr || "", description: rest.description || "" }).eq("id", id);
+            const { error } = await sb.from("categories").update({ name: rest.nameEn || rest.name || "", name_en: rest.nameEn || "", name_fr: rest.nameFr || "", name_ar: rest.nameAr || "", description: rest.description || "", image_url: rest.imageUrl || "" }).eq("id", id);
             if (error) throw error;
             for (const sub of (rest.subCategories || [])) {
               const subName = sub.nameEn || sub.name || "";
               if (sub.id) {
-                await sb.from("sub_categories").update({ name: subName, name_en: sub.nameEn || "", name_fr: sub.nameFr || "" }).eq("id", sub.id);
+                await sb.from("sub_categories").update({ name: subName, name_en: sub.nameEn || "", name_fr: sub.nameFr || "", name_ar: sub.nameAr || "" }).eq("id", sub.id);
               } else if (subName) {
                 await new Promise((r) => setTimeout(r, 5));
-                await sb.from("sub_categories").insert({ id: String(Date.now()), name: subName, name_en: sub.nameEn || "", name_fr: sub.nameFr || "", category_ids: id });
+                await sb.from("sub_categories").insert({ id: String(Date.now()), name: subName, name_en: sub.nameEn || "", name_fr: sub.nameFr || "", name_ar: sub.nameAr || "", category_ids: id });
               }
             }
             return { success: true };
@@ -462,7 +566,7 @@
             return { success: true };
           }
           case "updateSubCategory": {
-            const { error } = await sb.from("sub_categories").update({ name: rest.nameEn || rest.name || "", name_en: rest.nameEn || "", name_fr: rest.nameFr || "" }).eq("id", id);
+            const { error } = await sb.from("sub_categories").update({ name: rest.nameEn || rest.name || "", name_en: rest.nameEn || "", name_fr: rest.nameFr || "", name_ar: rest.nameAr || "" }).eq("id", id);
             if (error) throw error;
             return { success: true };
           }
@@ -490,13 +594,20 @@
           }
           // ── BUNDLE ──
           case "saveBundle": {
-            const { error } = await sb.from("bundle").update({
+            // bundle_id is the table's primary key (it's the selected product's id),
+            // so it can't be targeted with a stable .eq("id", ...) update — instead
+            // replace the single settings row, keeping any existing Arabic text.
+            const { data: existing } = await sb.from("bundle").select("title_ar, description_ar").limit(1).maybeSingle();
+            await sb.from("bundle").delete().neq("bundle_id", "__none__");
+            const { error } = await sb.from("bundle").insert({
               bundle_id:      rest.bundleId || "",
               title_en:       rest.titleEn || "",
               title_fr:       rest.titleFr || "",
+              title_ar:       existing?.title_ar || "",
               description_en: rest.descriptionEn || "",
               description_fr: rest.descriptionFr || "",
-            }).eq("id", 1);
+              description_ar: existing?.description_ar || "",
+            });
             if (error) throw error;
             return { success: true };
           }
@@ -584,6 +695,156 @@
         if (el) el.textContent = "Updated " + new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
       }
 
+      // ════════════════════════════════════════════
+      // NOTIFICATIONS — live "new order" alerts via Supabase Realtime
+      // ════════════════════════════════════════════
+      const NOTIF_KEY = "bb_admin_notifs";
+      let notifs = [];
+      let notifPanelOpen = false;
+
+      function _loadNotifs() {
+        try { notifs = JSON.parse(localStorage.getItem(NOTIF_KEY)) || []; } catch (e) { notifs = []; }
+      }
+      function _saveNotifs() {
+        notifs = notifs.slice(0, 30);
+        localStorage.setItem(NOTIF_KEY, JSON.stringify(notifs));
+      }
+      function _timeAgo(iso) {
+        const diff = Math.max(0, Date.now() - new Date(iso).getTime());
+        const min = Math.floor(diff / 60000);
+        if (min < 1) return t('notif.justNow');
+        if (min < 60) return min + t('notif.minAgo');
+        const hr = Math.floor(min / 60);
+        if (hr < 24) return hr + t('notif.hourAgo');
+        return Math.floor(hr / 24) + t('notif.dayAgo');
+      }
+      function renderNotifBadge() {
+        const unread = notifs.filter((n) => !n.read).length;
+        const badge = document.getElementById("tb-notif-badge");
+        const btn = document.querySelector(".tb-notif-btn");
+        if (badge) {
+          badge.textContent = unread > 9 ? "9+" : String(unread);
+          badge.style.display = unread > 0 ? "flex" : "none";
+        }
+        if (btn) btn.classList.toggle("has-unread", unread > 0);
+      }
+      function renderNotifList() {
+        const list = document.getElementById("tb-notif-list");
+        if (!list) return;
+        if (!notifs.length) {
+          list.innerHTML = `<div class="tb-notif-empty">${t('notif.empty')}</div>`;
+          return;
+        }
+        list.innerHTML = notifs
+          .map(
+            (n, i) => `
+          <div class="tb-notif-item${n.read ? "" : " unread"}" onclick="openNotif(${i})">
+            <div class="tb-notif-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+                <rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/>
+              </svg>
+            </div>
+            <div class="tb-notif-body">
+              <div class="tb-notif-title">${t('notif.newOrder')}</div>
+              <div class="tb-notif-meta">${n.name} · ${Number(n.total || 0).toLocaleString("fr-DZ")} DA${n.wilaya ? " · " + n.wilaya : ""}</div>
+            </div>
+            <div class="tb-notif-time">${_timeAgo(n.createdAt)}</div>
+          </div>`,
+          )
+          .join("");
+      }
+      function pushNotif(order) {
+        notifs.unshift({
+          id: order.id,
+          name: [order.first_name, order.last_name].filter(Boolean).join(" ") || "—",
+          total: order.total || 0,
+          wilaya: order.wilaya || "",
+          createdAt: order.created_at || new Date().toISOString(),
+          read: false,
+        });
+        _saveNotifs();
+        renderNotifBadge();
+        renderNotifList();
+      }
+      function toggleNotifPanel(e) {
+        if (e) e.stopPropagation();
+        notifPanelOpen = !notifPanelOpen;
+        const panel = document.getElementById("tb-notif-panel");
+        if (panel) panel.classList.toggle("open", notifPanelOpen);
+        if (notifPanelOpen) {
+          notifs.forEach((n) => (n.read = true));
+          _saveNotifs();
+          renderNotifBadge();
+          renderNotifList();
+        }
+      }
+      function openNotif(idx) {
+        toggleNotifPanel();
+        showPage("orders", document.querySelector(".sb-link[onclick*=orders]"));
+        const n = notifs[idx];
+        if (n && n.name && n.name !== "—") {
+          const search = document.getElementById("orders-search");
+          if (search) { search.value = n.name; searchOrders(n.name); }
+        }
+      }
+      function clearAllNotifs(e) {
+        if (e) e.stopPropagation();
+        notifs = [];
+        _saveNotifs();
+        renderNotifBadge();
+        renderNotifList();
+      }
+      document.addEventListener("click", (e) => {
+        if (notifPanelOpen && !e.target.closest(".tb-notif-wrap")) toggleNotifPanel();
+      });
+
+      function _playNotifPing() {
+        try {
+          const Ctx = window.AudioContext || window.webkitAudioContext;
+          if (!Ctx) return;
+          const ctx = new Ctx();
+          const o = ctx.createOscillator();
+          const g = ctx.createGain();
+          o.connect(g);
+          g.connect(ctx.destination);
+          o.type = "sine";
+          o.frequency.value = 880;
+          g.gain.setValueAtTime(0.0001, ctx.currentTime);
+          g.gain.exponentialRampToValueAtTime(0.16, ctx.currentTime + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+          o.start();
+          o.stop(ctx.currentTime + 0.55);
+        } catch (e) {}
+      }
+
+      function _subscribeOrderNotifications() {
+        if (!sb || !sb.channel) return;
+        sb.channel("admin-orders-notify")
+          .on(
+            "postgres_changes",
+            { event: "INSERT", schema: "public", table: "orders" },
+            (payload) => {
+              const row = payload.new || {};
+              pushNotif(row);
+              _playNotifPing();
+              const btn = document.querySelector(".tb-notif-btn");
+              if (btn) {
+                btn.classList.remove("ring");
+                void btn.offsetWidth;
+                btn.classList.add("ring");
+              }
+              const name = [row.first_name, row.last_name].filter(Boolean).join(" ");
+              showToast(`${t("notif.newOrder")} — ${name}`);
+              Promise.all([_fetchDashOrders(), _fetchOrdersPage()]).then(() => {
+                renderOrders();
+                updateDashboard();
+                updateLastUpdated();
+              });
+            },
+          )
+          .subscribe();
+      }
 
       // ════════════════════════════════════════════
       // INIT
@@ -591,11 +852,16 @@
       document.addEventListener("DOMContentLoaded", async () => {
         // Sync lang button state
         (function() {
+          _applyLangDir(adminLang);
           document.querySelectorAll(".tb-lang-btn").forEach(b => b.classList.remove("active"));
           const btn = document.getElementById("lang-btn-" + adminLang);
           if (btn) btn.classList.add("active");
           applyAdminI18n();
         })();
+        _loadNotifs();
+        renderNotifBadge();
+        renderNotifList();
+        _subscribeOrderNotifications();
         let cached = false;
         if (!SUPABASE_URL || !sb) {
           showToast("Supabase not configured!", "error");
@@ -1179,10 +1445,13 @@
           if (p) {
             document.getElementById("pm-name-en").value = p.nameEn || p.name || "";
             document.getElementById("pm-name-fr").value = p.nameFr || "";
+            document.getElementById("pm-name-ar").value = p.nameAr || "";
             document.getElementById("pm-brand-en").value = p.brandEn || p.brand || "";
             document.getElementById("pm-brand-fr").value = p.brandFr || "";
+            document.getElementById("pm-brand-ar").value = p.brandAr || "";
             document.getElementById("pm-desc-en").innerHTML = p.descriptionEn || p.description || "";
             document.getElementById("pm-desc-fr").innerHTML = p.descriptionFr || "";
+            document.getElementById("pm-desc-ar").innerHTML = p.descriptionAr || "";
             switchDescTab("en");
             document.getElementById("pm-stock").value = p.stock;
             document.getElementById("pm-discount").value = p.discount;
@@ -1215,11 +1484,12 @@
             refreshStockMatrix();
           }
         } else {
-          ["pm-name-en", "pm-name-fr", "pm-brand-en", "pm-brand-fr", "pm-stock", "pm-discount"].forEach(
+          ["pm-name-en", "pm-name-fr", "pm-name-ar", "pm-brand-en", "pm-brand-fr", "pm-brand-ar", "pm-stock", "pm-discount"].forEach(
             (x) => (document.getElementById(x).value = ""),
           );
           document.getElementById("pm-desc-en").innerHTML = "";
           document.getElementById("pm-desc-fr").innerHTML = "";
+          document.getElementById("pm-desc-ar").innerHTML = "";
           switchDescTab("en");
           document.getElementById("variants-list").innerHTML = "";
           document.getElementById("flavors-list").innerHTML = "";
@@ -1255,7 +1525,8 @@
         if (v && v.stock !== undefined) div.dataset.varStock = String(v.stock);
         const existingLabelEn = v ? (v.labelEn || v.label || (v.weight ? `${v.weight}${v.unit || ''}` : '')) : '';
         const existingLabelFr = v ? (v.labelFr || '') : '';
-        div.innerHTML = `<div class="form-group" style="flex:2"><label>Label</label><input type="text" class="form-control variant-label-input" placeholder="EN *" value="${existingLabelEn}" oninput="refreshStockMatrix()" /><input type="text" class="form-control variant-label-fr" placeholder="FR" value="${existingLabelFr}" style="margin-top:4px" /></div><div class="form-group"><label>Price (DA)</label><input type="number" class="form-control variant-price-input" placeholder="0" value="${v ? v.price : ""}" /></div><button class="btn-remove-variant" onclick="this.closest('.variant-row').remove();refreshStockMatrix()">×</button>`;
+        const existingLabelAr = v ? (v.labelAr || '') : '';
+        div.innerHTML = `<div class="form-group" style="flex:2"><label>Label</label><input type="text" class="form-control variant-label-input" placeholder="EN *" value="${existingLabelEn}" oninput="refreshStockMatrix()" /><input type="text" class="form-control variant-label-fr" placeholder="FR" value="${existingLabelFr}" style="margin-top:4px" /><input type="text" class="form-control variant-label-ar" placeholder="AR" value="${existingLabelAr}" dir="rtl" style="margin-top:4px;text-align:right;font-family:'Cairo','Tajawal',sans-serif" /></div><div class="form-group"><label>Price (DA)</label><input type="number" class="form-control variant-price-input" placeholder="0" value="${v ? v.price : ""}" /></div><button class="btn-remove-variant" onclick="this.closest('.variant-row').remove();refreshStockMatrix()">×</button>`;
         list.appendChild(div);
         refreshStockMatrix();
       }
@@ -1266,7 +1537,8 @@
         div.className = "flavor-row";
         const fNameEn = f ? (f.nameEn || f.name || '') : '';
         const fNameFr = f ? (f.nameFr || '') : '';
-        div.innerHTML = `<div class="form-group" style="flex:2"><label>Shade / Color / Option</label><input type="text" class="form-control flavor-name-input" placeholder="EN *  e.g. Red No.5, Nude Beige…" value="${fNameEn}" oninput="refreshStockMatrix()" /><input type="text" class="form-control flavor-name-fr" placeholder="FR" value="${fNameFr}" style="margin-top:4px" /></div><div class="form-group flavor-qty-cell"><label>Qty (no variants)</label><input type="number" class="form-control flavor-qty-input" placeholder="0" value="${f && f.qty ? f.qty : ""}" min="0" oninput="refreshStockMatrix()" /></div><button class="btn-remove-variant" onclick="this.closest('.flavor-row').remove();refreshStockMatrix()">×</button>`;
+        const fNameAr = f ? (f.nameAr || '') : '';
+        div.innerHTML = `<div class="form-group" style="flex:2"><label>Shade / Color / Option</label><input type="text" class="form-control flavor-name-input" placeholder="EN *  e.g. Red No.5, Nude Beige…" value="${fNameEn}" oninput="refreshStockMatrix()" /><input type="text" class="form-control flavor-name-fr" placeholder="FR" value="${fNameFr}" style="margin-top:4px" /><input type="text" class="form-control flavor-name-ar" placeholder="AR" value="${fNameAr}" dir="rtl" style="margin-top:4px;text-align:right;font-family:'Cairo','Tajawal',sans-serif" /></div><div class="form-group flavor-qty-cell"><label>Qty (no variants)</label><input type="number" class="form-control flavor-qty-input" placeholder="0" value="${f && f.qty ? f.qty : ""}" min="0" oninput="refreshStockMatrix()" /></div><button class="btn-remove-variant" onclick="this.closest('.flavor-row').remove();refreshStockMatrix()">×</button>`;
         list.appendChild(div);
         refreshStockMatrix();
       }
@@ -1377,6 +1649,7 @@
       async function saveProduct() {
         const nameEn = document.getElementById("pm-name-en").value.trim();
         const nameFr = document.getElementById("pm-name-fr").value.trim();
+        const nameAr = document.getElementById("pm-name-ar").value.trim();
         if (!nameEn) {
           showToast("Product name (English) required", "error");
           return;
@@ -1390,9 +1663,10 @@
           .map((r, vi) => {
             const labelEn = r.querySelector(".variant-label-input")?.value.trim() || "";
             const labelFr = r.querySelector(".variant-label-fr")?.value.trim() || "";
+            const labelAr = r.querySelector(".variant-label-ar")?.value.trim() || "";
             const priceEl = r.querySelector(".variant-price-input");
             const label = labelEn;
-            const v = { label, labelEn, labelFr, price: parseFloat(priceEl?.value) || 0 };
+            const v = { label, labelEn, labelFr, labelAr, price: parseFloat(priceEl?.value) || 0 };
             if (showMatrix) {
               v.flavorStock = {};
               document.querySelectorAll(`#stock-matrix-body input[data-vi="${vi}"]`).forEach(inp => {
@@ -1411,8 +1685,9 @@
           .map((r) => {
             const nameEn = r.querySelector(".flavor-name-input")?.value.trim() || "";
             const nameFr = r.querySelector(".flavor-name-fr")?.value.trim() || "";
+            const nameAr = r.querySelector(".flavor-name-ar")?.value.trim() || "";
             const qty    = parseInt(r.querySelector(".flavor-qty-input")?.value) || 0;
-            return { name: nameEn, nameEn, nameFr, qty };
+            return { name: nameEn, nameEn, nameFr, nameAr, qty };
           })
           .filter((f) => f.name);
 
@@ -1430,14 +1705,17 @@
           name: nameEn,
           nameEn,
           nameFr,
+          nameAr,
           brand: document.getElementById("pm-brand-en").value.trim(),
           brandEn: document.getElementById("pm-brand-en").value.trim(),
           brandFr: document.getElementById("pm-brand-fr").value.trim(),
+          brandAr: document.getElementById("pm-brand-ar").value.trim(),
           categoryIds,
           subCategoryIds,
           description: document.getElementById("pm-desc-en").innerHTML.trim(),
           descriptionEn: document.getElementById("pm-desc-en").innerHTML.trim(),
           descriptionFr: document.getElementById("pm-desc-fr").innerHTML.trim(),
+          descriptionAr: document.getElementById("pm-desc-ar").innerHTML.trim(),
           imageUrl: currentImageUrls,
           variants,
           flavors,
@@ -1494,7 +1772,10 @@
             const subs = subCategories.filter((s) =>
               s.categoryIds && s.categoryIds.includes(c.id),
             );
-            return `<div class="cat-node"><div class="cat-row" id="cat-row-${c.id}" onclick="toggleCat('${c.id}',event)"><input type="checkbox" class="row-cb" data-sel-type="cat" data-sel-id="${c.id}" onclick="event.stopPropagation()" onchange="_selToggleCat('${c.id}',this.checked)" style="margin-right:8px;width:15px;height:15px;accent-color:var(--red);cursor:pointer;flex-shrink:0"><div class="cat-expand" id="cat-exp-${c.id}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div><div class="cat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div><div class="cat-name">${_pLang(c)}</div>${c.description ? `<span style="font-size:11px;color:var(--g400);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.description}</span>` : ""}${subs.length > 0 ? `<span class="cat-count">${subs.length} sub${subs.length !== 1 ? "s" : ""}</span>` : ""}<div class="action-group"><button class="act-btn act-edit" onclick="editCat('${c.id}');event.stopPropagation()">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('cat','${c.id}');event.stopPropagation()">Delete</button></div></div><div class="sub-cats" id="sub-cats-${c.id}">${subs.map((s) => `<div class="sub-node"><div class="sub-icon"></div><div class="sub-name">${_pLang(s)}</div><div class="sub-actions"><button class="act-btn act-edit" onclick="editSubCat('${s.id}')">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('subcat','${s.id}')">Delete</button></div></div>`).join("")}</div></div>`;
+            const catIconHtml = c.imageUrl
+              ? `<img src="${c.imageUrl}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit" />`
+              : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>`;
+            return `<div class="cat-node"><div class="cat-row" id="cat-row-${c.id}" onclick="toggleCat('${c.id}',event)"><input type="checkbox" class="row-cb" data-sel-type="cat" data-sel-id="${c.id}" onclick="event.stopPropagation()" onchange="_selToggleCat('${c.id}',this.checked)" style="margin-right:8px;width:15px;height:15px;accent-color:var(--red);cursor:pointer;flex-shrink:0"><div class="cat-expand" id="cat-exp-${c.id}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div><div class="cat-icon" style="overflow:hidden">${catIconHtml}</div><div class="cat-name">${_pLang(c)}</div>${c.description ? `<span style="font-size:11px;color:var(--g400);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.description}</span>` : ""}${subs.length > 0 ? `<span class="cat-count">${subs.length} sub${subs.length !== 1 ? "s" : ""}</span>` : ""}<div class="action-group"><button class="act-btn act-edit" onclick="editCat('${c.id}');event.stopPropagation()">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('cat','${c.id}');event.stopPropagation()">Delete</button></div></div><div class="sub-cats" id="sub-cats-${c.id}">${subs.map((s) => `<div class="sub-node"><div class="sub-icon"></div><div class="sub-name">${_pLang(s)}</div><div class="sub-actions"><button class="act-btn act-edit" onclick="editSubCat('${s.id}')">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('subcat','${s.id}')">Delete</button></div></div>`).join("")}</div></div>`;
           })
           .join("");
         if (pag) pag.innerHTML = _pagCtrl(categories.length, catPage, "setCatPage");
@@ -1522,8 +1803,11 @@
         document.getElementById("cat-modal-title").textContent = t('cat.addTitle');
         document.getElementById("cat-name-en").value = "";
         document.getElementById("cat-name-fr").value = "";
+        document.getElementById("cat-name-ar").value = "";
         document.getElementById("cat-desc").value = "";
         document.getElementById("sub-items-list").innerHTML = "";
+        currentCatImageUrl = "";
+        renderCatImageGrid();
         openModal("cat-modal");
       }
       function editCat(id) {
@@ -1533,12 +1817,16 @@
         document.getElementById("cat-modal-title").textContent = t('cat.editTitle');
         document.getElementById("cat-name-en").value = cat.nameEn || cat.name || "";
         document.getElementById("cat-name-fr").value = cat.nameFr || "";
+        document.getElementById("cat-name-ar").value = cat.nameAr || "";
         document.getElementById("cat-desc").value = cat.description || "";
+        currentCatImageUrl = cat.imageUrl || "";
+        renderCatImageGrid();
         const subs = subCategories.filter((s) => s.categoryIds && s.categoryIds.includes(id));
         document.getElementById("sub-items-list").innerHTML = subs
           .map((s) => `<div class="sub-item-row" data-sub-id="${s.id}">
             <input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="EN" value="${(s.nameEn||s.name||'').replace(/"/g,'&quot;')}" data-lang="en" />
             <input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="FR" value="${(s.nameFr||'').replace(/"/g,'&quot;')}" data-lang="fr" />
+            <input type="text" class="form-control" style="flex:1;min-width:80px;text-align:right;font-family:'Cairo','Tajawal',sans-serif" dir="rtl" placeholder="AR" value="${(s.nameAr||'').replace(/"/g,'&quot;')}" data-lang="ar" />
             <button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button></div>`)
           .join("");
         openModal("cat-modal");
@@ -1547,25 +1835,71 @@
         const list = document.getElementById("sub-items-list");
         const div = document.createElement("div");
         div.className = "sub-item-row";
-        div.innerHTML = `<input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="EN" data-lang="en" /><input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="FR" data-lang="fr" /><button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button>`;
+        div.innerHTML = `<input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="EN" data-lang="en" /><input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="FR" data-lang="fr" /><input type="text" class="form-control" style="flex:1;min-width:80px;text-align:right;font-family:'Cairo','Tajawal',sans-serif" dir="rtl" placeholder="AR" data-lang="ar" /><button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button>`;
         list.appendChild(div);
+      }
+      function renderCatImageGrid() {
+        const grid = document.getElementById("cat-image-grid");
+        if (!grid) return;
+        grid.innerHTML = "";
+        if (currentCatImageUrl) {
+          const wrap = document.createElement("div");
+          wrap.className = "img-thumb-wrap";
+          wrap.innerHTML = `<img src="${currentCatImageUrl}" /><span class="img-thumb-remove" onclick="removeCatImage()">×</span>`;
+          grid.appendChild(wrap);
+        } else {
+          const addBtn = document.createElement("div");
+          addBtn.className = "upload-box-add";
+          addBtn.innerHTML = `<input type="file" accept="image/*" onchange="handleCatImageUpload(event)" /><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`;
+          grid.appendChild(addBtn);
+        }
+      }
+      function removeCatImage() {
+        currentCatImageUrl = "";
+        renderCatImageGrid();
+      }
+      async function handleCatImageUpload(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        e.target.value = "";
+        showLoading("Uploading image…");
+        try {
+          const fd = new FormData();
+          fd.append("file", file);
+          fd.append("upload_preset", CLOUDINARY_PRESET);
+          fd.append("folder", "maison-comfort-categories");
+          const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: "POST", body: fd });
+          const data = await res.json();
+          if (data.secure_url) {
+            currentCatImageUrl = data.secure_url;
+            renderCatImageGrid();
+            showToast("Image uploaded!");
+          } else {
+            showToast("Upload failed: " + (data.error?.message || "Unknown"), "error");
+          }
+        } catch (err) {
+          showToast("Upload error: " + err.message, "error");
+        }
+        hideLoading();
       }
       async function saveCat() {
         const nameEn = document.getElementById("cat-name-en").value.trim();
         const nameFr = document.getElementById("cat-name-fr").value.trim();
+        const nameAr = document.getElementById("cat-name-ar").value.trim();
         if (!nameEn) { showToast("English name required", "error"); return; }
         const subRows = Array.from(document.querySelectorAll("#sub-items-list .sub-item-row"));
         const subs = subRows.map((row) => ({
           id: row.dataset.subId || "",
           nameEn: (row.querySelector('[data-lang="en"]')?.value || "").trim(),
           nameFr: (row.querySelector('[data-lang="fr"]')?.value || "").trim(),
+          nameAr: (row.querySelector('[data-lang="ar"]')?.value || "").trim(),
         })).filter((s) => s.nameEn);
         showLoading(editingCatId ? "Updating category…" : "Saving category…");
         try {
           const desc = document.getElementById("cat-desc").value.trim();
           const payload = editingCatId
-            ? { action: "updateCategory", id: editingCatId, nameEn, nameFr, description: desc, subCategories: subs }
-            : { action: "addCategory", nameEn, nameFr, description: desc, subCategories: subs };
+            ? { action: "updateCategory", id: editingCatId, nameEn, nameFr, nameAr, description: desc, imageUrl: currentCatImageUrl, subCategories: subs }
+            : { action: "addCategory", nameEn, nameFr, nameAr, description: desc, imageUrl: currentCatImageUrl, subCategories: subs };
           const r = await apiPost(payload);
           if (r.success) {
             showToast(editingCatId ? "Category updated!" : "Category saved!");
@@ -1574,9 +1908,9 @@
             editingCatId = null;
             if (payload.action === "updateCategory") {
               const idx = categories.findIndex(c => c.id === payload.id);
-              if (idx >= 0) categories[idx] = { ...categories[idx], name: nameEn, nameEn, nameFr, description: desc };
+              if (idx >= 0) categories[idx] = { ...categories[idx], name: nameEn, nameEn, nameFr, nameAr, description: desc, imageUrl: currentCatImageUrl };
             } else {
-              categories.push({ id: savedId, name: nameEn, nameEn, nameFr, description: desc });
+              categories.push({ id: savedId, name: nameEn, nameEn, nameFr, nameAr, description: desc, imageUrl: currentCatImageUrl });
             }
             renderCats();
             updateDashboard();
@@ -1592,20 +1926,22 @@
         editingSubCatId = id;
         document.getElementById("subcat-name-en").value = sub.nameEn || sub.name || "";
         document.getElementById("subcat-name-fr").value = sub.nameFr || "";
+        document.getElementById("subcat-name-ar").value = sub.nameAr || "";
         openModal("subcat-edit-modal");
       }
       async function saveSubCat() {
         const nameEn = document.getElementById("subcat-name-en").value.trim();
         const nameFr = document.getElementById("subcat-name-fr").value.trim();
+        const nameAr = document.getElementById("subcat-name-ar").value.trim();
         if (!nameEn) { showToast("English name required", "error"); return; }
         showLoading("Updating sub-category…");
         try {
-          const r = await apiPost({ action: "updateSubCategory", id: editingSubCatId, nameEn, nameFr });
+          const r = await apiPost({ action: "updateSubCategory", id: editingSubCatId, nameEn, nameFr, nameAr });
           if (r.success) {
             showToast("Sub-category updated!");
             closeModal("subcat-edit-modal");
             const sIdx = subCategories.findIndex(s => s.id === editingSubCatId);
-            if (sIdx >= 0) subCategories[sIdx] = { ...subCategories[sIdx], name: nameEn, nameEn, nameFr };
+            if (sIdx >= 0) subCategories[sIdx] = { ...subCategories[sIdx], name: nameEn, nameEn, nameFr, nameAr };
             editingSubCatId = null;
             renderCats();
           } else showToast("Error: " + (r.error || "Unknown"), "error");
@@ -1974,7 +2310,7 @@
       function activeDescId() { return "pm-desc-" + _activeDescLang; }
       function switchDescTab(lang) {
         _activeDescLang = lang;
-        ["en","fr"].forEach((l) => {
+        ["en","fr","ar"].forEach((l) => {
           document.getElementById("pm-desc-" + l).style.display = l === lang ? "" : "none";
           const tab = document.getElementById("desc-tab-" + l);
           if (tab) tab.classList.toggle("active", l === lang);
