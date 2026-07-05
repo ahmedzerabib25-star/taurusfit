@@ -110,6 +110,17 @@
               <line x1="12" y1="22.08" x2="12" y2="12" /></svg
             ><span data-i18n="nav.bundle">Bundle</span>
           </div>
+          <div class="sb-link" onclick="showPage('announcement', this)">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M3 11l18-5v12L3 14v-3z" />
+              <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" /></svg
+            ><span data-i18n="nav.announcement">Announcement</span>
+          </div>
           <div class="sb-link" onclick="showPage('orders', this)">
             <svg
               viewBox="0 0 24 24"
@@ -624,6 +635,76 @@
           </div>
         </div>
 
+        <!-- ANNOUNCEMENT -->
+        <div class="page" id="page-announcement">
+          <div class="sec-header">
+            <div class="sec-title" data-i18n="announcement.title">Announcement Bar</div>
+          </div>
+          <div class="settings-card" style="max-width: 680px">
+            <div class="settings-card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 11l18-5v12L3 14v-3z" />
+                <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
+              </svg>
+              <span data-i18n="announcement.select">Top Announcement Bar</span>
+            </div>
+            <p style="font-size: 13px; color: var(--g600); margin-bottom: 18px" data-i18n="announcement.desc">
+              Shown as a scrolling red bar above the header on every page. Leave the text empty or disable it to hide it.
+            </p>
+
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:22px">
+              <label class="fd-switch">
+                <input type="checkbox" id="ann-enabled" onchange="document.getElementById('ann-enabled-label').textContent = this.checked ? t('common.enabled') : t('common.disabled')" />
+                <span class="fd-switch-slider"></span>
+              </label>
+              <span style="font-size: 13px; color: var(--g600)" id="ann-enabled-label" data-i18n="common.disabled">Disabled</span>
+            </div>
+
+            <div style="font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--g400);margin-bottom:12px;" data-i18n="announcement.textLabel">Announcement Text</div>
+            <div class="form-group" style="margin-bottom: 12px">
+              <label data-i18n="announcement.textEn">Text (English) *</label>
+              <input id="ann-text-en" class="form-control" type="text" placeholder="Free delivery on this product" />
+            </div>
+            <div class="form-group" style="margin-bottom: 12px">
+              <label data-i18n="announcement.textFr">Text (French)</label>
+              <input id="ann-text-fr" class="form-control" type="text" placeholder="Livraison gratuite sur ce produit" />
+            </div>
+            <div class="form-group" style="margin-bottom: 20px">
+              <label data-i18n="announcement.textAr">Text (Arabic)</label>
+              <input id="ann-text-ar" class="form-control" type="text" dir="rtl" style="text-align:right;font-family:'Cairo','Tajawal',sans-serif" placeholder="توصيل مجاني على هذا المنتج" />
+            </div>
+
+            <div style="font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--g400);margin-bottom:12px;" data-i18n="announcement.linkLabel">Link (optional)</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label data-i18n="announcement.linkTextEn">Link Text (English)</label>
+                <input id="ann-link-text-en" class="form-control" type="text" placeholder="here" />
+              </div>
+              <div class="form-group">
+                <label data-i18n="announcement.linkTextFr">Link Text (French)</label>
+                <input id="ann-link-text-fr" class="form-control" type="text" placeholder="ici" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label data-i18n="announcement.linkTextAr">Link Text (Arabic)</label>
+                <input id="ann-link-text-ar" class="form-control" type="text" dir="rtl" style="text-align:right;font-family:'Cairo','Tajawal',sans-serif" placeholder="هنا" />
+              </div>
+              <div class="form-group">
+                <label data-i18n="announcement.linkUrl">Link URL</label>
+                <input id="ann-link-url" class="form-control" type="text" placeholder="/products" />
+              </div>
+            </div>
+
+            <button class="btn-primary" style="margin-top: 8px" onclick="saveAnnouncement()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              <span data-i18n="announcement.save">Save Announcement</span>
+            </button>
+          </div>
+        </div>
+
         <!-- SETTINGS -->
         <div class="page" id="page-settings">
           <div class="sec-header"><div class="sec-title" data-i18n="settings.title">Settings</div></div>
@@ -941,6 +1022,13 @@
           <div class="form-group" style="margin-bottom: 8px">
             <label><span data-i18n="pm.variants">Variants & Prices</span> <span style="font-weight:400;color:var(--g400)">(size, quality, formula…)</span></label>
           </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <label class="fd-switch">
+              <input type="checkbox" id="pm-custom-variants" onchange="toggleVariantInputMode()" />
+              <span class="fd-switch-slider"></span>
+            </label>
+            <span style="font-size:13px;color:var(--g600)" data-i18n="pm.customVariants">Custom variants (free text instead of size)</span>
+          </div>
           <div class="variants-list" id="variants-list"></div>
           <button class="btn-add-variant" onclick="addVariant()">
             <svg
@@ -1225,6 +1313,6 @@
       ><span id="toast-msg">Done!</span>
     </div>
 
-    <script src="/supplements/panel4rz/index.js?v=26"></script>
+    <script src="/supplements/panel4rz/index.js?v=28"></script>
   </body>
 </html>

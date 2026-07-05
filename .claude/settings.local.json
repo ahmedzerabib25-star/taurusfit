@@ -69,7 +69,14 @@
       "Bash(pkill -f \"serve -l 5180\")",
       "Bash(pkill -f \"serve -l 5055\")",
       "Bash(pkill -f \"serve -l 5057\")",
-      "Bash(grep *)"
+      "Bash(grep *)",
+      "Bash(sed -i 's/home\\\\/index\\\\.js?v=20/home\\\\/index.js?v=21/' supplements/home/index.html)",
+      "Bash(sed -i 's/products\\\\/index\\\\.js?v=1\"/products\\\\/index.js?v=2\"/' supplements/products/index.html)",
+      "Bash(sed -i 's/product-detail\\\\/index\\\\.js?v=14/product-detail\\\\/index.js?v=15/' supplements/product-detail/index.html)",
+      "Bash(sed -i 's/checkout\\\\/index\\\\.js?v=13/checkout\\\\/index.js?v=14/' supplements/checkout/index.html)",
+      "Bash(sed -i 's/privacy\\\\/index\\\\.js?v=4/privacy\\\\/index.js?v=5/' supplements/privacy/index.html)",
+      "Bash(cd *)",
+      "Bash(vercel --version)"
     ]
   }
 }

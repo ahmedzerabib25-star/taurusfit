@@ -227,6 +227,7 @@ function hideLoader() {
 ══════════════════════════════════════════════════════════════ */
 function switchLang(lang) {
   localStorage.setItem("bybens_lang", lang);
+  if (window.updateAnnouncementLang) window.updateAnnouncementLang(lang);
   currentLang = lang;
   const t = i18n[lang];
   const isRtl = lang === "ar";

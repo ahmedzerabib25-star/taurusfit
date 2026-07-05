@@ -20,6 +20,7 @@
           btn.classList.toggle("active", btn.dataset.lang === lang);
         });
         localStorage.setItem("bybens_lang", lang);
+        if (window.updateAnnouncementLang) window.updateAnnouncementLang(lang);
       }
 
       /* ── Cart badge ── */

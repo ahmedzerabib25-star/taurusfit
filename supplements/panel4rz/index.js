@@ -75,7 +75,7 @@
         en: {
           'nav.main':'Main','nav.store':'Store','nav.admin':'Admin',
           'nav.dashboard':'Dashboard','nav.products':'Products','nav.categories':'Categories',
-          'nav.delivery':'Delivery Prices','nav.bundle':'Bundle','nav.orders':'Orders',
+          'nav.delivery':'Delivery Prices','nav.bundle':'Bundle','nav.announcement':'Announcement','nav.orders':'Orders',
           'nav.stock':'Stock','nav.settings':'Settings','nav.backToSite':'Back to Website',
           'nav.superAdmin':'Super Admin',
           'tb.live':'Live','tb.logout':'Logout',
@@ -138,6 +138,7 @@
           'pm.categories':'Categories (select one or more)','pm.subcategories':'Sub-Categories',
           'pm.description':'Description','pm.images':'Product Images',
           'pm.variants':'Variants & Prices','pm.addVariant':'Add Variant',
+          'pm.customVariants':'Custom variants (free text instead of size)','pm.width':'Width','pm.height':'Height','pm.unit':'Unit',
           'pm.shades':'Shades / Colors / Options','pm.addShade':'Add Shade / Option',
           'pm.totalStock':'Total Stock','pm.discount':'Discount %','pm.status':'Status',
           'pm.freeDelivery':'Free Delivery','pm.freeDeliveryHint':'Ships free regardless of order total',
@@ -153,7 +154,11 @@
           'confirm.title':'Are you sure?','confirm.default':'This action cannot be undone.',
           'confirm.delete':'Delete',
           'page.dashboard':'Dashboard','page.products':'Products','page.categories':'Categories',
-          'page.delivery':'Delivery Prices','page.bundle':'Bundle','page.orders':'Orders',
+          'page.delivery':'Delivery Prices','page.bundle':'Bundle','page.announcement':'Announcement','page.orders':'Orders',
+          'announcement.title':'Announcement Bar','announcement.select':'Top Announcement Bar','announcement.desc':'Shown as a scrolling red bar above the header on every page. Leave the text empty or disable it to hide it.',
+          'announcement.textLabel':'Announcement Text','announcement.textEn':'Text (English) *','announcement.textFr':'Text (French)','announcement.textAr':'Text (Arabic)',
+          'announcement.linkLabel':'Link (optional)','announcement.linkTextEn':'Link Text (English)','announcement.linkTextFr':'Link Text (French)','announcement.linkTextAr':'Link Text (Arabic)','announcement.linkUrl':'Link URL',
+          'announcement.save':'Save Announcement',
           'page.stock':'Stock Management','page.settings':'Settings',
           'status.active':'Active','status.inactive':'Inactive','status.waiting':'Waiting',
           'status.confirmed':'Confirmed','status.delivered':'Delivered','status.canceled':'Canceled',
@@ -163,7 +168,7 @@
         fr: {
           'nav.main':'Principal','nav.store':'Boutique','nav.admin':'Administration',
           'nav.dashboard':'Tableau de bord','nav.products':'Produits','nav.categories':'Catégories',
-          'nav.delivery':'Prix de livraison','nav.bundle':'Coffret','nav.orders':'Commandes',
+          'nav.delivery':'Prix de livraison','nav.bundle':'Coffret','nav.announcement':'Annonce','nav.orders':'Commandes',
           'nav.stock':'Stock','nav.settings':'Paramètres','nav.backToSite':'Retour au site',
           'nav.superAdmin':'Super Administrateur',
           'tb.live':'En direct','tb.logout':'Déconnexion',
@@ -226,6 +231,7 @@
           'pm.categories':'Catégories (sélectionner une ou plusieurs)','pm.subcategories':'Sous-catégories',
           'pm.description':'Description','pm.images':'Images du produit',
           'pm.variants':'Variantes & Prix','pm.addVariant':'Ajouter une variante',
+          'pm.customVariants':'Variantes personnalisées (texte libre au lieu de taille)','pm.width':'Largeur','pm.height':'Hauteur','pm.unit':'Unité',
           'pm.shades':'Teintes / Couleurs / Options','pm.addShade':'Ajouter une teinte / option',
           'pm.totalStock':'Stock total','pm.discount':'Remise %','pm.status':'Statut',
           'pm.freeDelivery':'Livraison gratuite','pm.freeDeliveryHint':'Livré gratuitement quel que soit le total',
@@ -241,7 +247,11 @@
           'confirm.title':'Êtes-vous sûr ?','confirm.default':'Cette action est irréversible.',
           'confirm.delete':'Supprimer',
           'page.dashboard':'Tableau de bord','page.products':'Produits','page.categories':'Catégories',
-          'page.delivery':'Prix de livraison','page.bundle':'Coffret','page.orders':'Commandes',
+          'page.delivery':'Prix de livraison','page.bundle':'Coffret','page.announcement':'Annonce','page.orders':'Commandes',
+          'announcement.title':'Barre d\'annonce','announcement.select':'Barre d\'annonce en haut','announcement.desc':'Affichée comme une bande rouge défilante au-dessus de l\'en-tête sur chaque page. Laissez le texte vide ou désactivez-la pour la masquer.',
+          'announcement.textLabel':'Texte de l\'annonce','announcement.textEn':'Texte (Anglais) *','announcement.textFr':'Texte (Français)','announcement.textAr':'Texte (Arabe)',
+          'announcement.linkLabel':'Lien (optionnel)','announcement.linkTextEn':'Texte du lien (Anglais)','announcement.linkTextFr':'Texte du lien (Français)','announcement.linkTextAr':'Texte du lien (Arabe)','announcement.linkUrl':'URL du lien',
+          'announcement.save':'Enregistrer l\'annonce',
           'page.stock':'Gestion du stock','page.settings':'Paramètres',
           'status.active':'Actif','status.inactive':'Inactif','status.waiting':'En attente',
           'status.confirmed':'Confirmé','status.delivered':'Livré','status.canceled':'Annulé',
@@ -251,7 +261,7 @@
         ar: {
           'nav.main':'الرئيسية','nav.store':'المتجر','nav.admin':'الإدارة',
           'nav.dashboard':'لوحة التحكم','nav.products':'المنتجات','nav.categories':'الفئات',
-          'nav.delivery':'أسعار التوصيل','nav.bundle':'الحزمة','nav.orders':'الطلبات',
+          'nav.delivery':'أسعار التوصيل','nav.bundle':'الحزمة','nav.announcement':'الإعلان','nav.orders':'الطلبات',
           'nav.stock':'المخزون','nav.settings':'الإعدادات','nav.backToSite':'العودة للموقع',
           'nav.superAdmin':'مدير عام',
           'tb.live':'مباشر','tb.logout':'تسجيل الخروج',
@@ -314,6 +324,7 @@
           'pm.categories':'الفئات (اختر واحدة أو أكثر)','pm.subcategories':'الفئات الفرعية',
           'pm.description':'الوصف','pm.images':'صور المنتج',
           'pm.variants':'الأنواع والأسعار','pm.addVariant':'إضافة نوع',
+          'pm.customVariants':'أنواع مخصصة (نص حر بدلاً من المقاس)','pm.width':'العرض','pm.height':'الطول','pm.unit':'الوحدة',
           'pm.shades':'الألوان / الخيارات','pm.addShade':'إضافة لون / خيار',
           'pm.totalStock':'إجمالي المخزون','pm.discount':'الخصم %','pm.status':'الحالة',
           'pm.freeDelivery':'توصيل مجاني','pm.freeDeliveryHint':'يُشحن مجانًا بغض النظر عن إجمالي الطلب',
@@ -329,7 +340,11 @@
           'confirm.title':'هل أنت متأكد؟','confirm.default':'لا يمكن التراجع عن هذا الإجراء.',
           'confirm.delete':'حذف',
           'page.dashboard':'لوحة التحكم','page.products':'المنتجات','page.categories':'الفئات',
-          'page.delivery':'أسعار التوصيل','page.bundle':'الحزمة','page.orders':'الطلبات',
+          'page.delivery':'أسعار التوصيل','page.bundle':'الحزمة','page.announcement':'الإعلان','page.orders':'الطلبات',
+          'announcement.title':'شريط الإعلان','announcement.select':'شريط الإعلان العلوي','announcement.desc':'يظهر كشريط أحمر متحرك أعلى الترويسة في كل صفحة. اترك النص فارغًا أو عطّله لإخفائه.',
+          'announcement.textLabel':'نص الإعلان','announcement.textEn':'النص (إنجليزي) *','announcement.textFr':'النص (فرنسي)','announcement.textAr':'النص (عربي)',
+          'announcement.linkLabel':'رابط (اختياري)','announcement.linkTextEn':'نص الرابط (إنجليزي)','announcement.linkTextFr':'نص الرابط (فرنسي)','announcement.linkTextAr':'نص الرابط (عربي)','announcement.linkUrl':'رابط URL',
+          'announcement.save':'حفظ الإعلان',
           'page.stock':'إدارة المخزون','page.settings':'الإعدادات',
           'status.active':'نشط','status.inactive':'غير نشط','status.waiting':'قيد الانتظار',
           'status.confirmed':'مؤكد','status.delivered':'تم التوصيل','status.canceled':'ملغى',
@@ -670,6 +685,26 @@
             var afdLabel = document.getElementById("afd-label");
             if (afdLabel) afdLabel.textContent = afd.checked ? "Enabled" : "Disabled";
           }
+          // Announcement bar settings
+          var annEnabled = document.getElementById("ann-enabled");
+          if (annEnabled) {
+            annEnabled.checked = settings.announcement_enabled === "true";
+            var annLabel = document.getElementById("ann-enabled-label");
+            if (annLabel) annLabel.textContent = annEnabled.checked ? t('common.enabled') : t('common.disabled');
+          }
+          var annFields = {
+            "ann-text-en": "announcement_text_en",
+            "ann-text-fr": "announcement_text_fr",
+            "ann-text-ar": "announcement_text_ar",
+            "ann-link-text-en": "announcement_link_text_en",
+            "ann-link-text-fr": "announcement_link_text_fr",
+            "ann-link-text-ar": "announcement_link_text_ar",
+            "ann-link-url": "announcement_link_url",
+          };
+          Object.keys(annFields).forEach(function (elId) {
+            var el = document.getElementById(elId);
+            if (el) el.value = settings[annFields[elId]] || "";
+          });
         }
         renderCats();
         renderProducts();
@@ -1085,6 +1120,7 @@
         categories: () => t('page.categories'),
         delivery: () => t('page.delivery'),
         bundle: () => t('page.bundle'),
+        announcement: () => t('page.announcement'),
         orders: () => t('page.orders'),
         stock: () => t('page.stock'),
         settings: () => t('page.settings'),
@@ -1479,11 +1515,14 @@
             }, 30);
             document.getElementById("variants-list").innerHTML = "";
             document.getElementById("flavors-list").innerHTML = "";
+            const anyCustomVariant = (p.variants || []).some((v) => !v.sizeMode);
+            document.getElementById("pm-custom-variants").checked = anyCustomVariant;
             (p.variants || []).forEach((v) => addVariant(v));
             (p.flavors || []).forEach((f) => addFlavor(f));
             refreshStockMatrix();
           }
         } else {
+          document.getElementById("pm-custom-variants").checked = false;
           ["pm-name-en", "pm-name-fr", "pm-name-ar", "pm-brand-en", "pm-brand-fr", "pm-brand-ar", "pm-stock", "pm-discount"].forEach(
             (x) => (document.getElementById(x).value = ""),
           );
@@ -1526,8 +1565,54 @@
         const existingLabelEn = v ? (v.labelEn || v.label || (v.weight ? `${v.weight}${v.unit || ''}` : '')) : '';
         const existingLabelFr = v ? (v.labelFr || '') : '';
         const existingLabelAr = v ? (v.labelAr || '') : '';
-        div.innerHTML = `<div class="form-group" style="flex:2"><label>Label</label><input type="text" class="form-control variant-label-input" placeholder="EN *" value="${existingLabelEn}" oninput="refreshStockMatrix()" /><input type="text" class="form-control variant-label-fr" placeholder="FR" value="${existingLabelFr}" style="margin-top:4px" /><input type="text" class="form-control variant-label-ar" placeholder="AR" value="${existingLabelAr}" dir="rtl" style="margin-top:4px;text-align:right;font-family:'Cairo','Tajawal',sans-serif" /></div><div class="form-group"><label>Price (DA)</label><input type="number" class="form-control variant-price-input" placeholder="0" value="${v ? v.price : ""}" /></div><button class="btn-remove-variant" onclick="this.closest('.variant-row').remove();refreshStockMatrix()">×</button>`;
+        const existingWidth = v && v.sizeMode ? (v.width || '') : '';
+        const existingHeight = v && v.sizeMode ? (v.height || '') : '';
+        const existingUnit = v && v.sizeMode ? (v.unit || 'cm') : 'cm';
+        const isCustomChecked = document.getElementById("pm-custom-variants")?.checked;
+        const showCustom = v ? !v.sizeMode : !!isCustomChecked;
+        div.innerHTML = `
+          <div class="form-group variant-label-wrap" style="flex:2">
+            <div class="variant-size-block" style="display:${showCustom ? "none" : "flex"};gap:6px;align-items:flex-end;flex-wrap:wrap">
+              <div style="flex:1"><label>${t('pm.width')}</label><input type="number" class="form-control variant-width-input" placeholder="120" value="${existingWidth}" min="0" oninput="refreshStockMatrix()" /></div>
+              <span style="padding-bottom:11px;color:var(--g400)">×</span>
+              <div style="flex:1"><label>${t('pm.height')}</label><input type="number" class="form-control variant-height-input" placeholder="180" value="${existingHeight}" min="0" oninput="refreshStockMatrix()" /></div>
+              <div style="width:66px"><label>${t('pm.unit')}</label><select class="form-control form-select variant-unit-input" onchange="refreshStockMatrix()"><option value="cm"${existingUnit === "cm" ? " selected" : ""}>cm</option><option value="m"${existingUnit === "m" ? " selected" : ""}>M</option></select></div>
+            </div>
+            <div class="variant-custom-block" style="display:${showCustom ? "block" : "none"}">
+              <label>Label</label>
+              <input type="text" class="form-control variant-label-input" placeholder="EN *" value="${existingLabelEn}" oninput="refreshStockMatrix()" />
+              <input type="text" class="form-control variant-label-fr" placeholder="FR" value="${existingLabelFr}" style="margin-top:4px" />
+              <input type="text" class="form-control variant-label-ar" placeholder="AR" value="${existingLabelAr}" dir="rtl" style="margin-top:4px;text-align:right;font-family:'Cairo','Tajawal',sans-serif" />
+            </div>
+          </div>
+          <div class="form-group"><label>Price (DA)</label><input type="number" class="form-control variant-price-input" placeholder="0" value="${v ? v.price : ""}" /></div>
+          <button class="btn-remove-variant" onclick="this.closest('.variant-row').remove();refreshStockMatrix()">×</button>`;
         list.appendChild(div);
+        refreshStockMatrix();
+      }
+
+      /* Returns the display label for a variant row regardless of which
+         input mode (standard size vs. free-text) is currently active. */
+      function _variantRowLabel(row) {
+        const isCustom = document.getElementById("pm-custom-variants")?.checked;
+        if (isCustom) {
+          return (row.querySelector(".variant-label-input")?.value || "").trim();
+        }
+        const w = (row.querySelector(".variant-width-input")?.value || "").trim();
+        const h = (row.querySelector(".variant-height-input")?.value || "").trim();
+        const u = row.querySelector(".variant-unit-input")?.value || "cm";
+        if (!w || !h) return "";
+        return `${w}${u} X ${h}${u}`;
+      }
+
+      function toggleVariantInputMode() {
+        const isCustom = document.getElementById("pm-custom-variants")?.checked;
+        document.querySelectorAll("#variants-list .variant-size-block").forEach((el) => {
+          el.style.display = isCustom ? "none" : "flex";
+        });
+        document.querySelectorAll("#variants-list .variant-custom-block").forEach((el) => {
+          el.style.display = isCustom ? "block" : "none";
+        });
         refreshStockMatrix();
       }
 
@@ -1581,8 +1666,7 @@
           pmStock.readOnly = true; pmHint.style.display = "";
 
           const varMeta = variantRows.map((row, vi) => {
-            const labelEl = row.querySelector(".variant-label-input");
-            const lbl = labelEl?.value.trim() || `V${vi+1}`;
+            const lbl = _variantRowLabel(row) || `V${vi+1}`;
             return { vi, label: lbl, fs: JSON.parse(row.dataset.flavorStock || "{}") };
           });
 
@@ -1612,8 +1696,7 @@
           pmStock.readOnly = true; pmHint.style.display = "";
 
           document.getElementById("variant-stock-list").innerHTML = variantRows.map((row, vi) => {
-            const labelEl = row.querySelector(".variant-label-input");
-            const label = labelEl?.value.trim() || `V${vi+1}`;
+            const label = _variantRowLabel(row) || `V${vi+1}`;
             const stock = vstockVals[String(vi)] !== undefined ? vstockVals[String(vi)] : (parseInt(row.dataset.varStock) || 0);
             return `<div class="vstock-row"><span class="vstock-label">${label}</span><input type="number" class="form-control vstock-input" data-vi="${vi}" value="${stock}" min="0" placeholder="0" oninput="refreshStockTotal()"></div>`;
           }).join("");
@@ -1659,14 +1742,25 @@
         const showMatrix = document.getElementById("stock-matrix-section").style.display !== "none";
         const showVStock = document.getElementById("variant-stock-section").style.display !== "none";
 
+        const isCustomVariants = document.getElementById("pm-custom-variants")?.checked;
         const variants = Array.from(document.querySelectorAll("#variants-list .variant-row"))
           .map((r, vi) => {
-            const labelEn = r.querySelector(".variant-label-input")?.value.trim() || "";
-            const labelFr = r.querySelector(".variant-label-fr")?.value.trim() || "";
-            const labelAr = r.querySelector(".variant-label-ar")?.value.trim() || "";
+            let label, labelEn, labelFr, labelAr, width, height, unit;
+            if (isCustomVariants) {
+              labelEn = r.querySelector(".variant-label-input")?.value.trim() || "";
+              labelFr = r.querySelector(".variant-label-fr")?.value.trim() || "";
+              labelAr = r.querySelector(".variant-label-ar")?.value.trim() || "";
+              label = labelEn;
+            } else {
+              width = r.querySelector(".variant-width-input")?.value.trim() || "";
+              height = r.querySelector(".variant-height-input")?.value.trim() || "";
+              unit = r.querySelector(".variant-unit-input")?.value || "cm";
+              label = (width && height) ? `${width}${unit} X ${height}${unit}` : "";
+              labelEn = labelFr = labelAr = label;
+            }
             const priceEl = r.querySelector(".variant-price-input");
-            const label = labelEn;
             const v = { label, labelEn, labelFr, labelAr, price: parseFloat(priceEl?.value) || 0 };
+            if (!isCustomVariants) { v.sizeMode = true; v.width = width; v.height = height; v.unit = unit; }
             if (showMatrix) {
               v.flavorStock = {};
               document.querySelectorAll(`#stock-matrix-body input[data-vi="${vi}"]`).forEach(inp => {
@@ -1970,6 +2064,42 @@
           settings.all_free_delivery = String(allFree);
           settings.free_delivery_threshold = String(threshold);
           showToast("Free delivery settings saved!");
+        } catch (e) {
+          showToast("Save failed: " + (e.message || "Unknown error"), "error");
+        } finally {
+          hideLoading();
+        }
+      }
+
+      async function saveAnnouncement() {
+        const enabled = document.getElementById("ann-enabled").checked;
+        const textEn = document.getElementById("ann-text-en").value.trim();
+        const textFr = document.getElementById("ann-text-fr").value.trim();
+        const textAr = document.getElementById("ann-text-ar").value.trim();
+        const linkTextEn = document.getElementById("ann-link-text-en").value.trim();
+        const linkTextFr = document.getElementById("ann-link-text-fr").value.trim();
+        const linkTextAr = document.getElementById("ann-link-text-ar").value.trim();
+        const linkUrl = document.getElementById("ann-link-url").value.trim();
+        if (enabled && !textEn) {
+          showToast("Announcement text (English) required", "error");
+          return;
+        }
+        showLoading("Saving…");
+        try {
+          const updates = {
+            announcement_enabled: String(enabled),
+            announcement_text_en: textEn,
+            announcement_text_fr: textFr,
+            announcement_text_ar: textAr,
+            announcement_link_text_en: linkTextEn,
+            announcement_link_text_fr: linkTextFr,
+            announcement_link_text_ar: linkTextAr,
+            announcement_link_url: linkUrl,
+          };
+          const r = await apiPost({ action: "updateSettings", updates });
+          if (!r.success) throw new Error(r.error || "Unknown error");
+          Object.assign(settings, updates);
+          showToast("Announcement saved!");
         } catch (e) {
           showToast("Save failed: " + (e.message || "Unknown error"), "error");
         } finally {
