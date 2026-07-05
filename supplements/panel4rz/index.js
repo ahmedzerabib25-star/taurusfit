@@ -102,9 +102,9 @@
           'delivery.col.actions':'Actions',
           'bundle.title':'Bundle','bundle.select':'Select Bundle Product',
           'bundle.selectDesc':'Choose <strong>one product</strong> to feature as the bundle on your store.',
-          'bundle.bannerTitle':'Banner Title','bundle.titleEn':'Title (English)','bundle.titleFr':'Title (French)',
+          'bundle.bannerTitle':'Banner Title','bundle.titleEn':'Title (English)','bundle.titleFr':'Title (French)','bundle.titleAr':'Title (Arabic)',
           'bundle.bannerDesc':'Banner Description','bundle.descEn':'Description (English)',
-          'bundle.descFr':'Description (French)','bundle.search':'Search products…',
+          'bundle.descFr':'Description (French)','bundle.descAr':'Description (Arabic)','bundle.search':'Search products…',
           'bundle.noSelected':'No product selected','bundle.clear':'Clear','bundle.save':'Save Bundle',
           'orders.title':'Orders','orders.refresh':'Refresh',
           'orders.search':'Search name, phone, wilaya…',
@@ -195,9 +195,9 @@
           'delivery.col.actions':'Actions',
           'bundle.title':'Coffret','bundle.select':'Sélectionner le produit coffret',
           'bundle.selectDesc':'Choisissez <strong>un produit</strong> à mettre en avant comme coffret.',
-          'bundle.bannerTitle':'Titre de la bannière','bundle.titleEn':'Titre (Anglais)','bundle.titleFr':'Titre (Français)',
+          'bundle.bannerTitle':'Titre de la bannière','bundle.titleEn':'Titre (Anglais)','bundle.titleFr':'Titre (Français)','bundle.titleAr':'Titre (Arabe)',
           'bundle.bannerDesc':'Description de la bannière','bundle.descEn':'Description (Anglais)',
-          'bundle.descFr':'Description (Français)','bundle.search':'Rechercher des produits…',
+          'bundle.descFr':'Description (Français)','bundle.descAr':'Description (Arabe)','bundle.search':'Rechercher des produits…',
           'bundle.noSelected':'Aucun produit sélectionné','bundle.clear':'Effacer','bundle.save':'Enregistrer le coffret',
           'orders.title':'Commandes','orders.refresh':'Actualiser',
           'orders.search':'Rechercher nom, téléphone, wilaya…',
@@ -288,9 +288,9 @@
           'delivery.col.actions':'إجراءات',
           'bundle.title':'الحزمة','bundle.select':'اختر منتج الحزمة',
           'bundle.selectDesc':'اختر <strong>منتجًا واحدًا</strong> لعرضه كحزمة في متجرك.',
-          'bundle.bannerTitle':'عنوان البانر','bundle.titleEn':'العنوان (إنجليزي)','bundle.titleFr':'العنوان (فرنسي)',
+          'bundle.bannerTitle':'عنوان البانر','bundle.titleEn':'العنوان (إنجليزي)','bundle.titleFr':'العنوان (فرنسي)','bundle.titleAr':'العنوان (عربي)',
           'bundle.bannerDesc':'وصف البانر','bundle.descEn':'الوصف (إنجليزي)',
-          'bundle.descFr':'الوصف (فرنسي)','bundle.search':'ابحث عن منتجات…',
+          'bundle.descFr':'الوصف (فرنسي)','bundle.descAr':'الوصف (عربي)','bundle.search':'ابحث عن منتجات…',
           'bundle.noSelected':'لم يتم اختيار منتج','bundle.clear':'مسح','bundle.save':'حفظ الحزمة',
           'orders.title':'الطلبات','orders.refresh':'تحديث',
           'orders.search':'ابحث بالاسم، الهاتف، الولاية…',
@@ -500,8 +500,10 @@
               bundleId: data?.bundle_id || "",
               titleEn: data?.title_en || "",
               titleFr: data?.title_fr || "",
+              titleAr: data?.title_ar || "",
               descriptionEn: data?.description_en || "",
               descriptionFr: data?.description_fr || "",
+              descriptionAr: data?.description_ar || "",
             };
           }
           case "getOrders": {
@@ -611,17 +613,16 @@
           case "saveBundle": {
             // bundle_id is the table's primary key (it's the selected product's id),
             // so it can't be targeted with a stable .eq("id", ...) update — instead
-            // replace the single settings row, keeping any existing Arabic text.
-            const { data: existing } = await sb.from("bundle").select("title_ar, description_ar").limit(1).maybeSingle();
+            // replace the single settings row.
             await sb.from("bundle").delete().neq("bundle_id", "__none__");
             const { error } = await sb.from("bundle").insert({
               bundle_id:      rest.bundleId || "",
               title_en:       rest.titleEn || "",
               title_fr:       rest.titleFr || "",
-              title_ar:       existing?.title_ar || "",
+              title_ar:       rest.titleAr || "",
               description_en: rest.descriptionEn || "",
               description_fr: rest.descriptionFr || "",
-              description_ar: existing?.description_ar || "",
+              description_ar: rest.descriptionAr || "",
             });
             if (error) throw error;
             return { success: true };
@@ -921,10 +922,18 @@
                   ? `Selected: <strong>${p.name}</strong>`
                   : `Selected: <strong>${bundleRes.bundleId}</strong>`;
               }
-              if (bundleRes.bundleDescription) {
-                const desc = document.getElementById("bundle-description");
-                if (desc) desc.value = bundleRes.bundleDescription;
-              }
+              const bundleFields = {
+                "bundle-title-en":       bundleRes.titleEn,
+                "bundle-title-fr":       bundleRes.titleFr,
+                "bundle-title-ar":       bundleRes.titleAr,
+                "bundle-description-en": bundleRes.descriptionEn,
+                "bundle-description-fr": bundleRes.descriptionFr,
+                "bundle-description-ar": bundleRes.descriptionAr,
+              };
+              Object.entries(bundleFields).forEach(([id, val]) => {
+                const el = document.getElementById(id);
+                if (el && val) el.value = val;
+              });
               renderBundleList(document.getElementById("bundle-search")?.value || "");
             }
             await Promise.all([_fetchDashOrders(), _fetchOrdersPage()]);
@@ -2697,8 +2706,10 @@
             const fields = {
               "bundle-title-en":       r.titleEn,
               "bundle-title-fr":       r.titleFr,
+              "bundle-title-ar":       r.titleAr,
               "bundle-description-en": r.descriptionEn,
               "bundle-description-fr": r.descriptionFr,
+              "bundle-description-ar": r.descriptionAr,
             };
             Object.entries(fields).forEach(([id, val]) => {
               const el = document.getElementById(id);
@@ -2720,8 +2731,10 @@
             bundleId:      bundleSelectedId || "",
             titleEn:       g("bundle-title-en"),
             titleFr:       g("bundle-title-fr"),
+            titleAr:       g("bundle-title-ar"),
             descriptionEn: g("bundle-description-en"),
             descriptionFr: g("bundle-description-fr"),
+            descriptionAr: g("bundle-description-ar"),
           });
           if (r.success) showToast("Bundle saved!");
           else showToast("Error: " + (r.error || "Unknown"), "error");

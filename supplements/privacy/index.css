@@ -40,38 +40,30 @@
         --black: #F9F8F6;
       }
 
-      /* ─── PAGE LOADER ── */
-      #pageLoader{position:fixed;inset:0;background:#F9F7F4;display:flex;align-items:center;justify-content:center;z-index:99999;overflow:hidden;transition:transform .7s cubic-bezier(.76,0,.24,1)}
-      #pageLoader.wl-exit{transform:translateY(-100%)}
+      /* ─── PAGE LOADER — "Loom Weave" ── */
+      #pageLoader{position:fixed;inset:0;background:#0A0A0A;display:flex;align-items:center;justify-content:center;z-index:99999;overflow:hidden;transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1)}
+      #pageLoader.wl-exit{opacity:0;transform:scale(1.06)}
       #pageLoader.hidden{visibility:hidden;pointer-events:none}
       .bb-noanim #pageLoader{display:none!important}
-      #dataSpinner{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9998;background:rgba(249,247,244,0.92);pointer-events:none}
-      .ds-ring{width:44px;height:44px;border:3px solid rgba(163,132,91,0.15);border-top-color:#A3845B;border-radius:50%;animation:ds-spin .75s linear infinite}
+      #dataSpinner{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9998;background:rgba(247,247,247,0.95);pointer-events:none}
+      .ds-ring{width:44px;height:44px;border:2px solid #E5E5E5;border-top-color:#6E7B4A;border-radius:50%;animation:ds-spin .75s linear infinite}
       @keyframes ds-spin{to{transform:rotate(360deg)}}
-      .wl-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(163,132,91,0.08) 0%,rgba(249,247,244,0) 70%);animation:wlBgPulse 3s ease-in-out infinite}
-      @keyframes wlBgPulse{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
-      .wl-rings{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
-      .wl-ring{position:absolute;border-radius:50%;border:1px solid rgba(163,132,91,0.4);left:50%;top:50%;transform:translate(-50%,-50%) scale(0);animation:wlRingExpand 2.4s ease-out infinite}
-      .wl-ring:nth-child(1){width:180px;height:180px;animation-delay:.4s}
-      .wl-ring:nth-child(2){width:300px;height:300px;animation-delay:.9s;border-color:rgba(163,132,91,0.25)}
-      .wl-ring:nth-child(3){width:440px;height:440px;animation-delay:1.4s;border-color:rgba(163,132,91,0.12)}
-      @keyframes wlRingExpand{0%{transform:translate(-50%,-50%) scale(0);opacity:1}100%{transform:translate(-50%,-50%) scale(1.6);opacity:0}}
-      .wl-body{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px;z-index:1}
-      .wl-logo-wrap{position:relative;animation:wlLogoBurst .75s cubic-bezier(.34,1.56,.64,1) .3s both}
-      @keyframes wlLogoBurst{0%{opacity:0;transform:scale(0.8);filter:blur(6px)}100%{opacity:1;transform:scale(1);filter:blur(0)}}
-      .wl-logo{display:block;width:200px;height:auto;filter:drop-shadow(0 0 20px rgba(163,132,91,0.35))}
-      .wl-line{width:0;height:1px;background:linear-gradient(90deg,transparent,#A3845B,#C5A880,#A3845B,transparent);animation:wlLineGrow .5s ease .9s both}
-      @keyframes wlLineGrow{0%{width:0;opacity:0}100%{width:200px;opacity:1}}
-      .wl-tagline{display:flex;align-items:center;gap:10px;font-family:"Montserrat",sans-serif;font-size:11px;letter-spacing:.3em;color:#8E827E}
-      .wl-word{display:inline-block;opacity:0;animation:wlWordIn .45s cubic-bezier(.34,1.56,.64,1) both}
-      .wl-word:nth-child(1){animation-delay:1.1s}
-      .wl-word:nth-child(3){animation-delay:1.2s}
-      .wl-word:nth-child(5){animation-delay:1.3s}
-      .wl-dot{display:inline-block;opacity:0;color:#A3845B;animation:wlWordIn .3s ease both}
-      .wl-dot:nth-of-type(2){animation-delay:1.15s}
-      .wl-dot:nth-of-type(3){animation-delay:1.25s}
-      @keyframes wlWordIn{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
-      @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+      .wl-weave{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:11px;height:130px;z-index:0}
+      .wl-thread{width:2px;height:100%;background:linear-gradient(180deg,transparent,rgba(110,123,74,0.6) 45%,rgba(110,123,74,0.6) 55%,transparent);transform:scaleY(0);animation:wlThreadWeave 2.2s cubic-bezier(.65,0,.35,1) infinite}
+      .wl-thread:nth-child(1){animation-delay:0s} .wl-thread:nth-child(2){animation-delay:.05s} .wl-thread:nth-child(3){animation-delay:.1s} .wl-thread:nth-child(4){animation-delay:.15s} .wl-thread:nth-child(5){animation-delay:.2s} .wl-thread:nth-child(6){animation-delay:.25s} .wl-thread:nth-child(7){animation-delay:.2s} .wl-thread:nth-child(8){animation-delay:.15s} .wl-thread:nth-child(9){animation-delay:.1s} .wl-thread:nth-child(10){animation-delay:.05s} .wl-thread:nth-child(11){animation-delay:0s}
+      @keyframes wlThreadWeave{0%{transform:scaleY(0);opacity:0}22%{transform:scaleY(1);opacity:1}55%{transform:scaleY(1);opacity:1}78%{transform:scaleY(.15);opacity:.4}100%{transform:scaleY(0);opacity:0}}
+      .wl-body{position:relative;display:flex;flex-direction:column;align-items:center;gap:20px;z-index:1}
+      .wl-logo-wrap{overflow:hidden;clip-path:inset(0 100% 0 0);animation:wlLogoUnroll .85s cubic-bezier(.65,0,.16,1) .32s forwards}
+      @keyframes wlLogoUnroll{to{clip-path:inset(0 0 0 0)}}
+      .wl-logo{display:block;height:78px;width:auto;object-fit:contain}
+      .wl-line-wrap{position:relative;width:210px;height:1px;background:rgba(255,255,255,0.14)}
+      .wl-line-fill{position:absolute;inset:0;width:0;background:#6E7B4A;animation:wlLineFill .55s cubic-bezier(.45,0,.2,1) .9s forwards}
+      .wl-shuttle{position:absolute;top:50%;left:0;width:6px;height:6px;border-radius:50%;background:#6E7B4A;box-shadow:0 0 10px 2px rgba(110,123,74,.65);transform:translate(-3px,-50%);opacity:0;animation:wlShuttleMove .55s cubic-bezier(.45,0,.2,1) .9s forwards}
+      @keyframes wlLineFill{0%{width:0}100%{width:100%}}
+      @keyframes wlShuttleMove{0%{left:0;opacity:1}95%{opacity:1}100%{left:100%;opacity:0}}
+      .wl-tagline{font-family:"Inter",system-ui,sans-serif;font-size:11px;font-weight:500;letter-spacing:-0.1em;color:rgba(255,255,255,0.5);opacity:0;animation:wlTaglineExpand .8s cubic-bezier(.16,1,.3,1) 1.05s forwards}
+      .wl-tagline .wl-dot{color:#6E7B4A;padding:0 2px}
+      @keyframes wlTaglineExpand{0%{opacity:0;letter-spacing:-0.1em}100%{opacity:1;letter-spacing:.3em}}
 
       /* ─── RESET ── */
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
