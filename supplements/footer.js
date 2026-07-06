@@ -85,6 +85,7 @@
         </div>
         <div class="footer-bottom">
           <p>© <span id="footerYear"></span> Maison Comfort Algeria. <span data-i18n="footer.rights">All rights reserved.</span></p>
+          <p class="footer-credit">Made by <a href="https://www.nuvex.agency" target="_blank" rel="noopener noreferrer">NUVEX</a></p>
         </div>
       </div>
     </footer>
