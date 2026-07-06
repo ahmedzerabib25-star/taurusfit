@@ -78,7 +78,10 @@
       "Bash(cd *)",
       "Bash(vercel --version)",
       "Bash(sed -i 's/home\\\\/index\\\\.css?v=24/home\\\\/index.css?v=25/' supplements/home/index.html supplements/products/index.html supplements/product-detail/index.html supplements/checkout/index.html)",
-      "Bash(sed -i 's/privacy\\\\/index\\\\.css?v=6/privacy\\\\/index.css?v=7/' supplements/privacy/index.html)"
+      "Bash(sed -i 's/privacy\\\\/index\\\\.css?v=6/privacy\\\\/index.css?v=7/' supplements/privacy/index.html)",
+      "Bash(curl *)",
+      "Bash(supabase --version)",
+      "Bash(supabase link *)"
     ]
   }
 }
