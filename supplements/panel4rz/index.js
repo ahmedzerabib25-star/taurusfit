@@ -21,6 +21,7 @@
       let editingDeliveryId = null;
       let editingCatId = null;
       let editingSubCatId = null;
+      let editingSubSubCatId = null;
       let editingOrderId = null;
       let editingOrderItems = [];
       let _editAddProductId = null;
@@ -28,6 +29,7 @@
       let currentCatImageUrl = "";
       let categories = [],
         subCategories = [],
+        subSubCategories = [],
         products = [],
         deliveryPrices = [],
         orders = [],
@@ -434,13 +436,16 @@
       // ROW MAPPERS (snake_case → camelCase)
       // ════════════════════════════════════════════
       function _remapProductRow(r) {
-        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || r.name || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", brand: r.brand_en || r.brand || "", brandEn: r.brand_en || r.brand || "", brandFr: r.brand_fr || "", brandAr: r.brand_ar || "", categoryIds: (r.category_ids || "").split(",").filter(Boolean), subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), description: r.description_en || r.description || "", descriptionEn: r.description_en || r.description || "", descriptionFr: r.description_fr || "", descriptionAr: r.description_ar || "", imageUrl: r.image_url || [], variants: r.variants || [], flavors: r.flavors || [], stock: r.stock, discount: r.discount, freeDelivery: r.free_delivery === true || r.free_delivery === "true", status: r.status, hidden: r.hidden || false, createdAt: r.created_at };
+        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || r.name || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", brand: r.brand_en || r.brand || "", brandEn: r.brand_en || r.brand || "", brandFr: r.brand_fr || "", brandAr: r.brand_ar || "", categoryIds: (r.category_ids || "").split(",").filter(Boolean), subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), subSubCategoryIds: (r.sub_sub_category_ids || "").split(",").filter(Boolean), description: r.description_en || r.description || "", descriptionEn: r.description_en || r.description || "", descriptionFr: r.description_fr || "", descriptionAr: r.description_ar || "", imageUrl: r.image_url || [], variants: r.variants || [], flavors: r.flavors || [], stock: r.stock, discount: r.discount, freeDelivery: r.free_delivery === true || r.free_delivery === "true", status: r.status, hidden: r.hidden || false, createdAt: r.created_at };
       }
       function _remapCategoryRow(r) {
         return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", description: r.description, imageUrl: r.image_url || "", createdAt: r.created_at };
       }
       function _remapSubCategoryRow(r) {
         return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", categoryIds: (r.category_ids || "").split(",").filter(Boolean), createdAt: r.created_at };
+      }
+      function _remapSubSubCategoryRow(r) {
+        return { id: r.id, name: r.name_en || r.name || "", nameEn: r.name_en || "", nameFr: r.name_fr || "", nameAr: r.name_ar || "", subCategoryIds: (r.sub_category_ids || "").split(",").filter(Boolean), createdAt: r.created_at };
       }
       function _remapDeliveryRow(r) {
         return { id: r.id, wilaya: r.wilaya, homePrice: r.home_price, officePrice: r.office_price, createdAt: r.created_at };
@@ -450,7 +455,19 @@
       }
       // ROW BUILDERS (camelCase → snake_case)
       function _toProductRow(p) {
-        return { name: p.nameEn || p.name || "", name_en: p.nameEn || "", name_fr: p.nameFr || "", name_ar: p.nameAr || "", brand: p.brandEn || p.brand || "", brand_en: p.brandEn || "", brand_fr: p.brandFr || "", brand_ar: p.brandAr || "", category_ids: (p.categoryIds || []).join(","), sub_category_ids: (p.subCategoryIds || []).join(","), description: p.descriptionEn || p.description || "", description_en: p.descriptionEn || "", description_fr: p.descriptionFr || "", description_ar: p.descriptionAr || "", image_url: p.imageUrl || [], variants: p.variants || [], flavors: p.flavors || [], stock: p.stock || 0, discount: p.discount || 0, free_delivery: p.freeDelivery || false, status: p.status || "active", hidden: p.hidden || false };
+        return { name: p.nameEn || p.name || "", name_en: p.nameEn || "", name_fr: p.nameFr || "", name_ar: p.nameAr || "", brand: p.brandEn || p.brand || "", brand_en: p.brandEn || "", brand_fr: p.brandFr || "", brand_ar: p.brandAr || "", category_ids: (p.categoryIds || []).join(","), sub_category_ids: (p.subCategoryIds || []).join(","), sub_sub_category_ids: (p.subSubCategoryIds || []).join(","), description: p.descriptionEn || p.description || "", description_en: p.descriptionEn || "", description_fr: p.descriptionFr || "", description_ar: p.descriptionAr || "", image_url: p.imageUrl || [], variants: p.variants || [], flavors: p.flavors || [], stock: p.stock || 0, discount: p.discount || 0, free_delivery: p.freeDelivery || false, status: p.status || "active", hidden: p.hidden || false };
+      }
+      async function _saveSubSubCategories(subId, list) {
+        for (const ssc of (list || [])) {
+          if (!ssc) continue;
+          const nameEn = (ssc.nameEn || ssc.name || "").trim();
+          if (ssc.id) {
+            await sb.from("sub_sub_categories").update({ name: nameEn || ssc.name || "", name_en: nameEn, name_fr: ssc.nameFr || "", name_ar: ssc.nameAr || "" }).eq("id", ssc.id);
+          } else if (nameEn) {
+            await new Promise((r) => setTimeout(r, 5));
+            await sb.from("sub_sub_categories").insert({ id: String(Date.now()), name: nameEn, name_en: nameEn, name_fr: ssc.nameFr || "", name_ar: ssc.nameAr || "", sub_category_ids: subId });
+          }
+        }
       }
       // ════════════════════════════════════════════
       // API HELPERS (Supabase)
@@ -460,17 +477,19 @@
           case "getInitialData": {
             const [
               { data: prods, error: e1 }, { data: cats, error: e2 }, { data: subs, error: e3 },
+              { data: subSubs, error: e4 },
               { data: dpRows, error: e5 },
               { data: bndRow, error: e6 },
             ] = await Promise.all([
               sb.from("products").select("*").order("created_at", { ascending: false }),
               sb.from("categories").select("*").order("created_at", { ascending: true }),
               sb.from("sub_categories").select("*"),
+              sb.from("sub_sub_categories").select("*"),
               sb.from("delivery_prices").select("*").order("wilaya", { ascending: true }),
               sb.from("bundle").select("*").limit(1).maybeSingle(),
             ]);
-            if (e1 || e2 || e3 || e5 || e6) throw e1 || e2 || e3 || e5 || e6;
-            return { success: true, products: (prods || []).map(_remapProductRow), categories: (cats || []).map(_remapCategoryRow), subCategories: (subs || []).map(_remapSubCategoryRow), deliveryPrices: (dpRows || []).map(_remapDeliveryRow), bundle: bndRow ? { bundleId: bndRow.bundle_id, bundleDescription: bndRow.description_en } : {} };
+            if (e1 || e2 || e3 || e4 || e5 || e6) throw e1 || e2 || e3 || e4 || e5 || e6;
+            return { success: true, products: (prods || []).map(_remapProductRow), categories: (cats || []).map(_remapCategoryRow), subCategories: (subs || []).map(_remapSubCategoryRow), subSubCategories: (subSubs || []).map(_remapSubSubCategoryRow), deliveryPrices: (dpRows || []).map(_remapDeliveryRow), bundle: bndRow ? { bundleId: bndRow.bundle_id, bundleDescription: bndRow.description_en } : {} };
           }
           case "getProducts": {
             const { data, error } = await sb.from("products").select("*").order("created_at", { ascending: false });
@@ -486,6 +505,11 @@
             const { data, error } = await sb.from("sub_categories").select("*");
             if (error) throw error;
             return { success: true, subCategories: (data || []).map(_remapSubCategoryRow) };
+          }
+          case "getSubSubCategories": {
+            const { data, error } = await sb.from("sub_sub_categories").select("*");
+            if (error) throw error;
+            return { success: true, subSubCategories: (data || []).map(_remapSubSubCategoryRow) };
           }
           case "getDeliveryPrices": {
             const { data, error } = await sb.from("delivery_prices").select("*").order("wilaya", { ascending: true });
@@ -558,7 +582,11 @@
               const subName = typeof sub === "string" ? sub : (sub.nameEn || sub.name || "");
               if (!subName) continue;
               await new Promise((r) => setTimeout(r, 5));
-              await sb.from("sub_categories").insert({ id: String(Date.now()), name: subName, name_en: typeof sub === "string" ? sub : (sub.nameEn || ""), name_fr: typeof sub === "string" ? "" : (sub.nameFr || ""), name_ar: typeof sub === "string" ? "" : (sub.nameAr || ""), category_ids: catId });
+              const subId = String(Date.now());
+              await sb.from("sub_categories").insert({ id: subId, name: subName, name_en: typeof sub === "string" ? sub : (sub.nameEn || ""), name_fr: typeof sub === "string" ? "" : (sub.nameFr || ""), name_ar: typeof sub === "string" ? "" : (sub.nameAr || ""), category_ids: catId });
+              if (typeof sub !== "string" && Array.isArray(sub.subSubCategories)) {
+                await _saveSubSubCategories(subId, sub.subSubCategories);
+              }
             }
             return { success: true, id: catId };
           }
@@ -567,16 +595,25 @@
             if (error) throw error;
             for (const sub of (rest.subCategories || [])) {
               const subName = sub.nameEn || sub.name || "";
-              if (sub.id) {
-                await sb.from("sub_categories").update({ name: subName, name_en: sub.nameEn || "", name_fr: sub.nameFr || "", name_ar: sub.nameAr || "" }).eq("id", sub.id);
+              let subId = sub.id || "";
+              if (subId) {
+                await sb.from("sub_categories").update({ name: subName, name_en: sub.nameEn || "", name_fr: sub.nameFr || "", name_ar: sub.nameAr || "" }).eq("id", subId);
               } else if (subName) {
                 await new Promise((r) => setTimeout(r, 5));
-                await sb.from("sub_categories").insert({ id: String(Date.now()), name: subName, name_en: sub.nameEn || "", name_fr: sub.nameFr || "", name_ar: sub.nameAr || "", category_ids: id });
+                subId = String(Date.now());
+                await sb.from("sub_categories").insert({ id: subId, name: subName, name_en: sub.nameEn || "", name_fr: sub.nameFr || "", name_ar: sub.nameAr || "", category_ids: id });
+              }
+              if (subId && Array.isArray(sub.subSubCategories)) {
+                await _saveSubSubCategories(subId, sub.subSubCategories);
               }
             }
             return { success: true };
           }
           case "deleteCategory": {
+            const { data: subsOfCat } = await sb.from("sub_categories").select("id").like("category_ids", "%" + id + "%");
+            for (const s of (subsOfCat || [])) {
+              await sb.from("sub_sub_categories").delete().like("sub_category_ids", "%" + s.id + "%");
+            }
             await sb.from("sub_categories").delete().like("category_ids", "%" + id + "%");
             const { error } = await sb.from("categories").delete().eq("id", id);
             if (error) throw error;
@@ -588,7 +625,18 @@
             return { success: true };
           }
           case "deleteSubCategory": {
+            await sb.from("sub_sub_categories").delete().like("sub_category_ids", "%" + id + "%");
             const { error } = await sb.from("sub_categories").delete().eq("id", id);
+            if (error) throw error;
+            return { success: true };
+          }
+          case "updateSubSubCategory": {
+            const { error } = await sb.from("sub_sub_categories").update({ name: rest.nameEn || rest.name || "", name_en: rest.nameEn || "", name_fr: rest.nameFr || "", name_ar: rest.nameAr || "" }).eq("id", id);
+            if (error) throw error;
+            return { success: true };
+          }
+          case "deleteSubSubCategory": {
+            const { error } = await sb.from("sub_sub_categories").delete().eq("id", id);
             if (error) throw error;
             return { success: true };
           }
@@ -660,6 +708,7 @@
         if (Array.isArray(res.products)) { products = res.products; productsTotal = products.length; }
         if (Array.isArray(res.categories)) categories = res.categories;
         if (Array.isArray(res.subCategories)) subCategories = res.subCategories;
+        if (Array.isArray(res.subSubCategories)) subSubCategories = res.subSubCategories;
         if (Array.isArray(res.deliveryPrices)) deliveryPrices = res.deliveryPrices;
         // orders are fetched separately via _fetchOrdersPage() / _fetchDashOrders()
         if (res.bundle && res.bundle.bundleId) {
@@ -954,13 +1003,19 @@
         const r = await apiGet("getSubCategories");
         if (r.success) subCategories = r.subCategories;
       }
+      async function loadSubSubCategories() {
+        const r = await apiGet("getSubSubCategories");
+        if (r.success) subSubCategories = r.subSubCategories;
+      }
       async function loadCategories() {
-        const [catRes, subRes] = await Promise.all([
+        const [catRes, subRes, subSubRes] = await Promise.all([
           apiGet("getCategories"),
           apiGet("getSubCategories"),
+          apiGet("getSubSubCategories"),
         ]);
         if (catRes.success) categories = catRes.categories;
         if (subRes.success) subCategories = subRes.subCategories;
+        if (subSubRes.success) subSubCategories = subSubRes.subSubCategories;
         renderCats();
       }
       async function loadProducts() {
@@ -1472,7 +1527,20 @@
         const validSubIds = currentSubIds.filter((id) =>
           filteredSubs.some((s) => s.id === id),
         );
-        buildCheckboxGroup("pm-subcategories", filteredSubs.map(s => Object.assign({}, s, { label: _pLang(s) })), validSubIds);
+        buildCheckboxGroup("pm-subcategories", filteredSubs.map(s => Object.assign({}, s, { label: _pLang(s) })), validSubIds, "refreshSubSubCatCheckboxes");
+        refreshSubSubCatCheckboxes();
+      }
+
+      function refreshSubSubCatCheckboxes() {
+        const selectedSubIds = getCheckedValues("pm-subcategories");
+        const filteredSubSubs = subSubCategories.filter((ss) =>
+          (ss.subCategoryIds || []).some((sid) => selectedSubIds.includes(sid)),
+        );
+        const currentSubSubIds = getCheckedValues("pm-subsubcategories");
+        const validSubSubIds = currentSubSubIds.filter((id) =>
+          filteredSubSubs.some((ss) => ss.id === id),
+        );
+        buildCheckboxGroup("pm-subsubcategories", filteredSubSubs.map(ss => Object.assign({}, ss, { label: _pLang(ss) })), validSubSubIds);
       }
 
       function openProductModal(id = null) {
@@ -1520,6 +1588,16 @@
                 "pm-subcategories",
                 filteredSubs.map(s => Object.assign({}, s, { label: _pLang(s) })),
                 p.subCategoryIds || [],
+                "refreshSubSubCatCheckboxes",
+              );
+              const selectedSubIds = p.subCategoryIds || [];
+              const filteredSubSubs = subSubCategories.filter((ss) =>
+                (ss.subCategoryIds || []).some((sid) => selectedSubIds.includes(sid)),
+              );
+              buildCheckboxGroup(
+                "pm-subsubcategories",
+                filteredSubSubs.map(ss => Object.assign({}, ss, { label: _pLang(ss) })),
+                p.subSubCategoryIds || [],
               );
             }, 30);
             document.getElementById("variants-list").innerHTML = "";
@@ -1555,6 +1633,7 @@
             "refreshSubCatCheckboxes",
           );
           buildCheckboxGroup("pm-subcategories", [], []);
+          buildCheckboxGroup("pm-subsubcategories", [], []);
           addVariant();
           addFlavor();
         }
@@ -1748,6 +1827,7 @@
         }
         const categoryIds = getCheckedValues("pm-categories");
         const subCategoryIds = getCheckedValues("pm-subcategories");
+        const subSubCategoryIds = getCheckedValues("pm-subsubcategories");
         const showMatrix = document.getElementById("stock-matrix-section").style.display !== "none";
         const showVStock = document.getElementById("variant-stock-section").style.display !== "none";
 
@@ -1815,6 +1895,7 @@
           brandAr: document.getElementById("pm-brand-ar").value.trim(),
           categoryIds,
           subCategoryIds,
+          subSubCategoryIds,
           description: document.getElementById("pm-desc-en").innerHTML.trim(),
           descriptionEn: document.getElementById("pm-desc-en").innerHTML.trim(),
           descriptionFr: document.getElementById("pm-desc-fr").innerHTML.trim(),
@@ -1878,7 +1959,10 @@
             const catIconHtml = c.imageUrl
               ? `<img src="${c.imageUrl}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit" />`
               : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>`;
-            return `<div class="cat-node"><div class="cat-row" id="cat-row-${c.id}" onclick="toggleCat('${c.id}',event)"><input type="checkbox" class="row-cb" data-sel-type="cat" data-sel-id="${c.id}" onclick="event.stopPropagation()" onchange="_selToggleCat('${c.id}',this.checked)" style="margin-right:8px;width:15px;height:15px;accent-color:var(--red);cursor:pointer;flex-shrink:0"><div class="cat-expand" id="cat-exp-${c.id}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div><div class="cat-icon" style="overflow:hidden">${catIconHtml}</div><div class="cat-name">${_pLang(c)}</div>${c.description ? `<span style="font-size:11px;color:var(--g400);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.description}</span>` : ""}${subs.length > 0 ? `<span class="cat-count">${subs.length} sub${subs.length !== 1 ? "s" : ""}</span>` : ""}<div class="action-group"><button class="act-btn act-edit" onclick="editCat('${c.id}');event.stopPropagation()">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('cat','${c.id}');event.stopPropagation()">Delete</button></div></div><div class="sub-cats" id="sub-cats-${c.id}">${subs.map((s) => `<div class="sub-node"><div class="sub-icon"></div><div class="sub-name">${_pLang(s)}</div><div class="sub-actions"><button class="act-btn act-edit" onclick="editSubCat('${s.id}')">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('subcat','${s.id}')">Delete</button></div></div>`).join("")}</div></div>`;
+            return `<div class="cat-node"><div class="cat-row" id="cat-row-${c.id}" onclick="toggleCat('${c.id}',event)"><input type="checkbox" class="row-cb" data-sel-type="cat" data-sel-id="${c.id}" onclick="event.stopPropagation()" onchange="_selToggleCat('${c.id}',this.checked)" style="margin-right:8px;width:15px;height:15px;accent-color:var(--red);cursor:pointer;flex-shrink:0"><div class="cat-expand" id="cat-exp-${c.id}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div><div class="cat-icon" style="overflow:hidden">${catIconHtml}</div><div class="cat-name">${_pLang(c)}</div>${c.description ? `<span style="font-size:11px;color:var(--g400);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.description}</span>` : ""}${subs.length > 0 ? `<span class="cat-count">${subs.length} sub${subs.length !== 1 ? "s" : ""}</span>` : ""}<div class="action-group"><button class="act-btn act-edit" onclick="editCat('${c.id}');event.stopPropagation()">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('cat','${c.id}');event.stopPropagation()">Delete</button></div></div><div class="sub-cats" id="sub-cats-${c.id}">${subs.map((s) => {
+              const subSubs = subSubCategories.filter((ss) => ss.subCategoryIds && ss.subCategoryIds.includes(s.id));
+              return `<div class="sub-node"><div class="sub-icon"></div><div class="sub-name">${_pLang(s)}</div><div class="sub-actions"><button class="act-btn act-edit" onclick="editSubCat('${s.id}')">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('subcat','${s.id}')">Delete</button></div></div>${subSubs.map((ss) => `<div class="subsub-node"><div class="subsub-icon"></div><div class="subsub-name">${_pLang(ss)}</div><div class="sub-actions"><button class="act-btn act-edit" onclick="editSubSubCat('${ss.id}')">Edit</button><button class="act-btn act-delete" onclick="confirmDelete('subsubcat','${ss.id}')">Delete</button></div></div>`).join("")}`;
+            }).join("")}</div></div>`;
           })
           .join("");
         if (pag) pag.innerHTML = _pagCtrl(categories.length, catPage, "setCatPage");
@@ -1926,20 +2010,41 @@
         renderCatImageGrid();
         const subs = subCategories.filter((s) => s.categoryIds && s.categoryIds.includes(id));
         document.getElementById("sub-items-list").innerHTML = subs
-          .map((s) => `<div class="sub-item-row" data-sub-id="${s.id}">
-            <input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="EN" value="${(s.nameEn||s.name||'').replace(/"/g,'&quot;')}" data-lang="en" />
-            <input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="FR" value="${(s.nameFr||'').replace(/"/g,'&quot;')}" data-lang="fr" />
-            <input type="text" class="form-control" style="flex:1;min-width:80px;text-align:right;font-family:'Cairo','Tajawal',sans-serif" dir="rtl" placeholder="AR" value="${(s.nameAr||'').replace(/"/g,'&quot;')}" data-lang="ar" />
-            <button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button></div>`)
+          .map((s) => {
+            const subSubs = subSubCategories.filter((ss) => ss.subCategoryIds && ss.subCategoryIds.includes(s.id));
+            const subSubHtml = subSubs.map((ss) => `<div class="subsub-item-row" data-subsub-id="${ss.id}">
+              <input type="text" class="form-control" style="flex:1;min-width:70px" placeholder="EN" value="${(ss.nameEn||ss.name||'').replace(/"/g,'&quot;')}" data-lang="en" />
+              <input type="text" class="form-control" style="flex:1;min-width:70px" placeholder="FR" value="${(ss.nameFr||'').replace(/"/g,'&quot;')}" data-lang="fr" />
+              <input type="text" class="form-control" style="flex:1;min-width:70px;text-align:right;font-family:'Cairo','Tajawal',sans-serif" dir="rtl" placeholder="AR" value="${(ss.nameAr||'').replace(/"/g,'&quot;')}" data-lang="ar" />
+              <button class="btn-rem-sub" onclick="this.closest('.subsub-item-row').remove()">×</button></div>`).join("");
+            return `<div class="sub-item-wrap" data-sub-id="${s.id}">
+              <div class="sub-item-row">
+                <input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="EN" value="${(s.nameEn||s.name||'').replace(/"/g,'&quot;')}" data-lang="en" />
+                <input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="FR" value="${(s.nameFr||'').replace(/"/g,'&quot;')}" data-lang="fr" />
+                <input type="text" class="form-control" style="flex:1;min-width:80px;text-align:right;font-family:'Cairo','Tajawal',sans-serif" dir="rtl" placeholder="AR" value="${(s.nameAr||'').replace(/"/g,'&quot;')}" data-lang="ar" />
+                <button class="btn-rem-sub" onclick="this.closest('.sub-item-wrap').remove()">×</button>
+              </div>
+              <div class="subsub-items-list">${subSubHtml}</div>
+              <button class="btn-add-subsub" type="button" onclick="addSubSubItem(this)">+ Add Sub-subcategory</button>
+            </div>`;
+          })
           .join("");
         openModal("cat-modal");
       }
       function addSubItem() {
         const list = document.getElementById("sub-items-list");
-        const div = document.createElement("div");
-        div.className = "sub-item-row";
-        div.innerHTML = `<input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="EN" data-lang="en" /><input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="FR" data-lang="fr" /><input type="text" class="form-control" style="flex:1;min-width:80px;text-align:right;font-family:'Cairo','Tajawal',sans-serif" dir="rtl" placeholder="AR" data-lang="ar" /><button class="btn-rem-sub" onclick="this.closest('.sub-item-row').remove()">×</button>`;
-        list.appendChild(div);
+        const wrap = document.createElement("div");
+        wrap.className = "sub-item-wrap";
+        wrap.innerHTML = `<div class="sub-item-row"><input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="EN" data-lang="en" /><input type="text" class="form-control" style="flex:1;min-width:80px" placeholder="FR" data-lang="fr" /><input type="text" class="form-control" style="flex:1;min-width:80px;text-align:right;font-family:'Cairo','Tajawal',sans-serif" dir="rtl" placeholder="AR" data-lang="ar" /><button class="btn-rem-sub" onclick="this.closest('.sub-item-wrap').remove()">×</button></div><div class="subsub-items-list"></div><button class="btn-add-subsub" type="button" onclick="addSubSubItem(this)">+ Add Sub-subcategory</button>`;
+        list.appendChild(wrap);
+      }
+      function addSubSubItem(btn) {
+        const wrap = btn.closest(".sub-item-wrap");
+        const list = wrap.querySelector(".subsub-items-list");
+        const row = document.createElement("div");
+        row.className = "subsub-item-row";
+        row.innerHTML = `<input type="text" class="form-control" style="flex:1;min-width:70px" placeholder="EN" data-lang="en" /><input type="text" class="form-control" style="flex:1;min-width:70px" placeholder="FR" data-lang="fr" /><input type="text" class="form-control" style="flex:1;min-width:70px;text-align:right;font-family:'Cairo','Tajawal',sans-serif" dir="rtl" placeholder="AR" data-lang="ar" /><button class="btn-rem-sub" onclick="this.closest('.subsub-item-row').remove()">×</button>`;
+        list.appendChild(row);
       }
       function renderCatImageGrid() {
         const grid = document.getElementById("cat-image-grid");
@@ -1990,13 +2095,24 @@
         const nameFr = document.getElementById("cat-name-fr").value.trim();
         const nameAr = document.getElementById("cat-name-ar").value.trim();
         if (!nameEn) { showToast("English name required", "error"); return; }
-        const subRows = Array.from(document.querySelectorAll("#sub-items-list .sub-item-row"));
-        const subs = subRows.map((row) => ({
-          id: row.dataset.subId || "",
-          nameEn: (row.querySelector('[data-lang="en"]')?.value || "").trim(),
-          nameFr: (row.querySelector('[data-lang="fr"]')?.value || "").trim(),
-          nameAr: (row.querySelector('[data-lang="ar"]')?.value || "").trim(),
-        })).filter((s) => s.nameEn);
+        const subWraps = Array.from(document.querySelectorAll("#sub-items-list .sub-item-wrap"));
+        const subs = subWraps.map((wrap) => {
+          const row = wrap.querySelector(".sub-item-row");
+          const subSubRows = Array.from(wrap.querySelectorAll(".subsub-item-row"));
+          const subSubList = subSubRows.map((r) => ({
+            id: r.dataset.subsubId || "",
+            nameEn: (r.querySelector('[data-lang="en"]')?.value || "").trim(),
+            nameFr: (r.querySelector('[data-lang="fr"]')?.value || "").trim(),
+            nameAr: (r.querySelector('[data-lang="ar"]')?.value || "").trim(),
+          })).filter((ss) => ss.nameEn);
+          return {
+            id: wrap.dataset.subId || "",
+            nameEn: (row.querySelector('[data-lang="en"]')?.value || "").trim(),
+            nameFr: (row.querySelector('[data-lang="fr"]')?.value || "").trim(),
+            nameAr: (row.querySelector('[data-lang="ar"]')?.value || "").trim(),
+            subSubCategories: subSubList,
+          };
+        }).filter((s) => s.nameEn);
         showLoading(editingCatId ? "Updating category…" : "Saving category…");
         try {
           const desc = document.getElementById("cat-desc").value.trim();
@@ -2007,15 +2123,8 @@
           if (r.success) {
             showToast(editingCatId ? "Category updated!" : "Category saved!");
             closeModal("cat-modal");
-            const savedId = editingCatId || r.id || ("tmp_cat_" + Date.now());
             editingCatId = null;
-            if (payload.action === "updateCategory") {
-              const idx = categories.findIndex(c => c.id === payload.id);
-              if (idx >= 0) categories[idx] = { ...categories[idx], name: nameEn, nameEn, nameFr, nameAr, description: desc, imageUrl: currentCatImageUrl };
-            } else {
-              categories.push({ id: savedId, name: nameEn, nameEn, nameFr, nameAr, description: desc, imageUrl: currentCatImageUrl });
-            }
-            renderCats();
+            await loadCategories();
             updateDashboard();
           } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {
@@ -2046,6 +2155,36 @@
             const sIdx = subCategories.findIndex(s => s.id === editingSubCatId);
             if (sIdx >= 0) subCategories[sIdx] = { ...subCategories[sIdx], name: nameEn, nameEn, nameFr, nameAr };
             editingSubCatId = null;
+            renderCats();
+          } else showToast("Error: " + (r.error || "Unknown"), "error");
+        } catch (e) {
+          showToast("Error: " + e.message, "error");
+        }
+        hideLoading();
+      }
+      function editSubSubCat(id) {
+        const ss = subSubCategories.find((s) => s.id === id);
+        if (!ss) return;
+        editingSubSubCatId = id;
+        document.getElementById("subsubcat-name-en").value = ss.nameEn || ss.name || "";
+        document.getElementById("subsubcat-name-fr").value = ss.nameFr || "";
+        document.getElementById("subsubcat-name-ar").value = ss.nameAr || "";
+        openModal("subsubcat-edit-modal");
+      }
+      async function saveSubSubCat() {
+        const nameEn = document.getElementById("subsubcat-name-en").value.trim();
+        const nameFr = document.getElementById("subsubcat-name-fr").value.trim();
+        const nameAr = document.getElementById("subsubcat-name-ar").value.trim();
+        if (!nameEn) { showToast("English name required", "error"); return; }
+        showLoading("Updating sub-subcategory…");
+        try {
+          const r = await apiPost({ action: "updateSubSubCategory", id: editingSubSubCatId, nameEn, nameFr, nameAr });
+          if (r.success) {
+            showToast("Sub-subcategory updated!");
+            closeModal("subsubcat-edit-modal");
+            const sIdx = subSubCategories.findIndex(s => s.id === editingSubSubCatId);
+            if (sIdx >= 0) subSubCategories[sIdx] = { ...subSubCategories[sIdx], name: nameEn, nameEn, nameFr, nameAr };
+            editingSubSubCatId = null;
             renderCats();
           } else showToast("Error: " + (r.error || "Unknown"), "error");
         } catch (e) {
@@ -2265,6 +2404,7 @@
           product: "This product will be permanently deleted.",
           cat: "This category and its sub-categories will be removed.",
           subcat: "This sub-category will be removed.",
+          subsubcat: "This sub-subcategory will be removed.",
           delivery: "This delivery price will be permanently deleted.",
           order: "This order will be permanently deleted and cannot be recovered.",
         };
@@ -2278,12 +2418,13 @@
             if (type === "product") action = "deleteProduct";
             else if (type === "cat") action = "deleteCategory";
             else if (type === "subcat") action = "deleteSubCategory";
+            else if (type === "subsubcat") action = "deleteSubSubCategory";
             else if (type === "delivery") action = "deleteDeliveryPrice";
             else if (type === "order") action = "deleteOrder";
             const r = await apiPost({ action, id });
             if (r.success) {
               showToast(
-                cap(type === "subcat" ? "sub-category" : type) + " deleted",
+                cap(type === "subcat" ? "sub-category" : type === "subsubcat" ? "sub-subcategory" : type) + " deleted",
               );
               // Local mutation
               if (type === "product") {
@@ -2292,10 +2433,16 @@
                 renderBundleList(document.getElementById("bundle-search")?.value || "");
                   } else if (type === "cat") {
                 categories = categories.filter(c => c.id !== id);
+                const removedSubIds = subCategories.filter(s => (s.categoryIds || []).includes(id)).map(s => s.id);
                 subCategories = subCategories.filter(s => !(s.categoryIds || []).includes(id));
+                subSubCategories = subSubCategories.filter(ss => !(ss.subCategoryIds || []).some(sid => removedSubIds.includes(sid)));
                 renderCats();
                   } else if (type === "subcat") {
                 subCategories = subCategories.filter(s => s.id !== id);
+                subSubCategories = subSubCategories.filter(ss => !(ss.subCategoryIds || []).includes(id));
+                renderCats();
+                  } else if (type === "subsubcat") {
+                subSubCategories = subSubCategories.filter(ss => ss.id !== id);
                 renderCats();
                   } else if (type === "delivery") {
                 deliveryPrices = deliveryPrices.filter(d => d.id !== id);

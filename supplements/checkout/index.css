@@ -284,13 +284,20 @@
 .success-icon svg { color: var(--success); }
 .success-title { font-family: var(--font-display); font-size: 28px; font-weight: 400; margin-bottom: 8px; }
 .success-msg { font-size: 13px; color: var(--gray-600); line-height: 1.7; margin-bottom: 28px; }
-.success-instagram {
-  display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px;
-  background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-  color: #fff; font-size: 12px; font-weight: 600; letter-spacing: 0.5px;
-  text-decoration: none; margin-bottom: 14px; transition: opacity 0.2s;
+.success-follow-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gray-600); margin-bottom: 12px;
 }
-.success-instagram:hover { opacity: 0.88; }
+.success-social-links {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  margin-bottom: 22px;
+}
+.success-social-link {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border: 1px solid var(--border, #E8E8E8);
+  color: var(--black); text-decoration: none; transition: all var(--transition);
+}
+.success-social-link:hover { background: var(--black); color: var(--white); }
 .success-close {
   display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px;
   background: var(--black); color: var(--white);

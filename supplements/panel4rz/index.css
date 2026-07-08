@@ -1533,6 +1533,53 @@
       }
       .sub-name { font-size: 12.5px; font-weight: 500; flex: 1; color: var(--black); }
       .sub-actions { margin-left: auto; display: flex; gap: 6px; }
+      .subsub-node {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 12px 6px 30px;
+        background: var(--white);
+        border-radius: 2px;
+        border: 1px solid var(--g100);
+      }
+      .subsub-icon {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--g400);
+        flex-shrink: 0;
+      }
+      .subsub-name { font-size: 12px; font-weight: 500; flex: 1; color: var(--g600); }
+      .sub-item-wrap {
+        background: var(--g50);
+        border: 1px solid var(--g100);
+        border-radius: 2px;
+        padding: 10px;
+        margin-bottom: 8px;
+      }
+      .subsub-items-list { margin: 8px 0 8px 16px; display: flex; flex-direction: column; gap: 6px; }
+      .subsub-item-row { display: flex; gap: 8px; align-items: center; }
+      .subsub-item-row .form-control { height: 30px; font-size: 12px; }
+      .btn-add-subsub {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        height: 26px;
+        padding: 0 10px;
+        margin-left: 16px;
+        border-radius: 2px;
+        border: 1px dashed var(--g200);
+        font-size: 10.5px;
+        font-weight: 600;
+        color: var(--g400);
+        font-family: var(--font-b);
+        transition: border-color var(--tr), color var(--tr), background var(--tr);
+      }
+      .btn-add-subsub:hover {
+        border-color: var(--red);
+        color: var(--red);
+        background: var(--red-light);
+      }
       .sub-adder {
         background: var(--g50);
         border: 1px solid var(--g100);

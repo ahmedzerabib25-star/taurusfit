@@ -82,7 +82,12 @@
       "Bash(curl *)",
       "Bash(supabase --version)",
       "Bash(supabase link *)",
-      "Bash(supabase logout *)"
+      "Bash(supabase logout *)",
+      "Bash(sed -i 's/home\\\\/index\\\\.css?v=28/home\\\\/index.css?v=29/g' supplements/checkout/index.html supplements/home/index.html supplements/products/index.html supplements/product-detail/index.html)",
+      "Bash(sed -i 's/checkout\\\\/index\\\\.js?v=17/checkout\\\\/index.js?v=18/' supplements/checkout/index.html)",
+      "Bash(sed -i 's/home\\\\/index\\\\.js?v=23/home\\\\/index.js?v=24/' supplements/home/index.html)",
+      "Bash(sed -i 's/products\\\\/index\\\\.js?v=3/products\\\\/index.js?v=4/' supplements/products/index.html)",
+      "Bash(sed -i 's/product-detail\\\\/index\\\\.js?v=18/product-detail\\\\/index.js?v=19/' supplements/product-detail/index.html)"
     ]
   }
 }

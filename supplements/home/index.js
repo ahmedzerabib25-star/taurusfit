@@ -503,6 +503,7 @@ function cartCheckout() { window.location.href = "/checkout"; }
 let products = [];
 let _categories = [];
 let _subCategories = [];
+let _subSubCategories = [];
 let _bundleId = null;
 let _bundleText = { titleEn: "", titleFr: "", titleAr: "", descriptionEn: "", descriptionFr: "", descriptionAr: "" };
 
@@ -659,14 +660,30 @@ function renderCatNav() {
         if (subs.length === 0) {
           return `<a href="/products?cat=${encodeURIComponent(cat.id)}" class="m-link" onclick="toggleMobileMenu()">${catName(cat)}</a>`;
         }
+        const viewAllLabel = currentLang === "ar" ? "الكل" : currentLang === "fr" ? "Tout voir" : "View All";
         return `
           <div class="m-cat-item">
             <button class="m-link m-cat-toggle" onclick="toggleMobileCat(this)">
               <span>${catName(cat)}</span> ${chevron}
             </button>
             <div class="m-sub">
-              <a href="/products?cat=${encodeURIComponent(cat.id)}" class="m-sub-link m-sub-all" onclick="toggleMobileMenu()">${catName(cat)} — ${currentLang === "ar" ? "الكل" : currentLang === "fr" ? "Tout voir" : "View All"}</a>
-              ${subs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.id)}" class="m-sub-link" onclick="toggleMobileMenu()">${catName(s)}</a>`).join("")}
+              <a href="/products?cat=${encodeURIComponent(cat.id)}" class="m-sub-link m-sub-all" onclick="toggleMobileMenu()">${catName(cat)} — ${viewAllLabel}</a>
+              ${subs.map((s) => {
+                const subSubs = _subSubCategories.filter((ss) => ss.subCategoryIds.includes(s.id));
+                if (subSubs.length === 0) {
+                  return `<a href="/products?sub=${encodeURIComponent(s.id)}" class="m-sub-link" onclick="toggleMobileMenu()">${catName(s)}</a>`;
+                }
+                return `
+                  <div class="m-subsub-cat-item">
+                    <button class="m-sub-link m-subsub-toggle" onclick="toggleMobileSubCat(this)">
+                      <span>${catName(s)}</span> ${chevron}
+                    </button>
+                    <div class="m-subsub">
+                      <a href="/products?sub=${encodeURIComponent(s.id)}" class="m-subsub-link m-subsub-all" onclick="toggleMobileMenu()">${catName(s)} — ${viewAllLabel}</a>
+                      ${subSubs.map((ss) => `<a href="/products?subsub=${encodeURIComponent(ss.id)}" class="m-subsub-link" onclick="toggleMobileMenu()">${catName(ss)}</a>`).join("")}
+                    </div>
+                  </div>`;
+              }).join("")}
             </div>
           </div>`;
       })
@@ -945,6 +962,7 @@ async function loadInitialData() {
     // ── Categories ──
     _categories = res.categories || [];
     _subCategories = res.subCategories || [];
+    _subSubCategories = res.subSubCategories || [];
     renderCatNav();
     renderCategoryGrid();
   } catch (err) {
@@ -980,6 +998,16 @@ function toggleMobileCat(btn) {
     .querySelectorAll(".m-cat-item.open")
     .forEach((el) => el.classList.remove("open"));
   // Toggle clicked one
+  if (!isOpen) item.classList.add("open");
+}
+
+function toggleMobileSubCat(btn) {
+  const item = btn.closest(".m-subsub-cat-item");
+  const parent = item.closest(".m-sub");
+  const isOpen = item.classList.contains("open");
+  if (parent) {
+    parent.querySelectorAll(".m-subsub-cat-item.open").forEach((el) => el.classList.remove("open"));
+  }
   if (!isOpen) item.classList.add("open");
 }
 

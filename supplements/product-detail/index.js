@@ -23,6 +23,7 @@
 
       let _allCategories = [];
       let _allSubCategories = [];
+      let _allSubSubCategories = [];
       let _allProducts = [];
       let _deliveryPrices = [];
       let _bundleId = null;
@@ -136,10 +137,11 @@
       }
 
       /* ── CATEGORY NAV — populates the hamburger sidebar only ── */
-      function renderCatNav(cats, subs) {
+      function renderCatNav(cats, subs, subSubs) {
         const mobile = document.getElementById("mobileCatItems");
         if (!mobile) return;
         const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>`;
+        const viewAllLabel = currentLang === "ar" ? "الكل" : currentLang === "fr" ? "Tout voir" : "View All";
         mobile.innerHTML = cats.map((cat) => {
           const catSubs = subs.filter(
             (s) => Array.isArray(s.categoryIds) && s.categoryIds.includes(cat.id),
@@ -153,8 +155,23 @@
                 <span>${catName(cat)}</span> ${chevron}
               </button>
               <div class="m-sub">
-                <a href="/products?cat=${encodeURIComponent(cat.id)}" class="m-sub-link m-sub-all">${catName(cat)} — ${currentLang === "ar" ? "الكل" : currentLang === "fr" ? "Tout voir" : "View All"}</a>
-                ${catSubs.map((s) => `<a href="/products?sub=${encodeURIComponent(s.id)}" class="m-sub-link">${catName(s)}</a>`).join("")}
+                <a href="/products?cat=${encodeURIComponent(cat.id)}" class="m-sub-link m-sub-all">${catName(cat)} — ${viewAllLabel}</a>
+                ${catSubs.map((s) => {
+                  const subSubItems = (subSubs || []).filter((ss) => Array.isArray(ss.subCategoryIds) && ss.subCategoryIds.includes(s.id));
+                  if (subSubItems.length === 0) {
+                    return `<a href="/products?sub=${encodeURIComponent(s.id)}" class="m-sub-link">${catName(s)}</a>`;
+                  }
+                  return `
+                    <div class="m-subsub-cat-item">
+                      <button class="m-sub-link m-subsub-toggle" onclick="toggleMobileSubCat(this)">
+                        <span>${catName(s)}</span> ${chevron}
+                      </button>
+                      <div class="m-subsub">
+                        <a href="/products?sub=${encodeURIComponent(s.id)}" class="m-subsub-link m-subsub-all">${catName(s)} — ${viewAllLabel}</a>
+                        ${subSubItems.map((ss) => `<a href="/products?subsub=${encodeURIComponent(ss.id)}" class="m-subsub-link">${catName(ss)}</a>`).join("")}
+                      </div>
+                    </div>`;
+                }).join("")}
               </div>
             </div>`;
         }).join("");
@@ -182,6 +199,7 @@
 
           _allCategories = res.categories || [];
           _allSubCategories = res.subCategories || [];
+          _allSubSubCategories = res.subSubCategories || [];
           _deliveryPrices = res.deliveryPrices || [];
           // Direct fetch bypasses edge cache — always up-to-date
           _storeSettings = {};
@@ -190,7 +208,7 @@
           const bundle = res.bundle || {};
           if (bundle.bundleId) _bundleId = bundle.bundleId;
 
-          renderCatNav(_allCategories, _allSubCategories);
+          renderCatNav(_allCategories, _allSubCategories, _allSubSubCategories);
 
           if (res.products && res.products.length) {
             const products = res.products;
@@ -2968,8 +2986,13 @@
           }),
         }).catch(() => {});
 
+        const displayName = prodName(p);
         document.getElementById("successMsg").textContent =
-          `Thank you ${firstName}! Your order for ${p.name} × ${selectedQty} — Total: ${total} DA. We'll call you shortly to confirm.`;
+          currentLang === "ar"
+            ? `شكراً ${firstName}! طلبك لـ ${displayName} × ${selectedQty} — المجموع: ${total} د.ج. سنتصل بك قريباً للتأكيد.`
+            : currentLang === "fr"
+            ? `Merci ${firstName} ! Votre commande de ${displayName} × ${selectedQty} — Total : ${total} DA. Nous vous appellerons bientôt pour confirmer.`
+            : `Thank you ${firstName}! Your order for ${displayName} × ${selectedQty} — Total: ${total} DA. We'll call you shortly to confirm.`;
         document.getElementById("successOverlay").classList.add("show");
       }
 
@@ -3051,6 +3074,7 @@
           "breadcrumb.home": "Home",
           "breadcrumb.products": "Products",
           "success.title": "Order Placed!",
+          "success.follow": "Follow us on social media",
           "detail.bulkLabel": "Wholesale Pricing",
           "detail.bulkNotice": "Ordering 5 or more? Contact us on WhatsApp for a special wholesale discount!",
           "success.back": "Back to Products",
@@ -3125,6 +3149,7 @@
           "detail.bulkLabel": "Prix de Gros",
           "detail.bulkNotice": "Vous en commandez 5 ou plus ? Contactez-nous sur WhatsApp pour une remise spéciale !",
           "success.title": "Commande Passée !",
+          "success.follow": "Suivez-nous sur les réseaux sociaux",
           "success.back": "Retour aux Produits",
         },
         ar: {
@@ -3197,6 +3222,7 @@
           "detail.bulkLabel": "أسعار الجملة",
           "detail.bulkNotice": "تطلب 5 قطع أو أكثر؟ تواصل معنا عبر واتساب للحصول على خصم خاص للجملة!",
           "success.title": "تم تأكيد الطلب!",
+          "success.follow": "تابعنا على مواقع التواصل الاجتماعي",
           "success.back": "العودة إلى المنتجات",
         },
       };
@@ -3311,7 +3337,7 @@
             ? t["form.selectWilayaFirst"] || "Select wilaya first"
             : t["form.selectWilaya"] || "Select commune…";
         }
-        renderCatNav(_allCategories, _allSubCategories);
+        renderCatNav(_allCategories, _allSubCategories, _allSubSubCategories);
         sanitizeFooterAndModals(lang);
         refreshProductLang();
       }
@@ -3691,6 +3717,16 @@
         document
           .querySelectorAll(".m-cat-item.open")
           .forEach((el) => el.classList.remove("open"));
+        if (!isOpen) item.classList.add("open");
+      }
+
+      function toggleMobileSubCat(btn) {
+        const item = btn.closest(".m-subsub-cat-item");
+        const parent = item.closest(".m-sub");
+        const isOpen = item.classList.contains("open");
+        if (parent) {
+          parent.querySelectorAll(".m-subsub-cat-item.open").forEach((el) => el.classList.remove("open"));
+        }
         if (!isOpen) item.classList.add("open");
       }
 

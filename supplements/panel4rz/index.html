@@ -12,8 +12,8 @@
     />
     <link rel="icon" href="/images/favicon.ico" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="/supplements/supabase-client.js?v=6"></script>
-    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=17" />
+    <script src="/supplements/supabase-client.js?v=7"></script>
+    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=18" />
   </head>
   <body>
 <div class="loading-overlay" id="loading-overlay">
@@ -989,6 +989,10 @@
             <label data-i18n="pm.subcategories">Sub-Categories</label>
             <div class="checkbox-group" id="pm-subcategories"></div>
           </div>
+          <div class="form-group" style="margin-bottom: 16px">
+            <label>Sub-Subcategories (optional)</label>
+            <div class="checkbox-group" id="pm-subsubcategories"></div>
+          </div>
           <div class="form-row full">
             <div class="form-group">
               <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center">
@@ -1218,6 +1222,36 @@
       </div>
     </div>
 
+    <!-- SUB-SUBCATEGORY EDIT MODAL -->
+    <div class="modal-overlay" id="subsubcat-edit-modal">
+      <div class="modal" style="max-width: 400px">
+        <div class="modal-header">
+          <div class="modal-title">Edit Sub-Subcategory</div>
+          <button class="modal-close" onclick="closeModal('subsubcat-edit-modal')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group" style="margin-bottom:14px">
+            <label>Name (English) *</label>
+            <input type="text" class="form-control" id="subsubcat-name-en" placeholder="e.g. Merino Wool" />
+          </div>
+          <div class="form-group" style="margin-bottom:14px">
+            <label>Name (French)</label>
+            <input type="text" class="form-control" id="subsubcat-name-fr" placeholder="ex. Laine Mérinos" />
+          </div>
+          <div class="form-group" style="margin-bottom:14px">
+            <label>Name (Arabic)</label>
+            <input type="text" class="form-control" id="subsubcat-name-ar" placeholder="مثال: صوف ميرينو" dir="rtl" style="text-align:right;font-family:'Cairo','Tajawal',sans-serif" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="closeModal('subsubcat-edit-modal')"><span data-i18n="common.cancel">Cancel</span></button>
+          <button class="btn-primary" onclick="saveSubSubCat()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
     <!-- DELIVERY PRICE MODAL -->
     <div class="modal-overlay" id="delivery-modal">
       <div class="modal" style="max-width: 480px">
@@ -1321,6 +1355,6 @@
       ><span id="toast-msg">Done!</span>
     </div>
 
-    <script src="/supplements/panel4rz/index.js?v=29"></script>
+    <script src="/supplements/panel4rz/index.js?v=30"></script>
   </body>
 </html>

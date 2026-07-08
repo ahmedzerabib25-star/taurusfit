@@ -38,6 +38,7 @@
       descriptionAr: p.description_ar || "",
       categoryIds: (p.category_ids || "").split(",").filter(Boolean),
       subCategoryIds: (p.sub_category_ids || "").split(",").filter(Boolean),
+      subSubCategoryIds: (p.sub_sub_category_ids || "").split(",").filter(Boolean),
       imageUrl: Array.isArray(p.image_url) ? p.image_url : (p.image_url ? [p.image_url] : []),
       variants: p.variants || [],
       flavors: p.flavors || [],
@@ -73,6 +74,18 @@
       nameAr: s.name_ar || "",
       categoryIds: (s.category_ids || "").split(",").filter(Boolean),
       createdAt: s.created_at,
+    };
+  }
+
+  function _remapSubSubCategory(ss) {
+    return {
+      id: ss.id,
+      name: ss.name_en || ss.name || "",
+      nameEn: ss.name_en || ss.name || "",
+      nameFr: ss.name_fr || "",
+      nameAr: ss.name_ar || "",
+      subCategoryIds: (ss.sub_category_ids || "").split(",").filter(Boolean),
+      createdAt: ss.created_at,
     };
   }
 
@@ -129,6 +142,7 @@
       products: prods.map(_remapProduct),
       categories: (Array.isArray(raw.categories) ? raw.categories : []).map(_remapCategory),
       subCategories: (Array.isArray(raw.subCategories) ? raw.subCategories : Array.isArray(raw.sub_categories) ? raw.sub_categories : []).map(_remapSubCategory),
+      subSubCategories: (Array.isArray(raw.subSubCategories) ? raw.subSubCategories : Array.isArray(raw.sub_sub_categories) ? raw.sub_sub_categories : []).map(_remapSubSubCategory),
       bundle: _remapBundle(bundleRow),
       promos: (Array.isArray(raw.promos) ? raw.promos : Array.isArray(raw.promo_codes) ? raw.promo_codes : []).map(_remapPromo),
       deliveryPrices: (Array.isArray(raw.deliveryPrices) ? raw.deliveryPrices : Array.isArray(raw.delivery_prices) ? raw.delivery_prices : []).map(_remapDeliveryPrice),
@@ -145,24 +159,26 @@
       return fetch(_URL + "/rest/v1/" + path, { headers: h }).then(function (r) { return r.json(); });
     }
     return Promise.all([
-      sf("products?select=id,name,name_en,name_fr,name_ar,brand,brand_en,brand_fr,brand_ar,category_ids,sub_category_ids,description,description_en,description_fr,description_ar,image_url,variants,flavors,stock,discount,allow_promo,promo_code_ids,free_delivery,status,created_at&hidden=not.is.true"),
+      sf("products?select=id,name,name_en,name_fr,name_ar,brand,brand_en,brand_fr,brand_ar,category_ids,sub_category_ids,sub_sub_category_ids,description,description_en,description_fr,description_ar,image_url,variants,flavors,stock,discount,allow_promo,promo_code_ids,free_delivery,status,created_at&hidden=not.is.true"),
       sf("categories?select=*"),
       sf("sub_categories?select=*"),
+      sf("sub_sub_categories?select=*"),
       sf("bundle?select=*&limit=1"),
       sf("promo_codes?select=*"),
       sf("delivery_prices?select=*"),
       sf("settings?select=key,value"),
     ]).then(function (results) {
-      var settingsArr = Array.isArray(results[6]) ? results[6] : [];
+      var settingsArr = Array.isArray(results[7]) ? results[7] : [];
       var settingsMap = {};
       settingsArr.forEach(function(row) { settingsMap[row.key] = row.value; });
       return {
         products:       Array.isArray(results[0]) ? results[0] : [],
         categories:     Array.isArray(results[1]) ? results[1] : [],
         subCategories:  Array.isArray(results[2]) ? results[2] : [],
-        bundle:         (Array.isArray(results[3]) ? results[3][0] : null) || {},
-        promos:         Array.isArray(results[4]) ? results[4] : [],
-        deliveryPrices: Array.isArray(results[5]) ? results[5] : [],
+        subSubCategories: Array.isArray(results[3]) ? results[3] : [],
+        bundle:         (Array.isArray(results[4]) ? results[4][0] : null) || {},
+        promos:         Array.isArray(results[5]) ? results[5] : [],
+        deliveryPrices: Array.isArray(results[6]) ? results[6] : [],
         settings:       settingsMap,
         orders:         [],
       };

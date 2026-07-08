@@ -19,6 +19,7 @@ const i18n = {
     "sort.name": "Name A–Z",
     "filter.category": "Category",
     "filter.subcategory": "Subcategory",
+    "filter.subsubcategory": "Type",
     "filter.price": "Price (DA)",
     "filter.reset": "Reset All Filters",
     "filter.apply": "Apply Price",
@@ -77,6 +78,7 @@ const i18n = {
     "sort.name": "Nom A–Z",
     "filter.category": "Catégorie",
     "filter.subcategory": "Sous-catégorie",
+    "filter.subsubcategory": "Type",
     "filter.price": "Prix (DA)",
     "filter.reset": "Réinitialiser les Filtres",
     "filter.apply": "Appliquer",
@@ -135,6 +137,7 @@ const i18n = {
     "sort.name": "الاسم أ-ي",
     "filter.category": "الفئة",
     "filter.subcategory": "الفئة الفرعية",
+    "filter.subsubcategory": "النوع",
     "filter.price": "السعر (دج)",
     "filter.reset": "إعادة ضبط الفلاتر",
     "filter.apply": "تطبيق",
@@ -278,8 +281,10 @@ function sanitizeFooterAndModals(lang) {
 let allProducts = [];
 let categoryOptions = [];
 let subCategoryOptions = [];
+let subSubCategoryOptions = [];
 let allCategories = [];
 let allSubCategories = [];
+let allSubSubCategories = [];
 let _bundleId = null;
 let _topSoldIds = [];
 
@@ -324,6 +329,7 @@ function renderCatNav() {
   const mobileCats = document.getElementById("mobileCatItems");
   if (!mobileCats) return;
   const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>`;
+  const viewAllLabel = currentLang === "ar" ? "الكل" : currentLang === "fr" ? "Tout voir" : "View All";
   mobileCats.innerHTML = allCategories.map((cat) => {
     const subs = allSubCategories.filter((s) => parseIds(s.categoryIds).includes(cat.id));
     if (subs.length === 0) {
@@ -335,8 +341,23 @@ function renderCatNav() {
           <span>${catName(cat)}</span> ${chevron}
         </button>
         <div class="m-sub">
-          <a href="#" class="m-sub-link m-sub-all" onclick="filterByCategory('${cat.id}');toggleMobileMenu();return false;">${catName(cat)} — ${currentLang === "ar" ? "الكل" : currentLang === "fr" ? "Tout voir" : "View All"}</a>
-          ${subs.map((s) => `<a href="#" class="m-sub-link" onclick="filterBySubCategory('${s.id}');toggleMobileMenu();return false;">${catName(s)}</a>`).join("")}
+          <a href="#" class="m-sub-link m-sub-all" onclick="filterByCategory('${cat.id}');toggleMobileMenu();return false;">${catName(cat)} — ${viewAllLabel}</a>
+          ${subs.map((s) => {
+            const subSubs = allSubSubCategories.filter((ss) => parseIds(ss.subCategoryIds).includes(s.id));
+            if (subSubs.length === 0) {
+              return `<a href="#" class="m-sub-link" onclick="filterBySubCategory('${s.id}');toggleMobileMenu();return false;">${catName(s)}</a>`;
+            }
+            return `
+              <div class="m-subsub-cat-item">
+                <button class="m-sub-link m-subsub-toggle" onclick="toggleMobileSubCat(this)">
+                  <span>${catName(s)}</span> ${chevron}
+                </button>
+                <div class="m-subsub">
+                  <a href="#" class="m-subsub-link m-subsub-all" onclick="filterBySubCategory('${s.id}');toggleMobileMenu();return false;">${catName(s)} — ${viewAllLabel}</a>
+                  ${subSubs.map((ss) => `<a href="#" class="m-subsub-link" onclick="filterBySubSubCategory('${ss.id}');toggleMobileMenu();return false;">${catName(ss)}</a>`).join("")}
+                </div>
+              </div>`;
+          }).join("")}
         </div>
       </div>`;
   }).join("");
@@ -349,7 +370,7 @@ async function loadData() {
 
     allProducts = res.products
       .filter((p) => p.status === "active")
-      .map((p) => ({ ...p, categoryIds: parseIds(p.categoryIds), subCategoryIds: parseIds(p.subCategoryIds) }));
+      .map((p) => ({ ...p, categoryIds: parseIds(p.categoryIds), subCategoryIds: parseIds(p.subCategoryIds), subSubCategoryIds: parseIds(p.subSubCategoryIds) }));
 
     allCategories = res.categories || [];
     categoryOptions = allCategories
@@ -361,6 +382,11 @@ async function loadData() {
       .map((sub) => ({ value: sub.id, nameEn: sub.nameEn || sub.name || "", nameFr: sub.nameFr || "", nameAr: sub.nameAr || "", categoryIds: sub.categoryIds, count: allProducts.filter((p) => p.subCategoryIds.includes(sub.id)).length }))
       .filter((opt) => opt.count > 0);
 
+    allSubSubCategories = (res.subSubCategories || []).map((ss) => ({ ...ss, subCategoryIds: parseIds(ss.subCategoryIds) }));
+    subSubCategoryOptions = allSubSubCategories
+      .map((ss) => ({ value: ss.id, nameEn: ss.nameEn || ss.name || "", nameFr: ss.nameFr || "", nameAr: ss.nameAr || "", subCategoryIds: ss.subCategoryIds, count: allProducts.filter((p) => p.subSubCategoryIds.includes(ss.id)).length }))
+      .filter((opt) => opt.count > 0);
+
     const bundle = res.bundle || {};
     if (bundle.bundleId) _bundleId = bundle.bundleId;
     if (Array.isArray(res.orders)) _topSoldIds = computeTopSoldIds(res.orders, allProducts);
@@ -368,6 +394,7 @@ async function loadData() {
     const params = new URLSearchParams(window.location.search);
     const catParam = params.get("cat");
     const subParam = params.get("sub");
+    const subSubParam = params.get("subsub");
     if (catParam) {
       const catOpt = categoryOptions.find((o) => o.value === catParam);
       if (catOpt) state.categories = [catOpt.value];
@@ -378,6 +405,22 @@ async function loadData() {
         state.subCategories = [subOpt.value];
         if (!subOpt.categoryIds.some((cid) => state.categories.includes(cid))) {
           state.categories = [...state.categories, ...subOpt.categoryIds.filter((cid) => categoryOptions.find((o) => o.value === cid))];
+        }
+      }
+    }
+    if (subSubParam) {
+      const subSubOpt = subSubCategoryOptions.find((o) => o.value === subSubParam);
+      if (subSubOpt) {
+        state.subSubCategories = [subSubOpt.value];
+        const parentSubIds = subSubOpt.subCategoryIds.filter((sid) => subCategoryOptions.find((o) => o.value === sid));
+        if (parentSubIds.length) {
+          state.subCategories = [...new Set([...state.subCategories, ...parentSubIds])];
+          parentSubIds.forEach((sid) => {
+            const subOpt = subCategoryOptions.find((o) => o.value === sid);
+            if (subOpt) {
+              state.categories = [...new Set([...state.categories, ...subOpt.categoryIds.filter((cid) => categoryOptions.find((o) => o.value === cid))])];
+            }
+          });
         }
       }
     }
@@ -406,6 +449,7 @@ let state = {
   search: "",
   categories: [],
   subCategories: [],
+  subSubCategories: [],
   priceMin: "",
   priceMax: "",
   sort: "default",
@@ -466,6 +510,33 @@ function buildSidebarHTML() {
   </div>`;
   })()}
 
+  ${(() => {
+    const visibleSubSubs = state.subCategories.length
+      ? subSubCategoryOptions.filter((opt) => opt.subCategoryIds.some((sid) => state.subCategories.includes(sid)))
+      : subSubCategoryOptions;
+    if (!visibleSubSubs.length) return "";
+    return `
+  <div class="filter-section open">
+    <div class="filter-header" onclick="toggleFilterSection(this)">
+      <div class="filter-title-wrap">
+        <h4>${t["filter.subsubcategory"]}</h4>
+        ${state.subSubCategories.length ? `<span class="filter-badge">${state.subSubCategories.length}</span>` : ""}
+      </div>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+    <div class="filter-body">
+      ${visibleSubSubs.map((opt) => `
+        <div class="filter-option ${state.subSubCategories.includes(opt.value) ? "checked" : ""}" onclick="toggleFilter('subSubCategories','${opt.value}',this)">
+          <label>
+            <div class="custom-checkbox"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            ${catName(opt)}
+          </label>
+          <span class="option-count">${opt.count}</span>
+        </div>`).join("")}
+    </div>
+  </div>`;
+  })()}
+
   <div class="filter-section open">
     <div class="filter-header" onclick="toggleFilterSection(this)">
       <div class="filter-title-wrap">
@@ -508,6 +579,7 @@ function getFiltered() {
   if (q) list = list.filter((p) => prodName(p).toLowerCase().includes(q) || (p.description || "").toLowerCase().includes(q));
   if (state.categories.length) list = list.filter((p) => (p.categoryIds || []).some((id) => state.categories.includes(id)));
   if (state.subCategories.length) list = list.filter((p) => state.subCategories.some((subId) => p.subCategoryIds.includes(subId)));
+  if (state.subSubCategories.length) list = list.filter((p) => state.subSubCategories.some((ssId) => (p.subSubCategoryIds || []).includes(ssId)));
   if (state.priceMin !== "") list = list.filter((p) => getProductPrice(p) >= Number(state.priceMin));
   if (state.priceMax !== "") list = list.filter((p) => getProductPrice(p) <= Number(state.priceMax));
 
@@ -521,7 +593,7 @@ function getFiltered() {
 }
 
 function countActiveFilters() {
-  return state.categories.length + state.subCategories.length + (state.priceMin || state.priceMax ? 1 : 0);
+  return state.categories.length + state.subCategories.length + state.subSubCategories.length + (state.priceMin || state.priceMax ? 1 : 0);
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -643,6 +715,10 @@ function renderChips() {
     label: catName(subCategoryOptions.find((o) => o.value === v)) || v,
     remove: () => { state.subCategories = state.subCategories.filter((x) => x !== v); refresh(); },
   }));
+  state.subSubCategories.forEach((v) => chips.push({
+    label: catName(subSubCategoryOptions.find((o) => o.value === v)) || v,
+    remove: () => { state.subSubCategories = state.subSubCategories.filter((x) => x !== v); refresh(); },
+  }));
   if (state.priceMin || state.priceMax) chips.push({
     label: `${state.priceMin || "0"} – ${state.priceMax || "∞"} DA`,
     remove: () => { state.priceMin = ""; state.priceMax = ""; refresh(); },
@@ -677,6 +753,12 @@ function toggleFilter(key, value, el) {
       return subOpt && subOpt.categoryIds.some((cid) => state.categories.includes(cid));
     });
   }
+  if ((key === "categories" || key === "subCategories") && state.subCategories.length > 0) {
+    state.subSubCategories = state.subSubCategories.filter((ssId) => {
+      const ssOpt = subSubCategoryOptions.find((o) => o.value === ssId);
+      return ssOpt && ssOpt.subCategoryIds.some((sid) => state.subCategories.includes(sid));
+    });
+  }
   refresh();
 }
 
@@ -691,6 +773,7 @@ function applyPrice() {
 function resetFilters() {
   state.categories = [];
   state.subCategories = [];
+  state.subSubCategories = [];
   state.priceMin = "";
   state.priceMax = "";
   state.search = "";
@@ -704,6 +787,7 @@ function filterByCategory(catId) {
   const already = state.categories.includes(catId) && state.categories.length === 1;
   state.categories = already ? [] : [catId];
   state.subCategories = [];
+  state.subSubCategories = [];
   state.page = 1;
   refresh();
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -713,8 +797,28 @@ function filterBySubCategory(subId) {
   const subOpt = subCategoryOptions.find((o) => o.value === subId);
   if (!subOpt) return;
   state.subCategories = [subId];
+  state.subSubCategories = [];
   const parentIds = subOpt.categoryIds.filter((cid) => categoryOptions.find((o) => o.value === cid));
   if (parentIds.length) state.categories = parentIds;
+  state.page = 1;
+  refresh();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function filterBySubSubCategory(subSubId) {
+  const ssOpt = subSubCategoryOptions.find((o) => o.value === subSubId);
+  if (!ssOpt) return;
+  state.subSubCategories = [subSubId];
+  const parentSubIds = ssOpt.subCategoryIds.filter((sid) => subCategoryOptions.find((o) => o.value === sid));
+  if (parentSubIds.length) {
+    state.subCategories = parentSubIds;
+    const parentCatIds = [];
+    parentSubIds.forEach((sid) => {
+      const subOpt = subCategoryOptions.find((o) => o.value === sid);
+      if (subOpt) parentCatIds.push(...subOpt.categoryIds.filter((cid) => categoryOptions.find((o) => o.value === cid)));
+    });
+    if (parentCatIds.length) state.categories = [...new Set(parentCatIds)];
+  }
   state.page = 1;
   refresh();
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -958,6 +1062,16 @@ function toggleMobileCat(btn) {
   const item = btn.closest(".m-cat-item");
   const isOpen = item.classList.contains("open");
   document.querySelectorAll(".m-cat-item.open").forEach((el) => el.classList.remove("open"));
+  if (!isOpen) item.classList.add("open");
+}
+
+function toggleMobileSubCat(btn) {
+  const item = btn.closest(".m-subsub-cat-item");
+  const parent = item.closest(".m-sub");
+  const isOpen = item.classList.contains("open");
+  if (parent) {
+    parent.querySelectorAll(".m-subsub-cat-item.open").forEach((el) => el.classList.remove("open"));
+  }
   if (!isOpen) item.classList.add("open");
 }
 
