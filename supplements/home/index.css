@@ -338,23 +338,11 @@ html[data-theme="dark"] #site-header.scrolled {
   width: auto;
   display: block;
 }
-/* Default: transparent header over dark hero → show the dark-bg (light-colored) logo */
+/* logo-dark.png is used as the single logo in both light and dark mode */
 .logo-img-light {
   display: none;
 }
 .logo-img-dark {
-  display: block;
-}
-#site-header.scrolled .logo-img-light {
-  display: block;
-}
-#site-header.scrolled .logo-img-dark {
-  display: none;
-}
-html[data-theme="dark"] #site-header.scrolled .logo-img-light {
-  display: none;
-}
-html[data-theme="dark"] #site-header.scrolled .logo-img-dark {
   display: block;
 }
 
@@ -1295,6 +1283,7 @@ html[data-theme="dark"] #site-header.scrolled .logo-img-dark {
 .badge-oos { background: var(--gray-400); }
 .badge-hot { background: var(--error); }
 .badge-new { background: var(--black); }
+.badge-promo { background: var(--error); }
 
 .product-info {
   padding: 20px;
@@ -2131,10 +2120,17 @@ html[data-theme="dark"] #site-header.scrolled .logo-img-dark {
   .hamburger {
     display: flex !important;
   }
+  .nav-right {
+    gap: 8px;
+  }
   .nav-right .theme-btn {
     display: flex !important;
   }
   .nav-right .lang-switch {
+    display: flex !important;
+    gap: 2px;
+  }
+  .mobile-lang {
     display: none !important;
   }
 }

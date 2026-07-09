@@ -41,7 +41,8 @@
   font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
   padding: 4px 10px; text-transform: uppercase; z-index: 1;
 }
-.badge-sale, .badge-promo { background: var(--gold); color: #fff; }
+.badge-sale { background: var(--gold); color: #fff; }
+.badge-promo { background: var(--error); color: #fff; }
 .badge-new { background: var(--black); color: var(--white); }
 .badge-hot { background: var(--error); color: #fff; }
 .badge-bundle { background: var(--success); color: #fff; }

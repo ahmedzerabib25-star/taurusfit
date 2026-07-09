@@ -78,11 +78,10 @@
       /* ─── UTILITY ── */
       .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
 
-      /* ─── LOGO LIGHT/DARK ── */
+      /* ─── LOGO: logo-dark.png used in both light and dark mode ── */
       .logo-img { height: 80px; width: auto; display: block; object-fit: contain; }
-      .logo-img-dark { display: none; }
-      html[data-theme="dark"] .logo-img-light { display: none; }
-      html[data-theme="dark"] .logo-img-dark { display: block; }
+      .logo-img-light { display: none; }
+      .logo-img-dark { display: block; }
 
       /* ─── HEADER ── */
       #site-header { position: sticky; top: 0; z-index: 1000; background: var(--white); border-bottom: 1px solid var(--gray-200); transition: box-shadow var(--transition); }
@@ -218,7 +217,8 @@
         .top-nav { position: relative; gap: 8px; }
         .logo { position: absolute; left: 50%; transform: translateX(-50%); }
         .logo-img { height: 52px; }
-        .lang-switch { display: none; }
+        .lang-switch { display: flex !important; gap: 2px; }
+        .mobile-lang { display: none !important; }
         .footer-grid { grid-template-columns: 1fr; gap: 28px; }
         .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
       }
