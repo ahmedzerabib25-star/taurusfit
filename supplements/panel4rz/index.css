@@ -45,6 +45,8 @@
         --orange-l: rgba(245, 165, 36, 0.13);
         --blue-l: rgba(56, 189, 248, 0.13);
         --purple-l: rgba(192, 132, 252, 0.13);
+        --danger: #FF3B3B;
+        --danger-l: rgba(255, 59, 59, 0.18);
       }
 
       *, *::before, *::after {
@@ -2228,7 +2230,7 @@
       }
       .stock-row:last-child { border-bottom: none; }
       .stock-row:hover { background: var(--g50); }
-      .stock-row-out { background: rgba(255,107,107,0.06) !important; border-left: 3px solid #FF6B6B; }
+      .stock-row-out { background: var(--danger-l) !important; border-left: 4px solid var(--danger); }
       .stock-row-low { border-left: 3px solid var(--orange); }
 
       .stock-row-main {
@@ -2292,7 +2294,7 @@
       }
       .stock-badge-ok  { background: var(--green-l); color: var(--green); }
       .stock-badge-low { background: var(--orange-l); color: var(--orange); }
-      .stock-badge-out { background: rgba(255,107,107,0.13); color: #FF6B6B; }
+      .stock-badge-out { background: var(--danger); color: #fff; font-weight: 800; }
 
       .stock-row-actions {
         flex-shrink: 0;
@@ -2349,8 +2351,8 @@
         transition: border-color 0.15s, background 0.15s;
       }
       .stock-variant-out {
-        background: rgba(255,107,107,0.06);
-        border-color: rgba(255,107,107,0.4);
+        background: var(--danger-l);
+        border-color: var(--danger);
       }
       .stock-variant-label {
         font-size: 11.5px;
@@ -2374,8 +2376,8 @@
       .stock-input:focus { outline: none; border-color: var(--red); }
       .stock-v-zero {
         font-size: 10.5px;
-        color: #FF6B6B;
-        font-weight: 700;
+        color: var(--danger);
+        font-weight: 800;
       }
 
       @media (max-width: 600px) {
