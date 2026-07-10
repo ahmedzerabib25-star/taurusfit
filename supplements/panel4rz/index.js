@@ -14,6 +14,39 @@
         window.location.href = "/mgmt9kx";
       }
 
+      // The "bb_admin_auth" flag above only records that login succeeded at
+      // some point in this tab — it does NOT prove the underlying Supabase
+      // session is still valid (it can expire/refresh-fail silently while
+      // the flag stays put), which used to surface as a confusing
+      // "row-level security policy" error on writes instead of a clear
+      // "please log in again". Verify the real session on load too.
+      (async () => {
+        const ok = await ensureAdminSession({ silent: true });
+        if (!ok) {
+          sessionStorage.removeItem("bb_admin_auth");
+          window.location.href = "/mgmt9kx";
+        }
+      })();
+
+      async function ensureAdminSession(opts = {}) {
+        try {
+          let { data: sd } = await sb.auth.getSession();
+          let session = sd?.session || null;
+          const expiresSoon = session && session.expires_at && session.expires_at * 1000 < Date.now() + 30000;
+          if (!session || expiresSoon) {
+            const { data: rd, error: rerr } = await sb.auth.refreshSession();
+            session = !rerr ? rd?.session || null : null;
+          }
+          if (session) return true;
+        } catch (e) {}
+        if (!opts.silent) {
+          sessionStorage.removeItem("bb_admin_auth");
+          showToast("Session expired — please log in again.", "error");
+          setTimeout(() => (window.location.href = "/mgmt9kx"), 1600);
+        }
+        return false;
+      }
+
       // ── STATE ──
       let adminLang = localStorage.getItem("admin_lang") || "fr";
       let sidebarCollapsed = false;
@@ -553,6 +586,9 @@
 
       async function apiPost(body) {
         const { action, id, ...rest } = body;
+        if (action !== "login" && !(await ensureAdminSession())) {
+          return { success: false, error: "Session expired — please log in again." };
+        }
         switch (action) {
           // ── PRODUCTS ──
           case "addProduct": {
