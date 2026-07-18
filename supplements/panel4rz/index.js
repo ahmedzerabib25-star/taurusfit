@@ -97,6 +97,8 @@
         renderBundleList(document.getElementById("bundle-search")?.value || "");
         applyAdminI18n();
         renderNotifList();
+        renderOrders();
+        updateDashboard();
         showToast(t('toast.langSwitch'));
       }
       function _applyLangDir(lang) {
@@ -148,7 +150,7 @@
           'orders.sort.nameAsc':'Name A→Z','orders.sort.nameDesc':'Name Z→A',
           'orders.filter.all':'All','orders.filter.waiting':'Waiting',
           'orders.filter.confirmed':'Confirmed','orders.filter.delivered':'Delivered',
-          'orders.filter.canceled':'Canceled',
+          'orders.filter.canceled':'Canceled','orders.filter.chez_livreur':'With Courier',
           'orders.col.num':'#','orders.col.customer':'Customer','orders.col.phone':'Phone',
           'orders.col.wilaya':'Wilaya','orders.col.address':'Address','orders.col.items':'Items',
           'orders.col.total':'Total','orders.col.source':'Source','orders.col.date':'Date',
@@ -197,6 +199,7 @@
           'page.stock':'Stock Management','page.settings':'Settings',
           'status.active':'Active','status.inactive':'Inactive','status.waiting':'Waiting',
           'status.confirmed':'Confirmed','status.delivered':'Delivered','status.canceled':'Canceled',
+          'status.chez_livreur':'With Courier',
           'toast.langSwitch':'Language: English',
           'sel.items':'items selected','sel.item':'item selected',
         },
@@ -241,7 +244,7 @@
           'orders.sort.nameAsc':'Nom A→Z','orders.sort.nameDesc':'Nom Z→A',
           'orders.filter.all':'Tous','orders.filter.waiting':'En attente',
           'orders.filter.confirmed':'Confirmé','orders.filter.delivered':'Livré',
-          'orders.filter.canceled':'Annulé',
+          'orders.filter.canceled':'Annulé','orders.filter.chez_livreur':'Chez livreur',
           'orders.col.num':'N°','orders.col.customer':'Client','orders.col.phone':'Téléphone',
           'orders.col.wilaya':'Wilaya','orders.col.address':'Adresse','orders.col.items':'Articles',
           'orders.col.total':'Total','orders.col.source':'Source','orders.col.date':'Date',
@@ -290,6 +293,7 @@
           'page.stock':'Gestion du stock','page.settings':'Paramètres',
           'status.active':'Actif','status.inactive':'Inactif','status.waiting':'En attente',
           'status.confirmed':'Confirmé','status.delivered':'Livré','status.canceled':'Annulé',
+          'status.chez_livreur':'Chez livreur',
           'toast.langSwitch':'Langue : Français',
           'sel.items':'éléments sélectionnés','sel.item':'élément sélectionné',
         },
@@ -334,7 +338,7 @@
           'orders.sort.nameAsc':'الاسم أ→ي','orders.sort.nameDesc':'الاسم ي→أ',
           'orders.filter.all':'الكل','orders.filter.waiting':'قيد الانتظار',
           'orders.filter.confirmed':'مؤكد','orders.filter.delivered':'تم التوصيل',
-          'orders.filter.canceled':'ملغى',
+          'orders.filter.canceled':'ملغى','orders.filter.chez_livreur':'مع عامل التوصيل',
           'orders.col.num':'#','orders.col.customer':'العميل','orders.col.phone':'الهاتف',
           'orders.col.wilaya':'الولاية','orders.col.address':'العنوان','orders.col.items':'العناصر',
           'orders.col.total':'الإجمالي','orders.col.source':'المصدر','orders.col.date':'التاريخ',
@@ -383,6 +387,7 @@
           'page.stock':'إدارة المخزون','page.settings':'الإعدادات',
           'status.active':'نشط','status.inactive':'غير نشط','status.waiting':'قيد الانتظار',
           'status.confirmed':'مؤكد','status.delivered':'تم التوصيل','status.canceled':'ملغى',
+          'status.chez_livreur':'مع عامل التوصيل',
           'toast.langSwitch':'اللغة: العربية',
           'sel.items':'عناصر محددة','sel.item':'عنصر محدد',
         }
@@ -1160,7 +1165,7 @@
           recentEl.innerHTML = recent.length
             ? recent.map((o) => {
                 const name = `${o.firstName} ${o.lastName}`.trim() || "—";
-                const badge = `<span class="badge ${getOrderBadgeClass(o.status)}" style="font-size:10px;padding:2px 8px">${cap(o.status)}</span>`;
+                const badge = `<span class="badge ${getOrderBadgeClass(o.status)}" style="font-size:10px;padding:2px 8px">${tStatus(o.status)}</span>`;
                 let date = "—";
                 if (o.createdAt) try { date = new Date(o.createdAt).toLocaleDateString("en-GB"); } catch (e) {}
                 return `<div class="recent-order-row" onclick="showPage('orders',document.querySelector('.sb-link[onclick*=orders]'));setTimeout(()=>openOrderDetail('${o.id}'),100)">
@@ -1174,23 +1179,23 @@
 
         // Status overview bar
         const total = _dashOrders.length || 1;
-        const statuses = ["waiting","confirmed","delivered","canceled"];
+        const statuses = ["waiting","confirmed","chez_livreur","delivered","canceled"];
         const counts = {};
         statuses.forEach(s => { counts[s] = _dashOrders.filter(o => o.status === s).length; });
         const barEl = document.getElementById("status-ov-bar");
         if (barEl) {
           barEl.innerHTML = statuses
             .filter(s => counts[s] > 0)
-            .map(s => `<div class="ov-seg ov-seg-${s}" style="width:${(counts[s]/total*100).toFixed(1)}%" title="${cap(s)}: ${counts[s]}"></div>`)
+            .map(s => `<div class="ov-seg ov-seg-${s}" style="width:${(counts[s]/total*100).toFixed(1)}%" title="${tStatus(s)}: ${counts[s]}"></div>`)
             .join("") || `<div class="ov-seg ov-seg-waiting" style="width:100%;opacity:0.2"></div>`;
         }
         const legendEl = document.getElementById("status-ov-legend");
         if (legendEl) {
-          const dotColor = { waiting: "var(--orange)", confirmed: "var(--green)", delivered: "var(--blue)", canceled: "#dc2626" };
+          const dotColor = { waiting: "var(--orange)", confirmed: "var(--green)", chez_livreur: "var(--purple)", delivered: "var(--blue)", canceled: "#dc2626" };
           legendEl.innerHTML = statuses.map(s => `
             <div class="status-ov-item">
               <div class="status-ov-dot" style="background:${dotColor[s]}"></div>
-              <span>${cap(s)}</span>
+              <span>${tStatus(s)}</span>
               <strong>${counts[s]}</strong>
               <span style="color:var(--g400)">(${total > 0 ? (counts[s]/total*100).toFixed(0) : 0}%)</span>
             </div>`).join("");
@@ -2973,6 +2978,7 @@
         const map = {
           waiting: "badge-waiting",
           confirmed: "badge-confirmed",
+          chez_livreur: "badge-chez_livreur",
           delivered: "badge-delivered",
           canceled: "badge-canceled",
         };
@@ -3035,7 +3041,7 @@
               <td><strong>${Number(o.total).toLocaleString("fr-DZ")} DA</strong></td>
               <td><span style="font-size:11px;color:var(--g400);background:var(--g100);padding:2px 7px;border-radius:4px">${o.source || "—"}</span></td>
               <td style="font-size:12px;color:var(--g600)">${date}</td>
-              <td><span class="badge ${badgeClass}">${cap(o.status)}</span></td>
+              <td><span class="badge ${badgeClass}">${tStatus(o.status)}</span></td>
               <td><div class="action-group"><button class="act-btn act-view" onclick="openOrderDetail('${safeId}')">View More</button><button class="act-btn act-delete" onclick="confirmDelete('order','${safeId}')">Delete</button></div></td>
             </tr>`;
           })
@@ -3102,10 +3108,11 @@
           <div class="order-detail-section">
             <div class="order-detail-title">Update Status</div>
             <div class="order-status-btns" id="order-status-btns-${safeId}">
-              <button class="status-btn status-waiting${o.status==='waiting'?' active':''}" onclick="updateOrderStatus('${safeId}','waiting')">⏳ Waiting</button>
-              <button class="status-btn status-confirmed${o.status==='confirmed'?' active':''}" onclick="updateOrderStatus('${safeId}','confirmed')">✅ Confirmed</button>
-              <button class="status-btn status-delivered${o.status==='delivered'?' active':''}" onclick="updateOrderStatus('${safeId}','delivered')">📦 Delivered</button>
-              <button class="status-btn status-canceled${o.status==='canceled'?' active':''}" onclick="updateOrderStatus('${safeId}','canceled')">✖ Canceled</button>
+              <button class="status-btn status-waiting${o.status==='waiting'?' active':''}" onclick="updateOrderStatus('${safeId}','waiting')">⏳ ${tStatus('waiting')}</button>
+              <button class="status-btn status-confirmed${o.status==='confirmed'?' active':''}" onclick="updateOrderStatus('${safeId}','confirmed')">✅ ${tStatus('confirmed')}</button>
+              <button class="status-btn status-chez_livreur${o.status==='chez_livreur'?' active':''}" onclick="updateOrderStatus('${safeId}','chez_livreur')">🚚 ${tStatus('chez_livreur')}</button>
+              <button class="status-btn status-delivered${o.status==='delivered'?' active':''}" onclick="updateOrderStatus('${safeId}','delivered')">📦 ${tStatus('delivered')}</button>
+              <button class="status-btn status-canceled${o.status==='canceled'?' active':''}" onclick="updateOrderStatus('${safeId}','canceled')">✖ ${tStatus('canceled')}</button>
             </div>
           </div>
           <div class="order-detail-section" style="padding-top:0">

@@ -928,6 +928,8 @@
       .badge-confirmed::before { background: var(--green); }
       .badge-canceled  { background: rgba(255,107,107,0.13); color: #FF6B6B; }
       .badge-canceled::before { background: #FF6B6B; }
+      .badge-chez_livreur { background: var(--purple-l); color: var(--purple); }
+      .badge-chez_livreur::before { background: var(--purple); }
 
       /* ══════════════════════════════════════
          ACTION BUTTONS
@@ -1984,6 +1986,7 @@
       .status-confirmed { background: var(--green-l); color: var(--green); border-color: var(--green); }
       .status-delivered { background: var(--blue-l); color: var(--blue); border-color: var(--blue); }
       .status-canceled  { background: rgba(255,107,107,0.13); color: #FF6B6B; border-color: #FF6B6B; }
+      .status-chez_livreur { background: var(--purple-l); color: var(--purple); border-color: var(--purple); }
 
       /* ── Edit Order Items ───────────────── */
       .eoi-qty-wrap { display: inline-flex; align-items: center; gap: 6px; }
@@ -2120,6 +2123,7 @@
       .ov-seg { height: 100%; transition: width 0.5s; }
       .ov-seg-waiting   { background: var(--orange); }
       .ov-seg-confirmed { background: var(--green); }
+      .ov-seg-chez_livreur { background: var(--purple); }
       .ov-seg-delivered { background: var(--blue); }
       .ov-seg-canceled  { background: #FF6B6B; }
 

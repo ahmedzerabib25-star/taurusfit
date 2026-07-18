@@ -13,7 +13,7 @@
     <link rel="icon" href="/images/favicon.ico" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/supplements/supabase-client.js?v=7"></script>
-    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=19" />
+    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=20" />
   </head>
   <body>
 <div class="loading-overlay" id="loading-overlay">
@@ -854,6 +854,7 @@
                 <button class="order-filter-btn active" data-filter="all" onclick="filterOrders('all',this)"><span data-i18n="orders.filter.all">All</span> <span class="count">0</span></button>
                 <button class="order-filter-btn" data-filter="waiting" onclick="filterOrders('waiting',this)"><span data-i18n="orders.filter.waiting">Waiting</span> <span class="count">0</span></button>
                 <button class="order-filter-btn" data-filter="confirmed" onclick="filterOrders('confirmed',this)"><span data-i18n="orders.filter.confirmed">Confirmed</span> <span class="count">0</span></button>
+                <button class="order-filter-btn" data-filter="chez_livreur" onclick="filterOrders('chez_livreur',this)"><span data-i18n="orders.filter.chez_livreur">With Courier</span> <span class="count">0</span></button>
                 <button class="order-filter-btn" data-filter="delivered" onclick="filterOrders('delivered',this)"><span data-i18n="orders.filter.delivered">Delivered</span> <span class="count">0</span></button>
                 <button class="order-filter-btn" data-filter="canceled" onclick="filterOrders('canceled',this)"><span data-i18n="orders.filter.canceled">Canceled</span> <span class="count">0</span></button>
               </div>
@@ -1355,6 +1356,6 @@
       ><span id="toast-msg">Done!</span>
     </div>
 
-    <script src="/supplements/panel4rz/index.js?v=31"></script>
+    <script src="/supplements/panel4rz/index.js?v=32"></script>
   </body>
 </html>
