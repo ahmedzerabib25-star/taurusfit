@@ -91,7 +91,10 @@
       "Bash(sed -i 's/home\\\\/index\\\\.css?v=29/home\\\\/index.css?v=30/g' supplements/checkout/index.html supplements/home/index.html supplements/products/index.html supplements/product-detail/index.html)",
       "Bash(sed -i 's/product-detail\\\\/index\\\\.css?v=8/product-detail\\\\/index.css?v=9/' supplements/product-detail/index.html)",
       "Bash(sed -i 's/home\\\\/index\\\\.css?v=31/home\\\\/index.css?v=32/g' supplements/checkout/index.html supplements/home/index.html supplements/products/index.html supplements/product-detail/index.html)",
-      "Bash(sed -i 's/privacy\\\\/index\\\\.css?v=9/privacy\\\\/index.css?v=10/' supplements/privacy/index.html)"
+      "Bash(sed -i 's/privacy\\\\/index\\\\.css?v=9/privacy\\\\/index.css?v=10/' supplements/privacy/index.html)",
+      "Bash(ls api *)",
+      "Bash(ls supabase *)",
+      "Bash(ls supplements *)"
     ]
   }
 }
