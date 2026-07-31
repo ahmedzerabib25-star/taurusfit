@@ -1,8 +1,8 @@
 /* ══════════════════════════════════════════════════════
    CONFIG
 ══════════════════════════════════════════════════════ */
-const SUPABASE_URL = "https://rgbmfstbvqzvgxadjxrb.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnYm1mc3RidnF6dmd4YWRqeHJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5NDcxNDYsImV4cCI6MjA5ODUyMzE0Nn0.RWnBzmNPonwj7eZz5X0mMpEODFP5Jo6iAmBWdRDQBs4";
+const SUPABASE_URL = window.SUPABASE_URL;
+const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY;
 const CART_KEY = "bybens_cart";
 
 let _allProducts = [];
@@ -111,6 +111,26 @@ document.addEventListener("DOMContentLoaded", () => {
       if (dd) dd.classList.remove("open");
     }
   });
+});
+
+/* ══════════════════════════════════════════════════════
+   LANGUAGE DROPDOWN (header)
+══════════════════════════════════════════════════════ */
+function toggleLangDropdown(e) {
+  e.stopPropagation();
+  const menu = document.getElementById("langDdMenu");
+  if (!menu) return;
+  const isOpen = menu.classList.toggle("open");
+  e.currentTarget.setAttribute("aria-expanded", isOpen ? "true" : "false");
+}
+document.addEventListener("click", (e) => {
+  const wrap = document.getElementById("langSwitch");
+  if (wrap && !wrap.contains(e.target)) {
+    const menu = document.getElementById("langDdMenu");
+    if (menu) menu.classList.remove("open");
+    const toggle = wrap.querySelector(".lang-dd-toggle");
+    if (toggle) toggle.setAttribute("aria-expanded", "false");
+  }
 });
 
 /* ══════════════════════════════════════════════════════
@@ -286,9 +306,9 @@ const i18n = {
     "nav.home": "Home",
     "nav.products": "Products",
     "nav.contact": "Contact",
-    "search.placeholder": "Search carpets, rugs, home decor…",
+    "search.placeholder": "Search barbells, plates, gear…",
     "search.cancel": "Cancel",
-    "footer.brand.desc": "Algeria's destination for handpicked carpets and home furnishings. We bring quality pieces directly to your door.",
+    "footer.brand.desc": "Algeria's destination for CrossFit and gym accessories. We bring quality gear directly to your door.",
     "footer.links": "Quick Links",
     "footer.shipping": "Shipping Policy",
     "footer.returns": "Returns",
@@ -311,25 +331,25 @@ const i18n = {
     "returns.item1.title": "Exchanges & Returns",
     "returns.item1.text": "We offer a 7-day return policy for unopened items in their original packaging with intact seals.",
     "returns.item2.title": "Easy Support",
-    "returns.item2.text": "Contact us via WhatsApp or Instagram to initiate a return. We will arrange the courier return for you.",
-    "returns.item3.title": "Maison Credit",
+    "returns.item2.text": "Contact us to initiate a return. We will arrange the courier return for you.",
+    "returns.item3.title": "TaurusFit Credit",
     "returns.item3.text": "Following inspection, we issue store credit, exchanges, or refunds, ensuring your satisfaction.",
     "about.who.title": "Our Heritage",
-    "about.who.text": "Maison Comfort is a home furnishings house, dedicated to bringing carpets and decor of lasting quality to Algerian homes.",
+    "about.who.text": "TaurusFit is a CrossFit and gym accessories house, dedicated to bringing serious training gear of lasting quality to Algerian athletes. We provide equipment that holds up to real work.",
     "about.order.title": "How To Order",
-    "about.order.text": "Choose your carpet's size and color, then add it to your cart. Complete your address without registration, and enjoy careful Cash on Arrival delivery.",
+    "about.order.text": "Choose your gear's size and variant, then add it to your cart. Complete your address details without registration, and enjoy careful Cash on Arrival delivery.",
     "about.cta": "Shop Collection",
     "toast.sent": "Your message has been sent to our team.",
-    "privacy.eyebrow": "Maison Comfort",
+    "privacy.eyebrow": "TaurusFit",
     "privacy.title": "Privacy <em>Policy</em>",
     "privacy.updated": "Last updated: July 2026",
-    "privacy.intro": "Maison Comfort is committed to protecting your privacy. This policy explains what personal information we collect, how we use it, and your rights.",
+    "privacy.intro": "TaurusFit is committed to protecting your privacy. This policy explains what personal information we collect, how we use it, and your rights.",
     "privacy.s1.title": "Information We Collect",
     "privacy.s1.text": "When you place an order, we collect your first name, last name, phone number, delivery address, wilaya, and commune. When you contact us via the contact form, we collect your name and email or phone number, along with your message.",
     "privacy.s2.title": "How We Use Your Information",
     "privacy.s2.text": "Your data is used solely to process and deliver your orders, respond to your messages, and improve our service. We never sell, rent, or share your personal data with third parties for marketing purposes.",
     "privacy.s3.title": "Payment Information",
-    "privacy.s3.text": "Maison Comfort operates on a cash on delivery basis only. We do not collect, store, or process any payment card or banking information.",
+    "privacy.s3.text": "TaurusFit operates on a cash on delivery basis only. We do not collect, store, or process any payment card or banking information.",
     "privacy.s4.title": "Cookies & Local Storage",
     "privacy.s4.text": "We use your browser's local storage to save your shopping cart, language, and theme preference. This data stays on your device and is never transmitted to our servers.",
     "privacy.s5.title": "Third-Party Services",
@@ -337,17 +357,17 @@ const i18n = {
     "privacy.s6.title": "Data Retention",
     "privacy.s6.text": "Order information is retained as long as necessary for business operations and legal obligations. You may request deletion of your personal data at any time by contacting us.",
     "privacy.s7.title": "Your Rights",
-    "privacy.s7.text": "You have the right to access, correct, or request deletion of your personal data. To exercise these rights, contact us via WhatsApp, Instagram, Facebook, or TikTok.",
+    "privacy.s7.text": "You have the right to access, correct, or request deletion of your personal data. To exercise these rights, contact us using the form below.",
     "privacy.s8.title": "Contact",
-    "privacy.s8.text": "For any privacy-related questions, reach us on WhatsApp, Instagram, Facebook, or TikTok — links in the footer below.",
+    "privacy.s8.text": "For any privacy-related questions, contact us using the form on this page.",
   },
   fr: {
     "nav.home": "Accueil",
-    "nav.products": "Tapis",
+    "nav.products": "Produits",
     "nav.contact": "Contact",
-    "search.placeholder": "Rechercher tapis, décoration…",
+    "search.placeholder": "Rechercher barres, disques, équipement…",
     "search.cancel": "Annuler",
-    "footer.brand.desc": "La destination en Algérie pour des tapis et de la décoration d'intérieur sélectionnés. Nous livrons des pièces de qualité directement à votre porte.",
+    "footer.brand.desc": "La destination en Algérie pour les accessoires CrossFit et de musculation. Nous livrons du matériel de qualité directement à votre porte.",
     "footer.links": "Liens rapides",
     "footer.shipping": "Livraison",
     "footer.returns": "Retours",
@@ -370,25 +390,25 @@ const i18n = {
     "returns.item1.title": "Politique de Retour",
     "returns.item1.text": "Vous disposez de 7 jours pour retourner un produit non ouvert dans son emballage d'origine, avec scellé intact.",
     "returns.item2.title": "Assistance Dédiée",
-    "returns.item2.text": "Contactez-nous via WhatsApp ou Instagram. Nous organiserons le retour par coursier à votre convenance.",
-    "returns.item3.title": "Avoir de la Maison",
+    "returns.item2.text": "Contactez-nous pour lancer un retour. Nous organiserons le retour par coursier à votre convenance.",
+    "returns.item3.title": "Crédit TaurusFit",
     "returns.item3.text": "Après vérification, nous procédons à un échange ou à l'émission d'un crédit boutique pour votre entière satisfaction.",
     "about.who.title": "Notre Héritage",
-    "about.who.text": "Maison Comfort est une maison de décoration d'intérieur, dédiée à apporter des tapis et une décoration de qualité durable aux foyers algériens.",
+    "about.who.text": "TaurusFit est une maison d'accessoires CrossFit et de musculation, dédiée à apporter du matériel d'entraînement de qualité durable aux athlètes algériens. Nous proposons de l'équipement conçu pour encaisser le vrai travail.",
     "about.order.title": "Comment Commander",
-    "about.order.text": "Choisissez la taille et la couleur de votre tapis, puis ajoutez-le au panier. Complétez votre adresse sans inscription, et profitez d'une livraison soignée en paiement à la livraison.",
+    "about.order.text": "Sélectionnez la taille et la variante de votre équipement, puis ajoutez-le à votre panier. Complétez vos coordonnées de livraison sans inscription préalable, et profitez d'une livraison soignée avec paiement à la réception.",
     "about.cta": "Voir la Collection",
     "toast.sent": "Votre message a été transmis à notre équipe.",
-    "privacy.eyebrow": "Maison Comfort",
+    "privacy.eyebrow": "TaurusFit",
     "privacy.title": "Politique de <em>Confidentialité</em>",
     "privacy.updated": "Dernière mise à jour : juillet 2026",
-    "privacy.intro": "Maison Comfort s'engage à protéger votre vie privée. Cette politique explique quelles informations personnelles nous collectons, comment nous les utilisons, et vos droits.",
+    "privacy.intro": "TaurusFit s'engage à protéger votre vie privée. Cette politique explique quelles informations personnelles nous collectons, comment nous les utilisons, et vos droits.",
     "privacy.s1.title": "Informations que Nous Collectons",
     "privacy.s1.text": "Lorsque vous passez une commande, nous collectons votre prénom, nom, numéro de téléphone, adresse de livraison, wilaya et commune. Lorsque vous nous contactez via le formulaire, nous collectons votre nom, votre email ou téléphone, ainsi que votre message.",
     "privacy.s2.title": "Comment Nous Utilisons Vos Informations",
     "privacy.s2.text": "Vos données sont utilisées uniquement pour traiter et livrer vos commandes, répondre à vos messages, et améliorer notre service. Nous ne vendons, ne louons ni ne partageons jamais vos données personnelles à des fins marketing.",
     "privacy.s3.title": "Informations de Paiement",
-    "privacy.s3.text": "Maison Comfort fonctionne uniquement en paiement à la livraison. Nous ne collectons, ne stockons ni ne traitons aucune information de carte bancaire.",
+    "privacy.s3.text": "TaurusFit fonctionne uniquement en paiement à la livraison. Nous ne collectons, ne stockons ni ne traitons aucune information de carte bancaire.",
     "privacy.s4.title": "Cookies et Stockage Local",
     "privacy.s4.text": "Nous utilisons le stockage local de votre navigateur pour sauvegarder votre panier, votre langue et votre préférence de thème. Ces données restent sur votre appareil et ne sont jamais transmises à nos serveurs.",
     "privacy.s5.title": "Services Tiers",
@@ -396,17 +416,17 @@ const i18n = {
     "privacy.s6.title": "Conservation des Données",
     "privacy.s6.text": "Les informations de commande sont conservées aussi longtemps que nécessaire pour les besoins opérationnels et légaux. Vous pouvez demander la suppression de vos données personnelles à tout moment en nous contactant.",
     "privacy.s7.title": "Vos Droits",
-    "privacy.s7.text": "Vous avez le droit d'accéder, de corriger ou de demander la suppression de vos données personnelles. Pour exercer ces droits, contactez-nous via WhatsApp, Instagram, Facebook ou TikTok.",
+    "privacy.s7.text": "Vous avez le droit d'accéder, de corriger ou de demander la suppression de vos données personnelles. Pour exercer ces droits, contactez-nous via le formulaire ci-dessous.",
     "privacy.s8.title": "Contact",
-    "privacy.s8.text": "Pour toute question relative à la confidentialité, contactez-nous via WhatsApp, Instagram, Facebook ou TikTok — liens dans le pied de page ci-dessous.",
+    "privacy.s8.text": "Pour toute question relative à la confidentialité, contactez-nous via le formulaire de cette page.",
   },
   ar: {
     "nav.home": "الرئيسية",
-    "nav.products": "السجاد",
+    "nav.products": "المنتجات",
     "nav.contact": "اتصل بنا",
-    "search.placeholder": "ابحث عن سجاد وأثاث منزلي…",
+    "search.placeholder": "ابحث عن بارات وأقراص ومعدات…",
     "search.cancel": "إلغاء",
-    "footer.brand.desc": "وجهتك في الجزائر لسجاد وأثاث منزلي مختار بعناية. نوصل لك قطعًا عالية الجودة مباشرة إلى بابك.",
+    "footer.brand.desc": "وجهتك في الجزائر لمعدات الكروسفيت والأدوات الرياضية. نوصل لك معدات عالية الجودة مباشرة إلى بابك.",
     "footer.links": "روابط سريعة",
     "footer.shipping": "سياسة الشحن",
     "footer.returns": "الإرجاع",
@@ -429,25 +449,25 @@ const i18n = {
     "returns.item1.title": "سياسة الإرجاع",
     "returns.item1.text": "لديك 7 أيام لإرجاع منتج غير مفتوح في عبوته الأصلية وبختمه سليمًا.",
     "returns.item2.title": "دعم سهل",
-    "returns.item2.text": "تواصل معنا عبر واتساب أو إنستغرام لبدء عملية الإرجاع. سننظم استرجاع الطرد نيابة عنك.",
-    "returns.item3.title": "رصيد الميزون",
+    "returns.item2.text": "تواصل معنا لبدء عملية الإرجاع. سننظم استرجاع الطرد نيابة عنك.",
+    "returns.item3.title": "رصيد تاوروس فيت",
     "returns.item3.text": "بعد الفحص، نقدم رصيدًا في المتجر أو استبدالًا أو استرجاعًا لضمان رضاك التام.",
     "about.who.title": "إرثنا",
-    "about.who.text": "ميزون كومفور هي دار لأثاث المنزل، مكرّسة لإحضار سجاد وديكور بجودة تدوم إلى المنازل الجزائرية.",
+    "about.who.text": "توروس فيت دار لأدوات الكروسفيت والمعدات الرياضية، مكرّسة لتقديم معدات تدريب ذات جودة دائمة للرياضيين الجزائريين. نقدّم معدات مصممة لتحمل التدريب الجاد.",
     "about.order.title": "كيفية الطلب",
-    "about.order.text": "اختر مقاس ولون السجادة، ثم أضفها إلى سلتك. أكمل عنوانك دون تسجيل، واستمتع بتوصيل دفع عند الاستلام.",
+    "about.order.text": "اختر مقاس ونوع معداتك، ثم أضفها إلى سلتك. أكمل بيانات عنوانك دون تسجيل، واستمتع بتوصيل دقيق والدفع عند الاستلام.",
     "about.cta": "تسوق المجموعة",
     "toast.sent": "تم إرسال رسالتك إلى فريقنا.",
-    "privacy.eyebrow": "ميزون كومفور",
+    "privacy.eyebrow": "تاوروس فيت",
     "privacy.title": "سياسة <em>الخصوصية</em>",
     "privacy.updated": "آخر تحديث: يوليو 2026",
-    "privacy.intro": "تلتزم ميزون كومفور بحماية خصوصيتك. توضح هذه السياسة المعلومات الشخصية التي نجمعها، وكيفية استخدامها، وحقوقك.",
+    "privacy.intro": "تلتزم تاوروس فيت بحماية خصوصيتك. توضح هذه السياسة المعلومات الشخصية التي نجمعها، وكيفية استخدامها، وحقوقك.",
     "privacy.s1.title": "المعلومات التي نجمعها",
     "privacy.s1.text": "عند إتمام طلبك، نجمع اسمك الأول واللقب ورقم الهاتف وعنوان التوصيل والولاية والبلدية. عند التواصل معنا عبر نموذج الاتصال، نجمع اسمك وبريدك الإلكتروني أو هاتفك، مع رسالتك.",
     "privacy.s2.title": "كيف نستخدم معلوماتك",
     "privacy.s2.text": "تُستخدم بياناتك فقط لمعالجة وتوصيل طلباتك، والرد على رسائلك، وتحسين خدماتنا. لا نبيع أو نؤجر أو نشارك بياناتك الشخصية مع أطراف ثالثة لأغراض تسويقية.",
     "privacy.s3.title": "معلومات الدفع",
-    "privacy.s3.text": "تعمل ميزون كومفور بنظام الدفع عند الاستلام فقط. لا نجمع أو نخزن أو نعالج أي معلومات بطاقة دفع أو مصرفية.",
+    "privacy.s3.text": "تعمل تاوروس فيت بنظام الدفع عند الاستلام فقط. لا نجمع أو نخزن أو نعالج أي معلومات بطاقة دفع أو مصرفية.",
     "privacy.s4.title": "ملفات تعريف الارتباط والتخزين المحلي",
     "privacy.s4.text": "نستخدم التخزين المحلي لمتصفحك لحفظ سلة التسوق واللغة وتفضيل المظهر. تبقى هذه البيانات على جهازك ولا تُرسل أبدًا إلى خوادمنا.",
     "privacy.s5.title": "خدمات الأطراف الثالثة",
@@ -455,9 +475,9 @@ const i18n = {
     "privacy.s6.title": "الاحتفاظ بالبيانات",
     "privacy.s6.text": "يتم الاحتفاظ بمعلومات الطلب طالما كان ذلك ضروريًا للعمليات التجارية والالتزامات القانونية. يمكنك طلب حذف بياناتك الشخصية في أي وقت بالتواصل معنا.",
     "privacy.s7.title": "حقوقك",
-    "privacy.s7.text": "لديك الحق في الوصول إلى بياناتك الشخصية أو تصحيحها أو طلب حذفها. لممارسة هذه الحقوق، تواصل معنا عبر واتساب أو إنستغرام أو فيسبوك أو تيك توك.",
+    "privacy.s7.text": "لديك الحق في الوصول إلى بياناتك الشخصية أو تصحيحها أو طلب حذفها. لممارسة هذه الحقوق، تواصل معنا عبر النموذج أدناه.",
     "privacy.s8.title": "اتصل بنا",
-    "privacy.s8.text": "لأي أسئلة تتعلق بالخصوصية، تواصل معنا عبر واتساب أو إنستغرام أو فيسبوك أو تيك توك — الروابط في أسفل الصفحة.",
+    "privacy.s8.text": "لأي أسئلة تتعلق بالخصوصية، تواصل معنا عبر النموذج الموجود في هذه الصفحة.",
   },
 };
 
@@ -499,7 +519,16 @@ function switchLang(lang) {
   document.querySelectorAll(".lang-btn").forEach((btn) => {
     btn.classList.toggle("active", btn.dataset.lang === lang);
   });
-  sanitizeFooterBrand(lang);
+
+  const langDdCurrent = document.getElementById("langDdCurrent");
+  if (langDdCurrent) langDdCurrent.textContent = lang.toUpperCase();
+  const langDdMenu = document.getElementById("langDdMenu");
+  if (langDdMenu) {
+    langDdMenu.classList.remove("open");
+    const toggle = langDdMenu.previousElementSibling;
+    if (toggle) toggle.setAttribute("aria-expanded", "false");
+  }
+
   renderCatNav(_allCategories, _allSubCategories, _allSubSubCategories);
   const footerList = document.getElementById("footerCategoryList");
   if (footerList) {
@@ -507,19 +536,6 @@ function switchLang(lang) {
       .slice(0, 6)
       .map((cat) => `<li><a href="/products?cat=${encodeURIComponent(cat.id)}">${catName(cat)}</a></li>`)
       .join("");
-  }
-}
-
-function sanitizeFooterBrand(lang) {
-  const footerText = document.querySelector(".footer-bottom p");
-  if (footerText) {
-    const year = new Date().getFullYear();
-    footerText.innerHTML =
-      lang === "fr"
-        ? `© ${year} Maison Comfort Algérie. Tous droits réservés.`
-        : lang === "ar"
-          ? `© ${year} ميزون كومفور الجزائر. جميع الحقوق محفوظة.`
-          : `© ${year} Maison Comfort Algeria. All rights reserved.`;
   }
 }
 

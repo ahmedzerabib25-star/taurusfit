@@ -9,59 +9,70 @@ const i18n = {
     "nav.products": "Products",
     "nav.contact": "Contact",
     "nav.login": "Login",
-    "hero.eyebrow": "Carpets & Home Furnishings, Made for Algerian Homes",
-    "hero.title": "THE ART OF <em>EVERYDAY</em> COMFORT",
+    "hero.eyebrow": "CrossFit & Gym Accessories, Built for Algeria",
+    "hero.title": "TRAIN <em>HARDER</em>. LIFT <em>HEAVIER</em>.",
     "hero.desc":
-      "Maison Comfort brings handpicked carpets and home furnishings to every corner of Algeria. Rich textures, timeless designs, and pieces built to make your house feel like home.",
+      "TaurusFit brings serious CrossFit and gym gear to every corner of Algeria. Built for heavy drops, long WODs, and PRs — delivered straight to your door.",
     "hero.cta1": "Shop Now",
     "hero.cta2": "Learn More",
-    "hero.stat1": "Happy Customers",
-    "hero.stat2": "Carpets & Pieces",
+    "hero.stat1": "Happy Athletes",
+    "hero.stat2": "Gym Essentials",
     "hero.stat3": "Nationwide Delivery",
-    "trust.authentic": "Woven to Last",
+    "trust.authentic": "Built to Take a Beating",
     "trust.authentic.sub": "Every piece quality-checked before it reaches you",
     "trust.wilayas": "Door to Door, Nationwide",
     "trust.wilayas.sub": "Reaching all 69 Wilayas of Algeria",
     "trust.payment": "Pay When It Arrives",
     "trust.payment.sub": "Simple cash on delivery, no surprises",
-    "trust.support": "Guided By Our Team",
-    "trust.support.sub": "Personal advice to find your perfect piece",
-    "products.label": "Handpicked For Your Home",
-    "products.title": "SIGNATURE CARPETS",
+    "trust.support": "Coached By Our Team",
+    "trust.support.sub": "Personal advice to find your perfect gear",
+    "products.label": "Gear Up For Your Next WOD",
+    "products.title": "SIGNATURE GEAR",
     "products.viewall": "View All",
     "products.viewall.btn": "View All Products",
-    "banner.intro.eyebrow": "Maison Selection",
-    "banner.intro.title": "THE SIGNATURE<em>COLLECTION</em>",
-    "banner.intro.sub": "Our most-loved pieces, curated for a home that feels considered.",
-    "banner.eyebrow": "Maison Capsule",
-    "banner.title": "BRING HOME <em>NEW COMFORT</em>",
+    "banner.intro.eyebrow": "TaurusFit Selection",
+    "banner.intro.title": "THE SIGNATURE<em>BUNDLE</em>",
+    "banner.intro.sub": "Our most-loved gear, bundled for athletes who train hard and often.",
+    "banner.eyebrow": "TaurusFit Bundle",
+    "banner.title": "LOAD UP FOR <em>YOUR NEXT PR</em>",
     "banner.desc":
-      "Discover our signature selection. A curated capsule of carpets and home furnishings, chosen for warmth, texture, and lasting quality.",
+      "Discover our signature selection. A curated bundle of CrossFit essentials, chosen for durability, grip, and performance under load.",
     "banner.cta": "Discover the Bundle",
     "contact.label": "Get In Touch",
     "contact.title": "CONTACT US",
     "contact.desc":
-      "Have questions about our collections? Our team is available to guide you.",
+      "Have questions about our gear? Our team is available to guide you.",
     "footer.brand.desc":
-      "Algeria's destination for handpicked carpets and home furnishings. We bring quality pieces directly to your door.",
-    "footer.links": "Quick Links",
+      "Algeria's destination for CrossFit and gym accessories. We bring quality gear directly to your door.",
+    "footer.links": "Shop",
+    "footer.support": "Support",
     "footer.shipping": "Shipping Policy",
     "footer.returns": "Returns",
+    "footer.about": "About TaurusFit",
     "footer.categories": "Categories",
     "footer.contact": "Send a Message",
     "footer.rights": "All rights reserved.",
+    "footer.cta.eyebrow": "Stay in the Fight",
+    "footer.cta.title": "GEAR DROPS, DEALS &amp; <em>TRAINING TIPS</em>",
+    "footer.cta.btn": "Send Us a Message",
+    "footer.badge.delivery": "All 69 Wilayas",
+    "footer.badge.cod": "Cash on Delivery",
+    "footer.badge.quality": "Quality Checked",
     "form.name": "Your Name",
     "form.email": "Email / Phone",
     "form.message": "Message",
     "form.send": "Send Message",
     "btn.addcart": "Quick Shop",
     "btn.buynow": "Buy Now",
-    "about.who.title": "Our Heritage",
-    "about.who.text": "Maison Comfort is a home furnishings house, dedicated to bringing carpets and decor of lasting quality to Algerian homes. We provide pieces that make everyday living feel warmer.",
+    "stock.in": "In Stock",
+    "stock.low": "Only {n} left",
+    "stock.out": "Out of Stock",
+    "about.who.title": "Our Mission",
+    "about.who.text": "TaurusFit is a CrossFit and gym accessories house, dedicated to bringing serious training gear of lasting quality to Algerian athletes. We provide equipment that holds up to real work.",
     "about.offer.title": "Our Collection",
-    "about.offer.text": "From handwoven carpets to soft-pile rugs and home textiles, our pieces are sourced for durability and craftsmanship you can feel underfoot.",
+    "about.offer.text": "From bumper plates to straps, belts, and bars, our gear is sourced for durability and performance you can feel under heavy load.",
     "about.order.title": "How To Order",
-    "about.order.text": "Choose your carpet's size and color, then add it to your cart. Complete your address details without registration, and enjoy careful Cash on Arrival delivery.",
+    "about.order.text": "Choose your gear's size and variant, then add it to your cart. Complete your address details without registration, and enjoy careful Cash on Arrival delivery.",
     "about.cta": "Shop Collection",
     "shipping.title": "Courier & Shipping",
     "shipping.item1.title": "Nationwide Delivery",
@@ -74,17 +85,17 @@ const i18n = {
     "returns.item1.title": "Exchanges & Returns",
     "returns.item1.text": "We offer a 7-day return policy for unopened items in their original packaging with intact seals.",
     "returns.item2.title": "Easy Support",
-    "returns.item2.text": "Contact us via WhatsApp or Instagram to initiate a return. We will arrange the courier return for you.",
-    "returns.item3.title": "Maison Credit",
+    "returns.item2.text": "Contact us to initiate a return. We will arrange the courier return for you.",
+    "returns.item3.title": "TaurusFit Credit",
     "returns.item3.text": "Following inspection, we issue store credit, exchanges, or refunds, ensuring your satisfaction.",
     "toast.added": "Added to your cart",
     "toast.sent": "Your message has been sent to our team.",
     "modal.shade": "Color",
     "modal.size": "Size",
     "hiw.label": "The Order Process",
-    "hiw.sub": "A simple, seamless way to bring new comfort into your home.",
-    "hiw.step1.title": "Choose Your Piece",
-    "hiw.step1.text": "Browse our catalog of carpets and home furnishings. Find your perfect size, color, or material and add it to your cart.",
+    "hiw.sub": "A simple, seamless way to gear up for your next session.",
+    "hiw.step1.title": "Choose Your Gear",
+    "hiw.step1.text": "Browse our catalog of CrossFit and gym accessories. Find your perfect size, weight, or variant and add it to your cart.",
     "hiw.step2.title": "Confirm In Moments",
     "hiw.step2.text": "Complete checkout by providing your delivery details. No tedious registration required — checkout is direct and private.",
     "hiw.step3.title": "Careful Delivery",
@@ -94,61 +105,72 @@ const i18n = {
   },
   fr: {
     "nav.home": "Accueil",
-    "nav.products": "Tapis",
+    "nav.products": "Produits",
     "nav.contact": "Contact",
-    "hero.eyebrow": "Tapis & Décoration d'Intérieur, Pensés pour l'Algérie",
-    "hero.title": "L'ART DU <em>CONFORT</em> AU QUOTIDIEN",
+    "hero.eyebrow": "Accessoires CrossFit & Musculation, Pensés pour l'Algérie",
+    "hero.title": "ENTRAÎNE-TOI <em>PLUS FORT</em>. SOULÈVE <em>PLUS LOURD</em>.",
     "hero.desc":
-      "Maison Comfort apporte des tapis et de la décoration d'intérieur sélectionnés dans toute l'Algérie. Textures riches, designs intemporels, des pièces faites pour que votre maison se sente chez vous.",
+      "TaurusFit apporte du matériel CrossFit et de musculation sérieux dans toute l'Algérie. Conçu pour les lâchers lourds, les longs WODs et vos records — livré directement chez vous.",
     "hero.cta1": "Découvrir",
     "hero.cta2": "En savoir plus",
-    "hero.stat1": "Clients Satisfaits",
-    "hero.stat2": "Tapis & Pièces",
+    "hero.stat1": "Athlètes Satisfaits",
+    "hero.stat2": "Essentiels de Salle",
     "hero.stat3": "Livraison Nationale",
-    "trust.authentic": "Tissée pour Durer",
+    "trust.authentic": "Conçu pour Encaisser",
     "trust.authentic.sub": "Chaque pièce contrôlée avant de vous parvenir",
     "trust.wilayas": "Partout en Algérie",
     "trust.wilayas.sub": "Livraison dans les 69 wilayas",
     "trust.payment": "Payez à la Réception",
     "trust.payment.sub": "Paiement en espèces, sans surprise",
-    "trust.support": "Accompagnés par Notre Équipe",
-    "trust.support.sub": "Des conseils pour trouver la pièce idéale",
-    "products.label": "Sélection pour Votre Maison",
-    "products.title": "TAPIS SIGNATURE",
+    "trust.support": "Coachés par Notre Équipe",
+    "trust.support.sub": "Des conseils pour trouver l'équipement idéal",
+    "products.label": "Équipe-toi Pour ton Prochain WOD",
+    "products.title": "ÉQUIPEMENT SIGNATURE",
     "products.viewall": "Voir Tout",
     "products.viewall.btn": "Voir Tous les Produits",
-    "banner.intro.eyebrow": "Sélection de la Maison",
-    "banner.intro.title": "LA COLLECTION<em>SIGNATURE</em>",
-    "banner.intro.sub": "Nos pièces les plus appréciées, sélectionnées pour une maison chaleureuse.",
-    "banner.eyebrow": "Coffret de la Maison",
-    "banner.title": "RAMENEZ UN <em>NOUVEAU CONFORT</em>",
+    "banner.intro.eyebrow": "Sélection TaurusFit",
+    "banner.intro.title": "LE PACK<em>SIGNATURE</em>",
+    "banner.intro.sub": "Notre équipement le plus apprécié, réuni pour les athlètes qui s'entraînent dur et souvent.",
+    "banner.eyebrow": "Pack TaurusFit",
+    "banner.title": "CHARGE LA BARRE POUR <em>TON PROCHAIN RECORD</em>",
     "banner.desc":
-      "Découvrez notre sélection emblématique. Un coffret raffiné de tapis et de décoration d'intérieur, choisis pour leur chaleur, leur texture et leur durabilité.",
-    "banner.cta": "Découvrir le Coffret",
+      "Découvrez notre sélection emblématique. Un pack d'essentiels CrossFit choisis pour leur robustesse, leur grip et leur performance sous charge.",
+    "banner.cta": "Découvrir le Pack",
     "contact.label": "Nous Contacter",
     "contact.title": "CONTACT",
     "contact.desc":
-      "Des questions sur nos collections? Notre équipe est à votre entière disposition.",
+      "Des questions sur notre équipement ? Notre équipe est à votre entière disposition.",
     "footer.brand.desc":
-      "La destination en Algérie pour des tapis et de la décoration d'intérieur sélectionnés. Nous livrons des pièces de qualité directement à votre porte.",
-    "footer.links": "Liens rapides",
+      "La destination en Algérie pour les accessoires CrossFit et de musculation. Nous livrons du matériel de qualité directement à votre porte.",
+    "footer.links": "Boutique",
+    "footer.support": "Assistance",
     "footer.shipping": "Livraison",
     "footer.returns": "Retours",
+    "footer.about": "À propos de TaurusFit",
     "footer.categories": "Catégories",
     "footer.contact": "Envoyer un message",
     "footer.rights": "Tous droits réservés.",
+    "footer.cta.eyebrow": "Restez dans la Bataille",
+    "footer.cta.title": "OFFRES, NOUVEAUTÉS &amp; <em>CONSEILS D'ENTRAÎNEMENT</em>",
+    "footer.cta.btn": "Envoyez-nous un message",
+    "footer.badge.delivery": "69 Wilayas",
+    "footer.badge.cod": "Paiement à la Livraison",
+    "footer.badge.quality": "Qualité Contrôlée",
     "form.name": "Votre nom",
     "form.email": "Email / Téléphone",
     "form.message": "Message",
     "form.send": "Envoyer",
     "btn.addcart": "Achat Rapide",
     "btn.buynow": "Acheter",
-    "about.who.title": "Notre Héritage",
-    "about.who.text": "Maison Comfort est une maison de décoration d'intérieur, dédiée à apporter des tapis et pièces de qualité durable aux foyers algériens. Nous proposons des pièces qui réchauffent le quotidien.",
+    "stock.in": "En stock",
+    "stock.low": "Plus que {n}",
+    "stock.out": "Rupture de stock",
+    "about.who.title": "Notre Mission",
+    "about.who.text": "TaurusFit est une maison d'accessoires CrossFit et de musculation, dédiée à apporter du matériel d'entraînement de qualité durable aux athlètes algériens. Nous proposons de l'équipement conçu pour encaisser le vrai travail.",
     "about.offer.title": "Notre Collection",
-    "about.offer.text": "Des tapis tissés main aux textiles d'intérieur, nos pièces sont choisies pour leur durabilité et un savoir-faire que l'on ressent sous les pieds.",
+    "about.offer.text": "Des disques bumper aux sangles, ceintures et barres, notre équipement est choisi pour sa robustesse et sa performance que l'on ressent sous une charge lourde.",
     "about.order.title": "Comment Commander",
-    "about.order.text": "Sélectionnez la taille et la couleur de votre tapis, puis ajoutez-le à votre panier. Complétez vos coordonnées de livraison sans inscription préalable, et profitez d'une livraison soignée avec paiement à la réception.",
+    "about.order.text": "Sélectionnez la taille et la variante de votre équipement, puis ajoutez-le à votre panier. Complétez vos coordonnées de livraison sans inscription préalable, et profitez d'une livraison soignée avec paiement à la réception.",
     "about.cta": "Acheter la Collection",
     "shipping.title": "Livraison & Expédition",
     "shipping.item1.title": "Livraison Nationale",
@@ -161,17 +183,17 @@ const i18n = {
     "returns.item1.title": "Politique de Retour",
     "returns.item1.text": "Vous disposez de 7 jours pour retourner un produit non ouvert dans son emballage d'origine, avec scellé intact.",
     "returns.item2.title": "Assistance Dédiée",
-    "returns.item2.text": "Contactez-nous via WhatsApp ou Instagram. Nous organiserons le retour par coursier à votre convenance.",
-    "returns.item3.title": "Avoir de la Maison",
+    "returns.item2.text": "Contactez-nous pour lancer un retour. Nous organiserons le retour par coursier à votre convenance.",
+    "returns.item3.title": "Crédit TaurusFit",
     "returns.item3.text": "Après vérification, nous procédons à un échange ou à l'émission d'un crédit boutique pour votre entière satisfaction.",
     "toast.added": "Ajouté à votre panier",
     "toast.sent": "Votre message a été transmis à notre équipe.",
     "modal.shade": "Couleur",
     "modal.size": "Taille",
     "hiw.label": "Le Processus de Commande",
-    "hiw.sub": "Une façon simple et fluide d'apporter un nouveau confort chez vous.",
-    "hiw.step1.title": "Choisissez Votre Pièce",
-    "hiw.step1.text": "Parcourez notre catalogue de tapis et de décoration d'intérieur. Trouvez la taille, la couleur ou le matériau idéal et ajoutez-le à votre panier.",
+    "hiw.sub": "Une façon simple et fluide de t'équiper pour ta prochaine séance.",
+    "hiw.step1.title": "Choisissez Votre Équipement",
+    "hiw.step1.text": "Parcourez notre catalogue d'accessoires CrossFit et de musculation. Trouvez la taille, le poids ou la variante idéale et ajoutez-le à votre panier.",
     "hiw.step2.title": "Confirmez en Instants",
     "hiw.step2.text": "Finalisez votre commande en renseignant vos coordonnées de livraison. Aucune inscription requise — simple, rapide et confidentiel.",
     "hiw.step3.title": "Livraison Soignée",
@@ -181,62 +203,73 @@ const i18n = {
   },
   ar: {
     "nav.home": "الرئيسية",
-    "nav.products": "السجاد",
+    "nav.products": "المنتجات",
     "nav.contact": "اتصل بنا",
-    "hero.eyebrow": "سجاد وأثاث منزلي، مصمم للبيوت الجزائرية",
-    "hero.title": "فن <em>الراحة</em> اليومية",
+    "hero.eyebrow": "معدات كروسفيت وأدوات رياضية، مصممة للجزائر",
+    "hero.title": "تدرّب <em>بقوة أكبر</em>. ارفع <em>أثقالاً أكبر</em>.",
     "hero.desc":
-      "ميزون كومفور تقدم سجادًا وأثاثًا منزليًا مختارًا بعناية إلى كل ركن من الجزائر. نسيج غني وتصاميم خالدة، قطع صُنعت لتجعل منزلك مكانًا دافئًا.",
+      "توروس فيت تقدم معدات كروسفيت وأدوات رياضية جادة إلى كل ركن من الجزائر. مصممة لتحمل الإسقاط الثقيل وتمارين الكروسفيت الطويلة وتحقيق أرقامك القياسية — توصَل مباشرة إلى بابك.",
     "hero.cta1": "تسوق الآن",
     "hero.cta2": "اعرف أكثر",
-    "hero.stat1": "عميل سعيد",
-    "hero.stat2": "سجادة وقطعة",
+    "hero.stat1": "رياضي سعيد",
+    "hero.stat2": "أداة رياضية أساسية",
     "hero.stat3": "توصيل وطني",
-    "trust.authentic": "منسوجة لتدوم",
+    "trust.authentic": "مصممة لتتحمل الاستخدام المكثف",
     "trust.authentic.sub": "كل قطعة تُفحص بعناية قبل أن تصلك",
     "trust.wilayas": "من الباب إلى الباب",
     "trust.wilayas.sub": "توصيل يشمل كل 69 ولاية جزائرية",
     "trust.payment": "ادفع عند الوصول",
     "trust.payment.sub": "دفع نقدي بسيط دون مفاجآت",
     "trust.support": "برفقة فريقنا",
-    "trust.support.sub": "نصائح شخصية لاختيار القطعة المثالية",
-    "products.label": "مختارات لمنزلك",
-    "products.title": "سجاد مميز",
+    "trust.support.sub": "نصائح شخصية لاختيار المعدة المثالية",
+    "products.label": "استعد لتمرينك القادم",
+    "products.title": "معدات مميزة",
     "products.viewall": "عرض الكل",
     "products.viewall.btn": "عرض كل المنتجات",
     "categories.label": "استكشف",
     "categories.title": "تسوق حسب الفئة",
-    "banner.intro.eyebrow": "اختيار الميزون",
-    "banner.intro.title": "المجموعة<em>المميزة</em>",
-    "banner.intro.sub": "أكثر قطعنا المحبوبة، مختارة لمنزل يشعرك بالدفء.",
-    "banner.eyebrow": "تشكيلة الميزون",
-    "banner.title": "أضف إلى منزلك <em>راحة جديدة</em>",
+    "banner.intro.eyebrow": "اختيار توروس فيت",
+    "banner.intro.title": "الحزمة<em>المميزة</em>",
+    "banner.intro.sub": "أكثر معداتنا المحبوبة، مجمّعة للرياضيين الذين يتدربون بجد وباستمرار.",
+    "banner.eyebrow": "حزمة توروس فيت",
+    "banner.title": "حمّل البار من أجل <em>رقمك القادم</em>",
     "banner.desc":
-      "اكتشف تشكيلتنا المميزة. مجموعة مختارة من السجاد والأثاث المنزلي، اخترناها لدفئها وملمسها وجودتها الدائمة.",
-    "banner.cta": "اكتشف التشكيلة",
+      "اكتشف تشكيلتنا المميزة. حزمة مختارة من أساسيات الكروسفيت، اخترناها لمتانتها وقبضتها وأدائها تحت الحمل.",
+    "banner.cta": "اكتشف الحزمة",
     "contact.label": "تواصل معنا",
     "contact.title": "اتصل بنا",
-    "contact.desc": "لديك أسئلة حول مجموعاتنا؟ فريقنا جاهز لمساعدتك.",
+    "contact.desc": "لديك أسئلة حول معداتنا؟ فريقنا جاهز لمساعدتك.",
     "footer.brand.desc":
-      "وجهتك في الجزائر لسجاد وأثاث منزلي مختار بعناية. نوصل لك قطعًا عالية الجودة مباشرة إلى بابك.",
-    "footer.links": "روابط سريعة",
+      "وجهتك في الجزائر لمعدات الكروسفيت والأدوات الرياضية. نوصل لك معدات عالية الجودة مباشرة إلى بابك.",
+    "footer.links": "المتجر",
+    "footer.support": "الدعم",
     "footer.shipping": "سياسة الشحن",
     "footer.returns": "الإرجاع",
+    "footer.about": "عن تاوروس فيت",
     "footer.categories": "الفئات",
     "footer.contact": "أرسل رسالة",
     "footer.rights": "جميع الحقوق محفوظة.",
+    "footer.cta.eyebrow": "ابق في المعركة",
+    "footer.cta.title": "عروض ونصائح <em>تدريب</em> حصرية",
+    "footer.cta.btn": "أرسل لنا رسالة",
+    "footer.badge.delivery": "69 ولاية",
+    "footer.badge.cod": "الدفع عند الاستلام",
+    "footer.badge.quality": "جودة مضمونة",
     "form.name": "الاسم الكامل",
     "form.email": "البريد الإلكتروني / الهاتف",
     "form.message": "الرسالة",
     "form.send": "إرسال",
     "btn.addcart": "إضافة سريعة",
     "btn.buynow": "اشترِ الآن",
-    "about.who.title": "من نحن",
-    "about.who.text": "ميزون كومفور دار لأثاث المنزل، مكرّسة لتقديم سجاد وقطع ديكور ذات جودة دائمة للبيوت الجزائرية. نقدّم قطعًا تُدفئ الحياة اليومية.",
+    "stock.in": "متوفر",
+    "stock.low": "بقي {n} فقط",
+    "stock.out": "غير متوفر",
+    "about.who.title": "مهمتنا",
+    "about.who.text": "توروس فيت دار لأدوات الكروسفيت والمعدات الرياضية، مكرّسة لتقديم معدات تدريب ذات جودة دائمة للرياضيين الجزائريين. نقدّم معدات مصممة لتحمل التدريب الجاد.",
     "about.offer.title": "مجموعتنا",
-    "about.offer.text": "من السجاد المنسوج يدويًا إلى المنسوجات المنزلية، نختار قطعنا لمتانتها وحرفيتها التي تُلمس تحت القدمين.",
+    "about.offer.text": "من أقراص البمبر إلى الأربطة والأحزمة والبارات، نختار معداتنا لمتانتها وأدائها الذي يُلمس تحت الحمل الثقيل.",
     "about.order.title": "كيفية الطلب",
-    "about.order.text": "اختر مقاس ولون سجادتك، ثم أضفها إلى سلتك. أكمل بيانات عنوانك دون تسجيل، واستمتع بتوصيل دقيق والدفع عند الاستلام.",
+    "about.order.text": "اختر مقاس ونوع معداتك، ثم أضفها إلى سلتك. أكمل بيانات عنوانك دون تسجيل، واستمتع بتوصيل دقيق والدفع عند الاستلام.",
     "about.cta": "تسوق المجموعة",
     "shipping.title": "التوصيل والشحن",
     "shipping.item1.title": "توصيل وطني",
@@ -249,17 +282,17 @@ const i18n = {
     "returns.item1.title": "سياسة الإرجاع",
     "returns.item1.text": "لديك 7 أيام لإرجاع منتج غير مفتوح في عبوته الأصلية وبختمه سليمًا.",
     "returns.item2.title": "دعم سهل",
-    "returns.item2.text": "تواصل معنا عبر واتساب أو إنستغرام لبدء عملية الإرجاع. سننظم استرجاع الطرد نيابة عنك.",
-    "returns.item3.title": "رصيد الميزون",
+    "returns.item2.text": "تواصل معنا لبدء عملية الإرجاع. سننظم استرجاع الطرد نيابة عنك.",
+    "returns.item3.title": "رصيد توروس فيت",
     "returns.item3.text": "بعد الفحص، نقدم رصيدًا في المتجر أو استبدالًا أو استرجاعًا لضمان رضاك التام.",
     "toast.added": "أُضيف إلى سلتك",
     "toast.sent": "تم إرسال رسالتك إلى فريقنا.",
     "modal.shade": "اللون",
     "modal.size": "المقاس",
     "hiw.label": "عملية الطلب",
-    "hiw.sub": "طريقة بسيطة وسلسة لإضافة راحة جديدة إلى منزلك.",
-    "hiw.step1.title": "اختر قطعتك",
-    "hiw.step1.text": "تصفح كتالوج السجاد والأثاث المنزلي لدينا. اعثر على المقاس واللون والخامة المثالية وأضفها إلى سلتك.",
+    "hiw.sub": "طريقة بسيطة وسلسة للاستعداد لتمرينك القادم.",
+    "hiw.step1.title": "اختر معداتك",
+    "hiw.step1.text": "تصفح كتالوج أدوات الكروسفيت والمعدات الرياضية لدينا. اعثر على المقاس أو الوزن أو النوع المثالي وأضفه إلى سلتك.",
     "hiw.step2.title": "أكّد خلال لحظات",
     "hiw.step2.text": "أكمل الطلب بتقديم بيانات التوصيل. لا حاجة للتسجيل — الطلب مباشر وخاص.",
     "hiw.step3.title": "توصيل دقيق",
@@ -300,6 +333,11 @@ function prodBrand(p) {
   if (!p) return "";
   const key = "brand" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
   return p[key] || p.brandEn || p.brand || "";
+}
+function prodDesc(p) {
+  if (!p) return "";
+  const key = "description" + currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+  return p[key] || p.descriptionEn || p.description || "";
 }
 function varLabel(v, i) {
   if (typeof v !== "object" || v === null) return String(v);
@@ -513,8 +551,8 @@ function updateBannerLang(lang) {
   if (!titleEl || !descEl) return;
   const titles = { en: _bundleText.titleEn, fr: _bundleText.titleFr, ar: _bundleText.titleAr };
   const descs  = { en: _bundleText.descriptionEn, fr: _bundleText.descriptionFr, ar: _bundleText.descriptionAr };
-  const fallbackTitle = "BRING HOME<em>NEW COMFORT</em>";
-  const fallbackDesc  = "Discover our signature selection. A curated capsule of carpets and home furnishings, chosen for warmth, texture, and lasting quality.";
+  const fallbackTitle = "LOAD UP FOR<em>YOUR NEXT PR</em>";
+  const fallbackDesc  = "Discover our signature selection. A curated bundle of CrossFit essentials, chosen for durability, grip, and performance under load.";
   titleEl.innerHTML = titles[lang] || fallbackTitle;
   descEl.textContent = descs[lang] || fallbackDesc;
 }
@@ -583,6 +621,15 @@ function renderProducts(lang) {
         ? `<img src="${_imgs[0]}" alt="${prodName(p)}" class="img-primary" loading="lazy" />${_imgs[1] ? `<img src="${_imgs[1]}" alt="${prodName(p)}" class="img-hover" loading="lazy" />` : ""}`
         : `<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
 
+      const oos = Number(p.stock) <= 0;
+      const stockLabel = oos
+        ? `<span class="product-stock out-stock">${t["stock.out"] || "Out of Stock"}</span>`
+        : Number(p.stock) <= 5
+          ? `<span class="product-stock low-stock">${(t["stock.low"] || "Only {n} left").replace("{n}", p.stock)}</span>`
+          : `<span class="product-stock in-stock">${t["stock.in"] || "In Stock"}</span>`;
+      const brand = prodBrand(p);
+      const desc = prodDesc(p);
+
       return `
 <article class="product-card" onclick="window.location.href='/product-detail?id=${p.id}'" style="cursor:pointer">
   <div class="product-img">
@@ -590,12 +637,15 @@ function renderProducts(lang) {
     ${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ''}
   </div>
   <div class="product-info">
+    ${brand ? `<span class="product-brand">${brand}</span>` : ""}
     <h3 class="product-name">${prodName(p)}</h3>
+    ${desc ? `<p class="product-desc">${desc}</p>` : ""}
     <div class="product-pricing">
       ${currentPrice > 0 ? `<span class="price">${currentPrice.toLocaleString()} DA</span>` : ""}
       ${oldPrice ? `<span class="price-old">${oldPrice.toLocaleString()} DA</span>` : ""}
       ${saveLabel ? `<span class="price-save">${saveLabel}</span>` : ""}
     </div>
+    ${stockLabel}
     <div class="product-actions">
       ${Number(p.stock) <= 0
         ? `<button class="btn-buy" disabled style="opacity:0.45;cursor:not-allowed;flex:1">Out of Stock</button>`
@@ -624,18 +674,20 @@ function sanitizeFooterAndModals(lang) {
   if (footerText) {
     const year = new Date().getFullYear();
     if (lang === 'fr') {
-      footerText.innerHTML = `© ${year} Maison Comfort Algérie. Tous droits réservés.`;
+      footerText.innerHTML = `© ${year} TaurusFit Algérie. Tous droits réservés.`;
+    } else if (lang === 'ar') {
+      footerText.innerHTML = `© ${year} توروس فيت الجزائر. جميع الحقوق محفوظة.`;
     } else {
-      footerText.innerHTML = `© ${year} Maison Comfort Algeria. All rights reserved.`;
+      footerText.innerHTML = `© ${year} TaurusFit Algeria. All rights reserved.`;
     }
   }
 
   // Sanitize modal header texts
   document.querySelectorAll('.about-brand').forEach(brand => {
-    brand.innerHTML = `MAISON <span>COMFORT</span>`;
+    brand.innerHTML = `TAURUS<span>FIT</span>`;
   });
   document.querySelectorAll('.about-sub').forEach(sub => {
-    sub.textContent = 'Maison Comfort';
+    sub.textContent = 'TaurusFit';
   });
 }
 
@@ -701,11 +753,26 @@ function renderCategoryGrid() {
     grid.innerHTML = "";
     return;
   }
+  const MAX_SUB_PILLS = 3;
   grid.innerHTML = _categories
     .map((cat, i) => {
       const img = cat.imageUrl
         ? `<img src="${cat.imageUrl}" alt="${catName(cat)}" loading="lazy" />`
         : `<div class="category-card-fallback" aria-hidden="true"></div>`;
+      const subs = _subCategories.filter((s) => s.categoryIds.includes(cat.id));
+      let subsHtml = "";
+      if (subs.length) {
+        const shown = subs.slice(0, MAX_SUB_PILLS);
+        const extra = subs.length - shown.length;
+        // Plain spans, not <a> — these sit inside the card's own <a>, and
+        // HTML forbids nesting anchors (the browser would silently close
+        // the outer one early, breaking the whole card's flex layout).
+        subsHtml = `
+  <div class="category-card-subs">
+    ${shown.map((s) => `<span class="category-sub-pill" data-sub-id="${s.id}" onclick="event.preventDefault();event.stopPropagation();location.href='/products?sub=${encodeURIComponent(s.id)}';">${catName(s)}</span>`).join("")}
+    ${extra > 0 ? `<span class="category-sub-pill category-sub-more">+${extra}</span>` : ""}
+  </div>`;
+      }
       return `
 <a class="category-card reveal reveal-d${(i % 5) + 1}" href="/products?cat=${encodeURIComponent(cat.id)}">
   <div class="category-card-media">
@@ -713,6 +780,7 @@ function renderCategoryGrid() {
     <div class="category-card-overlay"></div>
   </div>
   <span class="category-card-name">${catName(cat)}</span>
+  ${subsHtml}
 </a>`;
     })
     .join("");
@@ -754,6 +822,16 @@ function switchLang(lang) {
     btn.classList.toggle("active", btn.dataset.lang === lang);
   });
 
+  // Sync + close the header language dropdown
+  const langDdCurrent = document.getElementById("langDdCurrent");
+  if (langDdCurrent) langDdCurrent.textContent = lang.toUpperCase();
+  const langDdMenu = document.getElementById("langDdMenu");
+  if (langDdMenu) {
+    langDdMenu.classList.remove("open");
+    const toggle = langDdMenu.previousElementSibling;
+    if (toggle) toggle.setAttribute("aria-expanded", "false");
+  }
+
   // Re-render products with new button labels
   renderProducts(lang);
 
@@ -793,6 +871,27 @@ function toggleMobileMenu() {
   btn.setAttribute("aria-expanded", isOpen);
   document.body.style.overflow = isOpen ? "hidden" : "";
 }
+
+/* ─────────────────────────────────────────────────────────────
+   LANGUAGE DROPDOWN (header) — single compact toggle instead of
+   3 separate EN/FR/AR buttons, mainly to save space on mobile
+───────────────────────────────────────────────────────────── */
+function toggleLangDropdown(e) {
+  e.stopPropagation();
+  const menu = document.getElementById("langDdMenu");
+  if (!menu) return;
+  const isOpen = menu.classList.toggle("open");
+  e.currentTarget.setAttribute("aria-expanded", isOpen ? "true" : "false");
+}
+document.addEventListener("click", (e) => {
+  const wrap = document.getElementById("langSwitch");
+  if (wrap && !wrap.contains(e.target)) {
+    const menu = document.getElementById("langDdMenu");
+    if (menu) menu.classList.remove("open");
+    const toggle = wrap.querySelector(".lang-dd-toggle");
+    if (toggle) toggle.setAttribute("aria-expanded", "false");
+  }
+});
 
 /* ─────────────────────────────────────────────────────────────
    SEARCH
@@ -926,6 +1025,40 @@ async function loadInitialData() {
   try {
     const res = await getInitialData();
     if (!res || !res.success) throw new Error("getInitialData failed");
+
+    // ── Hero slider media (admin-controlled, image or video, falls
+    //    back to the default bundled photos when a slot isn't set) ──
+    if (res.settings) {
+      const slideEls = document.querySelectorAll("#heroSlider .hero-slide");
+      slideEls.forEach((slideEl, i) => {
+        const url = res.settings["hero_slide_" + (i + 1)];
+        if (!url) return;
+        const isVideo = /\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(url);
+        const existing = slideEl.querySelector("img, video");
+        if (isVideo) {
+          if (existing && existing.tagName === "VIDEO") {
+            existing.src = url;
+          } else {
+            const video = document.createElement("video");
+            video.src = url;
+            video.autoplay = true;
+            video.muted = true;
+            video.loop = true;
+            video.playsInline = true;
+            if (existing) existing.replaceWith(video);
+            else slideEl.appendChild(video);
+          }
+        } else if (existing && existing.tagName === "IMG") {
+          existing.src = url;
+        } else {
+          const img = document.createElement("img");
+          img.src = url;
+          img.alt = "";
+          if (existing) existing.replaceWith(img);
+          else slideEl.appendChild(img);
+        }
+      });
+    }
 
     // ── Products ──
     products = res.products
@@ -1171,27 +1304,49 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 })();
 
-// 6. Count-up for hero stats
+// 6. Hero image slider — autoplay, dots, arrows, swipe
 (function() {
-  var counters = document.querySelectorAll('.stat-num[data-count]');
-  if (!counters.length) return;
-  var obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) {
-      if (!e.isIntersecting) return;
-      var el = e.target;
-      var target = parseInt(el.dataset.count, 10);
-      var suffix = el.dataset.suffix || '';
-      var duration = 1400;
-      var start = performance.now();
-      function step(now) {
-        var progress = Math.min((now - start) / duration, 1);
-        var ease = 1 - Math.pow(1 - progress, 3);
-        el.textContent = Math.floor(ease * target) + suffix;
-        if (progress < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-      obs.unobserve(el);
+  var slider = document.getElementById('heroSlider');
+  if (!slider) return;
+  var slides = Array.prototype.slice.call(slider.querySelectorAll('.hero-slide'));
+  var dotsWrap = document.getElementById('heroDots');
+  var idx = 0;
+  var timer = null;
+  var AUTOPLAY_MS = 5000;
+
+  dotsWrap.innerHTML = slides.map(function(_, i) {
+    return '<button class="hero-dot' + (i === 0 ? ' active' : '') + '" aria-label="Go to slide ' + (i + 1) + '" onclick="heroSliderGoTo(' + i + ')"></button>';
+  }).join('');
+  var dots = Array.prototype.slice.call(dotsWrap.querySelectorAll('.hero-dot'));
+
+  function show(i) {
+    idx = (i + slides.length) % slides.length;
+    slides.forEach(function(s, si) {
+      var active = si === idx;
+      s.classList.toggle('active', active);
+      var vid = s.querySelector('video');
+      if (vid) { if (active) vid.play().catch(function(){}); else vid.pause(); }
     });
-  }, { threshold: 0.5 });
-  counters.forEach(function(c) { obs.observe(c); });
+    dots.forEach(function(d, di) { d.classList.toggle('active', di === idx); });
+  }
+  function stop() { if (timer) { clearInterval(timer); timer = null; } }
+  function start() { stop(); timer = setInterval(function() { show(idx + 1); }, AUTOPLAY_MS); }
+
+  window.heroSliderNav = function(dir) { show(idx + dir); start(); };
+  window.heroSliderGoTo = function(i) { show(i); start(); };
+
+  slider.addEventListener('mouseenter', stop);
+  slider.addEventListener('mouseleave', start);
+
+  var touchStartX = null;
+  slider.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; stop(); }, { passive: true });
+  slider.addEventListener('touchend', function(e) {
+    if (touchStartX === null) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) show(idx + (dx < 0 ? 1 : -1));
+    touchStartX = null;
+    start();
+  }, { passive: true });
+
+  start();
 })();

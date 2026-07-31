@@ -3,18 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Maison Comfort – Carpets &amp; Home Furnishings Algeria</title>
-    <meta name="description" content="Maison Comfort — handpicked carpets and home furnishings, delivered across all 69 wilayas of Algeria." />
+    <title>TaurusFit – CrossFit &amp; Gym Accessories Algeria</title>
+    <meta name="description" content="TaurusFit — CrossFit and gym accessories built for real training, delivered across all 69 wilayas of Algeria." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://rgbmfstbvqzvgxadjxrb.supabase.co" />
-    <link rel="preload" as="image" href="/images/hero.png" fetchpriority="high" />
+    <link rel="preconnect" href="https://atexotjtbvcsfyzhpcum.supabase.co" />
+    <link rel="preload" as="image" href="/images/products/pexels-victorfreitas-1092874.jpg" fetchpriority="high" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cairo:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cairo:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="icon" href="/images/favicon.ico" />
-    <script>if(localStorage.getItem('bybens_theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('bybens_theme') === 'light' ? 'light' : 'dark');</script>
     <link rel="stylesheet" href="/supplements/footer.css" />
     <script>
       window.__initialDataPromise = fetch("/api/initial-data")
@@ -22,7 +22,7 @@
         .catch(function () { return null; });
     </script>
 
-    <link rel="stylesheet" href="/supplements/home/index.css?v=32" />
+    <link rel="stylesheet" href="/supplements/home/index.css?v=45" />
     <script>if(sessionStorage.getItem('bb_wl'))document.documentElement.classList.add('bb-noanim');</script>
   </head>
   <body>
@@ -31,13 +31,13 @@
       <div class="wl-weave"><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div></div>
       <div class="wl-body">
         <div class="wl-logo-wrap">
-          <img src="/images/logo-dark.png" alt="Maison Comfort" class="wl-logo" />
+          <img src="/images/logo-dark.png" alt="TaurusFit" class="wl-logo" />
         </div>
         <div class="wl-line-wrap">
           <div class="wl-line-fill"></div>
           <div class="wl-shuttle"></div>
         </div>
-        <div class="wl-tagline">CRAFT<span class="wl-dot">·</span>COMFORT<span class="wl-dot">·</span>HOME</div>
+        <div class="wl-tagline">STRENGTH<span class="wl-dot">·</span>ENDURANCE<span class="wl-dot">·</span>POWER</div>
       </div>
     </div>
     <!-- Data loading spinner -->
@@ -49,9 +49,9 @@
         <!-- Row 1: logo · page links · lang / theme / cart -->
         <nav class="top-nav" aria-label="Main navigation">
           <!-- Logo (far left) -->
-          <a href="/" class="logo" aria-label="Maison Comfort Home">
-            <img src="/images/logo.png" alt="Maison Comfort" class="logo-img logo-img-light" />
-            <img src="/images/logo-dark.png" alt="Maison Comfort" class="logo-img logo-img-dark" />
+          <a href="/" class="logo" aria-label="TaurusFit Home">
+            <img src="/images/logo.png" alt="TaurusFit" class="logo-img logo-img-light" />
+            <img src="/images/logo-dark.png" alt="TaurusFit" class="logo-img logo-img-dark" />
           </a>
 
           <!-- Page Links (desktop only) -->
@@ -63,14 +63,16 @@
 
           <!-- Right Controls -->
           <div class="nav-right">
-            <div
-              class="lang-switch"
-              role="group"
-              aria-label="Language switcher"
-            >
-              <button class="lang-btn" data-lang="en" onclick="switchLang('en')">EN</button>
-              <button class="lang-btn active" data-lang="fr" onclick="switchLang('fr')">FR</button>
-              <button class="lang-btn" data-lang="ar" onclick="switchLang('ar')">AR</button>
+            <div class="lang-switch" id="langSwitch">
+              <button type="button" class="lang-dd-toggle" onclick="toggleLangDropdown(event)" aria-haspopup="listbox" aria-expanded="false" aria-label="Change language">
+                <span id="langDdCurrent">FR</span>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <div class="lang-dd-menu" id="langDdMenu" role="listbox" aria-label="Language switcher">
+                <button type="button" class="lang-btn lang-dd-item" data-lang="en" onclick="switchLang('en')">EN</button>
+                <button type="button" class="lang-btn lang-dd-item active" data-lang="fr" onclick="switchLang('fr')">FR</button>
+                <button type="button" class="lang-btn lang-dd-item" data-lang="ar" onclick="switchLang('ar')">AR</button>
+              </div>
             </div>
 
             <button class="theme-btn desktop-theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
@@ -80,8 +82,9 @@
 
             <button class="cart-btn" aria-label="Shopping cart" onclick="toggleCart()">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 8h12l-1.1 12.1a2 2 0 0 1-2 1.9H9.1a2 2 0 0 1-2-1.9L6 8z" />
-                <path d="M9 8V6.5a3 3 0 0 1 6 0V8" />
+                <path d="M3 6h18l-1.5 12.5a2 2 0 0 1-2 1.5H6.5a2 2 0 0 1-2-1.5L3 6z" />
+                <path d="M3 6l-1-3M21 6l1-3" />
+                <path d="M8 10v2a4 4 0 0 0 8 0v-2" />
               </svg>
               <span class="cart-badge" id="cartBadge">0</span>
             </button>
@@ -108,7 +111,7 @@
             <input
               type="search"
               id="searchInput"
-              placeholder="Search carpets, rugs, home decor…"
+              placeholder="Search plates, bars, gloves, gear…"
               aria-label="Search products"
               autocomplete="off"
               oninput="handleSearch(this.value)"
@@ -122,7 +125,7 @@
     <!-- Mobile Menu -->
     <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
       <div class="mm-hd">
-        <span class="mm-brand">Maison Comfort</span>
+        <span class="mm-brand">TaurusFit</span>
         <button class="mm-close" onclick="toggleMobileMenu()" aria-label="Close menu">&#x2715;</button>
       </div>
       <div class="mm-body">
@@ -179,21 +182,32 @@
     <main>
       <!-- HERO -->
       <section class="hero" aria-label="Hero section">
-        <div class="hero-media" aria-hidden="true">
-          <video autoplay muted loop playsinline poster="/images/hero.png">
-            <source src="/images/hero.mp4" type="video/mp4" />
-          </video>
+        <div class="hero-media" aria-hidden="true" id="heroSlider">
+          <div class="hero-slide active"><img src="/images/products/pexels-victorfreitas-1092874.jpg" alt="" /></div>
+          <div class="hero-slide"><img src="/images/products/pexels-ketut-subiyanto-4853262.jpg" alt="" /></div>
+          <div class="hero-slide"><img src="/images/products/pexels-juho-alonen-1189389723-28636779.jpg" alt="" /></div>
+          <div class="hero-slide"><img src="/images/products/pexels-leonmart-1552251.jpg" alt="" /></div>
+          <div class="hero-slide"><img src="/images/products/pexels-leonmart-1552242.jpg" alt="" /></div>
         </div>
+        <div class="hero-nav" aria-hidden="true">
+          <button class="hero-arrow hero-prev" aria-label="Previous slide" onclick="heroSliderNav(-1)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6" /></svg>
+          </button>
+          <button class="hero-arrow hero-next" aria-label="Next slide" onclick="heroSliderNav(1)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6" /></svg>
+          </button>
+        </div>
+        <div class="hero-dots" id="heroDots" role="tablist" aria-label="Hero slides"></div>
         <div class="hero-inner">
           <div class="hero-left">
             <p class="hero-eyebrow animate-up" data-i18n="hero.eyebrow">
-              Carpets &amp; Home Furnishings, Made for Algerian Homes
+              CrossFit &amp; Gym Accessories, Built for Algeria
             </p>
             <h1 class="hero-title animate-up delay-1" data-i18n-html="hero.title">
-              THE ART OF <em>EVERYDAY</em> COMFORT
+              TRAIN <em>HARDER</em>. LIFT <em>HEAVIER</em>.
             </h1>
             <p class="hero-desc animate-up delay-2" data-i18n="hero.desc">
-              Maison Comfort brings handpicked carpets and home furnishings to every corner of Algeria. Rich textures, timeless designs, and pieces built to make your house feel like home.
+              TaurusFit brings serious CrossFit and gym gear to every corner of Algeria. Built for heavy drops, long WODs, and PRs — delivered straight to your door.
             </p>
             <div class="hero-ctas animate-up delay-3">
               <a href="#products" class="btn-primary" data-i18n="hero.cta1">
@@ -207,11 +221,11 @@
             <div class="hero-stats animate-up delay-4">
               <div class="stat-item">
                 <span class="stat-num" data-count="300" data-suffix="+">0+</span>
-                <span class="stat-label" data-i18n="hero.stat1">Happy Customers</span>
+                <span class="stat-label" data-i18n="hero.stat1">Happy Athletes</span>
               </div>
               <div class="stat-item">
                 <span class="stat-num" data-count="60" data-suffix="+">0+</span>
-                <span class="stat-label" data-i18n="hero.stat2">Carpets &amp; Pieces</span>
+                <span class="stat-label" data-i18n="hero.stat2">Gym Essentials</span>
               </div>
               <div class="stat-item">
                 <span class="stat-num" data-count="69" data-suffix="W">0W</span>
@@ -221,6 +235,22 @@
           </div>
         </div>
       </section>
+
+      <!-- TICKER -->
+      <div class="marquee-bar" aria-hidden="true">
+        <div class="marquee-track">
+          <span class="marquee-item">CROSSFIT</span>
+          <span class="marquee-item">STRENGTH</span>
+          <span class="marquee-item">ENDURANCE</span>
+          <span class="marquee-item">PERFORMANCE</span>
+          <span class="marquee-item">ALGERIA</span>
+          <span class="marquee-item">CROSSFIT</span>
+          <span class="marquee-item">STRENGTH</span>
+          <span class="marquee-item">ENDURANCE</span>
+          <span class="marquee-item">PERFORMANCE</span>
+          <span class="marquee-item">ALGERIA</span>
+        </div>
+      </div>
 
       <!-- CATEGORIES -->
       <section class="categories-section section-pad" id="categories" aria-label="Shop by category">
@@ -248,7 +278,7 @@
                 </svg>
               </div>
               <div>
-                <strong style="display: block; font-size: 13px; color: var(--black)" data-i18n="trust.authentic">Woven to Last</strong>
+                <strong style="display: block; font-size: 13px; color: var(--black)" data-i18n="trust.authentic">Built to Take a Beating</strong>
                 <span style="font-size: 11px; color: var(--gray-400)" data-i18n="trust.authentic.sub">Every piece quality-checked before it reaches you</span>
               </div>
             </div>
@@ -282,8 +312,8 @@
                 </svg>
               </div>
               <div>
-                <strong style="display: block; font-size: 13px; color: var(--black)" data-i18n="trust.support">Guided By Our Team</strong>
-                <span style="font-size: 11px; color: var(--gray-400)" data-i18n="trust.support.sub">Personal advice to find your perfect piece</span>
+                <strong style="display: block; font-size: 13px; color: var(--black)" data-i18n="trust.support">Coached By Our Team</strong>
+                <span style="font-size: 11px; color: var(--gray-400)" data-i18n="trust.support.sub">Personal advice to find your perfect gear</span>
               </div>
             </div>
           </div>
@@ -295,8 +325,8 @@
         <div class="container">
           <div class="section-header">
             <div>
-              <p class="section-label" data-i18n="products.label">Handpicked For Your Home</p>
-              <h2 class="section-title" data-i18n="products.title">SIGNATURE CARPETS</h2>
+              <p class="section-label" data-i18n="products.label">Gear Up For Your Next WOD</p>
+              <h2 class="section-title" data-i18n="products.title">SIGNATURE GEAR</h2>
             </div>
             <a
               href="/products"
@@ -349,7 +379,7 @@
           <div class="hiw-head">
             <p class="hiw-label reveal" data-i18n="hiw.label">The Order Process</p>
             <h2 class="hiw-title reveal reveal-d1" data-i18n="about.order.title">How To Order</h2>
-            <p class="hiw-sub reveal reveal-d2" data-i18n="hiw.sub">A simple, seamless way to bring new comfort into your home.</p>
+            <p class="hiw-sub reveal reveal-d2" data-i18n="hiw.sub">A simple, seamless way to gear up for your next session.</p>
           </div>
           <div class="hiw-list">
             <div class="hiw-row reveal reveal-d1">
@@ -358,8 +388,8 @@
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
               </div>
               <div class="hiw-row-body">
-                <h3 data-i18n="hiw.step1.title">Choose Your Piece</h3>
-                <p data-i18n="hiw.step1.text">Browse our catalog of carpets and home furnishings. Find your perfect size, color, or material and add it to your cart.</p>
+                <h3 data-i18n="hiw.step1.title">Choose Your Gear</h3>
+                <p data-i18n="hiw.step1.text">Browse our catalog of CrossFit and gym accessories. Find your perfect size, weight, or variant and add it to your cart.</p>
               </div>
             </div>
             <div class="hiw-row reveal reveal-d2">
@@ -389,16 +419,16 @@
       <!-- FEATURED BANNER -->
       <section id="featuredBannerSection" style="display:none;">
         <div class="banner-section-intro container">
-          <p class="banner-intro-eyebrow reveal" data-i18n="banner.intro.eyebrow">Maison Selection</p>
-          <h2 class="banner-intro-title reveal reveal-d1" data-i18n-html="banner.intro.title">THE SIGNATURE<em>COLLECTION</em></h2>
-          <p class="banner-intro-sub reveal reveal-d2" data-i18n="banner.intro.sub">Our most-loved pieces, curated for a home that feels considered.</p>
+          <p class="banner-intro-eyebrow reveal" data-i18n="banner.intro.eyebrow">TaurusFit Selection</p>
+          <h2 class="banner-intro-title reveal reveal-d1" data-i18n-html="banner.intro.title">THE SIGNATURE<em>BUNDLE</em></h2>
+          <p class="banner-intro-sub reveal reveal-d2" data-i18n="banner.intro.sub">Our most-loved gear, bundled for athletes who train hard and often.</p>
           <div class="banner-intro-rule reveal reveal-d3" aria-hidden="true"></div>
         </div>
         <div class="featured-banner">
           <div class="banner-left">
             <div class="banner-corner banner-corner-tl" aria-hidden="true"></div>
             <div class="banner-corner banner-corner-bl" aria-hidden="true"></div>
-            <p class="banner-eyebrow" data-i18n="banner.eyebrow">Maison Capsule</p>
+            <p class="banner-eyebrow" data-i18n="banner.eyebrow">TaurusFit Bundle</p>
             <h2 class="banner-title" id="bundleBannerTitle"></h2>
             <p class="banner-desc" id="bundleBannerDesc"></p>
             <a href="#" class="btn-primary banner-btn" id="bundleBannerLink">
@@ -442,25 +472,6 @@
         <path d="m18 15-6-6-6 6" />
       </svg>
     </button>
-
-    <a
-      href="https://wa.me/213550066603"
-      target="_blank"
-      class="wa-btn"
-      aria-label="https://wa.me/213550066603"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="white"
-      >
-        <path
-          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
-        />
-      </svg>
-    </a>
 
     <!-- ══ ADD-TO-CART MODAL ══ -->
     <div
@@ -523,10 +534,10 @@
     </div>
 
     <script src="/content.js" defer></script>
-    <script src="/supplements/home/index.js?v=24" defer></script>
+    <script src="/supplements/home/index.js?v=33" defer></script>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="/supplements/supabase-client.js?v=7"></script>
+    <script src="/supplements/supabase-client.js?v=8"></script>
     <script src="/supplements/footer.js"></script>
     <script src="/supplements/marquee.js"></script>
   </body>

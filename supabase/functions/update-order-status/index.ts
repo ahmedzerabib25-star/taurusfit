@@ -1,10 +1,9 @@
 ﻿import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUPABASE_URL = "https://rgbmfstbvqzvgxadjxrb.supabase.co";
-const SUPABASE_SERVICE_ROLE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnYm1mc3RidnF6dmd4YWRqeHJiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Mjk0NzE0NiwiZXhwIjoyMDk4NTIzMTQ2fQ.T3bCjDYdYQDOcT-TFPCTy7shEnU13kwZaaO9K5e87yU";
-const TELEGRAM_BOT_TOKEN = "8706206548:AAHmyoNkS81eNBk8P0h0A3aFcueQzLyU_R8";
-const TELEGRAM_CHAT_ID = "-1004445273010";
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") || "";
+const TELEGRAM_CHAT_ID = Deno.env.get("TELEGRAM_CHAT_ID") || "";
 
 const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
@@ -56,12 +55,12 @@ async function adjustStock(items: any[], direction: number) {
         v.flavorStock[itemFlavor] = Math.max(0, (Number(v.flavorStock[itemFlavor]) || 0) + direction * qty);
         v.stock = Object.values(v.flavorStock).reduce((s: number, q: any) => s + Number(q), 0);
         if (direction < 0 && v.flavorStock[itemFlavor] === 0) {
-          await sendTelegram(`âš ï¸ <b>Out of Stock!</b>\nðŸ“¦ ${prod.name} â€“ ${itemFlavor} (${itemVariantLabel}) is now out of stock.`);
+          await sendTelegram(`⚠️ <b>Out of Stock!</b>\n📦 ${prod.name} – ${itemFlavor} (${itemVariantLabel}) is now out of stock.`);
         }
       } else {
         v.stock = Math.max(0, (Number(v.stock) || 0) + direction * qty);
         if (direction < 0 && v.stock === 0) {
-          await sendTelegram(`âš ï¸ <b>Out of Stock!</b>\nðŸ“¦ ${prod.name} (${itemVariantLabel}) is now out of stock.`);
+          await sendTelegram(`⚠️ <b>Out of Stock!</b>\n📦 ${prod.name} (${itemVariantLabel}) is now out of stock.`);
         }
       }
       const newGlobal = variants.reduce((s: number, vv: any) => s + (typeof vv === "object" ? Number(vv.stock) || 0 : 0), 0);
@@ -88,7 +87,7 @@ async function adjustStock(items: any[], direction: number) {
     const newStock = Math.max(0, (Number(prod.stock) || 0) + direction * qty);
     await sb.from("products").update({ stock: newStock }).eq("id", item.productId);
     if (direction < 0 && newStock === 0) {
-      await sendTelegram(`âš ï¸ <b>Out of Stock!</b>\nðŸ“¦ ${prod.name}${itemFlavor ? " â€“ " + itemFlavor : ""} is now out of stock.`);
+      await sendTelegram(`⚠️ <b>Out of Stock!</b>\n📦 ${prod.name}${itemFlavor ? " – " + itemFlavor : ""} is now out of stock.`);
     }
   }
 }

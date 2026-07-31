@@ -44,7 +44,7 @@ window.BYBENS_CONTENT = {
     "returns.item1.title": "Return Policy",
     "returns.item1.text": "7 days to return unopened products.",
     "returns.item2.title": "Easy Process",
-    "returns.item2.text": "Contact us via WhatsApp or Instagram.",
+    "returns.item2.text": "Contact us to initiate a return.",
     "returns.item3.title": "Refund Method",
     "returns.item3.text": "Store credit or exchanges available.",
 
@@ -72,9 +72,9 @@ window.BYBENS_CONTENT = {
     "privacy.s6.title": "Data Retention",
     "privacy.s6.text": "Order information is retained as long as necessary for business operations and legal obligations. You may request deletion of your personal data at any time by contacting us.",
     "privacy.s7.title": "Your Rights",
-    "privacy.s7.text": "You have the right to access, correct, or request deletion of your personal data. To exercise these rights, contact us via WhatsApp or Instagram.",
+    "privacy.s7.text": "You have the right to access, correct, or request deletion of your personal data. To exercise these rights, contact us using the form on our site.",
     "privacy.s8.title": "Contact",
-    "privacy.s8.text": "For any privacy-related questions, reach us on Instagram @bens.supplements or WhatsApp +213 662 269 449.",
+    "privacy.s8.text": "For any privacy-related questions, contact us using the form on our site.",
 
     // Hero / Home
     "hero.eyebrow": "Most Authentic Premium Supplements Store",
@@ -136,7 +136,7 @@ window.BYBENS_CONTENT = {
     "returns.item1.title": "Politique de retour",
     "returns.item1.text": "7 jours pour retourner les produits non ouverts.",
     "returns.item2.title": "Processus simple",
-    "returns.item2.text": "Contactez-nous via WhatsApp ou Instagram.",
+    "returns.item2.text": "Contactez-nous pour lancer un retour.",
     "returns.item3.title": "Mode de remboursement",
     "returns.item3.text": "Crédit boutique ou échange disponible.",
 
@@ -164,9 +164,9 @@ window.BYBENS_CONTENT = {
     "privacy.s6.title": "Conservation des Données",
     "privacy.s6.text": "Les informations de commande sont conservées le temps nécessaire à nos activités et obligations légales. Vous pouvez demander la suppression de vos données personnelles à tout moment en nous contactant.",
     "privacy.s7.title": "Vos Droits",
-    "privacy.s7.text": "Vous avez le droit d'accéder à vos données personnelles, de les corriger ou d'en demander la suppression. Contactez-nous via WhatsApp ou Instagram pour exercer ces droits.",
+    "privacy.s7.text": "Vous avez le droit d'accéder à vos données personnelles, de les corriger ou d'en demander la suppression. Contactez-nous via le formulaire de notre site pour exercer ces droits.",
     "privacy.s8.title": "Contact",
-    "privacy.s8.text": "Pour toute question relative à la confidentialité, contactez-nous sur Instagram @bens.supplements ou WhatsApp +213 662 269 449.",
+    "privacy.s8.text": "Pour toute question relative à la confidentialité, contactez-nous via le formulaire de notre site.",
 
     // Hero / Home
     "hero.eyebrow": "Votre Boutique de Suppléments Premium",
@@ -228,7 +228,7 @@ window.BYBENS_CONTENT = {
     "returns.item1.title": "سياسة الإرجاع",
     "returns.item1.text": "7 أيام لإرجاع المنتجات غير المفتوحة.",
     "returns.item2.title": "عملية سهلة",
-    "returns.item2.text": "تواصل معنا عبر واتساب أو إنستغرام.",
+    "returns.item2.text": "تواصل معنا لبدء عملية الإرجاع.",
     "returns.item3.title": "طريقة الاسترداد",
     "returns.item3.text": "رصيد متجر أو استبدال متاح.",
 
@@ -256,9 +256,9 @@ window.BYBENS_CONTENT = {
     "privacy.s6.title": "الاحتفاظ بالبيانات",
     "privacy.s6.text": "تُحفظ معلومات الطلبات طالما كان ذلك ضرورياً للأغراض التجارية والالتزامات القانونية. يمكنك طلب حذف بياناتك الشخصية في أي وقت بالتواصل معنا.",
     "privacy.s7.title": "حقوقك",
-    "privacy.s7.text": "يحق لك الوصول إلى بياناتك الشخصية أو تصحيحها أو طلب حذفها. تواصل معنا عبر WhatsApp أو Instagram لممارسة هذه الحقوق.",
+    "privacy.s7.text": "يحق لك الوصول إلى بياناتك الشخصية أو تصحيحها أو طلب حذفها. تواصل معنا عبر النموذج الموجود في موقعنا لممارسة هذه الحقوق.",
     "privacy.s8.title": "تواصل معنا",
-    "privacy.s8.text": "لأي استفسار يتعلق بالخصوصية، تواصل معنا على Instagram ‎@bens.supplements أو WhatsApp ‎+213 662 269 449.",
+    "privacy.s8.text": "لأي استفسار يتعلق بالخصوصية، تواصل معنا عبر النموذج الموجود في موقعنا.",
 
     // Hero / Home
     "hero.eyebrow": "متجرك للمكملات الرياضية",

@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Checkout – Maison Comfort</title>
+    <title>Checkout – TaurusFit</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://rgbmfstbvqzvgxadjxrb.supabase.co" />
+    <link rel="preconnect" href="https://atexotjtbvcsfyzhpcum.supabase.co" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cairo:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cairo:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="icon" href="/images/favicon.ico" />
-    <script>if(localStorage.getItem('bybens_theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('bybens_theme')==='light' ? 'light' : 'dark');</script>
     <link rel="stylesheet" href="/supplements/footer.css" />
     <script>
       window.__initialDataPromise = fetch("/api/initial-data")
@@ -20,8 +20,8 @@
         .catch(function () { return null; });
     </script>
 
-    <link rel="stylesheet" href="/supplements/home/index.css?v=32" />
-    <link rel="stylesheet" href="/supplements/checkout/index.css?v=9" />
+    <link rel="stylesheet" href="/supplements/home/index.css?v=45" />
+    <link rel="stylesheet" href="/supplements/checkout/index.css?v=12" />
     <script>if(sessionStorage.getItem('bb_wl'))document.documentElement.classList.add('bb-noanim');</script>
   </head>
   <body>
@@ -31,13 +31,13 @@
       <div class="wl-weave"><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div></div>
       <div class="wl-body">
         <div class="wl-logo-wrap">
-          <img src="/images/logo-dark.png" alt="Maison Comfort" class="wl-logo" />
+          <img src="/images/logo-dark.png" alt="TaurusFit" class="wl-logo" />
         </div>
         <div class="wl-line-wrap">
           <div class="wl-line-fill"></div>
           <div class="wl-shuttle"></div>
         </div>
-        <div class="wl-tagline">CRAFT<span class="wl-dot">·</span>COMFORT<span class="wl-dot">·</span>HOME</div>
+        <div class="wl-tagline">TRAIN<span class="wl-dot">·</span>LIFT<span class="wl-dot">·</span>REPEAT</div>
       </div>
     </div>
 
@@ -48,9 +48,9 @@
     <header id="site-header" class="scrolled">
       <div class="container">
         <nav class="top-nav" aria-label="Main navigation">
-          <a href="/" class="logo" aria-label="Maison Comfort Home">
-            <img src="/images/logo.png" alt="Maison Comfort" class="logo-img logo-img-light" />
-            <img src="/images/logo-dark.png" alt="Maison Comfort" class="logo-img logo-img-dark" />
+          <a href="/" class="logo" aria-label="TaurusFit Home">
+            <img src="/images/logo.png" alt="TaurusFit" class="logo-img logo-img-light" />
+            <img src="/images/logo-dark.png" alt="TaurusFit" class="logo-img logo-img-dark" />
           </a>
 
           <div class="nav-pages" aria-label="Pages">
@@ -60,10 +60,16 @@
           </div>
 
           <div class="nav-right">
-            <div class="lang-switch" role="group" aria-label="Language switcher">
-              <button class="lang-btn" data-lang="en" onclick="switchLang('en')">EN</button>
-              <button class="lang-btn active" data-lang="fr" onclick="switchLang('fr')">FR</button>
-              <button class="lang-btn" data-lang="ar" onclick="switchLang('ar')">AR</button>
+            <div class="lang-switch" id="langSwitch">
+              <button type="button" class="lang-dd-toggle" onclick="toggleLangDropdown(event)" aria-haspopup="listbox" aria-expanded="false" aria-label="Change language">
+                <span id="langDdCurrent">FR</span>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <div class="lang-dd-menu" id="langDdMenu" role="listbox" aria-label="Language switcher">
+                <button type="button" class="lang-btn lang-dd-item" data-lang="en" onclick="switchLang('en')">EN</button>
+                <button type="button" class="lang-btn lang-dd-item active" data-lang="fr" onclick="switchLang('fr')">FR</button>
+                <button type="button" class="lang-btn lang-dd-item" data-lang="ar" onclick="switchLang('ar')">AR</button>
+              </div>
             </div>
 
             <button class="theme-btn desktop-theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
@@ -73,8 +79,9 @@
 
             <button class="cart-btn" aria-label="Shopping cart" onclick="toggleCart()">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 8h12l-1.1 12.1a2 2 0 0 1-2 1.9H9.1a2 2 0 0 1-2-1.9L6 8z" />
-                <path d="M9 8V6.5a3 3 0 0 1 6 0V8" />
+                <path d="M3 6h18l-1.5 12.5a2 2 0 0 1-2 1.5H6.5a2 2 0 0 1-2-1.5L3 6z" />
+                <path d="M3 6l-1-3M21 6l1-3" />
+                <path d="M8 10v2a4 4 0 0 0 8 0v-2" />
               </svg>
               <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
             </button>
@@ -95,7 +102,7 @@
               type="search"
               id="searchInput"
               data-i18n="search.placeholder"
-              placeholder="Search carpets, rugs, home decor…"
+              placeholder="Search barbells, plates, gear…"
               aria-label="Search products"
               autocomplete="off"
               oninput="handleSearch(this.value)"
@@ -109,7 +116,7 @@
     <!-- Mobile menu sidebar -->
     <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
       <div class="mm-hd">
-        <span class="mm-brand">Maison Comfort</span>
+        <span class="mm-brand">TaurusFit</span>
         <button class="mm-close" onclick="toggleMobileMenu()" aria-label="Close menu">&#x2715;</button>
       </div>
       <div class="mm-body">
@@ -368,14 +375,14 @@
         <div class="success-msg" id="successMsg">Thank you! We'll call you shortly to confirm your order.</div>
         <div class="success-follow-label" data-i18n="success.follow">Follow us on social media</div>
         <div class="success-social-links">
-          <a href="https://www.instagram.com/maisonconfort2026/" class="success-social-link" target="_blank" rel="noopener" aria-label="Instagram">
+          <a href="https://www.instagram.com/taurustools.dz?utm_source=qr&igsh=MW94bXd4dG54aGR5aA%3D%3D" class="success-social-link" target="_blank" rel="noopener" aria-label="Instagram">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
           </a>
-          <a href="https://www.facebook.com/profile.php?id=100063629197113" class="success-social-link" target="_blank" rel="noopener" aria-label="Facebook">
+          <a href="https://www.facebook.com/TaurusFit.dz" class="success-social-link" target="_blank" rel="noopener" aria-label="Facebook">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
           </a>
-          <a href="https://www.tiktok.com/@maisonconfort25?_r=1&_t=ZS-97rpSeOIWLF" class="success-social-link" target="_blank" rel="noopener" aria-label="TikTok">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82c-1.06-.93-1.7-2.25-1.7-3.72h-3.14v13.8c0 1.6-1.3 2.9-2.9 2.9a2.9 2.9 0 0 1-2.9-2.9 2.9 2.9 0 0 1 2.9-2.9c.3 0 .59.05.86.13V9.9a6.1 6.1 0 0 0-.86-.06 6.12 6.12 0 0 0-6.12 6.12A6.12 6.12 0 0 0 8.86 22a6.12 6.12 0 0 0 6.12-6.12V9.35a9.1 9.1 0 0 0 5.02 1.51V7.72a5.79 5.79 0 0 1-3.4-1.9z"/></svg>
+          <a href="https://wa.me/213559306535" class="success-social-link" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           </a>
         </div>
         <button class="success-close" onclick="closeSuccess()">
@@ -394,9 +401,6 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
     </button>
 
-    <a href="https://wa.me/213550066603" target="_blank" class="wa-btn" aria-label="WhatsApp">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    </a>
 
     <!-- Cart drawer -->
     <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
@@ -415,9 +419,9 @@
       </div>
     </div>
 
-    <script src="/supplements/checkout/index.js?v=18" defer></script>
+    <script src="/supplements/checkout/index.js?v=21" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="/supplements/supabase-client.js?v=7"></script>
+    <script src="/supplements/supabase-client.js?v=8"></script>
     <script src="/supplements/footer.js"></script>
     <script src="/supplements/marquee.js"></script>
   </body>

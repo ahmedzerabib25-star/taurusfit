@@ -1,8 +1,8 @@
 ﻿      /* ══════════════════════════════════════════════════════
          CONFIG
       ══════════════════════════════════════════════════════ */
-      const SUPABASE_URL = "https://rgbmfstbvqzvgxadjxrb.supabase.co";
-      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnYm1mc3RidnF6dmd4YWRqeHJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5NDcxNDYsImV4cCI6MjA5ODUyMzE0Nn0.RWnBzmNPonwj7eZz5X0mMpEODFP5Jo6iAmBWdRDQBs4";
+      const SUPABASE_URL = window.SUPABASE_URL;
+      const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY;
       const PAGE_LOAD_TIME = Date.now(); // used for bot timing check
       // getInitialData is provided by supabase-client.js
 
@@ -304,12 +304,23 @@
               ? `<img src="${_alsoImgs[0]}" alt="${p.name}" class="img-primary" />${_alsoImgs[1] ? `<img src="${_alsoImgs[1]}" alt="${p.name}" class="img-hover" />` : ""}`
               : `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`;
             const badge = computeBadge(p, _bundleId, _topSoldIds);
+            const _alsoOos = Number(p.stock) <= 0;
+            const _alsoStockLabel = _alsoOos
+              ? `<span class="also-card-stock out-stock">Out of Stock</span>`
+              : Number(p.stock) <= 5
+                ? `<span class="also-card-stock low-stock">Only ${p.stock} left</span>`
+                : `<span class="also-card-stock in-stock">In Stock</span>`;
+            const _alsoBrand = prodBrand(p);
+            const _alsoDesc = prodDesc(p);
             return `
             <div class="also-card" onclick="window.location.href='/product-detail?id=${p.id}'" style="cursor:pointer">
               <div class="also-card-img">${img}${badge ? `<span class="product-badge badge-${badge.type}">${badge.label}</span>` : ""}</div>
               <div class="also-card-body">
+                ${_alsoBrand ? `<div class="also-card-brand">${_alsoBrand}</div>` : ""}
                 <div class="also-card-name">${p.name}</div>
+                ${_alsoDesc ? `<div class="also-card-desc">${_alsoDesc}</div>` : ""}
                 <div class="also-card-price">${price ? price.toLocaleString("fr-DZ") + " " + " DA" : ""}</div>
+                ${_alsoStockLabel}
                 <div class="also-card-actions">
                   ${
                     Number(p.stock) <= 0
@@ -351,7 +362,7 @@
         p.categoryIds = parseField(p.categoryIds);
         p.subCategoryIds = parseField(p.subCategoryIds);
 
-        document.title = `${prodName(p)} – Maison Comfort`;
+        document.title = `${prodName(p)} – TaurusFit`;
         document.getElementById("breadcrumbName").textContent = prodName(p);
         document.getElementById("productBrand").textContent = prodBrand(p);
         document.getElementById("productName").textContent = prodName(p);
@@ -409,7 +420,7 @@
         // Description
         document.getElementById("productDescription").innerHTML =
           prodDesc(p) ||
-          `${prodName(p)} by ${prodBrand(p)} — a Maison Comfort home furnishings piece.`;
+          `${prodName(p)} by ${prodBrand(p)} — a TaurusFit performance gear product.`;
 
         // ── VARIANTS (weight/size) pills ──
         const weightGroup = document.getElementById("weightGroup");
@@ -3009,7 +3020,7 @@
           "nav.home": "Home",
           "nav.products": "Products",
           "nav.contact": "Contact",
-          "search.placeholder": "Search carpets, rugs, home decor…",
+          "search.placeholder": "Search barbells, plates, gear…",
           "detail.weight": "SIZE",
           "detail.flavor": "Color",
           "detail.quantity": "Quantity",
@@ -3042,8 +3053,10 @@
           "trust.authenticShort": "Quality Checked",
           "trust.call": "Call to Confirm",
           "footer.brand.desc":
-            "Algeria's destination for handpicked carpets and home furnishings. We bring quality pieces directly to your door.",
-          "footer.links": "Quick Links",
+            "Algeria's destination for premium CrossFit and gym equipment. We bring durable, performance-tested gear directly to your door.",
+          "footer.links": "Shop",
+          "footer.support": "Support",
+          "footer.about": "About TaurusFit",
           "footer.shipping": "Shipping Policy",
           "footer.returns": "Returns",
           "footer.privacy": "Privacy Policy",
@@ -3065,8 +3078,8 @@
           "returns.item1.title": "Exchanges & Returns",
           "returns.item1.text": "We offer a 7-day return policy for unopened items in their original packaging with intact seals.",
           "returns.item2.title": "Easy Support",
-          "returns.item2.text": "Contact us via WhatsApp or Instagram to initiate a return. We will arrange the courier return for you.",
-          "returns.item3.title": "Maison Credit",
+          "returns.item2.text": "Contact us to initiate a return. We will arrange the courier return for you.",
+          "returns.item3.title": "TaurusFit Credit",
           "returns.item3.text": "Following inspection, we issue store credit, exchanges, or refunds, ensuring your satisfaction.",
           "toast.sent": "Your message has been sent to our team.",
           "footer.rights": "All rights reserved.",
@@ -3076,14 +3089,14 @@
           "success.title": "Order Placed!",
           "success.follow": "Follow us on social media",
           "detail.bulkLabel": "Wholesale Pricing",
-          "detail.bulkNotice": "Ordering 5 or more? Contact us on WhatsApp for a special wholesale discount!",
+          "detail.bulkNotice": "Ordering 5 or more? Contact us for a special wholesale discount!",
           "success.back": "Back to Products",
         },
         fr: {
           "nav.home": "Accueil",
-          "nav.products": "Tapis",
+          "nav.products": "Produits",
           "nav.contact": "Contact",
-          "search.placeholder": "Rechercher tapis, décoration…",
+          "search.placeholder": "Rechercher barres, disques, équipement…",
           "detail.weight": "Taille",
           "detail.flavor": "Couleur",
           "detail.quantity": "Quantité",
@@ -3116,8 +3129,10 @@
           "trust.authenticShort": "Contrôle Qualité",
           "trust.call": "Confirmé par Téléphone",
           "footer.brand.desc":
-            "La destination en Algérie pour des tapis et de la décoration d'intérieur sélectionnés. Nous livrons des pièces de qualité directement à votre porte.",
-          "footer.links": "Liens rapides",
+            "La destination en Algérie pour un équipement CrossFit et musculation premium. Nous livrons du matériel durable et performant directement à votre porte.",
+          "footer.links": "Boutique",
+          "footer.support": "Assistance",
+          "footer.about": "À propos de TaurusFit",
           "footer.shipping": "Livraison",
           "footer.returns": "Retours",
           "footer.privacy": "Politique de Confidentialité",
@@ -3139,24 +3154,24 @@
           "returns.item1.title": "Politique de Retour",
           "returns.item1.text": "Vous disposez de 7 jours pour retourner un produit non ouvert dans son emballage d'origine, avec scellé intact.",
           "returns.item2.title": "Assistance Dédiée",
-          "returns.item2.text": "Contactez-nous via WhatsApp ou Instagram. Nous organiserons le retour par coursier à votre convenance.",
-          "returns.item3.title": "Avoir de la Maison",
+          "returns.item2.text": "Contactez-nous pour lancer un retour. Nous organiserons le retour par coursier à votre convenance.",
+          "returns.item3.title": "Crédit TaurusFit",
           "returns.item3.text": "Après vérification, nous procédons à un échange ou à l'émission d'un crédit boutique pour votre entière satisfaction.",
           "toast.sent": "Votre message a été transmis à notre équipe.",
           "search.cancel": "Annuler",
           "breadcrumb.home": "Accueil",
           "breadcrumb.products": "Produits",
           "detail.bulkLabel": "Prix de Gros",
-          "detail.bulkNotice": "Vous en commandez 5 ou plus ? Contactez-nous sur WhatsApp pour une remise spéciale !",
+          "detail.bulkNotice": "Vous en commandez 5 ou plus ? Contactez-nous pour une remise spéciale !",
           "success.title": "Commande Passée !",
           "success.follow": "Suivez-nous sur les réseaux sociaux",
           "success.back": "Retour aux Produits",
         },
         ar: {
           "nav.home": "الرئيسية",
-          "nav.products": "السجاد",
+          "nav.products": "المنتجات",
           "nav.contact": "اتصل بنا",
-          "search.placeholder": "ابحث عن سجاد وأثاث منزلي…",
+          "search.placeholder": "ابحث عن بارات وأقراص ومعدات…",
           "detail.weight": "المقاس",
           "detail.flavor": "اللون",
           "detail.quantity": "الكمية",
@@ -3189,8 +3204,10 @@
           "trust.authenticShort": "جودة مفحوصة",
           "trust.call": "تأكيد عبر الهاتف",
           "footer.brand.desc":
-            "وجهتك في الجزائر لسجاد وأثاث منزلي مختار بعناية. نوصل لك قطعًا عالية الجودة مباشرة إلى بابك.",
-          "footer.links": "روابط سريعة",
+            "وجهتك في الجزائر لمعدات كروسفت ورياضة عالية الجودة. نوصل لك عتادًا متينًا ومختبرًا مباشرة إلى بابك.",
+          "footer.links": "المتجر",
+          "footer.support": "الدعم",
+          "footer.about": "عن تاوروس فيت",
           "footer.shipping": "سياسة الشحن",
           "footer.returns": "الإرجاع",
           "footer.privacy": "سياسة الخصوصية",
@@ -3212,15 +3229,15 @@
           "returns.item1.title": "سياسة الإرجاع",
           "returns.item1.text": "لديك 7 أيام لإرجاع منتج غير مفتوح في عبوته الأصلية وبختمه سليمًا.",
           "returns.item2.title": "دعم سهل",
-          "returns.item2.text": "تواصل معنا عبر واتساب أو إنستغرام لبدء عملية الإرجاع. سننظم استرجاع الطرد نيابة عنك.",
-          "returns.item3.title": "رصيد الميزون",
+          "returns.item2.text": "تواصل معنا لبدء عملية الإرجاع. سننظم استرجاع الطرد نيابة عنك.",
+          "returns.item3.title": "رصيد تاوروس فيت",
           "returns.item3.text": "بعد الفحص، نقدم رصيدًا في المتجر أو استبدالًا أو استرجاعًا لضمان رضاك التام.",
           "toast.sent": "تم إرسال رسالتك إلى فريقنا.",
           "search.cancel": "إلغاء",
           "breadcrumb.home": "الرئيسية",
           "breadcrumb.products": "المنتجات",
           "detail.bulkLabel": "أسعار الجملة",
-          "detail.bulkNotice": "تطلب 5 قطع أو أكثر؟ تواصل معنا عبر واتساب للحصول على خصم خاص للجملة!",
+          "detail.bulkNotice": "تطلب 5 قطع أو أكثر؟ تواصل معنا للحصول على خصم خاص للجملة!",
           "success.title": "تم تأكيد الطلب!",
           "success.follow": "تابعنا على مواقع التواصل الاجتماعي",
           "success.back": "العودة إلى المنتجات",
@@ -3263,7 +3280,7 @@
       function refreshProductLang() {
         const p = selectedProduct;
         if (!p) return;
-        document.title = `${prodName(p)} – Maison Comfort`;
+        document.title = `${prodName(p)} – TaurusFit`;
         const bnEl = document.getElementById("breadcrumbName");
         if (bnEl) bnEl.textContent = prodName(p);
         const brandEl = document.getElementById("productBrand");
@@ -3271,7 +3288,7 @@
         const nameEl = document.getElementById("productName");
         if (nameEl) nameEl.textContent = prodName(p);
         const descEl = document.getElementById("productDescription");
-        if (descEl) descEl.innerHTML = prodDesc(p) || `${prodName(p)} by ${prodBrand(p)} — a Maison Comfort home furnishings piece.`;
+        if (descEl) descEl.innerHTML = prodDesc(p) || `${prodName(p)} by ${prodBrand(p)} — a TaurusFit performance gear product.`;
         // Category tags
         const catEl = document.getElementById("productCategories");
         if (catEl) {
@@ -3326,6 +3343,17 @@
         document.querySelectorAll(".lang-btn").forEach((btn) => {
           btn.classList.toggle("active", btn.dataset.lang === lang);
         });
+
+        // Sync + close the header language dropdown
+        const langDdCurrent = document.getElementById("langDdCurrent");
+        if (langDdCurrent) langDdCurrent.textContent = lang.toUpperCase();
+        const langDdMenu = document.getElementById("langDdMenu");
+        if (langDdMenu) {
+          langDdMenu.classList.remove("open");
+          const toggle = langDdMenu.previousElementSibling;
+          if (toggle) toggle.setAttribute("aria-expanded", "false");
+        }
+
         const wt = document.getElementById("wilayaTrigger");
         if (wt && wt.classList.contains("placeholder"))
           document.getElementById("wilayaLabel").textContent =
@@ -3347,13 +3375,13 @@
         if (footerText) {
           const year = new Date().getFullYear();
           footerText.innerHTML = lang === 'fr'
-            ? `© ${year} Maison Comfort Algérie. Tous droits réservés.`
+            ? `© ${year} TaurusFit Algérie. Tous droits réservés.`
             : lang === 'ar'
-            ? `© ${year} ميزون كومفور الجزائر. جميع الحقوق محفوظة.`
-            : `© ${year} Maison Comfort Algeria. All rights reserved.`;
+            ? `© ${year} تاوروس فيت الجزائر. جميع الحقوق محفوظة.`
+            : `© ${year} TaurusFit Algeria. All rights reserved.`;
         }
-        document.querySelectorAll('.about-brand').forEach((brand) => { brand.innerHTML = `MAISON <span>COMFORT</span>`; });
-        document.querySelectorAll('.about-sub').forEach((sub) => { sub.textContent = 'Maison Comfort'; });
+        document.querySelectorAll('.about-brand').forEach((brand) => { brand.innerHTML = `TAURUS<span>FIT</span>`; });
+        document.querySelectorAll('.about-sub').forEach((sub) => { sub.textContent = 'TaurusFit'; });
       }
 
       /* ══════════════════════════════════════════════════════
@@ -3710,6 +3738,27 @@
         btn.setAttribute("aria-expanded", isOpen);
         document.body.style.overflow = isOpen ? "hidden" : "";
       }
+
+      /* ─────────────────────────────────────────────────────────────
+         LANGUAGE DROPDOWN (header) — single compact toggle instead of
+         3 separate EN/FR/AR buttons, mainly to save space on mobile
+      ───────────────────────────────────────────────────────────── */
+      function toggleLangDropdown(e) {
+        e.stopPropagation();
+        const menu = document.getElementById("langDdMenu");
+        if (!menu) return;
+        const isOpen = menu.classList.toggle("open");
+        e.currentTarget.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      }
+      document.addEventListener("click", (e) => {
+        const wrap = document.getElementById("langSwitch");
+        if (wrap && !wrap.contains(e.target)) {
+          const menu = document.getElementById("langDdMenu");
+          if (menu) menu.classList.remove("open");
+          const toggle = wrap.querySelector(".lang-dd-toggle");
+          if (toggle) toggle.setAttribute("aria-expanded", "false");
+        }
+      });
 
       function toggleMobileCat(btn) {
         const item = btn.closest(".m-cat-item");

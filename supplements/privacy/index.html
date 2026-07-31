@@ -3,17 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Privacy Policy – Maison Comfort</title>
-    <meta name="description" content="Maison Comfort privacy policy — how we collect, use, and protect your personal information." />
+    <title>Privacy Policy – TaurusFit</title>
+    <meta name="description" content="TaurusFit privacy policy — how we collect, use, and protect your personal information." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://rgbmfstbvqzvgxadjxrb.supabase.co" />
+    <link rel="preconnect" href="https://atexotjtbvcsfyzhpcum.supabase.co" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cairo:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cairo:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="icon" href="/images/favicon.ico" />
-    <script>if(localStorage.getItem('bybens_theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('bybens_theme') === 'light' ? 'light' : 'dark');</script>
     <link rel="stylesheet" href="/supplements/footer.css" />
     <script>
       window.__initialDataPromise = fetch("/api/initial-data")
@@ -21,7 +21,7 @@
         .catch(function () { return null; });
     </script>
 
-    <link rel="stylesheet" href="/supplements/home/index.css?v=32" />
+    <link rel="stylesheet" href="/supplements/home/index.css?v=45" />
     <link rel="stylesheet" href="/supplements/privacy/index.css?v=11" />
     <script>if(sessionStorage.getItem('bb_wl'))document.documentElement.classList.add('bb-noanim');</script>
   </head>
@@ -32,13 +32,13 @@
       <div class="wl-weave"><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div><div class="wl-thread"></div></div>
       <div class="wl-body">
         <div class="wl-logo-wrap">
-          <img src="/images/logo-dark.png" alt="Maison Comfort" class="wl-logo" />
+          <img src="/images/logo-dark.png" alt="TaurusFit" class="wl-logo" />
         </div>
         <div class="wl-line-wrap">
           <div class="wl-line-fill"></div>
           <div class="wl-shuttle"></div>
         </div>
-        <div class="wl-tagline">CRAFT<span class="wl-dot">·</span>COMFORT<span class="wl-dot">·</span>HOME</div>
+        <div class="wl-tagline">TRAIN<span class="wl-dot">·</span>LIFT<span class="wl-dot">·</span>REPEAT</div>
       </div>
     </div>
 
@@ -49,9 +49,9 @@
     <header id="site-header" class="scrolled">
       <div class="container">
         <nav class="top-nav" aria-label="Main navigation">
-          <a href="/" class="logo" aria-label="Maison Comfort Home">
-            <img src="/images/logo.png" alt="Maison Comfort" class="logo-img logo-img-light" />
-            <img src="/images/logo-dark.png" alt="Maison Comfort" class="logo-img logo-img-dark" />
+          <a href="/" class="logo" aria-label="TaurusFit Home">
+            <img src="/images/logo.png" alt="TaurusFit" class="logo-img logo-img-light" />
+            <img src="/images/logo-dark.png" alt="TaurusFit" class="logo-img logo-img-dark" />
           </a>
 
           <div class="nav-pages" aria-label="Pages">
@@ -61,10 +61,16 @@
           </div>
 
           <div class="nav-right">
-            <div class="lang-switch" role="group" aria-label="Language switcher">
-              <button class="lang-btn" data-lang="en" onclick="switchLang('en')">EN</button>
-              <button class="lang-btn active" data-lang="fr" onclick="switchLang('fr')">FR</button>
-              <button class="lang-btn" data-lang="ar" onclick="switchLang('ar')">AR</button>
+            <div class="lang-switch" id="langSwitch">
+              <button type="button" class="lang-dd-toggle" onclick="toggleLangDropdown(event)" aria-haspopup="listbox" aria-expanded="false" aria-label="Change language">
+                <span id="langDdCurrent">FR</span>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <div class="lang-dd-menu" id="langDdMenu" role="listbox" aria-label="Language switcher">
+                <button type="button" class="lang-btn lang-dd-item" data-lang="en" onclick="switchLang('en')">EN</button>
+                <button type="button" class="lang-btn lang-dd-item active" data-lang="fr" onclick="switchLang('fr')">FR</button>
+                <button type="button" class="lang-btn lang-dd-item" data-lang="ar" onclick="switchLang('ar')">AR</button>
+              </div>
             </div>
 
             <button class="theme-btn desktop-theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
@@ -96,7 +102,7 @@
               type="search"
               id="searchInput"
               data-i18n="search.placeholder"
-              placeholder="Search carpets, rugs, home decor…"
+              placeholder="Search barbells, plates, gear…"
               aria-label="Search products"
               autocomplete="off"
               oninput="handleSearch(this.value)"
@@ -110,7 +116,7 @@
     <!-- Mobile menu sidebar -->
     <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
       <div class="mm-hd">
-        <span class="mm-brand">Maison Comfort</span>
+        <span class="mm-brand">TaurusFit</span>
         <button class="mm-close" onclick="toggleMobileMenu()" aria-label="Close menu">&#x2715;</button>
       </div>
       <div class="mm-body">
@@ -138,7 +144,7 @@
     <!-- ─── HERO ── -->
     <section class="privacy-hero">
       <div class="container">
-        <div class="privacy-hero-eyebrow" data-i18n="privacy.eyebrow">Maison Comfort</div>
+        <div class="privacy-hero-eyebrow" data-i18n="privacy.eyebrow">TaurusFit</div>
         <h1 class="privacy-hero-title" data-i18n="privacy.title">Privacy <em>Policy</em></h1>
         <p class="privacy-hero-updated" data-i18n="privacy.updated">Last updated: July 2026</p>
       </div>
@@ -151,7 +157,7 @@
         <span data-i18n="nav.home">Home</span>
       </a>
 
-      <p class="privacy-intro" data-i18n="privacy.intro">Maison Comfort is committed to protecting your privacy. This policy explains what personal information we collect, how we use it, and your rights.</p>
+      <p class="privacy-intro" data-i18n="privacy.intro">TaurusFit is committed to protecting your privacy. This policy explains what personal information we collect, how we use it, and your rights.</p>
 
       <div class="privacy-sections">
 
@@ -181,7 +187,7 @@
           </div>
           <div class="privacy-text">
             <h3 data-i18n="privacy.s3.title">Payment Information</h3>
-            <p data-i18n="privacy.s3.text">Maison Comfort operates on a cash on delivery basis only. We do not collect, store, or process any payment card or banking information.</p>
+            <p data-i18n="privacy.s3.text">TaurusFit operates on a cash on delivery basis only. We do not collect, store, or process any payment card or banking information.</p>
           </div>
         </div>
 
@@ -221,7 +227,7 @@
           </div>
           <div class="privacy-text">
             <h3 data-i18n="privacy.s7.title">Your Rights</h3>
-            <p data-i18n="privacy.s7.text">You have the right to access, correct, or request deletion of your personal data. To exercise these rights, contact us via WhatsApp, Instagram, Facebook, or TikTok.</p>
+            <p data-i18n="privacy.s7.text">You have the right to access, correct, or request deletion of your personal data. To exercise these rights, contact us using the form below.</p>
           </div>
         </div>
 
@@ -231,7 +237,7 @@
           </div>
           <div class="privacy-text">
             <h3 data-i18n="privacy.s8.title">Contact</h3>
-            <p data-i18n="privacy.s8.text">For any privacy-related questions, reach us on WhatsApp, Instagram, Facebook, or TikTok — links in the footer below.</p>
+            <p data-i18n="privacy.s8.text">For any privacy-related questions, contact us using the form on this page.</p>
           </div>
         </div>
 
@@ -250,13 +256,10 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
     </button>
 
-    <a href="https://wa.me/213550066603" target="_blank" class="wa-btn" aria-label="WhatsApp">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    </a>
 
-    <script src="/supplements/privacy/index.js?v=6" defer></script>
+    <script src="/supplements/privacy/index.js?v=9" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="/supplements/supabase-client.js?v=7"></script>
+    <script src="/supplements/supabase-client.js?v=8"></script>
     <script src="/supplements/footer.js"></script>
     <script src="/supplements/marquee.js"></script>
   </body>

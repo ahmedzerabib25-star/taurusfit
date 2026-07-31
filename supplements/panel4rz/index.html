@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Maison Comfort – Admin Panel</title>
+    <title>TaurusFit – Admin Panel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -11,9 +11,10 @@
       rel="stylesheet"
     />
     <link rel="icon" href="/images/favicon.ico" />
+    <script>if(localStorage.getItem('bybens_theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="/supplements/supabase-client.js?v=7"></script>
-    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=20" />
+    <script src="/supplements/supabase-client.js?v=8"></script>
+    <link rel="stylesheet" href="/supplements/panel4rz/index.css?v=24" />
   </head>
   <body>
 <div class="loading-overlay" id="loading-overlay">
@@ -26,7 +27,7 @@
       <aside id="sidebar">
         <div class="sb-header">
           <div class="sb-logo-img-wrap">
-            <img src="/images/logo.png" alt="Maison Comfort" class="sb-logo-img" />
+            <img src="/images/logo.png" alt="TaurusFit" class="sb-logo-img" />
           </div>
           <button class="sb-toggle" onclick="toggleSidebar()">
             <svg
@@ -120,6 +121,18 @@
               <path d="M3 11l18-5v12L3 14v-3z" />
               <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" /></svg
             ><span data-i18n="nav.announcement">Announcement</span>
+          </div>
+          <div class="sb-link" onclick="showPage('hero', this)">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="3" y="3" width="18" height="14" rx="2" />
+              <path d="m3 13 5-5 4 4 6-6 3 3" />
+              <circle cx="8.5" cy="7.5" r="1.2" /></svg
+            ><span data-i18n="nav.hero">Hero Slider</span>
           </div>
           <div class="sb-link" onclick="showPage('orders', this)">
             <svg
@@ -230,6 +243,10 @@
               <button class="tb-lang-btn" id="lang-btn-fr" onclick="switchAdminLang('fr')">FR</button>
               <button class="tb-lang-btn" id="lang-btn-ar" onclick="switchAdminLang('ar')">AR</button>
             </div>
+            <button class="tb-icon-btn tb-theme-btn" onclick="toggleAdminTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
+              <svg class="tb-icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              <svg class="tb-icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
 <button class="tb-logout" onclick="doLogout()">
               <svg
                 width="14"
@@ -713,6 +730,33 @@
           </div>
         </div>
 
+        <!-- HERO SLIDER -->
+        <div class="page" id="page-hero">
+          <div class="sec-header">
+            <div class="sec-title" data-i18n="hero.title">Homepage Hero Slider</div>
+          </div>
+          <div class="settings-card" style="max-width: 900px">
+            <div class="settings-card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="14" rx="2" />
+                <path d="m3 13 5-5 4 4 6-6 3 3" />
+                <circle cx="8.5" cy="7.5" r="1.2" />
+              </svg>
+              <span data-i18n="hero.select">Hero Slider Images</span>
+            </div>
+            <p style="font-size: 13px; color: var(--g600); margin-bottom: 18px" data-i18n="hero.desc">
+              These rotate automatically in the hero banner at the top of the homepage. Each slot accepts an image or a short looping video — use wide landscape footage, ideally at least 1920×1080px, for a sharp look on large screens.
+            </p>
+            <div id="hero-slides-grid" class="hero-slides-grid"></div>
+            <button class="btn-primary" style="margin-top: 18px" onclick="saveHeroSlides()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              <span data-i18n="hero.save">Save Hero Slides</span>
+            </button>
+          </div>
+        </div>
+
         <!-- SETTINGS -->
         <div class="page" id="page-settings">
           <div class="sec-header"><div class="sec-title" data-i18n="settings.title">Settings</div></div>
@@ -955,27 +999,27 @@
           <div class="form-row">
             <div class="form-group" style="flex:2">
               <label data-i18n="pm.nameEn">Product Name (English) *</label>
-              <input type="text" class="form-control" id="pm-name-en" placeholder="e.g. Berber Wool Rug 200x300" />
+              <input type="text" class="form-control" id="pm-name-en" placeholder="e.g. Olympic Rubber Bumper Plates" />
             </div>
             <div class="form-group">
               <label data-i18n="pm.brandEn">Brand (English)</label>
-              <input type="text" class="form-control" id="pm-brand-en" placeholder="e.g. Maison Comfort" />
+              <input type="text" class="form-control" id="pm-brand-en" placeholder="e.g. TaurusFit" />
             </div>
           </div>
           <div class="form-row">
             <div class="form-group" style="flex:2">
               <label data-i18n="pm.nameFr">Product Name (French)</label>
-              <input type="text" class="form-control" id="pm-name-fr" placeholder="ex. Tapis Berbère Laine 200x300" />
+              <input type="text" class="form-control" id="pm-name-fr" placeholder="ex. Disques Bumper Olympiques" />
             </div>
             <div class="form-group">
               <label data-i18n="pm.brandFr">Brand (French)</label>
-              <input type="text" class="form-control" id="pm-brand-fr" placeholder="ex. Maison Comfort" />
+              <input type="text" class="form-control" id="pm-brand-fr" placeholder="ex. TaurusFit" />
             </div>
           </div>
           <div class="form-row">
             <div class="form-group" style="flex:2">
               <label data-i18n="pm.nameAr">Product Name (Arabic)</label>
-              <input type="text" class="form-control" id="pm-name-ar" placeholder="مثال: سجادة بربرية صوف 200x300" dir="rtl" style="text-align:right;font-family:'Cairo','Tajawal',sans-serif" />
+              <input type="text" class="form-control" id="pm-name-ar" placeholder="مثال: أقراص بمبر أولمبية" dir="rtl" style="text-align:right;font-family:'Cairo','Tajawal',sans-serif" />
             </div>
             <div class="form-group">
               <label data-i18n="pm.brandAr">Brand (Arabic)</label>
@@ -1154,15 +1198,15 @@
         <div class="modal-body">
           <div class="form-group" style="margin-bottom:14px">
             <label data-i18n="cat.nameEn">Name (English) *</label>
-            <input type="text" class="form-control" id="cat-name-en" placeholder="e.g. Carpets" />
+            <input type="text" class="form-control" id="cat-name-en" placeholder="e.g. Strength Training" />
           </div>
           <div class="form-group" style="margin-bottom:14px">
             <label data-i18n="cat.nameFr">Name (French)</label>
-            <input type="text" class="form-control" id="cat-name-fr" placeholder="ex. Tapis" />
+            <input type="text" class="form-control" id="cat-name-fr" placeholder="ex. Musculation" />
           </div>
           <div class="form-group" style="margin-bottom:14px">
             <label data-i18n="cat.nameAr">Name (Arabic)</label>
-            <input type="text" class="form-control" id="cat-name-ar" placeholder="مثال: سجاد" dir="rtl" style="text-align:right;font-family:'Cairo','Tajawal',sans-serif" />
+            <input type="text" class="form-control" id="cat-name-ar" placeholder="مثال: تدريب القوة" dir="rtl" style="text-align:right;font-family:'Cairo','Tajawal',sans-serif" />
           </div>
           <div class="form-group" style="margin-bottom: 14px">
             <label data-i18n="cat.desc">Description</label>
@@ -1205,15 +1249,15 @@
         <div class="modal-body">
           <div class="form-group" style="margin-bottom:14px">
             <label data-i18n="subcat.nameEn">Name (English) *</label>
-            <input type="text" class="form-control" id="subcat-name-en" placeholder="e.g. Wool" />
+            <input type="text" class="form-control" id="subcat-name-en" placeholder="e.g. Barbells" />
           </div>
           <div class="form-group" style="margin-bottom:14px">
             <label data-i18n="subcat.nameFr">Name (French)</label>
-            <input type="text" class="form-control" id="subcat-name-fr" placeholder="ex. Laine" />
+            <input type="text" class="form-control" id="subcat-name-fr" placeholder="ex. Barres" />
           </div>
           <div class="form-group" style="margin-bottom:14px">
             <label data-i18n="subcat.nameAr">Name (Arabic)</label>
-            <input type="text" class="form-control" id="subcat-name-ar" placeholder="مثال: صوف" dir="rtl" style="text-align:right;font-family:'Cairo','Tajawal',sans-serif" />
+            <input type="text" class="form-control" id="subcat-name-ar" placeholder="مثال: بارات" dir="rtl" style="text-align:right;font-family:'Cairo','Tajawal',sans-serif" />
           </div>
         </div>
         <div class="modal-footer">
@@ -1235,15 +1279,15 @@
         <div class="modal-body">
           <div class="form-group" style="margin-bottom:14px">
             <label>Name (English) *</label>
-            <input type="text" class="form-control" id="subsubcat-name-en" placeholder="e.g. Merino Wool" />
+            <input type="text" class="form-control" id="subsubcat-name-en" placeholder="e.g. Olympic Barbells" />
           </div>
           <div class="form-group" style="margin-bottom:14px">
             <label>Name (French)</label>
-            <input type="text" class="form-control" id="subsubcat-name-fr" placeholder="ex. Laine Mérinos" />
+            <input type="text" class="form-control" id="subsubcat-name-fr" placeholder="ex. Barres Olympiques" />
           </div>
           <div class="form-group" style="margin-bottom:14px">
             <label>Name (Arabic)</label>
-            <input type="text" class="form-control" id="subsubcat-name-ar" placeholder="مثال: صوف ميرينو" dir="rtl" style="text-align:right;font-family:'Cairo','Tajawal',sans-serif" />
+            <input type="text" class="form-control" id="subsubcat-name-ar" placeholder="مثال: بارات أولمبية" dir="rtl" style="text-align:right;font-family:'Cairo','Tajawal',sans-serif" />
           </div>
         </div>
         <div class="modal-footer">
@@ -1356,6 +1400,6 @@
       ><span id="toast-msg">Done!</span>
     </div>
 
-    <script src="/supplements/panel4rz/index.js?v=32"></script>
+    <script src="/supplements/panel4rz/index.js?v=35"></script>
   </body>
 </html>

@@ -60,6 +60,7 @@
       let _editAddProductId = null;
       let currentImageUrls = [];
       let currentCatImageUrl = "";
+      let heroSlideUrls = ["", "", "", "", ""];
       let categories = [],
         subCategories = [],
         subSubCategories = [],
@@ -112,7 +113,7 @@
         en: {
           'nav.main':'Main','nav.store':'Store','nav.admin':'Admin',
           'nav.dashboard':'Dashboard','nav.products':'Products','nav.categories':'Categories',
-          'nav.delivery':'Delivery Prices','nav.bundle':'Bundle','nav.announcement':'Announcement','nav.orders':'Orders',
+          'nav.delivery':'Delivery Prices','nav.bundle':'Bundle','nav.announcement':'Announcement','nav.hero':'Hero Slider','nav.orders':'Orders',
           'nav.stock':'Stock','nav.settings':'Settings','nav.backToSite':'Back to Website',
           'nav.superAdmin':'Super Admin',
           'tb.live':'Live','tb.logout':'Logout',
@@ -191,11 +192,14 @@
           'confirm.title':'Are you sure?','confirm.default':'This action cannot be undone.',
           'confirm.delete':'Delete',
           'page.dashboard':'Dashboard','page.products':'Products','page.categories':'Categories',
-          'page.delivery':'Delivery Prices','page.bundle':'Bundle','page.announcement':'Announcement','page.orders':'Orders',
+          'page.delivery':'Delivery Prices','page.bundle':'Bundle','page.announcement':'Announcement','page.hero':'Hero Slider','page.orders':'Orders',
           'announcement.title':'Announcement Bar','announcement.select':'Top Announcement Bar','announcement.desc':'Shown as a scrolling red bar above the header on every page. Leave the text empty or disable it to hide it.',
           'announcement.textLabel':'Announcement Text','announcement.textEn':'Text (English) *','announcement.textFr':'Text (French)','announcement.textAr':'Text (Arabic)',
           'announcement.linkLabel':'Link (optional)','announcement.linkTextEn':'Link Text (English)','announcement.linkTextFr':'Link Text (French)','announcement.linkTextAr':'Link Text (Arabic)','announcement.linkUrl':'Link URL',
           'announcement.save':'Save Announcement',
+          'hero.title':'Homepage Hero Slider','hero.select':'Hero Slider Images',
+          'hero.desc':'These rotate automatically in the hero banner at the top of the homepage. Each slot accepts an image or a short looping video — use wide landscape footage, ideally at least 1920×1080px, for a sharp look on large screens.',
+          'hero.save':'Save Hero Slides',
           'page.stock':'Stock Management','page.settings':'Settings',
           'status.active':'Active','status.inactive':'Inactive','status.waiting':'Waiting',
           'status.confirmed':'Confirmed','status.delivered':'Delivered','status.canceled':'Canceled',
@@ -206,7 +210,7 @@
         fr: {
           'nav.main':'Principal','nav.store':'Boutique','nav.admin':'Administration',
           'nav.dashboard':'Tableau de bord','nav.products':'Produits','nav.categories':'Catégories',
-          'nav.delivery':'Prix de livraison','nav.bundle':'Coffret','nav.announcement':'Annonce','nav.orders':'Commandes',
+          'nav.delivery':'Prix de livraison','nav.bundle':'Coffret','nav.announcement':'Annonce','nav.hero':'Diaporama d\'accueil','nav.orders':'Commandes',
           'nav.stock':'Stock','nav.settings':'Paramètres','nav.backToSite':'Retour au site',
           'nav.superAdmin':'Super Administrateur',
           'tb.live':'En direct','tb.logout':'Déconnexion',
@@ -285,11 +289,14 @@
           'confirm.title':'Êtes-vous sûr ?','confirm.default':'Cette action est irréversible.',
           'confirm.delete':'Supprimer',
           'page.dashboard':'Tableau de bord','page.products':'Produits','page.categories':'Catégories',
-          'page.delivery':'Prix de livraison','page.bundle':'Coffret','page.announcement':'Annonce','page.orders':'Commandes',
+          'page.delivery':'Prix de livraison','page.bundle':'Coffret','page.announcement':'Annonce','page.hero':'Diaporama d\'accueil','page.orders':'Commandes',
           'announcement.title':'Barre d\'annonce','announcement.select':'Barre d\'annonce en haut','announcement.desc':'Affichée comme une bande rouge défilante au-dessus de l\'en-tête sur chaque page. Laissez le texte vide ou désactivez-la pour la masquer.',
           'announcement.textLabel':'Texte de l\'annonce','announcement.textEn':'Texte (Anglais) *','announcement.textFr':'Texte (Français)','announcement.textAr':'Texte (Arabe)',
           'announcement.linkLabel':'Lien (optionnel)','announcement.linkTextEn':'Texte du lien (Anglais)','announcement.linkTextFr':'Texte du lien (Français)','announcement.linkTextAr':'Texte du lien (Arabe)','announcement.linkUrl':'URL du lien',
           'announcement.save':'Enregistrer l\'annonce',
+          'hero.title':'Diaporama d\'accueil','hero.select':'Images du diaporama',
+          'hero.desc':'Ces éléments défilent automatiquement dans la bannière en haut de la page d\'accueil. Chaque emplacement accepte une image ou une courte vidéo en boucle — utilisez des visuels larges (paysage), idéalement au moins 1920×1080px, pour un rendu net sur grand écran.',
+          'hero.save':'Enregistrer le diaporama',
           'page.stock':'Gestion du stock','page.settings':'Paramètres',
           'status.active':'Actif','status.inactive':'Inactif','status.waiting':'En attente',
           'status.confirmed':'Confirmé','status.delivered':'Livré','status.canceled':'Annulé',
@@ -300,7 +307,7 @@
         ar: {
           'nav.main':'الرئيسية','nav.store':'المتجر','nav.admin':'الإدارة',
           'nav.dashboard':'لوحة التحكم','nav.products':'المنتجات','nav.categories':'الفئات',
-          'nav.delivery':'أسعار التوصيل','nav.bundle':'الحزمة','nav.announcement':'الإعلان','nav.orders':'الطلبات',
+          'nav.delivery':'أسعار التوصيل','nav.bundle':'الحزمة','nav.announcement':'الإعلان','nav.hero':'شريط الصور الرئيسي','nav.orders':'الطلبات',
           'nav.stock':'المخزون','nav.settings':'الإعدادات','nav.backToSite':'العودة للموقع',
           'nav.superAdmin':'مدير عام',
           'tb.live':'مباشر','tb.logout':'تسجيل الخروج',
@@ -379,11 +386,14 @@
           'confirm.title':'هل أنت متأكد؟','confirm.default':'لا يمكن التراجع عن هذا الإجراء.',
           'confirm.delete':'حذف',
           'page.dashboard':'لوحة التحكم','page.products':'المنتجات','page.categories':'الفئات',
-          'page.delivery':'أسعار التوصيل','page.bundle':'الحزمة','page.announcement':'الإعلان','page.orders':'الطلبات',
+          'page.delivery':'أسعار التوصيل','page.bundle':'الحزمة','page.announcement':'الإعلان','page.hero':'شريط الصور الرئيسي','page.orders':'الطلبات',
           'announcement.title':'شريط الإعلان','announcement.select':'شريط الإعلان العلوي','announcement.desc':'يظهر كشريط أحمر متحرك أعلى الترويسة في كل صفحة. اترك النص فارغًا أو عطّله لإخفائه.',
           'announcement.textLabel':'نص الإعلان','announcement.textEn':'النص (إنجليزي) *','announcement.textFr':'النص (فرنسي)','announcement.textAr':'النص (عربي)',
           'announcement.linkLabel':'رابط (اختياري)','announcement.linkTextEn':'نص الرابط (إنجليزي)','announcement.linkTextFr':'نص الرابط (فرنسي)','announcement.linkTextAr':'نص الرابط (عربي)','announcement.linkUrl':'رابط URL',
           'announcement.save':'حفظ الإعلان',
+          'hero.title':'شريط الصور الرئيسي','hero.select':'صور الشريط الرئيسي',
+          'hero.desc':'تتناوب هذه العناصر تلقائيًا في البانر الرئيسي أعلى الصفحة الرئيسية. يقبل كل مكان صورة أو مقطع فيديو قصيرًا متكررًا — استخدم لقطات أفقية عريضة، يفضل بدقة 1920×1080 بكسل على الأقل، لمظهر واضح على الشاشات الكبيرة.',
+          'hero.save':'حفظ شريط الصور',
           'page.stock':'إدارة المخزون','page.settings':'الإعدادات',
           'status.active':'نشط','status.inactive':'غير نشط','status.waiting':'قيد الانتظار',
           'status.confirmed':'مؤكد','status.delivered':'تم التوصيل','status.canceled':'ملغى',
@@ -796,7 +806,12 @@
             var el = document.getElementById(elId);
             if (el) el.value = settings[annFields[elId]] || "";
           });
+          // Hero slider settings
+          for (var hi = 0; hi < heroSlideUrls.length; hi++) {
+            heroSlideUrls[hi] = settings["hero_slide_" + (hi + 1)] || "";
+          }
         }
+        renderHeroSlideGrid();
         renderCats();
         renderProducts();
         renderDelivery();
@@ -1203,6 +1218,20 @@
       }
 
       // ════════════════════════════════════════════
+      // THEME — light by default, dark is opt-in
+      // ════════════════════════════════════════════
+      function toggleAdminTheme() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('bybens_theme', 'light');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('bybens_theme', 'dark');
+        }
+      }
+
+      // ════════════════════════════════════════════
       // SIDEBAR & NAV
       // ════════════════════════════════════════════
       function toggleSidebar() {
@@ -1226,6 +1255,7 @@
         delivery: () => t('page.delivery'),
         bundle: () => t('page.bundle'),
         announcement: () => t('page.announcement'),
+        hero: () => t('page.hero'),
         orders: () => t('page.orders'),
         stock: () => t('page.stock'),
         settings: () => t('page.settings'),
@@ -2289,6 +2319,82 @@
           if (!r.success) throw new Error(r.error || "Unknown error");
           Object.assign(settings, updates);
           showToast("Announcement saved!");
+        } catch (e) {
+          showToast("Save failed: " + (e.message || "Unknown error"), "error");
+        } finally {
+          hideLoading();
+        }
+      }
+
+      // ════════════════════════════════════════════
+      // HERO SLIDER (homepage hero banner images)
+      // ════════════════════════════════════════════
+      function _isHeroVideoUrl(url) {
+        return /\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(url || "");
+      }
+      function renderHeroSlideGrid() {
+        const grid = document.getElementById("hero-slides-grid");
+        if (!grid) return;
+        grid.innerHTML = heroSlideUrls
+          .map((url, i) => {
+            if (url) {
+              const isVideo = _isHeroVideoUrl(url);
+              const media = isVideo
+                ? `<video src="${url}" muted loop autoplay playsinline></video><span class="hero-slide-video-badge">VIDEO</span>`
+                : `<img src="${url}" />`;
+              return `<div class="hero-slide-thumb">
+                ${media}
+                <span class="hero-slide-num-badge">${i + 1}</span>
+                <span class="hero-slide-remove-btn" onclick="removeHeroSlide(${i})">×</span>
+              </div>`;
+            }
+            return `<div class="hero-slide-thumb hero-slide-thumb-empty">
+              <input type="file" accept="image/*,video/*" onchange="handleHeroSlideUpload(event, ${i})" />
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>Slide ${i + 1}</span>
+            </div>`;
+          })
+          .join("");
+      }
+      function removeHeroSlide(i) {
+        heroSlideUrls[i] = "";
+        renderHeroSlideGrid();
+      }
+      async function handleHeroSlideUpload(e, i) {
+        const file = e.target.files[0];
+        if (!file) return;
+        e.target.value = "";
+        const isVideo = file.type.startsWith("video/");
+        showLoading(isVideo ? "Uploading video…" : "Uploading image…");
+        try {
+          const fd = new FormData();
+          fd.append("file", file);
+          fd.append("upload_preset", CLOUDINARY_PRESET);
+          fd.append("folder", "taurusfit-hero");
+          const endpoint = isVideo ? "video" : "image";
+          const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/${endpoint}/upload`, { method: "POST", body: fd });
+          const data = await res.json();
+          if (data.secure_url) {
+            heroSlideUrls[i] = data.secure_url;
+            renderHeroSlideGrid();
+            showToast(isVideo ? "Video uploaded!" : "Image uploaded!");
+          } else {
+            showToast("Upload failed: " + (data.error?.message || "Unknown"), "error");
+          }
+        } catch (err) {
+          showToast("Upload error: " + err.message, "error");
+        }
+        hideLoading();
+      }
+      async function saveHeroSlides() {
+        showLoading("Saving…");
+        try {
+          const updates = {};
+          heroSlideUrls.forEach((url, i) => { updates["hero_slide_" + (i + 1)] = url || ""; });
+          const r = await apiPost({ action: "updateSettings", updates });
+          if (!r.success) throw new Error(r.error || "Unknown error");
+          Object.assign(settings, updates);
+          showToast("Hero slider saved!");
         } catch (e) {
           showToast("Save failed: " + (e.message || "Unknown error"), "error");
         } finally {

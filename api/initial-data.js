@@ -1,6 +1,5 @@
-const SUPABASE_URL = "https://rgbmfstbvqzvgxadjxrb.supabase.co";
-const SUPABASE_SERVICE_ROLE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnYm1mc3RidnF6dmd4YWRqeHJiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Mjk0NzE0NiwiZXhwIjoyMDk4NTIzMTQ2fQ.T3bCjDYdYQDOcT-TFPCTy7shEnU13kwZaaO9K5e87yU";
+const SUPABASE_URL = process.env.SUPABASE_URL || "https://atexotjtbvcsfyzhpcum.supabase.co";
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 const SB_HEADERS = {
   apikey: SUPABASE_SERVICE_ROLE_KEY,
