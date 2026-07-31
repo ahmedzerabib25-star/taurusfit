@@ -131,7 +131,20 @@
       "Bash(sed -i 's/product-detail\\\\/index\\\\.css?v=12/product-detail\\\\/index.css?v=13/' supplements/product-detail/index.html)",
       "Bash(sed -i 's/checkout\\\\/index\\\\.css?v=11/checkout\\\\/index.css?v=12/' supplements/checkout/index.html)",
       "Bash(where supabase *)",
-      "Bash(supabase secrets *)"
+      "Bash(supabase secrets *)",
+      "Bash(where vercel *)",
+      "Bash(vercel whoami *)",
+      "mcp__plugin_vercel_vercel__list_teams",
+      "mcp__plugin_vercel_vercel__get_project",
+      "mcp__plugin_vercel_vercel__get_runtime_errors",
+      "Bash(grep -rln \"SUPABASE_SERVICE_ROLE_KEY\\\\s*=\\\\s*[\\\\\"'a-zA-Z0-9]\" . --include=\"*.env*\")",
+      "Bash(find . -maxdepth 2 -iname \".env*\")",
+      "Bash(cat .env)",
+      "Bash(cat .env.local)",
+      "Bash(vercel teams *)",
+      "Bash(vercel link *)",
+      "Bash(vercel env *)",
+      "Bash(vercel --prod --yes)"
     ]
   }
 }
