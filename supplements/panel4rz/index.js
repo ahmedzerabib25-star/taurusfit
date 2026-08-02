@@ -61,6 +61,7 @@
       let currentImageUrls = [];
       let currentCatImageUrl = "";
       let heroSlideUrls = ["", "", "", "", ""];
+      let heroTitleValues = [1, 2, 3, 4].map(() => ({ en: "", fr: "", ar: "", productId: "" }));
       let categories = [],
         subCategories = [],
         subSubCategories = [],
@@ -810,8 +811,16 @@
           for (var hi = 0; hi < heroSlideUrls.length; hi++) {
             heroSlideUrls[hi] = settings["hero_slide_" + (hi + 1)] || "";
           }
+          // Hero panel titles + linked product
+          heroTitleValues.forEach(function (row, ti) {
+            ["en", "fr", "ar"].forEach(function (lang) {
+              row[lang] = settings["hero_panel_" + (ti + 1) + "_title_" + lang] || "";
+            });
+            row.productId = settings["hero_panel_" + (ti + 1) + "_product_id"] || "";
+          });
         }
         renderHeroSlideGrid();
+        renderHeroTitleGrid();
         renderCats();
         renderProducts();
         renderDelivery();
@@ -2395,6 +2404,61 @@
           if (!r.success) throw new Error(r.error || "Unknown error");
           Object.assign(settings, updates);
           showToast("Hero slider saved!");
+        } catch (e) {
+          showToast("Save failed: " + (e.message || "Unknown error"), "error");
+        } finally {
+          hideLoading();
+        }
+      }
+
+      function renderHeroTitleGrid() {
+        const grid = document.getElementById("hero-titles-grid");
+        if (!grid) return;
+        const productOptions = (list) => {
+          let html = '<option value="">— No link —</option>';
+          html += list
+            .map((p) => `<option value="${p.id}">${_esc(p.nameEn || p.name || "Unnamed")}</option>`)
+            .join("");
+          return html;
+        };
+        grid.innerHTML = heroTitleValues
+          .map(
+            (row, i) => `
+          <div class="hero-title-block">
+            <div class="hero-title-row">
+              <span class="hero-title-row-label">Panel ${i + 1}</span>
+              <input type="text" class="form-control" placeholder="EN" value="${(row.en || "").replace(/"/g, "&quot;")}" oninput="heroTitleValues[${i}].en = this.value" />
+              <input type="text" class="form-control" placeholder="FR" value="${(row.fr || "").replace(/"/g, "&quot;")}" oninput="heroTitleValues[${i}].fr = this.value" />
+              <input type="text" class="form-control" placeholder="AR" value="${(row.ar || "").replace(/"/g, "&quot;")}" oninput="heroTitleValues[${i}].ar = this.value" />
+            </div>
+            <div class="hero-title-link-row">
+              <span class="hero-title-row-label">Links to</span>
+              <select class="form-control" onchange="heroTitleValues[${i}].productId = this.value">
+                ${productOptions(products).replace(
+                  `value="${row.productId}"`,
+                  `value="${row.productId}" selected`
+                )}
+              </select>
+            </div>
+          </div>`
+          )
+          .join("");
+      }
+
+      async function saveHeroPanelTitles() {
+        showLoading("Saving…");
+        try {
+          const updates = {};
+          heroTitleValues.forEach((row, i) => {
+            updates["hero_panel_" + (i + 1) + "_title_en"] = row.en || "";
+            updates["hero_panel_" + (i + 1) + "_title_fr"] = row.fr || "";
+            updates["hero_panel_" + (i + 1) + "_title_ar"] = row.ar || "";
+            updates["hero_panel_" + (i + 1) + "_product_id"] = row.productId || "";
+          });
+          const r = await apiPost({ action: "updateSettings", updates });
+          if (!r.success) throw new Error(r.error || "Unknown error");
+          Object.assign(settings, updates);
+          showToast("Panel content saved!");
         } catch (e) {
           showToast("Save failed: " + (e.message || "Unknown error"), "error");
         } finally {

@@ -1477,6 +1477,45 @@
       }
       html[dir="rtl"] .hero-slide-video-badge { left: auto; right: 8px; }
 
+      /* ── Hero panel titles + product link ── */
+      .hero-titles-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 4px;
+      }
+      .hero-title-block {
+        border: 1px solid var(--g100);
+        border-radius: 10px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .hero-title-row {
+        display: grid;
+        grid-template-columns: 90px repeat(3, 1fr);
+        gap: 10px;
+        align-items: center;
+      }
+      .hero-title-link-row {
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        gap: 10px;
+        align-items: center;
+      }
+      .hero-title-row-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--g600);
+      }
+      @media (max-width: 700px) {
+        .hero-title-row,
+        .hero-title-link-row {
+          grid-template-columns: 1fr;
+        }
+      }
+
       /* ── Variants & Flavors ── */
       .variants-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
       .variant-row {

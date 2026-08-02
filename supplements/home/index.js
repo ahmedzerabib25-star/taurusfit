@@ -795,6 +795,7 @@ function renderCategoryGrid() {
 function switchLang(lang) {
   localStorage.setItem("bybens_lang", lang);
   if (window.updateAnnouncementLang) window.updateAnnouncementLang(lang);
+  if (window.updateHeroPanelTitlesLang) window.updateHeroPanelTitlesLang(lang);
 
   currentLang = lang;
   const t = i18n[lang];
@@ -1058,6 +1059,9 @@ async function loadInitialData() {
           else slideEl.appendChild(img);
         }
       });
+      if (window.refreshHeroPanels) window.refreshHeroPanels();
+      if (window.setHeroPanelTitleSettings) window.setHeroPanelTitleSettings(res.settings, currentLang);
+      if (window.setHeroPanelLinks) window.setHeroPanelLinks(res.settings);
     }
 
     // ── Products ──
@@ -1304,49 +1308,126 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 })();
 
-// 6. Hero image slider — autoplay, dots, arrows, swipe
+// 6. Hero — 4 static sliced panels, no rotation, no text. Hover zooms
+//    the individual photo in 3D. #heroSlider (hidden) is just the data
+//    source that admin uploads (hero_slide_1..5) write into.
 (function() {
-  var slider = document.getElementById('heroSlider');
-  if (!slider) return;
-  var slides = Array.prototype.slice.call(slider.querySelectorAll('.hero-slide'));
-  var dotsWrap = document.getElementById('heroDots');
-  var idx = 0;
-  var timer = null;
-  var AUTOPLAY_MS = 5000;
+  var sourceWrap = document.getElementById('heroSlider');
+  var panelsWrap = document.getElementById('heroPanels');
+  if (!sourceWrap || !panelsWrap) return;
+  var panels = Array.prototype.slice.call(panelsWrap.querySelectorAll('.hero-panel'));
 
-  dotsWrap.innerHTML = slides.map(function(_, i) {
-    return '<button class="hero-dot' + (i === 0 ? ' active' : '') + '" aria-label="Go to slide ' + (i + 1) + '" onclick="heroSliderGoTo(' + i + ')"></button>';
-  }).join('');
-  var dots = Array.prototype.slice.call(dotsWrap.querySelectorAll('.hero-dot'));
-
-  function show(i) {
-    idx = (i + slides.length) % slides.length;
-    slides.forEach(function(s, si) {
-      var active = si === idx;
-      s.classList.toggle('active', active);
-      var vid = s.querySelector('video');
-      if (vid) { if (active) vid.play().catch(function(){}); else vid.pause(); }
-    });
-    dots.forEach(function(d, di) { d.classList.toggle('active', di === idx); });
+  function getSources() {
+    return Array.prototype.slice.call(sourceWrap.querySelectorAll('.hero-slide'))
+      .map(function(s) {
+        var media = s.querySelector('img, video');
+        if (!media) return null;
+        return { tag: media.tagName.toLowerCase(), src: media.currentSrc || media.src };
+      })
+      .filter(Boolean);
   }
-  function stop() { if (timer) { clearInterval(timer); timer = null; } }
-  function start() { stop(); timer = setInterval(function() { show(idx + 1); }, AUTOPLAY_MS); }
 
-  window.heroSliderNav = function(dir) { show(idx + dir); start(); };
-  window.heroSliderGoTo = function(i) { show(i); start(); };
+  function buildMedia(item) {
+    var el = document.createElement(item.tag);
+    el.src = item.src;
+    if (item.tag === 'video') {
+      el.autoplay = true; el.muted = true; el.loop = true; el.playsInline = true;
+    } else {
+      el.alt = '';
+    }
+    return el;
+  }
 
-  slider.addEventListener('mouseenter', stop);
-  slider.addEventListener('mouseleave', start);
+  // Assigns the first N hero-slide sources to the N static panels.
+  // Re-run after admin-set hero images load so uploads reflect live.
+  window.refreshHeroPanels = function() {
+    var sources = getSources();
+    panels.forEach(function(panel, p) {
+      var item = sources[p % sources.length];
+      if (!item) return;
+      var media = panel.querySelector('.hero-panel-media');
+      media.innerHTML = '';
+      media.appendChild(buildMedia(item));
+    });
+  };
 
-  var touchStartX = null;
-  slider.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; stop(); }, { passive: true });
-  slider.addEventListener('touchend', function(e) {
-    if (touchStartX === null) return;
-    var dx = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(dx) > 40) show(idx + (dx < 0 ? 1 : -1));
-    touchStartX = null;
-    start();
-  }, { passive: true });
+  window.refreshHeroPanels();
 
-  start();
+  // ── Panel titles — admin-controlled via settings
+  //    (hero_panel_1_title_en/fr/ar .. hero_panel_4_title_*).
+  //    Falls back to the hardcoded example text if a slot isn't set. ──
+  var titleEls = panels.map(function(panel) {
+    return panel.querySelector('.hero-panel-title span');
+  });
+  var titleDefaults = titleEls.map(function(el) { return el ? el.textContent : ''; });
+  var titleSettings = null;
+
+  function applyTitle(i, lang) {
+    var el = titleEls[i];
+    if (!el) return;
+    var key = 'hero_panel_' + (i + 1) + '_title_' + lang;
+    var val = titleSettings && titleSettings[key];
+    el.textContent = (val && val.trim()) ? val.trim() : titleDefaults[i];
+  }
+
+  window.updateHeroPanelTitlesLang = function(lang) {
+    titleEls.forEach(function(_, i) { applyTitle(i, lang); });
+  };
+
+  window.setHeroPanelTitleSettings = function(settings, lang) {
+    titleSettings = settings || {};
+    window.updateHeroPanelTitlesLang(lang || 'fr');
+  };
+
+  // ── Click-through — each panel links to the product picked in the
+  //    admin panel (hero_panel_1_product_id .. hero_panel_4_product_id). ──
+  window.setHeroPanelLinks = function(settings) {
+    panels.forEach(function(panel, i) {
+      var productId = settings && settings['hero_panel_' + (i + 1) + '_product_id'];
+      panel.classList.toggle('is-linked', !!productId);
+      panel.onclick = productId
+        ? function() { window.location.href = '/product-detail?id=' + encodeURIComponent(productId); }
+        : null;
+    });
+  };
+
+  // ── Entrance reveal — panels drop/fade in once on load, staggered ──
+  panelsWrap.classList.add('pre-reveal');
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      panelsWrap.classList.add('reveal-in');
+    });
+  });
+  setTimeout(function() {
+    panelsWrap.classList.remove('pre-reveal', 'reveal-in');
+  }, 1400);
+
+  // ── Scroll parallax — panels drift at slightly different speeds ──
+  var heroEl = panelsWrap.closest('.hero');
+  var ticking = false;
+  var inView = true;
+  var PARALLAX_FACTORS = [0.06, -0.04, 0.05, -0.03];
+
+  function applyParallax() {
+    ticking = false;
+    if (!inView || !heroEl) return;
+    var rect = heroEl.getBoundingClientRect();
+    var progress = -rect.top; // 0 at top of viewport, grows as hero scrolls up
+    panels.forEach(function(panel, i) {
+      var factor = PARALLAX_FACTORS[i % PARALLAX_FACTORS.length];
+      panel.style.setProperty('--py', (progress * factor) + 'px');
+    });
+  }
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(applyParallax);
+  }
+  if (heroEl && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function(entries) {
+      inView = entries[0].isIntersecting;
+      if (inView) onScroll();
+    }).observe(heroEl);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
 })();

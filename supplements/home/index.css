@@ -343,19 +343,20 @@ input, textarea {
   display: flex;
   align-items: center;
   gap: 32px;
-  flex: 1;
-  justify-content: center;
+  flex: 0 0 auto;
 }
 
-/* Search Bar — row 2, frosted pill, cut corners */
-.nav-search-row {
+/* Search bar — now inline in the top row, right of the page links */
+.nav-search {
   display: flex;
+  align-items: center;
   justify-content: center;
-  padding-bottom: 16px;
+  flex: 1;
+  min-width: 0;
 }
 .search-wrap {
   width: 100%;
-  max-width: 460px;
+  max-width: 360px;
   position: relative;
   display: flex;
   align-items: center;
@@ -960,8 +961,11 @@ input, textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #F5F5F5;
-  text-align: center;
+  background: #0A0A0A;
+  margin-top: calc(var(--nav-h) + 1px);
+}
+.hero-media-source {
+  display: none;
 }
 .hero-media {
   position: absolute;
@@ -969,6 +973,153 @@ input, textarea {
   z-index: 0;
   overflow: hidden;
   background: #0A0A0A;
+}
+
+/* ─── SLICED HERO PANELS ─────────────────────────────────────
+   4 diagonally-skewed static photos, full color (no filter),
+   no rotation, no text. On hover the whole card lifts forward
+   with a 3D drop shadow — the photo inside stays put. */
+.hero-panels {
+  position: absolute;
+  inset: 0 -8vw;
+  z-index: 1;
+  display: flex;
+  overflow: visible;
+  background: #0A0A0A;
+}
+.hero-panel {
+  --py: 0px; /* parallax offset, set by JS on scroll */
+  position: relative;
+  flex: 1 0 0;
+  overflow: hidden;
+  transform: skewX(-9deg) translateY(var(--py));
+  margin-left: -4vw;
+  transition: transform 0.45s cubic-bezier(.25,.9,.35,1), box-shadow 0.45s ease;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+  will-change: transform;
+}
+.hero-panel.is-linked {
+  cursor: pointer;
+}
+.hero-panel:first-child {
+  margin-left: -2vw;
+}
+.hero-panel-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.hero-panel-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: skewX(9deg) scale(1.5);
+  transform-origin: center center;
+  transition: filter 0.45s ease, opacity 0.45s ease;
+}
+.hero-panel:hover {
+  z-index: 5;
+  transform: skewX(-9deg) scale(1.08) translateY(calc(var(--py) - 16px));
+  box-shadow:
+    0 40px 70px -12px rgba(0,0,0,0.65),
+    0 15px 30px -8px rgba(0,0,0,0.5);
+}
+.hero-panel:hover .hero-panel-media img {
+  transform: skewX(9deg) scale(1.9);
+}
+/* Rack-focus: while any panel is hovered, the rest soften and dim
+   slightly, like a camera pulling focus onto the hovered subject. */
+.hero-panels:has(.hero-panel:hover) .hero-panel:not(:hover) .hero-panel-media img {
+  filter: blur(3px) brightness(0.72);
+}
+
+/* Panel title — admin-controlled label per photo, counter-skewed so
+   it reads horizontally despite the panel's diagonal frame. */
+.hero-panel-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.65) 100%);
+  pointer-events: none;
+}
+.hero-panel-title {
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  bottom: 22px;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  transform: skewX(9deg);
+  pointer-events: none;
+  transition: transform 0.45s cubic-bezier(.25,.9,.35,1);
+}
+.hero-panel-title span {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 2px 14px rgba(0,0,0,0.85);
+  text-align: center;
+}
+.hero-panel:hover .hero-panel-title {
+  transform: skewX(9deg) translateY(-4px);
+}
+
+/* Entrance reveal — panels drop/fade in on first load, staggered. */
+.hero-panels.pre-reveal .hero-panel {
+  opacity: 0;
+  transform: skewX(-9deg) translateY(28px);
+  transition: transform 0.9s cubic-bezier(.16,.84,.32,1), opacity 0.9s ease;
+}
+.hero-panels.pre-reveal .hero-panel:nth-child(1) { transition-delay: 0s; }
+.hero-panels.pre-reveal .hero-panel:nth-child(2) { transition-delay: 0.1s; }
+.hero-panels.pre-reveal .hero-panel:nth-child(3) { transition-delay: 0.2s; }
+.hero-panels.pre-reveal .hero-panel:nth-child(4) { transition-delay: 0.3s; }
+.hero-panels.reveal-in .hero-panel {
+  opacity: 1;
+  transform: skewX(-9deg) translateY(var(--py));
+}
+
+.hero-panels::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(180deg, rgba(10,10,10,0.05) 0%, transparent 40%, rgba(10,10,10,0.35) 100%),
+    radial-gradient(ellipse at center, transparent 45%, rgba(10,10,10,0.5) 100%);
+  pointer-events: none;
+}
+
+/* ── Animated red/blue wave accents at the top and bottom of the hero ── */
+.hero-wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 68px;
+  overflow: hidden;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.45;
+}
+.hero-wave-top { top: 0; }
+.hero-wave-bottom { bottom: 0; }
+.hero-wave-svg {
+  display: block;
+  width: 200%;
+  height: 100%;
+  animation: heroWaveScroll 14s linear infinite;
+}
+.hero-wave-top .hero-wave-svg { animation-direction: normal; }
+.hero-wave-bottom .hero-wave-svg { animation-direction: reverse; }
+@keyframes heroWaveScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 .hero-slide {
   position: absolute;
@@ -1009,118 +1160,6 @@ input, textarea {
     linear-gradient(180deg, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0.6) 45%, rgba(10,10,10,0.88) 100%),
     linear-gradient(100deg, rgba(252,0,2,0.35) 0%, transparent 32%, transparent 68%, rgba(0,182,250,0.35) 100%);
 }
-.hero-nav {
-  position: absolute;
-  z-index: 3;
-  top: 50%;
-  left: 24px;
-  right: 24px;
-  display: flex;
-  justify-content: space-between;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-.hero-arrow {
-  pointer-events: all;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.3);
-  color: #FFFFFF;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border-radius: 50%;
-  transition: background .25s ease, border-color .25s ease, transform .25s ease;
-}
-.hero-arrow:hover {
-  background: var(--red);
-  border-color: var(--red);
-  transform: scale(1.06);
-}
-.hero-dots {
-  position: absolute;
-  z-index: 3;
-  bottom: 26px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 10px;
-}
-.hero-dot {
-  width: 26px;
-  height: 3px;
-  background: rgba(255,255,255,0.35);
-  transition: background .3s ease;
-  cursor: pointer;
-  border: none;
-  padding: 0;
-}
-.hero-dot.active {
-  background: var(--red);
-}
-.hero-inner {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 148px 24px 48px;
-  display: flex;
-  justify-content: center;
-}
-.hero-left {
-  max-width: 720px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.hero-eyebrow {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #00b6fa;
-  margin-bottom: 26px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(42px, 7.5vw, 92px);
-  line-height: 1.02;
-  font-weight: 400;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: #FFFFFF;
-  margin-bottom: 26px;
-  word-break: break-word;
-  max-width: 100%;
-}
-.hero-title em {
-  font-style: normal;
-  color: var(--red);
-}
-.hero-desc {
-  font-size: 15px;
-  line-height: 1.7;
-  color: rgba(245,245,245,0.82);
-  max-width: min(500px, 100%);
-  margin: 0 auto 38px;
-}
-.hero-ctas {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 48px;
-}
-
 /* ─── HERO BUTTONS — cut-corner shape, hardcoded colors ───────
    These always sit on the dark hero video, independent of the
    site's light/dark toggle, so colors are fixed hex, not vars. */
@@ -1168,43 +1207,6 @@ input, textarea {
   color: #0A0A0A;
   border-color: #FFFFFF;
   transform: translateY(-2px);
-}
-
-.hero-stats {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 32px 48px;
-  padding-top: 32px;
-  border-top: 1px solid rgba(245,245,245,0.2);
-}
-.stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.stat-num {
-  font-family: var(--font-display);
-  font-size: 32px;
-  color: #FFFFFF;
-  font-weight: 400;
-}
-.stat-label {
-  font-size: 11px;
-  color: rgba(245,245,245,0.65);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-top: 4px;
-}
-
-/* ─── HERO EYEBROW DECORATION ────────────────────────────── */
-.hero-eyebrow::before {
-  content: "";
-  display: inline-block;
-  width: 32px;
-  height: 1px;
-  background: var(--gold);
-  opacity: 0.9;
 }
 
 /* ─── CATEGORIES SECTION ─────────────────────────────────── */
@@ -2258,12 +2260,6 @@ input, textarea {
   .hero {
     min-height: 78vh;
   }
-  .hero-inner {
-    padding-top: 128px;
-  }
-  .hero-left {
-    max-width: 100%;
-  }
   .banner-section-intro {
     padding: 60px 0 40px;
   }
@@ -2319,9 +2315,6 @@ input, textarea {
 }
 
 @media (max-width: 768px) {
-  .nav-search-row {
-    padding-bottom: 12px;
-  }
   .search-wrap {
     max-width: 100%;
   }
@@ -2431,19 +2424,32 @@ input, textarea {
     font-size: 12px;
     letter-spacing: 0.2px;
   }
-  .hero-title {
-    font-size: clamp(38px, 8vw, 56px);
+  .hero-panel {
+    transform: skewX(-6deg);
+    margin-left: -8vw;
   }
-  .hero-arrow {
-    width: 36px;
-    height: 36px;
+  .hero-panel:first-child {
+    margin-left: -4vw;
   }
-  .hero-nav {
-    left: 12px;
-    right: 12px;
+  .hero-panel-media img {
+    transform: skewX(6deg) scale(1.7);
   }
-  .hero-dots {
-    bottom: 16px;
+  .hero-panel:hover {
+    transform: skewX(-6deg) scale(1.06) translateY(-10px);
+  }
+  .hero-panel-title {
+    left: -60%;
+    right: -60%;
+    bottom: 10px;
+    transform: skewX(6deg);
+  }
+  .hero-panel:hover .hero-panel-title {
+    transform: skewX(6deg) translateY(-4px);
+  }
+  .hero-panel-title span {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.9);
   }
   .marquee-item {
     font-size: 10px;
@@ -2468,18 +2474,6 @@ input, textarea {
     width: 44px;
     height: 44px;
   }
-  .hero-stats {
-    gap: 12px 20px;
-    padding-top: 20px;
-    flex-wrap: nowrap;
-  }
-  .stat-num {
-    font-size: 24px;
-  }
-  .stat-label {
-    font-size: 9px;
-    letter-spacing: 0.5px;
-  }
   .featured-banner {
     margin: 0 0 48px;
   }
@@ -2496,18 +2490,13 @@ input, textarea {
 
 /* ─── ARABIC / RTL ────────────────────────────────────────── */
 body.lang-ar,
-body.lang-ar .hero-title,
 body.lang-ar .section-title,
-body.lang-ar .stat-num,
 body.lang-ar .banner-title,
 body.lang-ar .hiw-title,
 body.lang-ar .category-card-name,
 body.lang-ar .logo-img,
 body.lang-ar .mm-brand {
   font-family: var(--font-arabic);
-}
-body.lang-ar .hero-title em {
-  font-style: normal;
 }
 [dir="rtl"] .search-btn {
   right: auto;

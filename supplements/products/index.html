@@ -21,7 +21,7 @@
         .catch(function () { return null; });
     </script>
 
-    <link rel="stylesheet" href="/supplements/home/index.css?v=45" />
+    <link rel="stylesheet" href="/supplements/home/index.css?v=61" />
     <link rel="stylesheet" href="/supplements/products/index.css?v=3" />
     <script>if(sessionStorage.getItem('bb_wl'))document.documentElement.classList.add('bb-noanim');</script>
   </head>
@@ -59,6 +59,24 @@
             <a href="/" class="nav-link" data-i18n="nav.home">Home</a>
             <a href="/products" class="nav-link active" data-i18n="nav.products">Products</a>
             <a href="#footerPlaceholder" class="nav-link" onclick="scrollToFooter(event)" data-i18n="nav.contact">Contact</a>
+          </div>
+
+          <div class="nav-search">
+          <div class="search-wrap" role="search" id="desktopSearch">
+            <svg class="search-icon-lead" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input
+              type="search"
+              id="searchInput"
+              data-i18n="search.placeholder"
+              placeholder="Search barbells, plates, gear…"
+              aria-label="Search products"
+              autocomplete="off"
+              oninput="handleSearch(this.value)"
+            />
+          </div>
           </div>
 
           <!-- Right Controls -->
@@ -100,25 +118,6 @@
             </button>
           </div>
         </nav>
-
-        <!-- Row 2: centered search bar -->
-        <div class="nav-search-row">
-          <div class="search-wrap" role="search" id="desktopSearch">
-            <svg class="search-icon-lead" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
-            </svg>
-            <input
-              type="search"
-              id="searchInput"
-              data-i18n="search.placeholder"
-              placeholder="Search barbells, plates, gear…"
-              aria-label="Search products"
-              autocomplete="off"
-              oninput="handleSearch(this.value)"
-            />
-          </div>
-        </div>
       </div>
     </header>
 

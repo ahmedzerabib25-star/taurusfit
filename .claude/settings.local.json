@@ -144,7 +144,23 @@
       "Bash(vercel teams *)",
       "Bash(vercel link *)",
       "Bash(vercel env *)",
-      "Bash(vercel --prod --yes)"
+      "Bash(vercel --prod --yes)",
+      "Bash(sed -i 's/home\\\\/index\\\\.css?v=45/home\\\\/index.css?v=46/' supplements/checkout/index.html supplements/home/index.html supplements/privacy/index.html supplements/product-detail/index.html supplements/products/index.html)",
+      "Bash(sed -i 's/home\\\\/index\\\\.js?v=33/home\\\\/index.js?v=34/' supplements/home/index.html)",
+      "Bash(sed -i 's/home\\\\/index\\\\.css?v=46/home\\\\/index.css?v=47/' supplements/checkout/index.html supplements/home/index.html supplements/privacy/index.html supplements/product-detail/index.html supplements/products/index.html)",
+      "Bash(sed -i 's/home\\\\/index\\\\.js?v=34/home\\\\/index.js?v=35/' supplements/home/index.html)",
+      "Bash(sort -t: -k2 -n -r)",
+      "Bash(sed -i 's/home\\\\/index\\\\.css?v=58/home\\\\/index.css?v=59/' supplements/checkout/index.html supplements/home/index.html supplements/privacy/index.html supplements/product-detail/index.html supplements/products/index.html)",
+      "Bash(sed -i 's/home\\\\/index\\\\.js?v=36/home\\\\/index.js?v=37/' supplements/home/index.html)",
+      "Bash(sed -i 's/panel4rz\\\\/index\\\\.css?v=26/panel4rz\\\\/index.css?v=27/' supplements/panel4rz/index.html)",
+      "Bash(sed -i 's/panel4rz\\\\/index\\\\.js?v=35/panel4rz\\\\/index.js?v=36/' supplements/panel4rz/index.html)",
+      "Bash(nslookup taurusfit.vercel.app)",
+      "Bash(sed -n '/23[0-9][0-9]/p')",
+      "Bash(awk 'NR>=2380 && NR<=2420' supplements/home/index.css)",
+      "Bash(sed -i 's/home\\\\/index\\\\.css?v=60/home\\\\/index.css?v=61/' supplements/checkout/index.html supplements/home/index.html supplements/privacy/index.html supplements/product-detail/index.html supplements/products/index.html)",
+      "Bash(sed -i 's/home\\\\/index\\\\.js?v=37/home\\\\/index.js?v=38/' supplements/home/index.html)",
+      "Bash(sed -i 's/panel4rz\\\\/index\\\\.css?v=27/panel4rz\\\\/index.css?v=28/' supplements/panel4rz/index.html)",
+      "Bash(sed -i 's/panel4rz\\\\/index\\\\.js?v=36/panel4rz\\\\/index.js?v=37/' supplements/panel4rz/index.html)"
     ]
   }
 }
