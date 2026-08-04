@@ -160,7 +160,17 @@
       "Bash(sed -i 's/home\\\\/index\\\\.css?v=60/home\\\\/index.css?v=61/' supplements/checkout/index.html supplements/home/index.html supplements/privacy/index.html supplements/product-detail/index.html supplements/products/index.html)",
       "Bash(sed -i 's/home\\\\/index\\\\.js?v=37/home\\\\/index.js?v=38/' supplements/home/index.html)",
       "Bash(sed -i 's/panel4rz\\\\/index\\\\.css?v=27/panel4rz\\\\/index.css?v=28/' supplements/panel4rz/index.html)",
-      "Bash(sed -i 's/panel4rz\\\\/index\\\\.js?v=36/panel4rz\\\\/index.js?v=37/' supplements/panel4rz/index.html)"
+      "Bash(sed -i 's/panel4rz\\\\/index\\\\.js?v=36/panel4rz\\\\/index.js?v=37/' supplements/panel4rz/index.html)",
+      "Bash(sed -i 's/checkout\\\\/index\\\\.js?v=21/checkout\\\\/index.js?v=22/' supplements/checkout/index.html)",
+      "Bash(sed -i 's/home\\\\/index\\\\.js?v=38/home\\\\/index.js?v=39/' supplements/home/index.html)",
+      "Bash(sed -i 's/privacy\\\\/index\\\\.js?v=9/privacy\\\\/index.js?v=10/' supplements/privacy/index.html)",
+      "Bash(sed -i 's/product-detail\\\\/index\\\\.js?v=23/product-detail\\\\/index.js?v=24/' supplements/product-detail/index.html)",
+      "Bash(sed -i 's/products\\\\/index\\\\.js?v=7/products\\\\/index.js?v=8/' supplements/products/index.html)",
+      "Bash(node -e ' *)",
+      "Bash(python3 -c ' *)",
+      "Bash(file public/images/logo-dark.png)",
+      "Bash(ls -la images/logo-dark.png)",
+      "Bash(find . -iname \"logo-dark.png\")"
     ]
   }
 }

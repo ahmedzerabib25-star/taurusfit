@@ -954,6 +954,27 @@ document.addEventListener("click", (e) => {
 });
 
 /* ─────────────────────────────────────────────────────────────
+   MOBILE SEARCH OVERLAY (search icon → fullscreen blurred search)
+───────────────────────────────────────────────────────────── */
+function toggleMobileSearch(open) {
+  const nav = document.getElementById("navSearch");
+  const input = document.getElementById("searchInput");
+  if (!nav) return;
+  const isOpen = typeof open === "boolean" ? open : !nav.classList.contains("mobile-open");
+  nav.classList.toggle("mobile-open", isOpen);
+  document.body.style.overflow = isOpen ? "hidden" : "";
+  if (isOpen) {
+    setTimeout(() => input && input.focus(), 60);
+  } else {
+    closeSearchDropdown();
+  }
+}
+
+document.getElementById("navSearch")?.addEventListener("click", (e) => {
+  if (e.target.id === "navSearch") toggleMobileSearch(false);
+});
+
+/* ─────────────────────────────────────────────────────────────
    TOAST
 ───────────────────────────────────────────────────────────── */
 let toastTimer;

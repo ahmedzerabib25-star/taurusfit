@@ -1682,14 +1682,11 @@
             }, 30);
             document.getElementById("variants-list").innerHTML = "";
             document.getElementById("flavors-list").innerHTML = "";
-            const anyCustomVariant = (p.variants || []).some((v) => !v.sizeMode);
-            document.getElementById("pm-custom-variants").checked = anyCustomVariant;
             (p.variants || []).forEach((v) => addVariant(v));
             (p.flavors || []).forEach((f) => addFlavor(f));
             refreshStockMatrix();
           }
         } else {
-          document.getElementById("pm-custom-variants").checked = false;
           ["pm-name-en", "pm-name-fr", "pm-name-ar", "pm-brand-en", "pm-brand-fr", "pm-brand-ar", "pm-stock", "pm-discount"].forEach(
             (x) => (document.getElementById(x).value = ""),
           );
@@ -1733,20 +1730,9 @@
         const existingLabelEn = v ? (v.labelEn || v.label || (v.weight ? `${v.weight}${v.unit || ''}` : '')) : '';
         const existingLabelFr = v ? (v.labelFr || '') : '';
         const existingLabelAr = v ? (v.labelAr || '') : '';
-        const existingWidth = v && v.sizeMode ? (v.width || '') : '';
-        const existingHeight = v && v.sizeMode ? (v.height || '') : '';
-        const existingUnit = v && v.sizeMode ? (v.unit || 'cm') : 'cm';
-        const isCustomChecked = document.getElementById("pm-custom-variants")?.checked;
-        const showCustom = v ? !v.sizeMode : !!isCustomChecked;
         div.innerHTML = `
           <div class="form-group variant-label-wrap" style="flex:2">
-            <div class="variant-size-block" style="display:${showCustom ? "none" : "flex"};gap:6px;align-items:flex-end;flex-wrap:wrap">
-              <div style="flex:1"><label>${t('pm.width')}</label><input type="number" class="form-control variant-width-input" placeholder="120" value="${existingWidth}" min="0" oninput="refreshStockMatrix()" /></div>
-              <span style="padding-bottom:11px;color:var(--g400)">×</span>
-              <div style="flex:1"><label>${t('pm.height')}</label><input type="number" class="form-control variant-height-input" placeholder="180" value="${existingHeight}" min="0" oninput="refreshStockMatrix()" /></div>
-              <div style="width:66px"><label>${t('pm.unit')}</label><select class="form-control form-select variant-unit-input" onchange="refreshStockMatrix()"><option value="cm"${existingUnit === "cm" ? " selected" : ""}>cm</option><option value="m"${existingUnit === "m" ? " selected" : ""}>M</option></select></div>
-            </div>
-            <div class="variant-custom-block" style="display:${showCustom ? "block" : "none"}">
+            <div class="variant-custom-block">
               <label>Label</label>
               <input type="text" class="form-control variant-label-input" placeholder="EN *" value="${existingLabelEn}" oninput="refreshStockMatrix()" />
               <input type="text" class="form-control variant-label-fr" placeholder="FR" value="${existingLabelFr}" style="margin-top:4px" />
@@ -1759,29 +1745,9 @@
         refreshStockMatrix();
       }
 
-      /* Returns the display label for a variant row regardless of which
-         input mode (standard size vs. free-text) is currently active. */
+      /* Returns the display label for a variant row (free-text custom label). */
       function _variantRowLabel(row) {
-        const isCustom = document.getElementById("pm-custom-variants")?.checked;
-        if (isCustom) {
-          return (row.querySelector(".variant-label-input")?.value || "").trim();
-        }
-        const w = (row.querySelector(".variant-width-input")?.value || "").trim();
-        const h = (row.querySelector(".variant-height-input")?.value || "").trim();
-        const u = row.querySelector(".variant-unit-input")?.value || "cm";
-        if (!w || !h) return "";
-        return `${w}${u} X ${h}${u}`;
-      }
-
-      function toggleVariantInputMode() {
-        const isCustom = document.getElementById("pm-custom-variants")?.checked;
-        document.querySelectorAll("#variants-list .variant-size-block").forEach((el) => {
-          el.style.display = isCustom ? "none" : "flex";
-        });
-        document.querySelectorAll("#variants-list .variant-custom-block").forEach((el) => {
-          el.style.display = isCustom ? "block" : "none";
-        });
-        refreshStockMatrix();
+        return (row.querySelector(".variant-label-input")?.value || "").trim();
       }
 
       function addFlavor(f = null) {
@@ -1911,25 +1877,14 @@
         const showMatrix = document.getElementById("stock-matrix-section").style.display !== "none";
         const showVStock = document.getElementById("variant-stock-section").style.display !== "none";
 
-        const isCustomVariants = document.getElementById("pm-custom-variants")?.checked;
         const variants = Array.from(document.querySelectorAll("#variants-list .variant-row"))
           .map((r, vi) => {
-            let label, labelEn, labelFr, labelAr, width, height, unit;
-            if (isCustomVariants) {
-              labelEn = r.querySelector(".variant-label-input")?.value.trim() || "";
-              labelFr = r.querySelector(".variant-label-fr")?.value.trim() || "";
-              labelAr = r.querySelector(".variant-label-ar")?.value.trim() || "";
-              label = labelEn;
-            } else {
-              width = r.querySelector(".variant-width-input")?.value.trim() || "";
-              height = r.querySelector(".variant-height-input")?.value.trim() || "";
-              unit = r.querySelector(".variant-unit-input")?.value || "cm";
-              label = (width && height) ? `${width}${unit} X ${height}${unit}` : "";
-              labelEn = labelFr = labelAr = label;
-            }
+            const labelEn = r.querySelector(".variant-label-input")?.value.trim() || "";
+            const labelFr = r.querySelector(".variant-label-fr")?.value.trim() || "";
+            const labelAr = r.querySelector(".variant-label-ar")?.value.trim() || "";
+            const label = labelEn;
             const priceEl = r.querySelector(".variant-price-input");
             const v = { label, labelEn, labelFr, labelAr, price: parseFloat(priceEl?.value) || 0 };
-            if (!isCustomVariants) { v.sizeMode = true; v.width = width; v.height = height; v.unit = unit; }
             if (showMatrix) {
               v.flavorStock = {};
               document.querySelectorAll(`#stock-matrix-body input[data-vi="${vi}"]`).forEach(inp => {

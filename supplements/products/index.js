@@ -872,6 +872,21 @@ function handleSearch(query) {
   renderChips();
 }
 
+function toggleMobileSearch(open) {
+  const nav = document.getElementById("navSearch");
+  const input = document.getElementById("searchInput");
+  if (!nav) return;
+  const isOpen = typeof open === "boolean" ? open : !nav.classList.contains("mobile-open");
+  nav.classList.toggle("mobile-open", isOpen);
+  document.body.style.overflow = isOpen ? "hidden" : "";
+  if (isOpen) {
+    setTimeout(() => input && input.focus(), 60);
+  } else if (input) {
+    input.value = "";
+    handleSearch("");
+  }
+}
+
 function handleSort() {
   state.sort = document.getElementById("sortSelect").value;
   state.page = 1;
@@ -1181,4 +1196,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (searchInput) {
     searchInput.addEventListener("keydown", (e) => { if (e.key === "Escape") { searchInput.value = ""; handleSearch(""); } });
   }
+  document.getElementById("navSearch")?.addEventListener("click", (e) => {
+    if (e.target.id === "navSearch") toggleMobileSearch(false);
+  });
 });

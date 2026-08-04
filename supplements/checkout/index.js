@@ -3013,7 +3013,26 @@
         dropdown.classList.add("open");
       }
 
+      function toggleMobileSearch(open) {
+        const nav = document.getElementById("navSearch");
+        const input = document.getElementById("searchInput");
+        if (!nav) return;
+        const isOpen = typeof open === "boolean" ? open : !nav.classList.contains("mobile-open");
+        nav.classList.toggle("mobile-open", isOpen);
+        document.body.style.overflow = isOpen ? "hidden" : "";
+        if (isOpen) {
+          setTimeout(() => input && input.focus(), 60);
+        } else if (input) {
+          input.value = "";
+          const dd = document.getElementById("searchDropdown");
+          if (dd) { dd.classList.remove("open"); dd.innerHTML = ""; }
+        }
+      }
+
       document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("navSearch")?.addEventListener("click", (e) => {
+          if (e.target.id === "navSearch") toggleMobileSearch(false);
+        });
         const si = document.getElementById("searchInput");
         if (si) {
           si.addEventListener("keydown", (e) => {
