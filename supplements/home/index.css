@@ -986,6 +986,11 @@ input, textarea {
   background: #0A0A0A;
 }
 
+/* ─── MOBILE HERO — plain swipeable carousel, hidden on desktop ─── */
+.hero-mobile {
+  display: none;
+}
+
 /* ─── SLICED HERO PANELS ─────────────────────────────────────
    4 diagonally-skewed static photos, full color (no filter),
    no rotation, no text. On hover the whole card lifts forward
@@ -1043,7 +1048,7 @@ input, textarea {
 /* Rack-focus: while any panel is hovered, the rest soften and dim
    slightly, like a camera pulling focus onto the hovered subject. */
 .hero-panels:has(.hero-panel:hover) .hero-panel:not(:hover) .hero-panel-media img {
-  filter: blur(3px) brightness(0.72);
+  filter: grayscale(1) blur(3px) brightness(0.72);
 }
 
 /* Panel title — admin-controlled label per photo, counter-skewed so
@@ -2409,6 +2414,193 @@ input, textarea {
 }
 
 @media (max-width: 768px) {
+  /* Desktop cinematic sliced hero is replaced by a plain carousel on phones */
+  .hero {
+    display: block;
+    min-height: auto;
+    overflow: visible;
+  }
+  .hero-panels {
+    display: none;
+  }
+  .hero-mobile {
+    display: block;
+    position: relative;
+    width: 100%;
+    background: #0A0A0A;
+    padding-top: 22px;
+  }
+  .hero-mobile-headline {
+    padding: 0 20px 16px;
+    text-align: center;
+  }
+  .hero-mobile-eyebrow {
+    margin: 0 0 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .hero-mobile-heading {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 24px;
+    line-height: 1.15;
+    letter-spacing: 0.5px;
+    color: #fff;
+  }
+  .hero-mobile-heading em {
+    font-style: normal;
+    color: var(--red);
+  }
+  .hero-mobile-track {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    touch-action: pan-y;
+    border-radius: 14px;
+  }
+  .hero-mobile-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .hero-mobile-slide.active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+  }
+  .hero-mobile-slide.is-linked {
+    cursor: pointer;
+  }
+  .hero-mobile-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transform: scale(1);
+  }
+  /* Cinematic Ken Burns drift — alternates zoom-in / zoom-out per slide
+     so consecutive photos never repeat the exact same motion. */
+  .hero-mobile-slide.active img {
+    animation: heroKenBurnsIn 5.5s ease-out forwards;
+  }
+  .hero-mobile-slide:nth-child(2n).active img {
+    animation-name: heroKenBurnsOut;
+  }
+  @keyframes heroKenBurnsIn {
+    from { transform: scale(1) translate(0, 0); }
+    to   { transform: scale(1.16) translate(-1%, -1%); }
+  }
+  @keyframes heroKenBurnsOut {
+    from { transform: scale(1.16) translate(1%, 1%); }
+    to   { transform: scale(1) translate(0, 0); }
+  }
+  .hero-mobile-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0) 45%, rgba(10, 10, 10, 0.88) 100%);
+  }
+  .hero-mobile-title {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 18px;
+    font-family: var(--font-display);
+    font-size: 26px;
+    letter-spacing: 1px;
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  }
+  /* Quick white flash pulse on every slide change — a punchy,
+     shutter-like "gym transition" beat between photos. */
+  .hero-mobile-flash {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+    mix-blend-mode: overlay;
+  }
+  .hero-mobile-flash.pulse {
+    animation: heroMobileFlashPulse 0.35s ease-out;
+  }
+  @keyframes heroMobileFlashPulse {
+    0% { opacity: 0.4; }
+    100% { opacity: 0; }
+  }
+  .hero-mobile-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 10, 10, 0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 50%;
+    color: #fff;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.15s ease;
+  }
+  .hero-mobile-arrow:active {
+    transform: translateY(-50%) scale(0.9);
+  }
+  .hero-mobile-arrow-prev {
+    left: 12px;
+  }
+  .hero-mobile-arrow-next {
+    right: 12px;
+  }
+  .hero-mobile-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 0 12px;
+  }
+  .hero-mobile-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gray-200);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.3s ease, width 0.3s ease;
+  }
+  .hero-mobile-dot.active {
+    background: var(--gold);
+    width: 20px;
+    border-radius: 4px;
+  }
+  .hero-mobile-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 20px 20px;
+    height: 48px;
+    background: linear-gradient(100deg, var(--red), var(--blue, var(--red)));
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border-radius: 10px;
+  }
+
   .search-wrap {
     max-width: 100%;
   }
@@ -2437,11 +2629,6 @@ input, textarea {
   .product-name {
     font-size: 14px;
     margin-bottom: 4px;
-  }
-  .product-desc {
-    display: -webkit-box;
-    font-size: 12px;
-    margin: 0 0 8px;
   }
   .product-stock {
     font-size: 10px;

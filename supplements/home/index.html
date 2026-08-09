@@ -8,7 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://atexotjtbvcsfyzhpcum.supabase.co" />
-    <link rel="preload" as="image" href="/images/products/pexels-victorfreitas-1092874.jpg" fetchpriority="high" />
+    <link rel="preconnect" href="https://res.cloudinary.com" />
+    <link rel="preload" as="image" href="https://res.cloudinary.com/gcjqhpfk/image/upload/v1785913281/taurusfit-hero/sdrflv7xr8588jdf1fwx.jpg" fetchpriority="high" />
     <link
       href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cairo:wght@400;500;600;700&display=swap"
       rel="stylesheet"
@@ -22,7 +23,7 @@
         .catch(function () { return null; });
     </script>
 
-    <link rel="stylesheet" href="/supplements/home/index.css?v=64" />
+    <link rel="stylesheet" href="/supplements/home/index.css?v=69" />
     <script>if(sessionStorage.getItem('bb_wl'))document.documentElement.classList.add('bb-noanim');</script>
   </head>
   <body>
@@ -191,30 +192,30 @@
              write into these via loadInitialData() — the visible sliced panels below
              read their media from here. -->
         <div class="hero-media hero-media-source" aria-hidden="true" id="heroSlider">
-          <div class="hero-slide active"><img src="/images/products/pexels-victorfreitas-1092874.jpg" alt="" /></div>
-          <div class="hero-slide"><img src="/images/products/pexels-ketut-subiyanto-4853262.jpg" alt="" /></div>
-          <div class="hero-slide"><img src="/images/products/pexels-juho-alonen-1189389723-28636779.jpg" alt="" /></div>
-          <div class="hero-slide"><img src="/images/products/pexels-leonmart-1552251.jpg" alt="" /></div>
-          <div class="hero-slide"><img src="/images/products/pexels-leonmart-1552242.jpg" alt="" /></div>
+          <div class="hero-slide active"><img src="https://res.cloudinary.com/gcjqhpfk/image/upload/v1785913281/taurusfit-hero/sdrflv7xr8588jdf1fwx.jpg" alt="" /></div>
+          <div class="hero-slide"><img src="https://res.cloudinary.com/gcjqhpfk/image/upload/v1785760966/taurusfit-hero/wojwdyqjrp8b41tptzpf.jpg" alt="" /></div>
+          <div class="hero-slide"><img src="https://res.cloudinary.com/gcjqhpfk/image/upload/v1785760982/taurusfit-hero/mvq4fzpqqucrg0u7melp.jpg" alt="" /></div>
+          <div class="hero-slide"><img src="https://res.cloudinary.com/gcjqhpfk/image/upload/v1785761059/taurusfit-hero/mxugandstqxwgxeqnwrw.jpg" alt="" /></div>
+          <div class="hero-slide"><img src="https://res.cloudinary.com/gcjqhpfk/image/upload/v1785913281/taurusfit-hero/sdrflv7xr8588jdf1fwx.jpg" alt="" /></div>
         </div>
 
         <!-- Visible hero: 4 static slanted panels. No auto-rotation, no text —
              each panel just zooms/tilts in 3D on hover. -->
         <div class="hero-panels" id="heroPanels">
           <div class="hero-panel">
-            <div class="hero-panel-media"><img src="/images/products/pexels-victorfreitas-1092874.jpg" alt="" /></div>
+            <div class="hero-panel-media"><img src="https://res.cloudinary.com/gcjqhpfk/image/upload/v1785913281/taurusfit-hero/sdrflv7xr8588jdf1fwx.jpg" alt="" /></div>
             <div class="hero-panel-title"><span data-panel-title="1">PLATES</span></div>
           </div>
           <div class="hero-panel">
-            <div class="hero-panel-media"><img src="/images/products/pexels-ketut-subiyanto-4853262.jpg" alt="" /></div>
+            <div class="hero-panel-media"><img src="https://res.cloudinary.com/gcjqhpfk/image/upload/v1785760966/taurusfit-hero/wojwdyqjrp8b41tptzpf.jpg" alt="" /></div>
             <div class="hero-panel-title"><span data-panel-title="2">BARBELLS</span></div>
           </div>
           <div class="hero-panel">
-            <div class="hero-panel-media"><img src="/images/products/pexels-juho-alonen-1189389723-28636779.jpg" alt="" /></div>
+            <div class="hero-panel-media"><img src="https://res.cloudinary.com/gcjqhpfk/image/upload/v1785760982/taurusfit-hero/mvq4fzpqqucrg0u7melp.jpg" alt="" /></div>
             <div class="hero-panel-title"><span data-panel-title="3">KETTLEBELLS</span></div>
           </div>
           <div class="hero-panel">
-            <div class="hero-panel-media"><img src="/images/products/pexels-leonmart-1552251.jpg" alt="" /></div>
+            <div class="hero-panel-media"><img src="https://res.cloudinary.com/gcjqhpfk/image/upload/v1785761059/taurusfit-hero/mxugandstqxwgxeqnwrw.jpg" alt="" /></div>
             <div class="hero-panel-title"><span data-panel-title="4">RINGS</span></div>
           </div>
 
@@ -244,6 +245,56 @@
               <path d="M0,30 C150,-30 350,90 600,30 C850,-30 1050,90 1200,30 L1200,60 L0,60 Z" fill="url(#heroWaveGradBottom)" transform="translate(1200,0)" />
             </svg>
           </div>
+        </div>
+
+        <!-- Mobile hero — the sliced/hover-3D desktop layout doesn't
+             translate to touch screens, so phones get a cinematic
+             swipeable image carousel (Ken Burns zoom, crossfade + flash
+             transition, prev/next arrows, dots) with a motivational
+             headline and Shop Now CTA instead. Shares the same 4
+             admin-controlled sources/titles/product-links as the desktop
+             panels above. -->
+        <div class="hero-mobile" id="heroMobile">
+          <div class="hero-mobile-headline reveal">
+            <p class="hero-mobile-eyebrow" data-i18n="hero.eyebrow">CrossFit &amp; Gym Accessories, Built for Algeria</p>
+            <h1 class="hero-mobile-heading" data-i18n-html="hero.title">TRAIN <em>HARDER</em>. LIFT <em>HEAVIER</em>.</h1>
+          </div>
+          <div class="hero-mobile-track" id="heroMobileTrack">
+            <div class="hero-mobile-slide">
+              <img src="https://res.cloudinary.com/gcjqhpfk/image/upload/v1785913281/taurusfit-hero/sdrflv7xr8588jdf1fwx.jpg" alt="" />
+              <div class="hero-mobile-scrim"></div>
+              <span class="hero-mobile-title" data-mobile-panel-title="1">PLATES</span>
+            </div>
+            <div class="hero-mobile-slide">
+              <img src="https://res.cloudinary.com/gcjqhpfk/image/upload/v1785760966/taurusfit-hero/wojwdyqjrp8b41tptzpf.jpg" alt="" />
+              <div class="hero-mobile-scrim"></div>
+              <span class="hero-mobile-title" data-mobile-panel-title="2">BARBELLS</span>
+            </div>
+            <div class="hero-mobile-slide">
+              <img src="https://res.cloudinary.com/gcjqhpfk/image/upload/v1785760982/taurusfit-hero/mvq4fzpqqucrg0u7melp.jpg" alt="" />
+              <div class="hero-mobile-scrim"></div>
+              <span class="hero-mobile-title" data-mobile-panel-title="3">KETTLEBELLS</span>
+            </div>
+            <div class="hero-mobile-slide">
+              <img src="https://res.cloudinary.com/gcjqhpfk/image/upload/v1785761059/taurusfit-hero/mxugandstqxwgxeqnwrw.jpg" alt="" />
+              <div class="hero-mobile-scrim"></div>
+              <span class="hero-mobile-title" data-mobile-panel-title="4">RINGS</span>
+            </div>
+            <div class="hero-mobile-flash" id="heroMobileFlash" aria-hidden="true"></div>
+            <button class="hero-mobile-arrow hero-mobile-arrow-prev" id="heroMobilePrev" aria-label="Previous slide">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <button class="hero-mobile-arrow hero-mobile-arrow-next" id="heroMobileNext" aria-label="Next slide">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="hero-mobile-dots" id="heroMobileDots">
+            <button class="hero-mobile-dot" aria-label="Slide 1"></button>
+            <button class="hero-mobile-dot" aria-label="Slide 2"></button>
+            <button class="hero-mobile-dot" aria-label="Slide 3"></button>
+            <button class="hero-mobile-dot" aria-label="Slide 4"></button>
+          </div>
+          <a href="/products" class="hero-mobile-cta" data-i18n="hero.cta1">Shop Now</a>
         </div>
       </section>
 
@@ -529,7 +580,7 @@
     </div>
 
     <script src="/content.js" defer></script>
-    <script src="/supplements/home/index.js?v=39" defer></script>
+    <script src="/supplements/home/index.js?v=42" defer></script>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/supplements/supabase-client.js?v=8"></script>

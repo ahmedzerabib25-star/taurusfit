@@ -170,7 +170,10 @@
       "Bash(python3 -c ' *)",
       "Bash(file public/images/logo-dark.png)",
       "Bash(ls -la images/logo-dark.png)",
-      "Bash(find . -iname \"logo-dark.png\")"
+      "Bash(find . -iname \"logo-dark.png\")",
+      "Bash(npx --yes playwright --version)",
+      "Bash(npx playwright *)",
+      "Bash(echo \"exit: $?\")"
     ]
   }
 }

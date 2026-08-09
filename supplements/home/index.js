@@ -1338,12 +1338,23 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!sourceWrap || !panelsWrap) return;
   var panels = Array.prototype.slice.call(panelsWrap.querySelectorAll('.hero-panel'));
 
+  // ── Mobile hero (plain swipeable carousel) — shares the same 4
+  //    admin-controlled sources/titles/product-links as the desktop panels. ──
+  var mobileWrap = document.getElementById('heroMobile');
+  var mobileSlides = mobileWrap ? Array.prototype.slice.call(mobileWrap.querySelectorAll('.hero-mobile-slide')) : [];
+  var mobileDotsWrap = document.getElementById('heroMobileDots');
+  var mobileDots = mobileDotsWrap ? Array.prototype.slice.call(mobileDotsWrap.querySelectorAll('.hero-mobile-dot')) : [];
+
   function getSources() {
     return Array.prototype.slice.call(sourceWrap.querySelectorAll('.hero-slide'))
       .map(function(s) {
         var media = s.querySelector('img, video');
         if (!media) return null;
-        return { tag: media.tagName.toLowerCase(), src: media.currentSrc || media.src };
+        // .src reflects the attribute the instant it's assigned; .currentSrc
+        // lags until the browser actually finishes resolving/loading the
+        // image, so it can still report the *previous* URL right after an
+        // admin-driven src swap — always prefer .src here.
+        return { tag: media.tagName.toLowerCase(), src: media.src || media.currentSrc };
       })
       .filter(Boolean);
   }
@@ -1370,6 +1381,12 @@ document.addEventListener('DOMContentLoaded', () => {
       media.innerHTML = '';
       media.appendChild(buildMedia(item));
     });
+    mobileSlides.forEach(function(slide, p) {
+      var item = sources[p % sources.length];
+      var img = slide.querySelector('img');
+      if (!item || !img || item.tag === 'video') return;
+      img.src = item.src;
+    });
   };
 
   window.refreshHeroPanels();
@@ -1380,15 +1397,20 @@ document.addEventListener('DOMContentLoaded', () => {
   var titleEls = panels.map(function(panel) {
     return panel.querySelector('.hero-panel-title span');
   });
+  var mobileTitleEls = mobileSlides.map(function(slide) {
+    return slide.querySelector('.hero-mobile-title');
+  });
   var titleDefaults = titleEls.map(function(el) { return el ? el.textContent : ''; });
   var titleSettings = null;
 
   function applyTitle(i, lang) {
     var el = titleEls[i];
-    if (!el) return;
+    var mEl = mobileTitleEls[i];
     var key = 'hero_panel_' + (i + 1) + '_title_' + lang;
     var val = titleSettings && titleSettings[key];
-    el.textContent = (val && val.trim()) ? val.trim() : titleDefaults[i];
+    var text = (val && val.trim()) ? val.trim() : titleDefaults[i];
+    if (el) el.textContent = text;
+    if (mEl) mEl.textContent = text;
   }
 
   window.updateHeroPanelTitlesLang = function(lang) {
@@ -1409,6 +1431,13 @@ document.addEventListener('DOMContentLoaded', () => {
       panel.onclick = productId
         ? function() { window.location.href = '/product-detail?id=' + encodeURIComponent(productId); }
         : null;
+      var mSlide = mobileSlides[i];
+      if (mSlide) {
+        mSlide.classList.toggle('is-linked', !!productId);
+        mSlide.onclick = productId
+          ? function() { window.location.href = '/product-detail?id=' + encodeURIComponent(productId); }
+          : null;
+      }
     });
   };
 
@@ -1451,4 +1480,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }).observe(heroEl);
   }
   window.addEventListener('scroll', onScroll, { passive: true });
+
+  // ── Mobile carousel — dots + arrows + autoplay + swipe + flash transition ──
+  if (mobileWrap && mobileSlides.length) {
+    var mIndex = 0;
+    var mobileFlash = document.getElementById('heroMobileFlash');
+    var goToMobileSlide = function(i, silent) {
+      var next = (i + mobileSlides.length) % mobileSlides.length;
+      if (!silent && next !== mIndex && mobileFlash) {
+        mobileFlash.classList.remove('pulse');
+        void mobileFlash.offsetWidth; // restart animation
+        mobileFlash.classList.add('pulse');
+      }
+      mIndex = next;
+      mobileSlides.forEach(function(s, idx) { s.classList.toggle('active', idx === mIndex); });
+      mobileDots.forEach(function(d, idx) { d.classList.toggle('active', idx === mIndex); });
+    };
+    goToMobileSlide(0, true);
+
+    var autoplayTimer = null;
+    var startAutoplay = function() {
+      clearInterval(autoplayTimer);
+      autoplayTimer = setInterval(function() { goToMobileSlide(mIndex + 1); }, 4500);
+    };
+    startAutoplay();
+
+    mobileDots.forEach(function(dot, idx) {
+      dot.addEventListener('click', function() {
+        goToMobileSlide(idx);
+        startAutoplay();
+      });
+    });
+
+    var prevBtn = document.getElementById('heroMobilePrev');
+    var nextBtn = document.getElementById('heroMobileNext');
+    if (prevBtn) prevBtn.addEventListener('click', function() { goToMobileSlide(mIndex - 1); startAutoplay(); });
+    if (nextBtn) nextBtn.addEventListener('click', function() { goToMobileSlide(mIndex + 1); startAutoplay(); });
+
+    var touchStartX = 0;
+    mobileWrap.addEventListener('touchstart', function(e) {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    mobileWrap.addEventListener('touchend', function(e) {
+      var dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 40) {
+        goToMobileSlide(mIndex + (dx < 0 ? 1 : -1));
+        startAutoplay();
+      }
+    }, { passive: true });
+  }
 })();
