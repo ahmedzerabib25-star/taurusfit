@@ -173,7 +173,8 @@
       "Bash(find . -iname \"logo-dark.png\")",
       "Bash(npx --yes playwright --version)",
       "Bash(npx playwright *)",
-      "Bash(echo \"exit: $?\")"
+      "Bash(echo \"exit: $?\")",
+      "Bash(which vercel *)"
     ]
   }
 }

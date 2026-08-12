@@ -3041,6 +3041,7 @@
           "form.selectWilaya": "Select wilaya…",
           "form.selectWilayaFirst": "Select wilaya first",
           "form.orderNow": "Order Now",
+          "form.buyNow": "Buy Now",
           "form.orderSummary": "Order Summary",
           "form.product": "Product",
           "form.price": "Price",
@@ -3117,6 +3118,7 @@
           "form.selectWilaya": "Choisir la wilaya…",
           "form.selectWilayaFirst": "Choisir une wilaya d'abord",
           "form.orderNow": "Commander Maintenant",
+          "form.buyNow": "Acheter Maintenant",
           "form.orderSummary": "Récapitulatif",
           "form.product": "Produit",
           "form.price": "Prix",
@@ -3192,6 +3194,7 @@
           "form.selectWilaya": "اختر الولاية…",
           "form.selectWilayaFirst": "اختر الولاية أولاً",
           "form.orderNow": "اطلب الآن",
+          "form.buyNow": "اشترِ الآن",
           "form.orderSummary": "ملخص الطلب",
           "form.product": "المنتج",
           "form.price": "السعر",
@@ -3896,6 +3899,38 @@
           var scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
           bar.style.width = Math.min(scrolled, 100) + '%';
         }, { passive: true });
+      })();
+
+      /* ── FLOATING BUY NOW ── */
+      function scrollToOrderForm() {
+        var target = document.querySelector('.order-form-title') || document.getElementById('firstName');
+        if (!target) return;
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        var firstInput = document.getElementById('firstName');
+        if (firstInput) setTimeout(function () { firstInput.focus({ preventScroll: true }); }, 500);
+      }
+      window.scrollToOrderForm = scrollToOrderForm;
+
+      (function () {
+        var floatBtn = document.getElementById('buyNowFloat');
+        var pricing = document.querySelector('.product-detail-pricing');
+        var formTitle = document.querySelector('.order-form-title');
+        if (!floatBtn || !pricing || !formTitle) return;
+        var pastPricing = false;
+        var reachedForm = false;
+        var pricingObs = new IntersectionObserver(function (entries) {
+          pastPricing = entries[0].boundingClientRect.top < 0;
+          update();
+        }, { threshold: 0 });
+        var formObs = new IntersectionObserver(function (entries) {
+          reachedForm = entries[0].isIntersecting;
+          update();
+        }, { threshold: 0, rootMargin: '0px 0px -60% 0px' });
+        pricingObs.observe(pricing);
+        formObs.observe(formTitle);
+        function update() {
+          floatBtn.classList.toggle('show', pastPricing && !reachedForm);
+        }
       })();
 
       /* ══════════════════════════════════════════════════════
