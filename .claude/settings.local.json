@@ -174,7 +174,9 @@
       "Bash(npx --yes playwright --version)",
       "Bash(npx playwright *)",
       "Bash(echo \"exit: $?\")",
-      "Bash(which vercel *)"
+      "Bash(which vercel *)",
+      "mcp__claude_ai_Google_Drive__search_files",
+      "mcp__claude_ai_Google_Drive__read_file_content"
     ]
   }
 }

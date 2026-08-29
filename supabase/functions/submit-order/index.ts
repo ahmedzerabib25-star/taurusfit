@@ -4,6 +4,8 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") || "";
 const TELEGRAM_CHAT_ID = Deno.env.get("TELEGRAM_CHAT_ID") || "";
+const GOOGLE_SHEETS_WEBHOOK_URL = Deno.env.get("GOOGLE_SHEETS_WEBHOOK_URL") ||
+  "https://script.google.com/macros/s/AKfycbz6NiJwraBUx2sUsHVoKIZDJg7_lNjJYa9gSfcTMvO2cOz6mqu32TDXkEmnKgYOSEvU7Q/exec";
 
 const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
@@ -19,6 +21,31 @@ async function sendTelegram(message: string) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message, parse_mode: "HTML" }),
+    });
+  } catch (_) { /* silent */ }
+}
+
+async function sendToSheet(order: any) {
+  if (!GOOGLE_SHEETS_WEBHOOK_URL) return;
+  try {
+    const itemsArr: any[] = order.items || [];
+    await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nomComplet: `${order.firstName || ""} ${order.lastName || ""}`.trim(),
+        num: order.phone || "",
+        article: itemsArr.map((it) => it.name).join(" + "),
+        quantite: itemsArr.map((it) => it.qty).join(" + "),
+        adresse: order.address || "",
+        wilaya: order.wilaya || "",
+        commune: order.commune || "",
+        totalARamasser: order.total || 0,
+        idExterne: order.id,
+        stopdesk: order.deliveryType === "office" ? `${order.wilaya || ""} ${order.commune || ""}`.trim() : "",
+        refArticle: itemsArr.map((it) => it.productId).join(" + "),
+        date: new Date().toLocaleDateString("fr-DZ"),
+      }),
     });
   } catch (_) { /* silent */ }
 }
@@ -178,6 +205,12 @@ Deno.serve(async (req: Request) => {
 
     // Deduct stock
     await adjustStock(items || [], -1);
+
+    // Google Sheets sync
+    await sendToSheet({
+      id, firstName, lastName, phone, address, wilaya, commune,
+      deliveryType, total, items,
+    });
 
     // Telegram notification
     const orderItems: any[] = items || [];
