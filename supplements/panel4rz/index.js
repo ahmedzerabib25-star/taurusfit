@@ -818,7 +818,10 @@
             });
             row.productId = settings["hero_panel_" + (ti + 1) + "_product_id"] || "";
           });
+          // Facebook Pixel settings
+          pixelList = parsePixelList(settings.facebook_pixel_ids);
         }
+        renderPixelList();
         renderHeroSlideGrid();
         renderHeroTitleGrid();
         renderCats();
@@ -2283,6 +2286,118 @@
           if (!r.success) throw new Error(r.error || "Unknown error");
           Object.assign(settings, updates);
           showToast("Announcement saved!");
+        } catch (e) {
+          showToast("Save failed: " + (e.message || "Unknown error"), "error");
+        } finally {
+          hideLoading();
+        }
+      }
+
+      // ════════════════════════════════════════════
+      // FACEBOOK PIXEL MANAGEMENT
+      // ════════════════════════════════════════════
+      let pixelList = [];
+
+      function parsePixelList(raw) {
+        if (!raw) return [];
+        let list = raw;
+        if (typeof raw === "string") {
+          try {
+            list = JSON.parse(raw);
+          } catch (e) {
+            list = raw.split(",").map((s) => ({ id: s.trim(), label: "", active: true })).filter((x) => x.id);
+          }
+        }
+        if (!Array.isArray(list)) return [];
+        return list
+          .map((item) => {
+            if (typeof item === "string") return { id: item.trim(), label: "", active: true };
+            return {
+              id: String(item.id || "").trim(),
+              label: String(item.label || "").trim(),
+              active: item.active !== false && item.active !== "false",
+            };
+          })
+          .filter((x) => x.id);
+      }
+
+      function renderPixelList() {
+        const container = document.getElementById("pixel-list");
+        if (!container) return;
+        if (!pixelList.length) {
+          container.innerHTML = `<div style="color:var(--g400);font-size:13px">No Facebook Pixel IDs added yet.</div>`;
+          return;
+        }
+        container.innerHTML = pixelList
+          .map(
+            (item, idx) => `
+          <div class="pixel-item">
+            <div class="pixel-item-info">
+              <span class="pixel-item-id">${item.id}</span>
+              ${item.label ? `<span class="pixel-item-label">${item.label}</span>` : ""}
+            </div>
+            <div class="pixel-item-actions">
+              <label class="fd-switch" title="${item.active ? "Enabled" : "Disabled"}">
+                <input type="checkbox" ${item.active ? "checked" : ""} onchange="togglePixelStatus(${idx}, this.checked)">
+                <span class="fd-switch-slider"></span>
+              </label>
+              <button type="button" class="pixel-delete-btn" onclick="removePixelId(${idx})">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Delete
+              </button>
+            </div>
+          </div>
+        `,
+          )
+          .join("");
+      }
+
+      function addPixelId() {
+        const idEl = document.getElementById("new-pixel-id");
+        const labelEl = document.getElementById("new-pixel-label");
+        const id = (idEl.value || "").trim();
+        const label = (labelEl.value || "").trim();
+
+        if (!id) {
+          showToast("Please enter a valid Facebook Pixel ID", "error");
+          return;
+        }
+        if (pixelList.some((p) => p.id === id)) {
+          showToast("Pixel ID already exists in the list", "error");
+          return;
+        }
+
+        pixelList.push({ id: id, label: label, active: true });
+        idEl.value = "";
+        labelEl.value = "";
+        renderPixelList();
+        showToast("Pixel ID added to list. Click 'Save Pixel Settings' to apply.");
+      }
+
+      function removePixelId(idx) {
+        pixelList.splice(idx, 1);
+        renderPixelList();
+      }
+
+      function togglePixelStatus(idx, active) {
+        if (pixelList[idx]) {
+          pixelList[idx].active = active;
+        }
+      }
+
+      async function savePixelSettings() {
+        showLoading("Saving Pixel settings…");
+        try {
+          const jsonStr = JSON.stringify(pixelList);
+          const r = await apiPost({
+            action: "updateSettings",
+            updates: {
+              facebook_pixel_ids: jsonStr,
+            },
+          });
+          if (!r.success) throw new Error(r.error || "Unknown error");
+          settings.facebook_pixel_ids = jsonStr;
+          showToast("Facebook Pixel settings saved successfully!");
         } catch (e) {
           showToast("Save failed: " + (e.message || "Unknown error"), "error");
         } finally {

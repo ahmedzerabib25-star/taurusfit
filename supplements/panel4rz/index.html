@@ -890,6 +890,45 @@
                 <div style="color:var(--g400);font-size:13px">Loading users…</div>
               </div>
             </div>
+
+            <!-- FACEBOOK PIXEL SETTINGS -->
+            <div class="settings-card" style="grid-column: 1 / -1">
+              <div class="settings-card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                </svg>
+                <span>Facebook Pixel Settings</span>
+              </div>
+              <p style="font-size:13px;color:var(--g600);margin-bottom:16px">
+                Add, modify, or enable/disable multiple Meta (Facebook) Pixel IDs. Active pixels will receive real-time e-commerce events (PageView, ViewContent, AddToCart, InitiateCheckout, Purchase).
+              </p>
+
+              <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;align-items:flex-end">
+                <div class="form-group" style="flex:2;min-width:200px;margin-bottom:0">
+                  <label>Pixel ID *</label>
+                  <input type="text" class="form-control" id="new-pixel-id" placeholder="e.g. 123456789012345" />
+                </div>
+                <div class="form-group" style="flex:2;min-width:180px;margin-bottom:0">
+                  <label>Account Label / Name (optional)</label>
+                  <input type="text" class="form-control" id="new-pixel-label" placeholder="e.g. Main Ad Account" />
+                </div>
+                <div>
+                  <button class="btn-primary" type="button" onclick="addPixelId()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>Add Pixel</span>
+                  </button>
+                </div>
+              </div>
+
+              <div id="pixel-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px">
+                <div style="color:var(--g400);font-size:13px">No Facebook Pixel IDs added yet.</div>
+              </div>
+
+              <button class="btn-primary" type="button" onclick="savePixelSettings()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Save Pixel Settings</span>
+              </button>
+            </div>
           </div>
         </div>
 

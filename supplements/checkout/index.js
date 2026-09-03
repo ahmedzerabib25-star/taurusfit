@@ -1,4 +1,4 @@
-﻿      /* ══════════════════════════════════════════════════════
+      /* ══════════════════════════════════════════════════════
          CONFIG
       ══════════════════════════════════════════════════════ */
       const SUPABASE_URL = window.SUPABASE_URL;
@@ -570,6 +570,14 @@
           renderCatNav(_allCategories, _allSubCategories, _allSubSubCategories);
           renderCheckoutItems();
           renderAlsoLike();
+
+          // ── Facebook Pixel ──
+          if (window.TaurusPixel) {
+            window.TaurusPixel.init(_storeSettings);
+            const cartItems = cartGet();
+            const subtotal = cartItems.reduce((s, i) => s + i.unitPrice * i.qty, 0);
+            window.TaurusPixel.trackInitiateCheckout(cartItems, subtotal);
+          }
 
           // ── Footer categories (max 6) ──
           const footerList = document.getElementById("footerCategoryList");
@@ -2923,10 +2931,16 @@
             showToast((data && data.error) || "Order failed. Please try again.");
             return;
           }
+          if (window.TaurusPixel) {
+            window.TaurusPixel.trackPurchase(data.orderId || data.id || ("ORD-" + Date.now()), total, items);
+          }
           document.getElementById("successMsg").textContent = successMessage(firstName, items.length, total);
           document.getElementById("successOverlay").classList.add("show");
         } catch (e) {
           // Network error — still show success since order may have gone through
+          if (window.TaurusPixel) {
+            window.TaurusPixel.trackPurchase("ORD-" + Date.now(), total, items);
+          }
           document.getElementById("successMsg").textContent = successMessage(firstName, items.length, total);
           document.getElementById("successOverlay").classList.add("show");
         } finally {

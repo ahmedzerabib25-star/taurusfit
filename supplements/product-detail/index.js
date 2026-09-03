@@ -1,4 +1,4 @@
-﻿      /* ══════════════════════════════════════════════════════
+      /* ══════════════════════════════════════════════════════
          CONFIG
       ══════════════════════════════════════════════════════ */
       const SUPABASE_URL = window.SUPABASE_URL;
@@ -236,6 +236,12 @@
               renderProduct();
               // FIX: updateSummary AFTER renderProduct sets selectedVariantIndex & selectedFlavor
               updateSummary();
+
+              // ── Facebook Pixel ──
+              if (window.TaurusPixel) {
+                window.TaurusPixel.init(_storeSettings);
+                window.TaurusPixel.trackViewContent(p);
+              }
 
               // ── Footer categories (max 6) ──
               const footerList = document.getElementById("footerCategoryList");
@@ -3549,6 +3555,7 @@
         }
         cartSave(items);
         cartUpdateBadge();
+        if (window.TaurusPixel) { window.TaurusPixel.trackAddToCart(p, selectedQty); }
         // Open cart drawer to confirm
         if (!_cartOpen) toggleCart();
         else _renderCartDrawer();
@@ -3727,6 +3734,7 @@
         cartSave(items);
         cartUpdateBadge();
         closeAddToCartModal();
+        if (window.TaurusPixel) { window.TaurusPixel.trackAddToCart(p, _atcQty); }
         if (!_cartOpen) toggleCart();
         else _renderCartDrawer();
       }

@@ -461,6 +461,7 @@ function confirmAddToCart() {
   if (existing) { existing.qty = Math.min(_itemMaxQty(existing), existing.qty + _atcQty); }
   else { items.push({ productId: p.id, name: p.name, imageUrl: (Array.isArray(p.imageUrl) ? p.imageUrl[0] : p.imageUrl) || "", unitPrice, qty: _atcQty, flavor: _atcFlavor, variant: variantLabel }); }
   cartSave(items); cartUpdateBadge(); closeAddToCartModal();
+  if (window.TaurusPixel) { window.TaurusPixel.trackAddToCart(p, _atcQty); }
   showToast(i18n[currentLang]["toast.added"]);
 }
 /* ── Cart Drawer ── */
@@ -1123,6 +1124,11 @@ async function loadInitialData() {
     _subSubCategories = res.subSubCategories || [];
     renderCatNav();
     renderCategoryGrid();
+
+    // ── Facebook Pixel ──
+    if (window.TaurusPixel && res.settings) {
+      window.TaurusPixel.init(res.settings);
+    }
   } catch (err) {
     console.error("Failed to load initial data:", err);
   }
